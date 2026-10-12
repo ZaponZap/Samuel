@@ -1,0 +1,1554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hidden in My Heart</title>
+<meta name="description" content="Memorize nine NIV verses by listening, fading, typing, building and matching.">
+<meta name="theme-color" content="#121731">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+/* ============ Tokens ============ */
+:root{
+  color-scheme: dark;
+  --bg:#121731; --bg-2:#161C3B; --surface:#1C2347; --surface-2:#262E59; --line:#363F72;
+  --text:#EEF0FB; --muted:#A9AFD6; --soft:rgba(255,255,255,.06);
+  --ink:#10142A; --mix:#ffffff; --mixamt:24%; --bad:#FF7A7A; --focus:#9DB8FF;
+  --shadow:0 18px 40px -18px rgba(0,0,0,.55);
+  --r-lg:28px; --r-md:18px; --r-sm:12px; --nav-h:68px;
+}
+:root[data-theme="light"]{
+  color-scheme: light;
+  --bg:#F2F3FA; --bg-2:#E8EAF6; --surface:#FFFFFF; --surface-2:#EEF0F8; --line:#D6DAEC;
+  --text:#1B2042; --muted:#5A6089; --soft:rgba(20,30,90,.05);
+  --mix:#000000; --mixamt:34%; --bad:#D93B3B; --focus:#3D63DD;
+  --shadow:0 18px 40px -22px rgba(30,40,90,.35);
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    color-scheme: light;
+    --bg:#F2F3FA; --bg-2:#E8EAF6; --surface:#FFFFFF; --surface-2:#EEF0F8; --line:#D6DAEC;
+    --text:#1B2042; --muted:#5A6089; --soft:rgba(20,30,90,.05);
+    --mix:#000000; --mixamt:34%; --bad:#D93B3B; --focus:#3D63DD;
+    --shadow:0 18px 40px -22px rgba(30,40,90,.35);
+  }
+}
+/* text-safe version of any accent color --c */
+*{ --ct: color-mix(in oklab, var(--c, #8B6CF6), var(--mix) var(--mixamt)); }
+
+/* ============ Base ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:17px;-webkit-text-size-adjust:100%}
+@media (min-width:900px){html{font-size:18px}}
+body{margin:0;font-family:'Lexend',system-ui,-apple-system,sans-serif;font-weight:400;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100dvh;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,p{margin:0}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:12px}
+.ic{width:1.3em;height:1.3em;flex:none;display:block}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ============ Shell ============ */
+.app{min-height:100dvh}
+.side{display:none}
+main{padding:0 16px calc(var(--nav-h) + 34px + env(safe-area-inset-bottom));max-width:1000px;margin:0 auto;min-width:0}
+@media (min-width:900px){
+  .app{display:grid;grid-template-columns:268px minmax(0,1fr)}
+  .side{display:flex;flex-direction:column;position:sticky;top:0;height:100dvh;padding:26px 16px 18px;background:var(--bg-2);border-right:1px solid var(--line);overflow-y:auto}
+  main{padding:0 44px 64px;width:100%}
+}
+.brand{display:flex;align-items:center;gap:12px;font-weight:600;font-size:1.06rem;line-height:1.2;padding:0 10px 18px}
+.brand .mark{width:42px;height:42px;flex:none}
+.navgroup{margin-top:8px}
+.navgroup h4{font-size:.8rem;font-weight:500;color:var(--muted);margin:16px 12px 6px}
+.navi{display:flex;align-items:center;gap:12px;width:100%;padding:8px 10px;border-radius:16px;font-weight:500;font-size:.96rem;text-align:left;transition:background .2s}
+.navi .nic{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--a) 17%,transparent);color:var(--at);transition:background .2s,color .2s}
+.navi{--at:color-mix(in oklab,var(--a),var(--mix) var(--mixamt))}
+.navi:hover{background:var(--soft)}
+.navi.on{background:color-mix(in srgb,var(--a) 15%,transparent)}
+.navi.on .nic{background:var(--a);color:var(--ink)}
+.side-foot{margin-top:auto;padding:18px 10px 0;font-size:.74rem;color:var(--muted);line-height:1.5}
+
+.topbar{display:flex;align-items:center;gap:8px;padding:14px 0 6px}
+.brand-m{display:flex;align-items:center;gap:10px;font-weight:600;font-size:1rem;margin-right:auto;min-width:0}
+.brand-m .mark{width:32px;height:32px;flex:none}
+.brand-m span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:900px){.brand-m{visibility:hidden}}
+@media (max-width:520px){.pill.streak{display:none}.brand-m{font-size:.88rem;gap:8px}.brand-m .mark{width:28px;height:28px}.topbar{gap:6px}.tbtn{width:36px;height:36px}.pill{height:36px;padding:0 11px}}
+@media (max-width:340px){.brand-m span{display:none}}
+.pill{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:600;font-size:.9rem;white-space:nowrap}
+.pill .ic{width:1.1em;height:1.1em}
+.pill.pts .ic{color:#F2C230}
+.pill.streak .ic{color:#F5873A}
+.pill.bump{animation:bump .5s cubic-bezier(.3,1.7,.5,1)}
+.tbtn{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.tbtn[aria-pressed="true"]{color:var(--text)}
+.tbtn .ic{width:1.15em;height:1.15em}
+
+.pagehead{padding:14px 0 14px}
+.pagehead:empty{display:none}
+.pagehead h1{font-size:clamp(1.55rem,1.2rem + 1.4vw,2.1rem);font-weight:600;letter-spacing:-.015em;line-height:1.15}
+.pagehead p{color:var(--muted);margin-top:6px;max-width:60ch}
+@media (max-width:899px){.pagehead{padding:8px 0 12px}.pagehead h1{font-size:1.5rem}.pagehead p{font-size:.88rem;margin-top:4px}.subtabs{margin-top:12px}}
+.subtabs{display:flex;gap:6px;margin-top:14px;overflow-x:auto;scrollbar-width:none}
+.subtabs::-webkit-scrollbar{display:none}
+@media (min-width:900px){.subtabs{display:none}}
+.subtab{display:inline-flex;align-items:center;gap:7px;padding:8px 14px 8px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:.88rem;font-weight:500;white-space:nowrap;--at:color-mix(in oklab,var(--a),var(--mix) var(--mixamt))}
+.subtab .ic{color:var(--at);width:1.15em;height:1.15em}
+.subtab.on{background:var(--a);color:var(--ink);border-color:transparent}
+.subtab.on .ic{color:var(--ink)}
+
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);background:color-mix(in srgb,var(--bg-2) 90%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:6px 8px calc(8px + env(safe-area-inset-bottom))}
+@media (min-width:900px){.bnav{display:none}}
+body.kb .bnav{display:none}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;font-size:.74rem;font-weight:500;color:var(--muted);--at:color-mix(in oklab,var(--a),var(--mix) var(--mixamt))}
+.bn .nic{width:52px;height:30px;border-radius:999px;display:grid;place-items:center;color:var(--at);transition:background .2s}
+.bn.on{color:var(--text)}
+.bn.on .nic{background:var(--a);color:var(--ink)}
+
+/* ============ Verse bar ============ */
+.vbar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 16px;padding:4px 16px 6px;scroll-snap-type:x proximity}
+.vbar::-webkit-scrollbar{display:none}
+@media (min-width:900px){.vbar{flex-wrap:wrap;margin:0 0 18px;padding:0;overflow:visible}}
+.vchip{flex:none;display:inline-flex;align-items:center;gap:8px;padding:8px 14px 8px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:.86rem;font-weight:500;white-space:nowrap;scroll-snap-align:start;transition:background .2s,transform .2s}
+.vchip .dot{width:22px;height:22px;border-radius:50%;background:var(--c);display:grid;place-items:center;color:var(--ink)}
+.vchip .dot .ic{width:14px;height:14px;stroke-width:2.2}
+.vchip:hover{border-color:var(--c)}
+.vchip.on{background:var(--c);color:var(--ink);border-color:transparent}
+.vchip.on .dot{background:rgba(255,255,255,.55)}
+
+/* ============ Building blocks ============ */
+.stage{background:color-mix(in srgb,var(--c) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 34%,var(--line));border-radius:var(--r-lg);padding:clamp(18px,3.4vw,38px);position:relative;box-shadow:var(--shadow)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(16px,3vw,30px);box-shadow:var(--shadow)}
+.vhead{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.medal-sm{width:52px;height:52px;border-radius:50%;background:var(--c);color:var(--ink);display:grid;place-items:center;flex:none;box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 22%,transparent)}
+.medal-sm .ic{width:28px;height:28px;stroke-width:1.9}
+.vhead-t{flex:1;min-width:150px}
+.vhead-t h2{font-size:1.25rem;font-weight:600;letter-spacing:-.01em}
+.vhead-t p{color:var(--muted);font-size:.9rem}
+.verse{font-family:'Literata',Georgia,serif;font-optical-sizing:auto;font-size:clamp(1.3rem,1.06rem + 1vw,1.64rem);line-height:1.75;margin:22px 0 10px;text-wrap:pretty;overflow-wrap:break-word}
+.grp{white-space:nowrap}
+.w{border-radius:.3em;transition:color .25s,background-color .25s,opacity .3s,filter .35s,text-shadow .3s}
+
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.row.between{justify-content:space-between}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:999px;font-weight:500;font-size:.95rem;background:var(--surface);border:1px solid var(--line);transition:transform .15s,background .2s,border-color .2s;white-space:nowrap}
+.btn:hover{border-color:color-mix(in srgb,var(--c,#8B6CF6) 60%,var(--line))}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--c,#8B6CF6);color:var(--ink);border-color:transparent;font-weight:600}
+.btn.sm{min-height:38px;padding:0 14px;font-size:.86rem}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.ibtn{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);flex:none;transition:transform .15s,border-color .2s}
+.ibtn:hover{border-color:var(--c,var(--line))}
+.ibtn:active{transform:scale(.93)}
+.ibtn.on{background:var(--c);color:var(--ink);border-color:transparent}
+
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:color-mix(in srgb,var(--text) 7%,transparent);gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg-b{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:.86rem;font-weight:500;color:var(--muted);white-space:nowrap;transition:background .2s,color .2s}
+.seg-b .ic{width:1.1em;height:1.1em}
+.seg-b.on{background:var(--surface);color:var(--text);box-shadow:0 2px 8px -2px rgba(0,0,0,.25)}
+
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;align-items:flex-start;padding:8px 14px;border-radius:14px;background:color-mix(in srgb,var(--text) 6%,transparent);min-width:74px}
+.stat b{font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+.stat span{font-size:.74rem;color:var(--muted)}
+.prog{height:8px;border-radius:99px;background:color-mix(in srgb,var(--c) 18%,transparent);overflow:hidden;flex:1;min-width:80px}
+.prog i{display:block;height:100%;width:0;border-radius:99px;background:var(--c);transition:width .12s linear}
+.hint-line{font-size:.82rem;color:var(--muted)}
+.divider{height:1px;background:color-mix(in srgb,var(--c,#888) 22%,var(--line));margin:20px 0}
+
+/* ============ Listen ============ */
+.bigplay{width:76px;height:76px;border-radius:50%;background:var(--c);color:var(--ink);display:grid;place-items:center;flex:none;box-shadow:0 10px 30px -8px color-mix(in srgb,var(--c) 70%,transparent);transition:transform .15s}
+.bigplay .ic{width:32px;height:32px}
+.bigplay:active{transform:scale(.94)}
+.bigplay.on{animation:breathe 2.4s ease-in-out infinite}
+.karaoke .w{cursor:pointer}
+.karaoke.playing .w{opacity:.48}
+.karaoke.playing .w.past,.karaoke.playing .w.now{opacity:1}
+.karaoke .w.now{color:var(--ct);text-shadow:0 0 18px color-mix(in srgb,var(--c) 80%,transparent)}
+.mode-reveal .w:not(.past):not(.now),.mode-hide .w{color:transparent!important;text-shadow:none!important;background:color-mix(in srgb,var(--c) 20%,transparent);opacity:1!important}
+.mode-hide .w.now{background:color-mix(in srgb,var(--c) 70%,transparent)}
+.mode-reveal .w.now{animation:pop .4s cubic-bezier(.3,1.6,.5,1)}
+.w.say{filter:blur(7px);opacity:.55!important}
+.turn{display:flex;align-items:center;gap:12px;min-height:44px;color:var(--ct);font-weight:500;opacity:0;transition:opacity .25s}
+.turn.on{opacity:1}
+.turn svg{width:40px;height:40px;transform:rotate(-90deg)}
+.turn circle{fill:none;stroke-width:4}
+.turn .bgc{stroke:color-mix(in srgb,var(--c) 22%,transparent)}
+.turn .fgc{stroke:var(--c);stroke-linecap:round;stroke-dasharray:107;stroke-dashoffset:0}
+.turn.on .fgc{animation:drain var(--d,3s) linear forwards}
+@media (max-width:899px){
+  .dock{position:sticky;z-index:6;bottom:calc(var(--nav-h) + 12px + env(safe-area-inset-bottom));margin-inline:-6px;padding:10px 12px;border-radius:26px;background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid color-mix(in srgb,var(--c) 30%,var(--line));box-shadow:var(--shadow)}
+  .dock .bigplay{width:62px;height:62px}
+  .dock{flex-wrap:nowrap}
+  .dock>.btn{flex:1;padding:0 12px}
+}
+.time{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums;min-width:74px;text-align:right}
+
+/* ============ Fade ============ */
+.fading .w.hid:not(.peek){color:transparent;text-shadow:none;background:color-mix(in srgb,var(--c) 26%,transparent);cursor:pointer}
+.fading .w.hid.peek{color:var(--text);background:color-mix(in srgb,var(--c) 10%,transparent)}
+.fading.letters .w.hid:not(.peek){position:relative}
+.fading.letters .w.hid:not(.peek)::before{content:attr(data-f);position:absolute;left:.12em;color:var(--ct)}
+.fading .w.hid.now:not(.peek){background:color-mix(in srgb,var(--c) 72%,transparent)}
+.steps{display:flex;gap:6px;align-items:center}
+.steps i{width:28px;height:8px;border-radius:99px;background:color-mix(in srgb,var(--c) 20%,transparent);transition:background .3s}
+.steps i.on{background:var(--c)}
+.donebox{margin-top:18px;padding:18px 20px;border-radius:20px;background:color-mix(in srgb,var(--c) 14%,transparent);border:1px dashed color-mix(in srgb,var(--c) 60%,transparent)}
+.donebox h3{font-size:1.08rem;font-weight:600;margin-bottom:4px}
+.donebox p{color:var(--muted);margin-bottom:14px;font-size:.92rem}
+
+/* ============ Type & Build slots ============ */
+.slot{display:inline-block;min-width:calc(var(--len,3) * .55em);border-bottom:2px solid color-mix(in srgb,var(--c) 34%,var(--line));line-height:1.28;border-radius:6px 6px 2px 2px;padding:0 .05em;transition:background .25s,border-color .25s,color .25s;vertical-align:baseline}
+.slot .ghost{opacity:.34}
+.slot.cur{border-bottom-color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.caret{display:inline-block;width:2px;height:1em;margin:0 1px -.12em;background:var(--c);animation:blink 1s steps(1) infinite;visibility:hidden}
+.typing.focus .slot.cur .caret{visibility:visible}
+.slot.done{border-bottom-color:transparent;color:var(--ct);min-width:0}
+.slot.done.skipped{color:var(--muted);border-bottom:2px dotted var(--line)}
+.slot.fresh{animation:pop .5s cubic-bezier(.3,1.7,.5,1),glowfill 1.3s ease-out}
+.slot.bad{border-bottom-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,transparent)}
+.typebar{display:flex;align-items:center;gap:10px;margin-top:20px}
+.tinput{flex:1;min-width:0;font:inherit;font-size:1.08rem;height:54px;padding:0 20px;border-radius:999px;border:2px solid color-mix(in srgb,var(--c) 42%,var(--line));background:var(--surface);color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s}
+.tinput::placeholder{color:var(--muted)}
+.tinput:focus{border-color:var(--c);box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 22%,transparent)}
+.tinput.bad{border-color:var(--bad);box-shadow:0 0 0 5px color-mix(in srgb,var(--bad) 18%,transparent)}
+.shake{animation:shake .38s}
+@media (max-width:520px){.typebar .ibtn{width:44px;height:44px}.typebar{gap:7px}.tinput{padding:0 16px}}
+.build .verse{font-size:clamp(1.1rem,.98rem + .7vw,1.4rem);line-height:1.8}
+.pool{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.chip{font-family:'Literata',Georgia,serif;font-size:1.06rem;padding:8px 15px;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:0 3px 0 color-mix(in srgb,var(--c) 30%,var(--line));transition:transform .12s,border-color .2s,opacity .25s}
+.chip:hover{border-color:var(--c)}
+.chip:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+.chip.bad{border-color:var(--bad);animation:shake .38s}
+.chip.gone{animation:chipout .28s forwards;pointer-events:none}
+.chip.flash{animation:flash 1.1s ease-in-out 2}
+@media (max-width:520px){.chip{font-size:.98rem;padding:7px 12px}}
+
+/* ============ Match ============ */
+.tray{position:sticky;top:8px;z-index:5;display:flex;flex-wrap:wrap;gap:8px;padding:12px;border-radius:22px;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);margin-bottom:16px}
+@media (max-width:899px){
+  .tray{position:fixed;top:auto;left:10px;right:10px;bottom:calc(var(--nav-h) + 10px + env(safe-area-inset-bottom));flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0;box-shadow:var(--shadow)}
+  .tray::-webkit-scrollbar{display:none}
+  .match-pad{height:86px}
+}
+.rchip{flex:none;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:500;font-size:.92rem;white-space:nowrap;transition:transform .15s,background .2s}
+.rchip.sel{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+.rchip.bad{border-color:var(--bad);animation:shake .38s}
+.rchip.gone{animation:chipout .3s forwards}
+.mgrid{display:grid;gap:12px;grid-template-columns:1fr}
+@media (min-width:640px){.mgrid{grid-template-columns:1fr 1fr}}
+@media (min-width:1200px){.mgrid{grid-template-columns:1fr 1fr 1fr}}
+.mcard{text-align:left;padding:18px 20px;border-radius:22px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;transition:border-color .25s,background .3s,transform .15s}
+.mcard .mtext{font-family:'Literata',Georgia,serif;font-size:1.02rem;line-height:1.6}
+.mcard:hover{border-color:color-mix(in srgb,var(--text) 30%,var(--line))}
+.mcard.sel{border-color:var(--text);transform:translateY(-2px)}
+.mcard.bad{border-color:var(--bad);animation:shake .38s}
+.mcard.ok{background:color-mix(in srgb,var(--c) 14%,var(--surface));border-color:var(--c);cursor:default}
+.mbadge{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:5px 12px 5px 6px;border-radius:999px;background:var(--c);color:var(--ink);font-weight:600;font-size:.85rem;animation:pop .5s cubic-bezier(.3,1.7,.5,1)}
+.mbadge .ic{width:20px;height:20px;padding:3px;border-radius:50%;background:rgba(255,255,255,.5)}
+.mslot{height:30px;align-self:flex-start;min-width:120px;border-radius:999px;border:1.5px dashed var(--line)}
+
+/* ============ By ear ============ */
+.disc{--sz:168px;width:var(--sz);height:var(--sz);border-radius:50%;position:relative;display:grid;place-items:center;margin:8px auto 4px;flex:none}
+.disc::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#F0505A,#F5873A,#F2C230,#9BD14B,#34C28A,#26BCD0,#4C8DF6,#8B6CF6,#E055B5,#F0505A)}
+@media (max-height:720px){.disc{--sz:128px}.disc-in .ic{width:36px;height:36px}}
+.disc.solved::before{background:conic-gradient(from 30deg,var(--c),color-mix(in srgb,var(--c) 45%,white),var(--c))}
+.disc.on::before{animation:spin 5s linear infinite}
+.disc-in{position:relative;width:calc(100% - 18px);height:calc(100% - 18px);border-radius:50%;background:var(--surface);display:grid;place-items:center;color:var(--text)}
+.disc-in .ic{width:46px;height:46px}
+.eq{display:flex;gap:5px;align-items:center;height:46px}
+.eq i{width:6px;border-radius:9px;background:var(--text);height:30%;animation:eq .9s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:-.2s}.eq i:nth-child(3){animation-delay:-.45s}.eq i:nth-child(4){animation-delay:-.1s}.eq i:nth-child(5){animation-delay:-.6s}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.opt{min-height:62px;padding:10px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);font-weight:500;font-size:1rem;transition:background .25s,border-color .25s,transform .12s}
+.opt:hover{border-color:color-mix(in srgb,var(--text) 35%,var(--line))}
+.opt:active{transform:scale(.98)}
+.opt.ok{background:var(--c);color:var(--ink);border-color:transparent;animation:pop .5s cubic-bezier(.3,1.7,.5,1)}
+.opt.no{border-color:var(--bad);color:var(--bad);animation:shake .38s}
+.opt.dim{opacity:.45}
+.reveal{margin-top:18px;padding:18px 20px;border-radius:22px;background:color-mix(in srgb,var(--c) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 45%,var(--line));animation:rise .35s ease-out}
+.reveal p.vt{font-family:'Literata',Georgia,serif;font-size:1.08rem;line-height:1.65;margin:10px 0 14px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (min-width:600px){.tiles{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:1100px){.tiles{grid-template-columns:repeat(6,1fr)}}
+.tile{aspect-ratio:1/1.08;perspective:900px;position:relative}
+.tile-in{position:absolute;inset:0;transition:transform .5s cubic-bezier(.3,1.3,.5,1);transform-style:preserve-3d}
+.tile.up .tile-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--line);font-weight:500;font-size:.88rem}
+.face.back{background:var(--surface)}
+.face.back .ic{width:34px;height:34px}
+.face.back.snd{background:color-mix(in srgb,#26BCD0 16%,var(--surface));color:color-mix(in oklab,#26BCD0,var(--mix) var(--mixamt))}
+.face.back.ref{background:color-mix(in srgb,#8B6CF6 16%,var(--surface));color:color-mix(in oklab,#8B6CF6,var(--mix) var(--mixamt))}
+.face.back small{font-size:.72rem;color:var(--muted)}
+.face.front{transform:rotateY(180deg);background:var(--surface-2)}
+.face.front .ic{width:30px;height:30px}
+.tile.done .face.front{background:var(--c);color:var(--ink);border-color:transparent}
+.tile.done{animation:pop .5s cubic-bezier(.3,1.7,.5,1)}
+.tile button{position:absolute;inset:0;border-radius:18px;z-index:2}
+
+/* ============ Order ============ */
+.shelf{display:flex;align-items:flex-end;gap:2px;height:96px;padding:0 2px;border-bottom:3px solid var(--line)}
+.spine{flex:1;min-width:2px;border-radius:3px 3px 0 0;background:color-mix(in srgb,var(--text) 14%,transparent);transition:height .45s cubic-bezier(.3,1.5,.5,1),background .3s,box-shadow .3s}
+.spine.nt{margin-left:7px}
+.spine.lit{background:var(--c);box-shadow:0 0 16px color-mix(in srgb,var(--c) 75%,transparent);height:92px!important}
+.shelf-legend{display:grid;grid-template-columns:39fr 27fr;gap:7px;font-size:.76rem;color:var(--muted);margin-top:6px}
+.shelf-legend span{border-top:2px solid var(--line);padding-top:4px}
+.shelf-legend span:last-child{text-align:right}
+.placed{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.placed li{display:flex;align-items:center;gap:12px;padding:8px 14px 8px 8px;border-radius:16px;background:color-mix(in srgb,var(--c) 14%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 40%,var(--line));animation:rise .35s ease-out}
+.placed .n{width:32px;height:32px;border-radius:50%;background:var(--c);color:var(--ink);display:grid;place-items:center;font-weight:600;font-size:.9rem;flex:none}
+.placed .bk{margin-left:auto;font-size:.78rem;color:var(--muted);white-space:nowrap}
+.placed li.ghost{background:transparent;border:1.5px dashed var(--line);color:var(--muted);animation:none}
+.placed li.ghost .n{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+
+/* ============ Home ============ */
+.hero{display:grid;gap:22px;align-items:center;padding:6px 0 26px}
+@media (min-width:760px){.hero{grid-template-columns:minmax(260px,380px) 1fr;gap:40px;padding:18px 0 34px}}
+.rose-wrap{width:min(100%,380px);margin:0 auto}
+.rose-wrap>svg{width:100%;height:auto;display:block;overflow:visible}
+.rose .pane{opacity:.22;transition:opacity .4s}
+.rose .pane.lit{opacity:1;filter:drop-shadow(0 0 6px var(--c))}
+.rose .rim{fill:none;stroke:var(--line);stroke-width:2}
+.rose .lead{fill:var(--bg)}
+.rose .hub{fill:var(--surface);stroke:var(--line);stroke-width:2}
+.rose .hub-n{font:600 30px Lexend,sans-serif;fill:var(--text)}
+.rose .hub-l{font:400 11.5px Lexend,sans-serif;fill:var(--muted)}
+.rose [data-v]{cursor:pointer}
+.rose [data-v]:hover .pane{opacity:.4}
+.rose [data-v]:hover .pane.lit{opacity:1}
+.rose .badge-c{transition:transform .2s;transform-origin:center;transform-box:fill-box}
+.rose [data-v]:hover .badge-c{transform:scale(1.12)}
+.hero h1{font-size:clamp(1.8rem,1.3rem + 2vw,2.7rem);line-height:1.1;font-weight:600;letter-spacing:-.02em}
+.hero .lede{color:var(--muted);margin:12px 0 18px;max-width:46ch;font-size:1.02rem}
+.hero .stats{margin-bottom:20px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 0 14px}
+.sec-h h2{font-size:1.3rem;font-weight:600}
+.sec-h p{color:var(--muted);font-size:.86rem}
+.vgrid{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:700px){.vgrid{grid-template-columns:1fr 1fr}}
+.vcard{display:flex;flex-direction:column;gap:12px;padding:18px 18px 16px;border-radius:24px;background:var(--surface);border:1px solid var(--line);position:relative;overflow:hidden}
+.vcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c)}
+.vc-top{display:flex;align-items:center;gap:12px}
+.vc-top .medal-sm{width:44px;height:44px;box-shadow:none}
+.vc-top .medal-sm .ic{width:24px;height:24px}
+.vc-top h3{font-size:1.05rem;font-weight:600}
+.vc-top p{font-size:.82rem;color:var(--muted)}
+.vc-top .ibtn{margin-left:auto;width:44px;height:44px}
+.vc-text .w{cursor:default}
+.vc-text{font-family:'Literata',Georgia,serif;font-size:1.04rem;line-height:1.62}
+.vc-foot{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:auto}
+.pip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 11px 0 8px;border-radius:999px;font-size:.78rem;font-weight:500;background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--muted);transition:background .2s}
+.pip .ic{width:1.15em;height:1.15em}
+.pip:hover{background:color-mix(in srgb,var(--c) 20%,transparent);color:var(--text)}
+.pip.lit{background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--ct)}
+.credits{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:.76rem;color:var(--muted);line-height:1.6}
+.credits button{text-decoration:underline;text-underline-offset:3px}
+
+/* ============ Medal modal ============ */
+.modal-back{position:fixed;inset:0;z-index:60;background:rgba(8,10,26,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;padding:18px;opacity:0;transition:opacity .25s}
+.modal-back.in{opacity:1}
+.modal{width:min(470px,100%);max-height:calc(100dvh - 36px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:32px;padding:30px 24px 22px;text-align:center;transform:translateY(18px) scale(.96);transition:transform .4s cubic-bezier(.2,1.4,.4,1)}
+.modal-back.in .modal{transform:none}
+.medal{width:136px;height:136px;margin:0 auto 14px;border-radius:50%;padding:9px;background:conic-gradient(from 210deg,var(--c),color-mix(in srgb,var(--c) 40%,white),var(--c),color-mix(in srgb,var(--c) 60%,black),var(--c));box-shadow:0 0 60px -6px color-mix(in srgb,var(--c) 70%,transparent);animation:medalin .8s cubic-bezier(.2,1.5,.4,1)}
+.medal.rainbow{background:conic-gradient(#F0505A,#F5873A,#F2C230,#9BD14B,#34C28A,#26BCD0,#4C8DF6,#8B6CF6,#E055B5,#F0505A);box-shadow:0 0 60px -10px #8B6CF6}
+.medal-in{width:100%;height:100%;border-radius:50%;background:var(--surface);display:grid;place-items:center;color:var(--ct)}
+.medal.rainbow .medal-in{color:var(--text)}
+.medal-in .ic{width:60px;height:60px;stroke-width:1.5}
+.modal h2{font-size:1.45rem;font-weight:600;letter-spacing:-.01em}
+.modal .sub{color:var(--muted);margin-top:2px}
+.stars{display:flex;justify-content:center;gap:6px;margin:14px 0 4px}
+.stars .ic{width:32px;height:32px;color:color-mix(in srgb,var(--text) 18%,transparent)}
+.stars .ic.on{color:#F2C230;animation:starin .5s cubic-bezier(.3,1.8,.5,1) both}
+.stars .ic.on:nth-child(2){animation-delay:.12s}.stars .ic.on:nth-child(3){animation-delay:.24s}
+.modal .stats{justify-content:center;margin:16px 0}
+.modal .stat{align-items:center}
+.modal .note{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--ct);font-size:.86rem;font-weight:500;margin-bottom:6px}
+.modal .vt{font-family:'Literata',Georgia,serif;font-size:1.02rem;line-height:1.62;margin:12px 4px 4px;text-align:left}
+.modal .acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+
+/* ============ Misc ============ */
+#toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 22px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:70;padding:12px 18px;border-radius:999px;background:var(--text);color:var(--bg);font-weight:500;font-size:.9rem;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .25s,transform .3s;max-width:calc(100vw - 32px);text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:900px){#toast{bottom:28px}}
+.fpts{position:fixed;z-index:65;font-weight:700;font-size:1rem;color:var(--ct);pointer-events:none;animation:floatup .9s ease-out forwards;text-shadow:0 2px 10px color-mix(in srgb,var(--c) 60%,transparent)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:80;width:100%;height:100%}
+
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.24)}100%{transform:scale(1)}}
+@keyframes glowfill{0%{background:color-mix(in srgb,var(--c) 45%,transparent);text-shadow:0 0 26px var(--c)}100%{background:transparent;text-shadow:0 0 0 transparent}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes floatup{from{opacity:1;transform:translateY(0) scale(.9)}to{opacity:0;transform:translateY(-42px) scale(1.1)}}
+@keyframes chipout{to{opacity:0;transform:scale(.6) translateY(-14px)}}
+@keyframes flash{50%{border-color:var(--c);box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 35%,transparent)}}
+@keyframes breathe{50%{box-shadow:0 0 0 12px color-mix(in srgb,var(--c) 18%,transparent),0 10px 30px -8px color-mix(in srgb,var(--c) 70%,transparent)}}
+@keyframes drain{from{stroke-dashoffset:0}to{stroke-dashoffset:107}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes eq{0%,100%{height:22%}50%{height:100%}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes medalin{0%{transform:scale(.3) rotate(-60deg);opacity:0}100%{transform:none;opacity:1}}
+@keyframes starin{0%{transform:scale(0) rotate(-40deg)}100%{transform:none}}
+@keyframes bump{40%{transform:scale(1.15)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Activities">
+    <a class="brand" href="#/home" id="brand"><span class="mark" data-mark></span><span>Hidden in<br>My Heart</span></a>
+    <nav id="sidenav"></nav>
+    <div class="side-foot">Nine NIV verses, in Bible order.<br>Progress is saved in this browser.</div>
+  </aside>
+  <main id="main">
+    <header class="topbar">
+      <a class="brand-m" href="#/home"><span class="mark" data-mark></span><span>Hidden in My Heart</span></a>
+      <div class="pill streak" title="Days in a row"><span data-ic="flame"></span><b id="streakN">1</b></div>
+      <div class="pill pts" id="ptsPill" title="Points"><span data-ic="star"></span><b id="ptsN">0</b></div>
+      <button class="tbtn" id="chimeBtn" aria-label="Chimes" aria-pressed="true"></button>
+      <button class="tbtn" id="themeBtn" aria-label="Switch light or dark"></button>
+    </header>
+    <div class="pagehead" id="pagehead"></div>
+    <div id="vbar"></div>
+    <section id="view"></section>
+  </main>
+  <nav class="bnav" id="bnav" aria-label="Sections"></nav>
+</div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px">This page needs JavaScript to run.</p></noscript>
+
+<script>
+'use strict';
+/* =====================================================================
+   AUDIO LOCATION
+   The MP3s are expected next to this index.html (same repo folder).
+   If a file can't be found there, the page falls back to your GitHub repo.
+   ===================================================================== */
+const AUDIO_BASES = ['./', 'https://raw.githubusercontent.com/ZaponZap/Samuel/HEAD/'];
+
+/* Word timings measured from your recordings: [start, end] in seconds for each word. */
+const TIMINGS = {
+  "Joshua_1_8":[[0.22,0.56],[0.56,0.79],[0.79,1.08],[1.08,1.19],[1.19,1.26],[1.26,1.65],[1.65,2.41],[2.41,2.54],[2.54,2.74],[2.74,3.33],[3.77,4.36],[4.36,4.51],[4.51,4.62],[4.62,5.17],[5.17,5.44],[5.44,5.89],[6.15,6.32],[6.32,6.47],[6.47,6.63],[6.63,6.78],[6.78,6.95],[6.95,7.52],[7.52,7.62],[7.62,7.9],[7.9,8.55],[8.55,8.88],[8.88,9.0],[9.0,9.24],[9.75,10.27],[10.36,10.49],[10.49,10.63],[10.63,10.78],[10.78,11.7],[11.7,11.88],[11.88,12.73]],
+  "Lamentations_3_22–23":[[0.0,0.58],[0.58,0.67],[0.67,0.74],[0.74,1.27],[1.27,1.65],[1.65,2.17],[2.17,2.45],[2.45,2.54],[2.54,2.84],[2.84,3.66],[4.07,4.22],[4.22,4.41],[4.41,5.27],[5.27,5.59],[5.59,6.2],[6.65,6.76],[6.76,6.91],[6.91,7.42],[7.42,7.77],[7.77,8.3],[8.74,9.25],[9.34,9.51],[9.51,9.68],[9.68,10.59]],
+  "Matthew_18_20":[[0.21,0.45],[0.45,0.77],[0.77,1.24],[1.24,1.4],[1.4,1.9],[1.9,2.33],[2.33,2.4],[2.4,2.66],[2.66,3.21],[3.72,4.15],[4.15,4.38],[4.38,4.68],[4.68,5.05],[5.05,5.44]],
+  "John_1_12":[[0.27,0.51],[0.51,0.71],[0.71,1.07],[1.07,1.27],[1.27,1.5],[1.5,1.94],[1.94,2.31],[2.64,2.77],[2.77,3.16],[3.16,3.28],[3.28,3.91],[3.91,4.01],[4.01,4.25],[4.25,4.72],[5.1,5.27],[5.27,5.57],[5.57,5.66],[5.66,6.07],[6.07,6.21],[6.21,6.64],[6.64,7.22],[7.22,7.4],[7.4,8.11]],
+  "Romans_12_1":[[0.23,1.12],[1.32,1.49],[1.49,2.02],[2.02,2.23],[2.23,2.69],[2.69,2.8],[2.8,3.47],[3.73,3.92],[3.92,4.31],[4.31,4.45],[4.45,4.87],[4.87,5.49],[5.75,5.89],[5.89,6.26],[6.26,6.42],[6.42,6.98],[6.98,7.11],[7.11,7.17],[7.17,7.64],[7.64,8.58],[8.79,9.39],[9.39,9.59],[9.59,10.17],[10.17,10.29],[10.29,10.83],[11.06,11.57],[11.57,11.76],[11.76,11.94],[11.94,12.47],[12.47,12.62],[12.62,13.04],[13.04,13.7]],
+  "1_Corinthians_3_16":[[0.21,0.51],[0.51,0.7],[0.7,1.17],[1.17,1.39],[1.39,1.73],[1.73,2.6],[2.6,2.72],[2.72,3.19],[3.19,3.77],[3.98,4.16],[4.16,4.33],[4.33,4.66],[4.66,5.23],[5.23,5.74],[5.74,5.83],[5.83,5.99],[5.99,6.56]],
+  "1_Corinthians_15_58":[[0.23,1.12],[1.17,1.37],[1.37,1.77],[1.77,2.25],[2.25,2.36],[2.36,3.05],[3.33,3.84],[3.84,4.43],[4.9,5.12],[5.12,5.69],[5.69,5.97],[5.97,6.21],[6.65,7.22],[7.22,7.43],[7.43,8.05],[8.05,8.52],[8.52,8.65],[8.65,8.73],[8.73,9.1],[9.1,9.21],[9.21,9.27],[9.27,9.81],[10.05,10.35],[10.35,10.52],[10.52,10.97],[10.97,11.15],[11.15,11.4],[11.4,11.84],[11.84,11.92],[11.92,11.99],[11.99,12.51],[12.51,12.72],[12.72,13.15],[13.15,13.29],[13.29,13.67]],
+  "2_Corinthians_5_17":[[0.21,1.0],[1.39,1.65],[1.65,2.12],[2.12,2.28],[2.28,2.44],[2.44,3.1],[3.29,3.44],[3.44,3.83],[3.83,4.47],[4.47,4.71],[4.71,5.14],[5.61,5.79],[5.79,6.15],[6.15,6.4],[6.4,6.93],[7.26,7.37],[7.37,7.97],[7.97,8.22],[8.22,8.9]],
+  "1_Peter_3_18":[[0.0,0.29],[0.29,0.81],[0.81,1.32],[1.32,1.78],[1.78,2.14],[2.14,2.29],[2.29,2.97],[3.29,3.41],[3.41,4.11],[4.11,4.3],[4.3,4.46],[4.46,5.3],[5.58,5.67],[5.67,6.03],[6.03,6.26],[6.26,6.41],[6.41,6.94],[7.51,7.6],[7.6,7.81],[7.81,8.04],[8.04,8.16],[8.16,8.52],[8.52,8.62],[8.62,8.7],[8.7,9.34],[9.49,9.64],[9.64,9.84],[9.84,10.45],[10.45,10.55],[10.55,10.62],[10.62,11.38]]
+};
+
+/* The nine verses (NIV), in the order they appear in the Bible. */
+const VERSES = [
+  { id:'joshua-1-8', ref:'Joshua 1:8', short:'Josh 1:8', book:'Joshua', bookNo:6, file:'Joshua_1_8.mp3', c:'#F0505A', icon:'book', theme:'God’s Word, day and night',
+    text:'Keep this Book of the Law always on your lips; meditate on it day and night, so that you may be careful to do everything written in it. Then you will be prosperous and successful.' },
+  { id:'lamentations-3-22', ref:'Lamentations 3:22–23', short:'Lam 3:22–23', book:'Lamentations', bookNo:25, file:'Lamentations_3_22–23.mp3', c:'#F5873A', icon:'sunrise', theme:'Mercies new every morning',
+    text:'Because of the LORD’s great love we are not consumed, for his compassions never fail. They are new every morning; great is your faithfulness.' },
+  { id:'matthew-18-20', ref:'Matthew 18:20', short:'Matt 18:20', book:'Matthew', bookNo:40, file:'Matthew_18_20.mp3', c:'#F2C230', icon:'gather', theme:'With us when we gather',
+    text:'For where two or three gather in my name, there am I with them.' },
+  { id:'john-1-12', ref:'John 1:12', short:'John 1:12', book:'John', bookNo:43, file:'John_1_12.mp3', c:'#9BD14B', icon:'child', theme:'Welcomed as God’s children',
+    text:'Yet to all who did receive him, to those who believed in his name, he gave the right to become children of God—' },
+  { id:'romans-12-1', ref:'Romans 12:1', short:'Rom 12:1', book:'Romans', bookNo:45, file:'Romans_12_1.mp3', c:'#34C28A', icon:'flame', theme:'A living sacrifice',
+    text:'Therefore, I urge you, brothers and sisters, in view of God’s mercy, to offer your bodies as a living sacrifice, holy and pleasing to God—this is your true and proper worship.' },
+  { id:'1-corinthians-3-16', ref:'1 Corinthians 3:16', short:'1 Cor 3:16', book:'1 Corinthians', bookNo:46, file:'1_Corinthians_3_16.mp3', c:'#26BCD0', icon:'temple', theme:'God’s temple, Spirit within',
+    text:'Don’t you know that you yourselves are God’s temple and that God’s Spirit dwells in your midst?' },
+  { id:'1-corinthians-15-58', ref:'1 Corinthians 15:58', short:'1 Cor 15:58', book:'1 Corinthians', bookNo:46, file:'1_Corinthians_15_58.mp3', c:'#4C8DF6', icon:'anchor', theme:'Stand firm, never in vain',
+    text:'Therefore, my dear brothers and sisters, stand firm. Let nothing move you. Always give yourselves fully to the work of the Lord, because you know that your labor in the Lord is not in vain.' },
+  { id:'2-corinthians-5-17', ref:'2 Corinthians 5:17', short:'2 Cor 5:17', book:'2 Corinthians', bookNo:47, file:'2_Corinthians_5_17.mp3', c:'#8B6CF6', icon:'butterfly', theme:'A new creation',
+    text:'Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!' },
+  { id:'1-peter-3-18', ref:'1 Peter 3:18', short:'1 Pet 3:18', book:'1 Peter', bookNo:60, file:'1_Peter_3_18.mp3', c:'#E055B5', icon:'cross', theme:'Christ died to bring us to God',
+    text:'For Christ also suffered once for sins, the righteous for the unrighteous, to bring you to God. He was put to death in the body but made alive in the Spirit.' },
+];
+const RAINBOW = VERSES.map(v => v.c);
+
+const BOOKS = ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Songs','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'];
+
+/* ============ Icons ============ */
+const ICONS = {
+  // verse meanings
+  book:'<path d="M12 6.6C9.5 4.9 6.3 4.5 3 5.3v13.3c3.3-.8 6.5-.4 9 1.3 2.5-1.7 5.7-2.1 9-1.3V5.3c-3.3-.8-6.5-.4-9 1.3z"/><path d="M12 6.6v13.3"/>',
+  sunrise:'<path d="M2.5 17.5h19"/><path d="M6.5 17.5a5.5 5.5 0 0 1 11 0"/><path d="M12 5v2.6"/><path d="M5.4 9.4l1.8 1.8"/><path d="M18.6 9.4l-1.8 1.8"/><path d="M7.5 21h9"/>',
+  gather:'<circle cx="12" cy="6.8" r="2.6"/><circle cx="5.2" cy="9.4" r="2"/><circle cx="18.8" cy="9.4" r="2"/><path d="M7.4 20v-1.4a4.6 4.6 0 0 1 9.2 0V20"/><path d="M2 19.5v-.8a3.4 3.4 0 0 1 5-3"/><path d="M22 19.5v-.8a3.4 3.4 0 0 0-5-3"/>',
+  child:'<circle cx="8.6" cy="5" r="2.4"/><path d="M4.6 21v-7a4 4 0 0 1 8 0v7"/><circle cx="17.4" cy="10.4" r="1.9"/><path d="M14.8 21v-3.8a2.6 2.6 0 0 1 5.2 0V21"/><path d="M12.6 16.2c.8.2 1.6.2 2.3-.2"/>',
+  flame:'<path d="M12 2.8c.4 2.4 3.8 4.2 3.8 7.6a3.8 3.8 0 0 1-7.6 0c0-1.6.7-2.7 1.6-3.6.2 1.3.9 2.1 1.8 2.3-.5-1.9-.3-4.2.4-6.3z"/><path d="M4.5 15.6h15"/><path d="M6.6 15.6V21"/><path d="M17.4 15.6V21"/><path d="M4.5 21h15"/>',
+  temple:'<path d="M3 9.4L12 4l9 5.4z"/><path d="M5.6 9.4v9.2"/><path d="M18.4 9.4v9.2"/><path d="M3 21h18"/><path d="M4 18.6h16"/><path d="M12 11.6c1.2 1.3 2 2.2 2 3.4a2 2 0 0 1-4 0c0-1.2.8-2.1 2-3.4z"/>',
+  anchor:'<circle cx="12" cy="4.8" r="2"/><path d="M12 6.8V21"/><path d="M8.5 10h7"/><path d="M4.5 13.5A7.5 7.5 0 0 0 12 21a7.5 7.5 0 0 0 7.5-7.5"/><path d="M3 15l1.5-1.5L6 15"/><path d="M18 15l1.5-1.5L21 15"/>',
+  butterfly:'<path d="M12 8v11"/><path d="M12 10.5C10.5 6.5 6.5 3.8 4 4.6c-2 .7-1.4 4.4 1 6 1.6 1 4 1.3 7 1.2"/><path d="M12 10.5c1.5-4 5.5-6.7 8-5.9 2 .7 1.4 4.4-1 6-1.6 1-4 1.3-7 1.2"/><path d="M12 12.6c-3 .4-5.8 1.6-6 3.8-.2 2.3 2.7 2.8 4.4 1.2.8-.8 1.3-2.4 1.6-4.4"/><path d="M12 12.6c3 .4 5.8 1.6 6 3.8.2 2.3-2.7 2.8-4.4 1.2-.8-.8-1.3-2.4-1.6-4.4"/><path d="M12 8l-1.6-3"/><path d="M12 8l1.6-3"/>',
+  cross:'<path d="M12 2.5v19"/><path d="M6.5 8h11"/><path d="M4.5 21.5h15"/><path d="M3.5 4.5l1.6 1.6"/><path d="M20.5 4.5l-1.6 1.6"/>',
+  // interface
+  home:'<path d="M3.5 10.5L12 4l8.5 6.5"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5.5h4V20"/>',
+  listen:'<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4.2" height="7" rx="1.6"/><rect x="16.8" y="14" width="4.2" height="7" rx="1.6"/>',
+  fade:'<path d="M4 6h16"/><path d="M4 10h12" opacity=".75"/><path d="M4 14h8" opacity=".5"/><path d="M4 18h4" opacity=".28"/>',
+  type:'<rect x="2.5" y="6" width="19" height="12" rx="2.6"/><path d="M6.5 10h.01M10 10h.01M13.5 10h.01M17 10h.01M7.5 14h9"/>',
+  build:'<rect x="3" y="13" width="8" height="7" rx="1.6"/><rect x="13" y="13" width="8" height="7" rx="1.6"/><rect x="8" y="4" width="8" height="7" rx="1.6"/>',
+  match:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3A4 4 0 0 0 13 5.3l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  ear:'<path d="M4 10v4M8 6.5v11M12 4v16M16 7.5v9M20 10.5v3"/>',
+  order:'<path d="M3.5 19.5h4.5v-4.5h4.5v-4.5H17V6h3.5"/>',
+  cards:'<rect x="3" y="6" width="11" height="15" rx="2.2"/><path d="M8 3.5h10.5A2.5 2.5 0 0 1 21 6v13"/>',
+  play:'<path d="M8 5.3v13.4a.9.9 0 0 0 1.4.8l10.4-6.7a.9.9 0 0 0 0-1.6L9.4 4.5A.9.9 0 0 0 8 5.3z" fill="currentColor"/>',
+  pause:'<rect x="6.2" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="13.8" y="5" width="4" height="14" rx="1.2" fill="currentColor"/>',
+  replay:'<path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.5 4v4.5H8"/>',
+  bulb:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>',
+  speaker:'<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+  skip:'<path d="M5.5 5.5l9 6.5-9 6.5z"/><path d="M18.5 5.5v13"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6L6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/>',
+  moon:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+  note:'<path d="M9 18V5.5l11-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+  noteoff:'<path d="M9 18V9M9 5.5l11-2V13"/><circle cx="6.5" cy="18" r="2.5"/><path d="M3 3l18 18"/>',
+  star:'<path d="M12 3.2l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z" fill="currentColor"/>',
+  flamesm:'<path d="M12 21a6 6 0 0 0 6-6c0-3.5-2.5-5.5-3.5-8.5-1 2-2 3-3.5 3.5C11 7 10.5 4.5 11 2.5 7.5 5 6 9.5 6 15a6 6 0 0 0 6 6z" fill="currentColor"/>',
+  check:'<path d="M4.5 12.5l5 5L19.5 7"/>',
+  shuffle:'<path d="M3 7h3.5c2 0 3.2 1 4.3 2.7l2.4 4.6c1.1 1.7 2.3 2.7 4.3 2.7H21"/><path d="M18 14l3 3-3 3"/><path d="M3 17h3.5c1.3 0 2.2-.4 3-1.2"/><path d="M14.2 8.2c.8-.8 1.7-1.2 3-1.2H21"/><path d="M18 4l3 3-3 3"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
+  repeat:'<path d="M4 11V9.5A3.5 3.5 0 0 1 7.5 6H19"/><path d="M16 3l3 3-3 3"/><path d="M20 13v1.5a3.5 3.5 0 0 1-3.5 3.5H5"/><path d="M8 21l-3-3 3-3"/>',
+  eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+  minus:'<path d="M5 12h14"/>',
+  letter:'<path d="M5 19L10.5 5h1L17 19"/><path d="M7.3 13.5h7.4"/>',
+  gauge:'<path d="M4.5 17a8 8 0 1 1 15 0"/><path d="M12 13l3.5-4"/>',
+  next:'<path d="M5 12h13"/><path d="M13 6l6 6-6 6"/>',
+  target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/>',
+  bookref:'<path d="M5 4.5h11.5A2.5 2.5 0 0 1 19 7v12.5H7.5A2.5 2.5 0 0 1 5 17z"/><path d="M5 17a2.5 2.5 0 0 1 2.5-2.5H19"/><path d="M9 8.5h6"/>',
+};
+const PANES = [
+  { key:'heard', label:'Heard', long:'heard it read aloud', act:'listen', icon:'listen' },
+  { key:'faded', label:'Faded', long:'said it with every word hidden', act:'fade', icon:'fade' },
+  { key:'built', label:'Built', long:'built it word by word', act:'build', icon:'build' },
+  { key:'typed', label:'Typed', long:'typed it from memory', act:'type', icon:'type' },
+];
+const ACTS = [
+  { key:'home', label:'Home', icon:'home', a:'#E055B5' },
+  { key:'listen', label:'Listen', icon:'listen', a:'#4C8DF6', group:'learn', per:true,
+    desc:'Hear the verse while each word lights up. Tap any word to start there, or switch to Echo and repeat each phrase.' },
+  { key:'fade', label:'Fade away', icon:'fade', a:'#8B6CF6', group:'learn', per:true,
+    desc:'Words disappear a few at a time. Say the verse aloud after each step, until you can say it with nothing left on screen.' },
+  { key:'type', label:'Type it', icon:'type', a:'#F0505A', group:'practice', per:true,
+    desc:'Type every word in order. Each word you get right lights up.' },
+  { key:'build', label:'Build it', icon:'build', a:'#F5873A', group:'practice', per:true,
+    desc:'Tap the pieces in order to rebuild the verse. Each finished phrase is read back to you.' },
+  { key:'match', label:'Match', icon:'match', a:'#34C28A', group:'play',
+    desc:'Tap a reference, then tap the verse it belongs to.' },
+  { key:'ear', label:'By ear', icon:'ear', a:'#26BCD0', group:'play',
+    desc:'Listen to a recording and name the verse, or find sound and reference pairs.' },
+  { key:'order', label:'Bible order', icon:'order', a:'#F2C230', group:'play',
+    desc:'Tap the references in the order they appear in the Bible, from Joshua onward.' },
+];
+const ACT = Object.fromEntries(ACTS.map(a => [a.key, a]));
+const GROUPS = [
+  { key:'learn', label:'Learn', icon:'listen', a:'#4C8DF6' },
+  { key:'practice', label:'Practice', icon:'type', a:'#F0505A' },
+  { key:'play', label:'Play', icon:'cards', a:'#34C28A' },
+];
+
+/* ============ Utilities ============ */
+const $ = (s, r = document) => r.querySelector(s);
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  if (attrs) for (const [k, v] of Object.entries(attrs)) {
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'style' && typeof v === 'object') { for (const [p, val] of Object.entries(v)) { if (p.startsWith('--')) el.style.setProperty(p, val); else el.style[p] = val; } }
+    else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2).toLowerCase(), v);
+    else if (k === 'html') el.innerHTML = v;
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat(Infinity)) { if (k == null || k === false) continue; el.append(k.nodeType ? k : document.createTextNode(String(k))); }
+  return el;
+}
+function icon(name, cls = 'ic') {
+  const t = document.createElement('template');
+  t.innerHTML = `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
+  return t.content.firstChild;
+}
+function swapIcon(btn, name) { const old = btn && btn.querySelector('svg'); if (old) old.replaceWith(icon(name)); }
+const norm = s => s.toLowerCase().replace(/[’'`]/g, '').replace(/[^a-z]/g, '');
+function shuffle(a) { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function shuffleNew(a) { for (let n = 0; n < 10; n++) { const s = shuffle(a); if (a.length < 2 || s.some((x, i) => x !== a[i])) return s; } return shuffle(a); }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+const fmtTime = s => { s = Math.max(0, Math.round(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('hidden-heart:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('hidden-heart:' + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* ============ Verse preparation ============ */
+VERSES.forEach((v, i) => {
+  v.idx = i; v.words = []; v.pos = []; v.parts = [];
+  const re = /[A-Za-z’']+/g; let m, last = 0;
+  while ((m = re.exec(v.text))) {
+    if (m.index > last) v.parts.push({ s: v.text.slice(last, m.index) });
+    v.parts.push({ w: v.words.length }); v.words.push(m[0]); v.pos.push([m.index, m.index + m[0].length]); last = re.lastIndex;
+  }
+  if (last < v.text.length) v.parts.push({ s: v.text.slice(last) });
+  v.norm = v.words.map(norm);
+  v.phrases = []; let st = 0;
+  for (let k = 0; k < v.words.length; k++) {
+    const after = v.text.slice(v.pos[k][1], k + 1 < v.words.length ? v.pos[k + 1][0] : v.text.length);
+    if (/[,;:.!?—–]/.test(after) || k === v.words.length - 1) { v.phrases.push([st, k]); st = k + 1; }
+  }
+  v.phraseOf = []; v.phrases.forEach(([a, b], p) => { for (let k = a; k <= b; k++) v.phraseOf[k] = p; });
+  const t = TIMINGS[v.file.replace(/\.mp3$/, '')];
+  v.t = t && t.length === v.words.length ? t : null;
+});
+/* If the text ever changes and no measured timings match, estimate them from the audio length. */
+function timings(v) {
+  if (v.t) return v.t;
+  const a = Player.els[v.id]; const dur = a && isFinite(a.duration) ? a.duration : v.words.length * 0.38 + 0.4;
+  const total = v.words.reduce((n, w) => n + w.length + 2, 0); let t = 0.2; const span = dur - 0.35;
+  return v.words.map(w => { const d = (w.length + 2) / total * span; const r = [t, t + d]; t += d; return r; });
+}
+/* Echo pieces: phrases longer than 10 words are split at a natural pause (never right after "the", "of", "your"...). */
+const SPLIT_BEFORE = new Set(['and', 'that', 'so', 'because', 'but', 'to', 'in', 'then', 'who', 'for', 'with', 'yet', 'or']);
+const NO_END = new Set(['the', 'a', 'an', 'of', 'in', 'to', 'and', 'or', 'my', 'your', 'his', 'our', 'is', 'are', 'be', 'will', 'was', 'that', 'you', 'i', 'he', 'who', 'for', 'this', 'with', 'may', 'not', 'we', 'they', 'gave']);
+function echoChunks(v) {
+  const T = timings(v), out = [];
+  const split = (a, b) => {
+    if (b - a + 1 <= 10) { out.push([a, b]); return; }
+    let best = -Infinity, bk = a + ((b - a) >> 1);
+    for (let k = a + 2; k <= b - 3; k++) {
+      const score = (T[k + 1][0] - T[k][1]) + (SPLIT_BEFORE.has(v.norm[k + 1]) ? 0.15 : 0) - (NO_END.has(v.norm[k]) ? 1 : 0) - Math.abs((k - a) / (b - a) - 0.5) * 0.2;
+      if (score > best) { best = score; bk = k; }
+    }
+    split(a, bk); split(bk + 1, b);
+  };
+  v.phrases.forEach(([a, b]) => split(a, b));
+  return out;
+}
+/* Render a verse as nodes; makeWord(k) returns the element for word k. Punctuation stays attached to its word. */
+function verseNodes(v, makeWord) {
+  const frag = document.createDocumentFragment(); let g = h('span', { class: 'grp' });
+  for (const p of v.parts) {
+    if (p.w != null) { g.append(makeWord(p.w)); continue; }
+    for (const bit of p.s.split(/(\s+)/)) {
+      if (!bit) continue;
+      if (/^\s+$/.test(bit)) { frag.append(g, ' '); g = h('span', { class: 'grp' }); }
+      else g.append(bit);
+    }
+  }
+  frag.append(g); return frag;
+}
+
+/* ============ Progress ============ */
+const P = Object.assign({ points: 0, panes: {}, best: {}, streak: { last: null, n: 0 }, chimes: true, theme: null, verse: 0, groupLast: {} }, store.get('progress', {}));
+function save() { store.set('progress', P); }
+function isLit(v, key) { return !!(P.panes[v.id] && P.panes[v.id][key]); }
+function lightPane(v, key) { P.panes[v.id] = P.panes[v.id] || {}; if (P.panes[v.id][key]) return false; P.panes[v.id][key] = Date.now(); save(); return true; }
+function litCount(v) { return PANES.filter(p => isLit(v, p.key)).length; }
+function addPoints(n, el) {
+  if (!n) return; P.points += n; save();
+  $('#ptsN').textContent = P.points.toLocaleString();
+  const pill = $('#ptsPill'); pill.classList.remove('bump'); void pill.offsetWidth; pill.classList.add('bump');
+  if (el) floatPts(el, n);
+}
+(function streak() {
+  const day = d => d.toISOString().slice(0, 10);
+  const now = new Date(); const today = day(new Date(now.getTime() - now.getTimezoneOffset() * 6e4));
+  const y = new Date(now.getTime() - now.getTimezoneOffset() * 6e4 - 864e5); const yest = day(y);
+  if (P.streak.last !== today) { P.streak.n = P.streak.last === yest ? P.streak.n + 1 : 1; P.streak.last = today; save(); }
+})();
+
+/* ============ Audio: verse recordings ============ */
+const Player = {
+  els: {}, job: null, raf: 0, base: 0,
+  el(v) {
+    let a = this.els[v.id];
+    if (a) return a;
+    a = new Audio(); a.preload = 'auto'; a._b = this.base; a.src = AUDIO_BASES[a._b] + encodeURIComponent(v.file);
+    a.addEventListener('error', () => {
+      if (a._blob) return;
+      if (a._b < AUDIO_BASES.length - 1) {
+        a._b++; this.base = Math.max(this.base, a._b);
+        a.src = AUDIO_BASES[a._b] + encodeURIComponent(v.file); a.load();
+        this._prefetch(a, v);
+        if (this.job && this.job.a === a) this._start(this.job);
+      } else {
+        if (this.job && this.job.a === a) this._finish('error');
+        toast(`Couldn’t load ${v.file}. Keep the MP3 files in the same folder as index.html.`);
+      }
+    });
+    a.addEventListener('ended', () => { if (this.job && this.job.a === a) this._finish('end'); });
+    this.els[v.id] = a; this._prefetch(a, v); return a;
+  },
+  /* Keep a full in-memory copy of each recording so jumping to any word is instant and works on any host. */
+  _prefetch(a, v) {
+    if (a._blob || a._fetching === a._b || !window.fetch) return;
+    const b = a._fetching = a._b;
+    fetch(AUDIO_BASES[b] + encodeURIComponent(v.file)).then(r => (r.ok ? r.blob() : Promise.reject(r.status))).then(blob => {
+      if (/text\/html/.test(blob.type) || blob.size < 2000) return;
+      a._blob = URL.createObjectURL(blob);
+      if (this.job && this.job.a === a) a._swap = true; else { a.src = a._blob; a.load(); }
+    }).catch(() => {});
+  },
+  preloadAll() { VERSES.forEach(v => this.el(v)); },
+  play(v, o = {}) {
+    this.stop();
+    const a = this.el(v);
+    const job = { v, a, from: o.from || 0, to: o.to ?? null, onTick: o.onTick || null, rate: o.rate || 1 };
+    this.job = job;
+    const p = new Promise(r => (job.res = r));
+    this._start(job);
+    return p;
+  },
+  _start(job) {
+    const a = job.a;
+    try { a.playbackRate = job.rate; } catch (e) {}
+    const seek = () => { try { a.currentTime = job.from; } catch (e) {} };
+    if (a.readyState >= 1) { seek(); a.muted = false; }
+    else if (job.from > 0) {
+      a.muted = true;
+      a.addEventListener('loadedmetadata', () => { seek(); a.addEventListener('seeked', () => { a.muted = false; }, { once: true }); }, { once: true });
+    } else a.muted = false;
+    const pr = a.play();
+    if (pr && pr.catch) pr.catch(err => { if (this.job === job && err && err.name === 'NotAllowedError') this._finish('blocked'); });
+    cancelAnimationFrame(this.raf);
+    const loop = () => {
+      if (this.job !== job) return;
+      const t = a.currentTime;
+      if (job.onTick && !a.muted) job.onTick(t);
+      if (job.to != null && t >= job.to) { a.pause(); this._finish('end'); return; }
+      this.raf = requestAnimationFrame(loop);
+    };
+    this.raf = requestAnimationFrame(loop);
+  },
+  _finish(reason) {
+    const job = this.job; if (!job) return; this.job = null; cancelAnimationFrame(this.raf);
+    const a = job.a; if (a._swap) { a._swap = false; a.pause(); a.src = a._blob; a.load(); }
+    job.res(reason);
+  },
+  stop() { if (this.job) { this.job.a.pause(); this._finish('stopped'); } },
+  isPlaying(v) { return !!(this.job && (!v || this.job.v === v)); },
+  duration(v) { const a = this.els[v.id]; return a && isFinite(a.duration) ? a.duration : (timings(v).at(-1)[1] + 0.2); },
+};
+/* Play the verse (or a slice) while lighting its words. */
+function highlighter(v, words) {
+  let last = -2;
+  return t => {
+    const T = timings(v); let k = -1;
+    for (let j = 0; j < T.length; j++) { if (t >= T[j][0] - 0.04) k = j; else break; }
+    if (k === last) return; last = k;
+    for (let j = 0; j < words.length; j++) { const w = words[j]; if (!w) continue; w.classList.toggle('past', j < k); w.classList.toggle('now', j === k); }
+  };
+}
+function clearHighlight(words) { words.forEach(w => w && w.classList.remove('past', 'now')); }
+function karaoke(v, words, box, btn, opts = {}) {
+  box && box.classList.add('playing');
+  if (btn) { btn.classList.add('on'); swapIcon(btn, 'pause'); }
+  const hl = highlighter(v, words);
+  return Player.play(v, { ...opts, onTick: t => { hl(t); opts.onTick && opts.onTick(t); } }).then(r => {
+    box && box.classList.remove('playing'); clearHighlight(words);
+    if (btn) { btn.classList.remove('on'); swapIcon(btn, 'play'); }
+    return r;
+  });
+}
+
+/* ============ Chimes (soft feedback tones) ============ */
+const Chime = {
+  ctx: null,
+  ok() {
+    if (!P.chimes) return null;
+    if (!this.ctx) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; this.ctx = new C(); }
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+    return this.ctx;
+  },
+  tone(f, dur = .5, type = 'sine', vol = .07, when = 0) {
+    const c = this.ok(); if (!c) return;
+    const t = c.currentTime + when, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur + .05);
+  },
+  scale: [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1174.66, 1318.51, 1567.98, 1760],
+  note(i) { const f = this.scale[i % this.scale.length]; this.tone(f, .55, 'sine', .065); this.tone(f * 2, .25, 'triangle', .012); },
+  wrong() { this.tone(220, .2, 'triangle', .05); this.tone(207.65, .26, 'sine', .04, .06); },
+  tap() { this.tone(988, .1, 'sine', .03); },
+  win() { [523.25, 659.25, 783.99, 1046.5, 1318.51].forEach((f, i) => this.tone(f, .7, 'sine', .06, i * .085)); },
+};
+
+/* ============ Feedback helpers ============ */
+let toastTimer;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3200); }
+function floatPts(el, n) {
+  const r = el.getBoundingClientRect(); const c = getComputedStyle(el).getPropertyValue('--c') || '#F2C230';
+  const f = h('span', { class: 'fpts', style: { left: (r.left + r.width / 2 - 14) + 'px', top: (r.top - 8) + 'px', '--c': c.trim() } }, '+' + n);
+  document.body.append(f); setTimeout(() => f.remove(), 950);
+}
+function confetti(colors) {
+  if (reduced.matches) return;
+  const cv = $('#confetti'), ctx = cv.getContext('2d'), dpr = Math.min(2, devicePixelRatio || 1);
+  const W = cv.width = innerWidth * dpr, H = cv.height = innerHeight * dpr;
+  const parts = Array.from({ length: 140 }, () => ({
+    x: W / 2 + (Math.random() - .5) * W * .25, y: H * .38, vx: (Math.random() - .5) * 18 * dpr, vy: (-Math.random() * 15 - 6) * dpr,
+    s: (5 + Math.random() * 7) * dpr, r: Math.random() * 6, vr: (Math.random() - .5) * .3, c: colors[Math.random() * colors.length | 0], round: Math.random() < .35,
+  }));
+  const t0 = performance.now();
+  (function frame(now) {
+    const el = now - t0; ctx.clearRect(0, 0, W, H);
+    for (const p of parts) {
+      p.vy += .42 * dpr; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.globalAlpha = Math.max(0, 1 - el / 2400); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      if (p.round) { ctx.beginPath(); ctx.arc(0, 0, p.s / 2, 0, 7); ctx.fill(); } else ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2);
+      ctx.restore();
+    }
+    if (el < 2400) requestAnimationFrame(frame); else ctx.clearRect(0, 0, W, H);
+  })(t0);
+}
+
+/* ============ Medal (completion card) ============ */
+function showMedal({ v = null, title, sub, stars = 0, stats = [], note = null, play = false, actions = [] }) {
+  Player.stop();
+  const back = h('div', { class: 'modal-back', role: 'dialog', 'aria-modal': 'true', 'aria-label': title });
+  const words = [];
+  let vt = null, hearBtn = null;
+  if (v) {
+    vt = h('p', { class: 'vt karaoke' }); vt.append(verseNodes(v, k => (words[k] = h('span', { class: 'w' }, v.words[k]))));
+    hearBtn = h('button', { class: 'btn', onclick: () => { if (Player.isPlaying(v)) Player.stop(); else karaoke(v, words, vt, hearBtn); } }, icon('play'), 'Hear it');
+  }
+  const close = () => { Player.stop(); back.classList.remove('in'); setTimeout(() => back.remove(), 220); document.removeEventListener('keydown', esc); };
+  const esc = e => { if (e.key === 'Escape') close(); };
+  const modal = h('div', { class: 'modal', style: v ? { '--c': v.c } : { '--c': '#8B6CF6' } },
+    h('div', { class: 'medal' + (v ? '' : ' rainbow') }, h('div', { class: 'medal-in' }, icon(v ? v.icon : 'star'))),
+    h('h2', {}, title), sub ? h('p', { class: 'sub' }, sub) : null,
+    stars ? h('div', { class: 'stars', 'aria-label': `${stars} of 3 stars` }, [1, 2, 3].map(n => icon('star', 'ic' + (n <= stars ? ' on' : '')))) : null,
+    stats.length ? h('div', { class: 'stats' }, stats.map(([b, s]) => h('div', { class: 'stat' }, h('b', {}, b), h('span', {}, s)))) : null,
+    note ? h('div', { class: 'note' }, icon('check'), note) : null,
+    vt,
+    h('div', { class: 'acts' }, hearBtn,
+      actions.map(a => h('button', { class: 'btn' + (a.primary ? ' primary' : ''), onclick: () => { close(); a.fn && a.fn(); } }, a.icon ? icon(a.icon) : null, a.label)),
+      actions.length ? null : h('button', { class: 'btn primary', onclick: close }, 'Done')),
+  );
+  back.append(modal);
+  back.addEventListener('click', e => { if (e.target === back) close(); });
+  document.addEventListener('keydown', esc);
+  document.body.append(back);
+  requestAnimationFrame(() => back.classList.add('in'));
+  confetti(v ? [v.c, v.c, v.c, ...RAINBOW] : RAINBOW);
+  Chime.win();
+  if (v && play) setTimeout(() => { if (document.body.contains(back)) karaoke(v, words, vt, hearBtn); }, 650);
+  const first = modal.querySelector('.acts .btn.primary') || modal.querySelector('.acts .btn'); first && first.focus({ preventScroll: true });
+  return close;
+}
+
+/* ============ Rose window (home) ============ */
+function sector(cx, cy, ri, ro, a0, a1) {
+  const p = (r, a) => `${(cx + r * Math.cos(a * Math.PI / 180)).toFixed(2)} ${(cy + r * Math.sin(a * Math.PI / 180)).toFixed(2)}`;
+  return `M${p(ro, a0)} A${ro} ${ro} 0 0 1 ${p(ro, a1)} L${p(ri, a1)} A${ri} ${ri} 0 0 0 ${p(ri, a0)} Z`;
+}
+function roseSVG({ mini = false } = {}) {
+  const cx = 200, cy = 200, R = mini ? 190 : 146, r0 = mini ? 60 : 52, NB = mini ? 1 : 4, span = 40;
+  let s = mini
+    ? `<svg viewBox="0 0 400 400" aria-hidden="true">`
+    : `<svg class="rose" viewBox="0 0 400 400" role="img" aria-label="Rose window: ${VERSES.reduce((n, v) => n + litCount(v), 0)} of 36 panes lit">`;
+  if (!mini) s += `<circle class="rim" cx="200" cy="200" r="${R + 6}"/>`;
+  VERSES.forEach((v, i) => {
+    const a0 = -90 - span / 2 + i * span + (mini ? 3 : 1.4), a1 = a0 + span - (mini ? 6 : 2.8);
+    s += `<g data-v="${v.id}"${mini ? '' : ` role="button" tabindex="0" aria-label="${v.ref}, ${litCount(v)} of 4 panes"`}>`;
+    for (let b = 0; b < NB; b++) {
+      const ri = r0 + b * (R - r0) / NB + (mini ? 0 : 1.6), ro = r0 + (b + 1) * (R - r0) / NB - (mini ? 0 : 1.6);
+      const lit = mini || isLit(v, PANES[b].key);
+      s += `<path class="pane${lit ? ' lit' : ''}" style="--c:${v.c}" fill="${v.c}" d="${sector(cx, cy, ri, ro, a0, a1)}"/>`;
+    }
+    if (!mini) {
+      const am = (a0 + a1) / 2 * Math.PI / 180, rb = R + 29, x = cx + rb * Math.cos(am), y = cy + rb * Math.sin(am);
+      s += `<g class="badge-c"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16" fill="${v.c}"/><svg x="${(x - 10).toFixed(1)}" y="${(y - 10).toFixed(1)}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10142A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${ICONS[v.icon]}</svg></g>`;
+    }
+    s += `</g>`;
+  });
+  if (mini) s += `<circle cx="200" cy="200" r="38" fill="#FFF6DA"/>`;
+  else {
+    const lit = VERSES.reduce((n, v) => n + litCount(v), 0);
+    s += `<circle class="hub" cx="200" cy="200" r="${r0 - 7}"/><text class="hub-n" x="200" y="203" text-anchor="middle">${lit}</text><text class="hub-l" x="200" y="222" text-anchor="middle">of 36 lit</text>`;
+  }
+  return s + '</svg>';
+}
+
+/* ============ Router & shell ============ */
+let leaveFns = [];
+const onLeave = fn => leaveFns.push(fn);
+let state = { act: 'home', v: VERSES[P.verse] || VERSES[0] };
+const cur = () => state.v;
+function go(act, v) {
+  const a = ACT[act]; v = v || cur();
+  const hash = a && a.per ? `#/${act}/${v.id}` : `#/${act}`;
+  if (location.hash === hash) render(); else location.hash = hash;
+}
+function parseHash() {
+  const p = location.hash.replace(/^#\/?/, '').split('/');
+  const act = ACT[p[0]] ? p[0] : 'home';
+  const v = VERSES.find(x => x.id === p[1]);
+  return { act, v };
+}
+function render() {
+  leaveFns.forEach(f => { try { f(); } catch (e) {} }); leaveFns = []; Player.stop();
+  document.querySelectorAll('.modal-back').forEach(m => m.remove());
+  const { act, v } = parseHash();
+  state.act = act; if (v) { state.v = v; P.verse = v.idx; save(); }
+  const a = ACT[act];
+  if (a.group) { P.groupLast[a.group] = act; save(); }
+  document.title = act === 'home' ? 'Hidden in My Heart' : `${a.label} · Hidden in My Heart`;
+  renderNav();
+  // page head
+  const ph = $('#pagehead'); ph.innerHTML = '';
+  if (act !== 'home') {
+    ph.append(h('h1', {}, a.label), h('p', {}, a.desc));
+    const g = ACTS.filter(x => x.group === a.group);
+    if (g.length > 1) ph.append(h('div', { class: 'subtabs' }, g.map(x => h('button', { class: 'subtab' + (x.key === act ? ' on' : ''), style: { '--a': x.a }, onclick: () => go(x.key) }, icon(x.icon), x.label))));
+  }
+  // verse bar
+  const vb = $('#vbar'); vb.innerHTML = '';
+  if (a.per) {
+    const bar = h('div', { class: 'vbar', role: 'tablist', 'aria-label': 'Choose a verse' });
+    VERSES.forEach(x => bar.append(h('button', { class: 'vchip' + (x === state.v ? ' on' : ''), role: 'tab', 'aria-selected': x === state.v ? 'true' : 'false', style: { '--c': x.c }, onclick: () => go(act, x) },
+      h('span', { class: 'dot' }, icon(x.icon)), x.short)));
+    vb.append(bar);
+    requestAnimationFrame(() => { const on = bar.querySelector('.on'); if (on && bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: on.offsetLeft - bar.clientWidth / 2 + on.offsetWidth / 2, behavior: 'smooth' }); });
+  }
+  if (a.per) Player.el(state.v);
+  const view = $('#view'); view.innerHTML = '';
+  VIEWS[act](view);
+  window.scrollTo({ top: 0 });
+}
+function renderNav() {
+  const side = $('#sidenav'); side.innerHTML = '';
+  const item = x => h('button', { class: 'navi' + (x.key === state.act ? ' on' : ''), style: { '--a': x.a }, 'aria-current': x.key === state.act ? 'page' : null, onclick: () => go(x.key) },
+    h('span', { class: 'nic' }, icon(x.icon)), x.label);
+  side.append(item(ACT.home));
+  GROUPS.forEach(g => side.append(h('div', { class: 'navgroup' }, h('h4', {}, g.label), ACTS.filter(x => x.group === g.key).map(item))));
+  const bn = $('#bnav'); bn.innerHTML = '';
+  const curGroup = ACT[state.act].group;
+  bn.append(h('button', { class: 'bn' + (state.act === 'home' ? ' on' : ''), style: { '--a': ACT.home.a }, onclick: () => go('home') }, h('span', { class: 'nic' }, icon('home')), 'Home'));
+  GROUPS.forEach(g => bn.append(h('button', { class: 'bn' + (curGroup === g.key ? ' on' : ''), style: { '--a': g.a }, onclick: () => go(P.groupLast[g.key] || ACTS.find(x => x.group === g.key).key) },
+    h('span', { class: 'nic' }, icon(g.icon)), g.label)));
+}
+
+/* ============ Shared view pieces ============ */
+function vhead(v, ...right) {
+  return h('div', { class: 'vhead' }, h('span', { class: 'medal-sm' }, icon(v.icon)),
+    h('div', { class: 'vhead-t' }, h('h2', {}, v.ref), h('p', {}, v.theme)), right.length ? h('div', { class: 'row' }, ...right) : null);
+}
+function seg(opts, val, onChange, label) {
+  const wrap = h('div', { class: 'seg', role: 'radiogroup', 'aria-label': label });
+  opts.forEach(([k, l, ic]) => wrap.append(h('button', { class: 'seg-b' + (k === val ? ' on' : ''), role: 'radio', 'aria-checked': k === val ? 'true' : 'false', onclick: () => { if (k !== val) onChange(k); } }, ic ? icon(ic) : null, l)));
+  return wrap;
+}
+function stat(b, s) { const B = h('b', {}, b); const el = h('div', { class: 'stat' }, B, h('span', {}, s)); el.val = B; return el; }
+const nextVerse = v => VERSES[(v.idx + 1) % VERSES.length];
+let typingFocus = false;
+const keepFocus = e => { typingFocus = document.activeElement && document.activeElement.matches('input[type=text]'); e.preventDefault(); }; // stops buttons from closing the phone keyboard
+
+/* ============ HOME ============ */
+function nextStep() {
+  let best = null;
+  VERSES.forEach(v => { const n = litCount(v); if (n < 4 && (!best || n < best.n)) best = { v, n }; });
+  if (!best) return null;
+  const p = PANES.find(p => !isLit(best.v, p.key));
+  return { v: best.v, act: p.act };
+}
+function viewHome(root) {
+  const lit = VERSES.reduce((n, v) => n + litCount(v), 0);
+  const nx = nextStep();
+  const rose = h('div', { class: 'rose-wrap', html: roseSVG() });
+  const pick = e => { const g = e.target.closest('[data-v]'); if (g) go('listen', VERSES.find(v => v.id === g.dataset.v)); };
+  rose.addEventListener('click', pick);
+  rose.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(e); } });
+  const verbs = { listen: 'Listen to', fade: 'Fade away', build: 'Build', type: 'Type' };
+  root.append(h('section', { class: 'hero' }, rose, h('div', {},
+    h('h1', {}, 'Nine verses to carry with you'),
+    h('p', { class: 'lede' }, 'Every verse is a window with four panes. Hear it, fade it, build it and type it from memory, and watch the whole window fill with light.'),
+    h('div', { class: 'stats' }, stat(`${lit} / 36`, 'panes lit'), stat(P.points.toLocaleString(), 'points'), stat(String(P.streak.n), P.streak.n === 1 ? 'day in a row' : 'days in a row')),
+    nx ? h('div', { class: 'row' }, h('button', { class: 'btn primary', style: { '--c': nx.v.c }, onclick: () => go(nx.act, nx.v) }, icon(ACT[nx.act].icon), `${verbs[nx.act]} ${nx.v.ref}`),
+      h('button', { class: 'btn', style: { '--c': '#34C28A' }, onclick: () => go('match') }, icon('match'), 'Play a game'))
+      : h('div', { class: 'row' }, h('button', { class: 'btn primary', style: { '--c': '#26BCD0' }, onclick: () => go('ear') }, icon('ear'), 'Every pane is lit. Try By ear')),
+  )));
+  root.append(h('div', { class: 'sec-h' }, h('h2', {}, 'Your verses'), h('p', {}, 'In Bible order, Joshua to 1 Peter')));
+  const grid = h('div', { class: 'vgrid' });
+  VERSES.forEach(v => {
+    const words = []; const txt = h('p', { class: 'vc-text karaoke' }); txt.append(verseNodes(v, k => (words[k] = h('span', { class: 'w' }, v.words[k]))));
+    const pb = h('button', { class: 'ibtn', 'aria-label': 'Play ' + v.ref }, icon('play'));
+    pb.onclick = () => { if (Player.isPlaying(v)) Player.stop(); else karaoke(v, words, txt, pb); };
+    grid.append(h('article', { class: 'vcard', style: { '--c': v.c } },
+      h('div', { class: 'vc-top' }, h('span', { class: 'medal-sm' }, icon(v.icon)), h('div', {}, h('h3', {}, v.ref), h('p', {}, v.theme)), pb),
+      txt,
+      h('div', { class: 'vc-foot' }, PANES.map(p => h('button', { class: 'pip' + (isLit(v, p.key) ? ' lit' : ''), title: isLit(v, p.key) ? `Lit: ${p.long}` : `Not lit yet: ${p.long}`, onclick: () => go(p.act, v) }, icon(isLit(v, p.key) ? 'check' : p.icon), p.label))),
+    ));
+  });
+  root.append(grid);
+  root.append(h('footer', { class: 'credits' },
+    h('p', {}, 'Scripture quotations taken from The Holy Bible, New International Version® NIV®. Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™ Used by permission. All rights reserved worldwide.'),
+    h('p', {}, 'Your progress is saved in this browser only. ', h('button', { onclick: () => { if (confirm('Clear all points and lit panes in this browser?')) { const keep = { theme: P.theme, chimes: P.chimes }; Object.keys(P).forEach(k => delete P[k]); Object.assign(P, { points: 0, panes: {}, best: {}, streak: { last: null, n: 1 }, verse: 0, groupLast: {} }, keep); save(); $('#ptsN').textContent = '0'; render(); } } }, 'Reset progress'))));
+}
+
+/* ============ LISTEN ============ */
+function viewListen(root) {
+  const v = cur();
+  let mode = P.listenMode || 'read', text = P.listenText || 'show', rate = P.rate || 1, repeat = false, run = 0, playing = false, credited = false;
+  const words = [];
+  const verse = h('div', { class: 'verse karaoke' });
+  verse.append(verseNodes(v, k => (words[k] = h('span', { class: 'w', onclick: () => { if (mode === 'read') start(k); } }, v.words[k]))));
+  const fill = h('i'); const prog = h('div', { class: 'prog' }, fill);
+  const time = h('span', { class: 'time' }, `0:00 / ${fmtTime(Player.duration(v))}`);
+  const turn = h('div', { class: 'turn', 'aria-live': 'polite', hidden: mode !== 'echo' },
+    h('span', { html: '<svg viewBox="0 0 40 40"><circle class="bgc" cx="20" cy="20" r="17"/><circle class="fgc" cx="20" cy="20" r="17"/></svg>' }), h('span', {}, 'Your turn. Say that part aloud.'));
+  const playBtn = h('button', { class: 'bigplay', 'aria-label': 'Play' }, icon('play'));
+  playBtn.onclick = () => (playing ? stop() : start(0));
+  const repeatBtn = h('button', { class: 'btn sm', 'aria-pressed': 'false', onclick: () => { repeat = !repeat; repeatBtn.setAttribute('aria-pressed', repeat); repeatBtn.classList.toggle('primary', repeat); } }, icon('repeat'), 'Repeat');
+  const speedLabel = h('span', {}, rate === 1 ? 'Normal speed' : 'Slower');
+  const speedBtn = h('button', { class: 'btn sm', onclick: () => { rate = rate === 1 ? 0.75 : 1; P.rate = rate; save(); speedLabel.textContent = rate === 1 ? 'Normal speed' : 'Slower'; speedBtn.classList.toggle('primary', rate !== 1); if (Player.job) try { Player.job.a.playbackRate = rate; } catch (e) {} } }, icon('gauge'), speedLabel);
+  if (rate !== 1) speedBtn.classList.add('primary');
+  const hl = highlighter(v, words);
+  const tick = t => { hl(t); const d = Player.duration(v); fill.style.width = Math.min(100, t / d * 100) + '%'; time.textContent = `${fmtTime(t)} / ${fmtTime(d)}`; };
+  function setText(t) { text = t; verse.classList.remove('mode-show', 'mode-reveal', 'mode-hide'); verse.classList.add('mode-' + t); }
+  setText(text);
+  function begin() { playing = true; verse.classList.add('playing'); swapIcon(playBtn, 'pause'); playBtn.classList.add('on'); playBtn.setAttribute('aria-label', 'Pause'); }
+  function done() { playing = false; verse.classList.remove('playing'); clearHighlight(words); words.forEach(w => w.classList.remove('say')); turn.classList.remove('on'); swapIcon(playBtn, 'play'); playBtn.classList.remove('on'); playBtn.setAttribute('aria-label', 'Play'); fill.style.width = '0%'; }
+  function stop() { run++; Player.stop(); done(); }
+  function heard() {
+    if (credited) return; credited = true;
+    if (lightPane(v, 'heard')) { addPoints(25, playBtn); toast(`Pane lit: you heard ${v.ref} all the way through`); } else addPoints(3, playBtn);
+  }
+  async function start(k) {
+    const my = ++run; begin();
+    if (mode === 'echo') return echo(my);
+    let from = k > 0 ? Math.max(0, timings(v)[k][0] - 0.06) : 0;
+    for (;;) {
+      const r = await Player.play(v, { from, rate, onTick: tick });
+      if (my !== run) return;
+      if (r !== 'end') { done(); if (r === 'blocked') toast('Tap play again to start the audio.'); return; }
+      words.forEach(w => w.classList.add('past')); heard();
+      if (!repeat) break;
+      await sleep(1100); if (my !== run) return;
+      from = 0; clearHighlight(words);
+    }
+    setTimeout(() => { if (my === run) done(); }, 700);
+  }
+  async function echo(my) {
+    const T = timings(v);
+    for (const [a, b] of echoChunks(v)) {
+      const r = await Player.play(v, { from: Math.max(0, T[a][0] - 0.06), to: T[b][1] + 0.1, rate, onTick: tick });
+      if (my !== run) return;
+      if (r !== 'end') { done(); return; }
+      for (let k = a; k <= b; k++) words[k].classList.add('say');
+      const secs = Math.max(1.8, (T[b][1] - T[a][0]) / rate * 1.3 + 0.9);
+      turn.style.setProperty('--d', secs + 's'); turn.classList.remove('on'); void turn.offsetWidth; turn.classList.add('on');
+      Chime.tap();
+      await sleep(secs * 1000);
+      if (my !== run) return;
+      turn.classList.remove('on');
+      for (let k = a; k <= b; k++) words[k].classList.remove('say');
+    }
+    heard(); done();
+  }
+  onLeave(() => { run++; });
+  root.append(h('div', { class: 'stage', style: { '--c': v.c } },
+    vhead(v),
+    verse,
+    h('div', { class: 'row dock', style: { gap: '16px', marginTop: '18px', flexWrap: 'nowrap' } }, playBtn, h('div', { style: { flex: 1, minWidth: 0 } },
+      h('div', { class: 'row', style: { gap: '12px', flexWrap: 'nowrap' } }, prog, time), turn)),
+    h('div', { class: 'divider' }),
+    h('div', { class: 'row', style: { gap: '12px' } },
+      seg([['read', 'Read along', 'listen'], ['echo', 'Echo', 'mic']], mode, m => { mode = m; P.listenMode = m; save(); stop(); root.innerHTML = ''; viewListen(root); }, 'Listening mode'),
+      seg([['show', 'Show'], ['reveal', 'Reveal'], ['hide', 'Hide']], text, t => { P.listenText = t; save(); setText(t); root.querySelectorAll('[aria-label="Words on screen"] .seg-b').forEach(b => { const on = b.textContent === ({ show: 'Show', reveal: 'Reveal', hide: 'Hide' })[t]; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); }); }, 'Words on screen'),
+    ),
+    h('div', { class: 'row', style: { marginTop: '12px' } }, speedBtn, repeatBtn),
+    h('p', { class: 'hint-line', style: { marginTop: '14px' } }, mode === 'echo'
+      ? 'Echo plays one phrase at a time, then blurs it and gives you time to say it back.'
+      : 'Tap any word to start from there. Reveal shows each word only as it’s spoken; Hide keeps them all covered so you listen alone.'),
+  ));
+}
+
+/* ============ FADE ============ */
+function viewFade(root) {
+  const v = cur(); const n = v.words.length; const STEPS = 5;
+  let order = shuffle([...Array(n).keys()]), level = 0, peeks = 0, letters = !!P.fadeLetters;
+  const words = [];
+  const verse = h('div', { class: 'verse fading karaoke' + (letters ? ' letters' : '') });
+  verse.append(verseNodes(v, k => (words[k] = h('span', { class: 'w', 'data-f': v.words[k][0], onclick: () => peek(k) }, v.words[k]))));
+  const dots = h('div', { class: 'steps', 'aria-hidden': 'true' }, Array.from({ length: STEPS }, () => h('i')));
+  const lvlText = h('span', { class: 'hint-line' });
+  const less = h('button', { class: 'btn', onclick: () => setLevel(level - 1) }, icon('eye'), 'Bring back');
+  const more = h('button', { class: 'btn primary', onclick: () => setLevel(level + 1) }, icon('fade'), 'Fade more');
+  const listenBtn = h('button', { class: 'ibtn', 'aria-label': 'Listen' }, icon('play'));
+  listenBtn.onclick = () => { if (Player.isPlaying(v)) Player.stop(); else karaoke(v, words, verse, listenBtn); };
+  const lettersBtn = h('button', { class: 'btn sm' + (letters ? ' primary' : ''), 'aria-pressed': String(letters), onclick: () => { letters = !letters; P.fadeLetters = letters; save(); verse.classList.toggle('letters', letters); lettersBtn.classList.toggle('primary', letters); lettersBtn.setAttribute('aria-pressed', letters); } }, icon('letter'), 'First letters');
+  const newBtn = h('button', { class: 'btn sm', onclick: () => { order = shuffle(order); apply(); } }, icon('shuffle'), 'New pattern');
+  const donebox = h('div', { class: 'donebox' },
+    h('h3', {}, 'Every word is hidden'),
+    h('p', {}, 'Say the whole verse out loud from memory. Then play it to check yourself.'),
+    h('div', { class: 'row' },
+      h('button', { class: 'btn', onclick: e => { const b = e.currentTarget; if (Player.isPlaying(v)) Player.stop(); else karaoke(v, words, verse, b); } }, icon('play'), 'Play to check'),
+      h('button', { class: 'btn primary', onclick: saidIt }, icon('check'), 'I said it')));
+  function setLevel(l) { level = Math.max(0, Math.min(STEPS, l)); apply(); if (l <= STEPS && l >= 0) Chime.note(level * 2); }
+  function apply() {
+    const hideN = Math.round(n * level / STEPS); const hidden = new Set(order.slice(0, hideN));
+    words.forEach((s, k) => { s.classList.toggle('hid', hidden.has(k)); s.classList.remove('peek'); });
+    [...dots.children].forEach((d, i) => d.classList.toggle('on', i < level));
+    lvlText.textContent = level === 0 ? 'All words showing' : level === STEPS ? 'Nothing left on screen' : `${hideN} of ${n} words hidden`;
+    less.disabled = level === 0; more.disabled = level === STEPS;
+    donebox.hidden = level < STEPS;
+  }
+  function peek(k) { const s = words[k]; if (!s.classList.contains('hid') || s.classList.contains('peek')) return; peeks++; s.classList.add('peek'); setTimeout(() => s.classList.remove('peek'), 1400); }
+  function saidIt() {
+    const fresh = lightPane(v, 'faded'); const pts = (fresh ? 30 : 6) + (peeks === 0 ? 10 : 0);
+    addPoints(pts);
+    showMedal({ v, title: v.ref, sub: v.theme, stars: peeks === 0 ? 3 : peeks <= 3 ? 2 : 1,
+      stats: [[`+${pts}`, 'points'], [String(peeks), peeks === 1 ? 'peek' : 'peeks']],
+      note: fresh ? 'New pane lit: said it from memory' : null, play: true,
+      actions: [{ label: 'Again', icon: 'replay', fn: () => render() }, { label: 'Next verse', icon: 'next', primary: true, fn: () => go('fade', nextVerse(v)) }] });
+  }
+  apply();
+  root.append(h('div', { class: 'stage', style: { '--c': v.c } },
+    vhead(v, listenBtn), verse,
+    h('div', { class: 'row between', style: { marginTop: '8px' } }, h('div', { class: 'row' }, dots, lvlText)),
+    h('div', { class: 'row dock', style: { marginTop: '16px' } }, less, more),
+    donebox,
+    h('div', { class: 'divider' }),
+    h('div', { class: 'row' }, lettersBtn, newBtn),
+    h('p', { class: 'hint-line', style: { marginTop: '12px' } }, 'Stuck? Tap a hidden word to peek at it for a moment.'),
+  ));
+}
+
+/* ============ TYPE ============ */
+function viewType(root) {
+  const v = cur(); const n = v.words.length;
+  const mode = P.typeMode || 'memory';
+  let i = 0, earned = 0, mistakes = 0, clean = 0, flag = { miss: false, help: false }, badOn = false, finished = false;
+  const slots = [];
+  const verse = h('div', { class: 'verse typing' });
+  verse.append(verseNodes(v, k => (slots[k] = h('span', { class: 'slot', style: { '--len': Math.max(2, v.words[k].length) } }))));
+  const input = h('input', { class: 'tinput', type: 'text', autocomplete: 'off', autocorrect: 'off', autocapitalize: 'none', spellcheck: 'false', enterkeyhint: 'next', inputmode: 'text', 'aria-label': 'Type the next word', placeholder: 'Next word' });
+  verse.addEventListener('click', () => input.focus());
+  const hearBtn = h('button', { class: 'ibtn', 'aria-label': 'Hear the next word', title: 'Hear the next word', onpointerdown: keepFocus, onclick: hear }, icon('speaker'));
+  const hintBtn = h('button', { class: 'ibtn', 'aria-label': 'Show the next letter', title: 'Show the next letter', onpointerdown: keepFocus, onclick: hint }, icon('bulb'));
+  const skipBtn = h('button', { class: 'ibtn', 'aria-label': 'Reveal this word', title: 'Reveal this word', onpointerdown: keepFocus, onclick: () => { refocus(); accept('skip'); } }, icon('skip'));
+  const sWords = stat(`0 / ${n}`, 'words'), sPts = stat('0', 'points'), sMiss = stat('0', 'slips');
+  const fill = h('i'); const prog = h('div', { class: 'prog' }, fill);
+  const listenBtn = h('button', { class: 'ibtn', 'aria-label': 'Hear the whole verse', title: 'Hear the whole verse', onpointerdown: keepFocus }, icon('play'));
+  listenBtn.onclick = () => { if (Player.isPlaying(v)) Player.stop(); else karaoke(v, [], null, listenBtn); };
+
+  function paint(k) {
+    const s = slots[k], w = v.words[k];
+    if (k < i) return;
+    s.className = 'slot' + (k === i ? ' cur' : '') + (k === i && badOn ? ' bad' : '');
+    s.textContent = '';
+    if (k === i) {
+      const typed = input.value.replace(/\s+/g, '');
+      s.append(h('span', { class: 'typed' }, typed), h('span', { class: 'caret' }));
+      if (mode === 'trace') s.append(h('span', { class: 'ghost' }, w.slice(typed.length)));
+      else if (mode === 'letters' && !typed) s.append(h('span', { class: 'ghost' }, w[0]));
+    } else if (mode === 'trace') s.append(h('span', { class: 'ghost' }, w));
+    else if (mode === 'letters') s.append(h('span', { class: 'ghost' }, w[0]));
+    else s.append(' ');
+  }
+  function setBad(b) {
+    const was = badOn; badOn = b; input.classList.toggle('bad', b); paint(i);
+    if (b && !was) {
+      flag.miss = true; mistakes++; sMiss.val.textContent = mistakes; Chime.wrong();
+      [input, slots[i]].forEach(x => { x.classList.remove('shake'); void x.offsetWidth; x.classList.add('shake'); });
+    }
+  }
+  function onInput() {
+    if (finished) return;
+    const raw = input.value; const typed = norm(raw); const target = v.norm[i];
+    if (!typed && !raw.trim()) { input.value = ''; setBad(false); return; }
+    if (typed === target) { accept('typed'); return; }
+    setBad(!target.startsWith(typed) || /\s$/.test(raw));
+  }
+  function accept(how) {
+    if (finished) return;
+    const s = slots[i], k = i;
+    const isClean = how !== 'skip' && !flag.miss && !flag.help;
+    const pts = how === 'skip' ? 0 : isClean ? 10 : 4;
+    if (isClean) clean++;
+    earned += pts;
+    s.className = 'slot done fresh' + (how === 'skip' ? ' skipped' : ''); s.textContent = v.words[k];
+    setTimeout(() => s.classList.remove('fresh'), 1350);
+    if (pts) addPoints(pts, s);
+    if (how !== 'skip') Chime.note(k);
+    i++; flag = { miss: false, help: false }; badOn = false; input.value = ''; input.classList.remove('bad');
+    sWords.val.textContent = `${i} / ${n}`; sPts.val.textContent = earned; fill.style.width = (i / n * 100) + '%';
+    if (i >= n) return finish();
+    paint(i);
+    const r = slots[i].getBoundingClientRect();
+    if (r.bottom > innerHeight - 40 || r.top < 60) slots[i].scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+  const refocus = () => { if (typingFocus) input.focus({ preventScroll: true }); };
+  function hear() {
+    if (finished) return; flag.help = true; const T = timings(v); refocus();
+    Player.play(v, { from: Math.max(0, T[i][0] - 0.03), to: T[i][1] + 0.06 });
+  }
+  function prefixLetters(w, L) { let c = 0, out = ''; for (const ch of w) { out += ch; if (/[A-Za-z]/.test(ch) && ++c === L) break; } return out; }
+  function hint() {
+    if (finished) return; flag.help = true;
+    const typed = norm(input.value); const base = v.norm[i].startsWith(typed) ? typed.length : 0;
+    input.value = prefixLetters(v.words[i], base + 1); badOn = false; onInput(); input.focus();
+  }
+  function finish() {
+    finished = true; input.blur(); input.disabled = true; [hearBtn, hintBtn, skipBtn].forEach(b => (b.disabled = true));
+    const acc = Math.round(clean / n * 100);
+    const stars = acc >= 95 ? 3 : acc >= 80 ? 2 : 1;
+    const bonus = (mode === 'memory' ? 40 : mode === 'letters' ? 25 : 15) * stars;
+    addPoints(bonus);
+    const fresh = mode === 'memory' && lightPane(v, 'typed');
+    const key = v.id + ':' + mode; P.best[key] = Math.max(P.best[key] || 0, stars); save();
+    showMedal({ v, title: v.ref, sub: v.theme, stars,
+      stats: [[`+${earned + bonus}`, 'points'], [acc + '%', 'first try'], [String(mistakes), mistakes === 1 ? 'slip' : 'slips']],
+      note: fresh ? 'New pane lit: typed from memory' : mode !== 'memory' ? 'Type it in From memory to light this pane' : null,
+      play: true,
+      actions: mode !== 'memory'
+        ? [{ label: 'Again', icon: 'replay', fn: () => render() }, { label: 'Try From memory', icon: 'next', primary: true, fn: () => { P.typeMode = 'memory'; save(); render(); } }]
+        : [{ label: 'Again', icon: 'replay', fn: () => render() }, { label: 'Next verse', icon: 'next', primary: true, fn: () => go('type', nextVerse(v)) }] });
+  }
+  input.addEventListener('input', onInput);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); if (!finished && norm(input.value) !== v.norm[i]) { badOn = false; setBad(true); } }
+  });
+  input.addEventListener('focus', () => verse.classList.add('focus'));
+  input.addEventListener('blur', () => verse.classList.remove('focus'));
+  for (let k = 0; k < n; k++) paint(k);
+
+  root.append(h('div', { class: 'stage', style: { '--c': v.c } },
+    vhead(v, listenBtn),
+    h('div', { style: { marginTop: '16px' } }, seg([['trace', 'Trace'], ['letters', 'First letters'], ['memory', 'From memory']], mode, m => { P.typeMode = m; save(); render(); }, 'Difficulty')),
+    verse,
+    h('div', { class: 'typebar' }, hearBtn, input, hintBtn, skipBtn),
+    h('div', { class: 'row', style: { marginTop: '16px', gap: '12px' } }, prog),
+    h('div', { class: 'stats', style: { marginTop: '12px' } }, sWords, sPts, sMiss),
+    h('p', { class: 'hint-line', style: { marginTop: '12px' } }, 'Capitals and punctuation don’t matter. The speaker plays just the word you’re on.'),
+  ));
+  if (matchMedia('(pointer: fine)').matches) setTimeout(() => input.focus({ preventScroll: true }), 60);
+}
+
+/* ============ BUILD ============ */
+function viewBuild(root) {
+  const v = cur(); const mode = P.buildMode || 'words'; let speak = P.buildSpeak !== false;
+  const units = (mode === 'phrases' ? v.phrases.map(([a, b]) => ({ a, b, text: v.text.slice(v.pos[a][0], v.pos[b][1]) })) : v.words.map((w, k) => ({ a: k, b: k, text: w })));
+  units.forEach(u => (u.key = norm(u.text)));
+  let next = 0, mistakes = 0, hints = 0, earned = 0, done = false, alive = true, lastPlay = null;
+  onLeave(() => { alive = false; });
+  const slots = [];
+  const verse = h('div', { class: 'verse' });
+  verse.append(verseNodes(v, k => (slots[k] = h('span', { class: 'slot', style: { '--len': Math.max(2, v.words[k].length) } }, ' '))));
+  const pool = h('div', { class: 'pool' });
+  shuffleNew(units).forEach(u => {
+    const c = h('button', { class: 'chip' }, u.text); c._u = u;
+    c.onclick = () => tapChip(c); pool.append(c);
+  });
+  const sDone = stat(`0 / ${units.length}`, mode === 'phrases' ? 'phrases' : 'words'), sMiss = stat('0', 'slips');
+  const fill = h('i'); const prog = h('div', { class: 'prog' }, fill);
+  function markCur() { slots.forEach(s => s.classList.remove('cur')); if (next < units.length) for (let k = units[next].a; k <= units[next].b; k++) slots[k].classList.add('cur'); }
+  function tapChip(c) {
+    if (done) return;
+    const u = units[next];
+    if (c._u.key === u.key) {
+      c.classList.add('gone'); setTimeout(() => c.remove(), 280);
+      for (let k = u.a; k <= u.b; k++) { const s = slots[k]; s.className = 'slot done fresh'; s.textContent = v.words[k]; s.addEventListener('animationend', () => s.classList.remove('fresh'), { once: true }); }
+      const pts = mode === 'phrases' ? 8 : 5; earned += pts; addPoints(pts, slots[u.b]);
+      Chime.note(next);
+      if (speak) { const p = v.phraseOf[u.b]; const [pa, pb] = v.phrases[p]; if (pb === u.b) { const T = timings(v); lastPlay = Player.play(v, { from: Math.max(0, T[pa][0] - 0.05), to: T[pb][1] + 0.1 }); } }
+      next++; sDone.val.textContent = `${next} / ${units.length}`; fill.style.width = (next / units.length * 100) + '%';
+      markCur();
+      if (next === units.length) { done = true; (speak && lastPlay ? Promise.race([lastPlay, sleep(5000)]).then(() => sleep(250)) : sleep(350)).then(() => { if (alive) finish(); }); }
+    } else {
+      mistakes++; sMiss.val.textContent = mistakes; Chime.wrong();
+      c.classList.remove('bad'); void c.offsetWidth; c.classList.add('bad');
+    }
+  }
+  function hint() {
+    if (done) return; hints++;
+    const u = units[next]; const c = [...pool.children].find(x => x._u.key === u.key && !x.classList.contains('gone'));
+    if (c) { c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); }
+  }
+  function finish() {
+    const slips = mistakes + hints;
+    const stars = slips === 0 ? 3 : slips <= 3 ? 2 : 1;
+    const bonus = (mode === 'words' ? 30 : 15) * stars; addPoints(bonus);
+    const fresh = mode === 'words' && lightPane(v, 'built');
+    showMedal({ v, title: v.ref, sub: v.theme, stars,
+      stats: [[`+${earned + bonus}`, 'points'], [String(mistakes), mistakes === 1 ? 'slip' : 'slips'], [String(hints), hints === 1 ? 'hint' : 'hints']],
+      note: fresh ? 'New pane lit: built it word by word' : mode === 'phrases' ? 'Build it in Words to light this pane' : null,
+      play: true,
+      actions: mode === 'phrases'
+        ? [{ label: 'Again', icon: 'replay', fn: () => render() }, { label: 'Try Words', icon: 'next', primary: true, fn: () => { P.buildMode = 'words'; save(); render(); } }]
+        : [{ label: 'Again', icon: 'replay', fn: () => render() }, { label: 'Next verse', icon: 'next', primary: true, fn: () => go('build', nextVerse(v)) }] });
+  }
+  markCur();
+  const speakBtn = h('button', { class: 'btn sm' + (speak ? ' primary' : ''), 'aria-pressed': String(speak), onclick: () => { speak = !speak; P.buildSpeak = speak; save(); speakBtn.classList.toggle('primary', speak); speakBtn.setAttribute('aria-pressed', speak); } }, icon('speaker'), 'Read phrases aloud');
+  const listenBtn = h('button', { class: 'ibtn', 'aria-label': 'Hear the whole verse' }, icon('play'));
+  listenBtn.onclick = () => { if (Player.isPlaying(v)) Player.stop(); else karaoke(v, [], null, listenBtn); };
+  root.append(h('div', { class: 'stage build', style: { '--c': v.c } },
+    vhead(v, listenBtn),
+    h('div', { class: 'row', style: { marginTop: '16px' } }, seg([['phrases', 'Phrases'], ['words', 'Words']], mode, m => { P.buildMode = m; save(); render(); }, 'Piece size'), speakBtn),
+    verse, pool,
+    h('div', { class: 'divider' }),
+    h('div', { class: 'row', style: { gap: '12px' } }, prog),
+    h('div', { class: 'row between', style: { marginTop: '12px' } }, h('div', { class: 'stats' }, sDone, sMiss),
+      h('div', { class: 'row' }, h('button', { class: 'btn sm', onclick: hint }, icon('bulb'), 'Show me'), h('button', { class: 'btn sm', onclick: () => render() }, icon('shuffle'), 'Start over'))),
+  ));
+}
+
+/* ============ MATCH ============ */
+function viewMatch(root) {
+  let selRef = null, selCard = null, matched = 0, mistakes = 0, t0 = 0, timer = 0, earned = 0;
+  const missed = new Set();
+  const sTime = stat('0:00', 'time'), sDone = stat('0 / 9', 'matched'), sMiss = stat('0', 'slips');
+  const tray = h('div', { class: 'tray', role: 'group', 'aria-label': 'References' });
+  const grid = h('div', { class: 'mgrid' });
+  const startClock = () => { if (t0) return; t0 = Date.now(); timer = setInterval(() => (sTime.val.textContent = fmtTime((Date.now() - t0) / 1000)), 500); };
+  onLeave(() => clearInterval(timer));
+  shuffle(VERSES).forEach(v => {
+    const b = h('button', { class: 'rchip' }, v.ref); b._v = v;
+    b.onclick = () => { startClock(); Chime.tap(); if (selRef) selRef.classList.remove('sel'); selRef = selRef === b ? null : b; if (selRef) selRef.classList.add('sel'); check(); };
+    tray.append(b);
+  });
+  shuffle(VERSES).forEach(v => {
+    const slot = h('span', { class: 'mslot', 'aria-hidden': 'true' });
+    const c = h('button', { class: 'mcard', style: { '--c': v.c } }, h('span', { class: 'mtext' }, v.text), slot); c._v = v; c._slot = slot;
+    c.onclick = () => { if (c._ok) return; startClock(); if (selCard) selCard.classList.remove('sel'); selCard = selCard === c ? null : c; if (selCard) selCard.classList.add('sel'); check(); };
+    grid.append(c);
+  });
+  function check() {
+    if (!selRef || !selCard) return;
+    const r = selRef, c = selCard; selRef = selCard = null; r.classList.remove('sel'); c.classList.remove('sel');
+    if (r._v === c._v) {
+      const v = c._v; c._ok = true; c.classList.add('ok'); c.setAttribute('aria-disabled', 'true');
+      c._slot.replaceWith(h('span', { class: 'mbadge' }, icon(v.icon), v.ref));
+      r.classList.add('gone'); setTimeout(() => r.remove(), 300);
+      const pts = missed.has(v.id) ? 5 : 15; earned += pts; addPoints(pts, c);
+      matched++; sDone.val.textContent = `${matched} / 9`; Chime.note(matched + 1);
+      if (matched === 9) finish();
+    } else {
+      mistakes++; missed.add(c._v.id); missed.add(r._v.id); sMiss.val.textContent = mistakes; Chime.wrong();
+      [r, c].forEach(x => { x.classList.remove('bad'); void x.offsetWidth; x.classList.add('bad'); });
+    }
+  }
+  function finish() {
+    clearInterval(timer); const secs = Math.round((Date.now() - t0) / 1000);
+    const stars = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1; const bonus = 20 * stars; addPoints(bonus);
+    const prev = P.best.match; const newBest = mistakes === 0 && (!prev || secs < prev); if (newBest) { P.best.match = secs; save(); }
+    showMedal({ title: 'All nine matched', sub: newBest ? 'A new best time' : 'Every verse found its reference', stars,
+      stats: [[`+${earned + bonus}`, 'points'], [fmtTime(secs), 'time'], [String(mistakes), mistakes === 1 ? 'slip' : 'slips']].concat(P.best.match ? [[fmtTime(P.best.match), 'best clean time']] : []),
+      actions: [{ label: 'Play again', icon: 'replay', primary: true, fn: () => render() }, { label: 'Try By ear', icon: 'ear', fn: () => go('ear') }] });
+  }
+  root.append(h('div', { class: 'row between', style: { marginBottom: '14px' } }, h('div', { class: 'stats' }, sDone, sTime, sMiss),
+    h('button', { class: 'btn sm', onclick: () => render() }, icon('shuffle'), 'New round')));
+  root.append(tray, grid, h('div', { class: 'match-pad' }));
+}
+
+/* ============ BY EAR ============ */
+function viewEar(root) {
+  Player.preloadAll();
+  const mode = P.earMode || 'name';
+  root.append(h('div', { style: { marginBottom: '16px' } }, seg([['name', 'Name that verse', 'target'], ['pairs', 'Sound pairs', 'cards']], mode, m => { P.earMode = m; save(); render(); }, 'Game')));
+  const box = h('div'); root.append(box);
+  (mode === 'pairs' ? earPairs : earName)(box);
+}
+function clipFor(v, kind) {
+  const T = timings(v);
+  if (kind === 'opening') { const k = Math.min(3, T.length - 1); return { from: 0, to: T[k][1] + 0.12, label: 'opening words' }; }
+  if (kind === 'phrase') {
+    const ok = v.phrases.filter(([a, b]) => b - a >= 2); const [a, b] = (ok.length ? ok : v.phrases)[Math.random() * (ok.length || v.phrases.length) | 0];
+    return { from: Math.max(0, T[a][0] - 0.05), to: T[b][1] + 0.12, a, b, label: 'a phrase' };
+  }
+  return { from: 0, to: null, label: 'whole verse' };
+}
+function earName(root) {
+  const kind = P.earClip || 'whole';
+  const deck = shuffle(VERSES); let round = 0, score = 0, answered = false, clip = null, earned = 0, replays = 0;
+  const panel = h('div', { class: 'panel', style: { '--c': '#26BCD0' } });
+  const disc = h('span', { class: 'disc' }, h('span', { class: 'disc-in' }, icon('play')));
+  const discBtn = h('button', { 'aria-label': 'Play the recording', style: { borderRadius: '50%', display: 'block', margin: '0 auto' } }, disc);
+  const roundEl = h('p', { style: { textAlign: 'center', fontWeight: 600, marginTop: '8px' } });
+  const sub = h('p', { class: 'hint-line', style: { textAlign: 'center' } });
+  const opts = h('div', { class: 'opts' });
+  const after = h('div');
+  const sScore = stat('0', 'correct');
+  function setPlaying(on, v) {
+    disc.classList.toggle('on', on);
+    const inner = disc.firstChild; inner.innerHTML = '';
+    inner.append(on ? h('span', { class: 'eq' }, h('i'), h('i'), h('i'), h('i'), h('i')) : answered ? icon(v.icon) : icon('play'));
+  }
+  async function playClip() {
+    const v = deck[round]; if (!clip) clip = clipFor(v, kind); else replays++;
+    if (Player.isPlaying()) { Player.stop(); setPlaying(false, v); return; }
+    setPlaying(true, v);
+    await Player.play(v, { from: clip.from, to: clip.to });
+    if (deck[round] === v) setPlaying(false, v);
+  }
+  discBtn.onclick = playClip;
+  function setupRound() {
+    answered = false; clip = null; replays = 0; after.innerHTML = '';
+    const v = deck[round];
+    disc.classList.remove('solved'); disc.style.removeProperty('--c'); setPlaying(false, v);
+    roundEl.textContent = `Verse ${round + 1} of 9`;
+    sub.textContent = `Press play to hear the ${({ whole: 'whole verse', opening: 'opening words', phrase: 'a random phrase' })[kind]}.`;
+    opts.innerHTML = '';
+    const choices = shuffle([v, ...shuffle(VERSES.filter(x => x !== v)).slice(0, 3)]);
+    choices.forEach(x => { const b = h('button', { class: 'opt', style: { '--c': x.c } }, x.ref); b._v = x; b.onclick = () => answer(b); opts.append(b); });
+  }
+  function answer(b) {
+    if (answered) return; const v = deck[round];
+    if (!clip) { toast('Play the recording first'); return; }
+    answered = true;
+    const right = b._v === v;
+    [...opts.children].forEach(o => { if (o._v === v) o.classList.add('ok'); else if (o === b) o.classList.add('no'); else o.classList.add('dim'); });
+    disc.classList.add('solved'); disc.style.setProperty('--c', v.c);
+    if (right) { score++; sScore.val.textContent = score; const pts = replays ? 8 : 15; earned += pts; addPoints(pts, b); Chime.note(score + 2); } else Chime.wrong();
+    Player.stop(); setPlaying(false, v);
+    const words = []; const vt = h('p', { class: 'vt karaoke' }); vt.append(verseNodes(v, k => (words[k] = h('span', { class: 'w' }, v.words[k]))));
+    if (clip.a != null) for (let k = clip.a; k <= clip.b; k++) words[k].style.textDecoration = 'underline';
+    const hearAll = h('button', { class: 'btn sm' }, icon('play'), 'Hear all of it');
+    hearAll.onclick = () => { if (Player.isPlaying(v)) Player.stop(); else karaoke(v, words, vt, hearAll); };
+    const last = round === 8;
+    after.append(h('div', { class: 'reveal', style: { '--c': v.c } },
+      h('div', { class: 'vhead' }, h('span', { class: 'medal-sm' }, icon(v.icon)), h('div', { class: 'vhead-t' }, h('h2', {}, right ? `Yes, ${v.ref}` : `That was ${v.ref}`), h('p', {}, v.theme))),
+      vt,
+      h('div', { class: 'row' }, hearAll, h('button', { class: 'btn primary', onclick: () => (last ? finish() : (round++, setupRound(), playClip())) }, icon('next'), last ? 'See results' : 'Next verse'))));
+    after.querySelector('.btn.primary').focus({ preventScroll: true });
+    after.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  function finish() {
+    const stars = score === 9 ? 3 : score >= 7 ? 2 : 1; const bonus = 15 * stars; addPoints(bonus);
+    const k = 'ear:' + kind; P.best[k] = Math.max(P.best[k] || 0, score); save();
+    showMedal({ title: `${score} of 9 by ear`, sub: ({ whole: 'Whole verses', opening: 'Opening words only', phrase: 'Random phrases' })[kind], stars,
+      stats: [[`+${earned + bonus}`, 'points'], [`${P.best[k]} / 9`, 'best']],
+      actions: [{ label: 'Play again', icon: 'replay', primary: true, fn: () => render() }, kind !== 'phrase' ? { label: 'Make it harder', icon: 'next', fn: () => { P.earClip = kind === 'whole' ? 'opening' : 'phrase'; save(); render(); } } : { label: 'Sound pairs', icon: 'cards', fn: () => { P.earMode = 'pairs'; save(); render(); } }] });
+  }
+  panel.append(
+    h('div', { class: 'row between', style: { marginBottom: '8px' } },
+      seg([['whole', 'Whole verse'], ['opening', 'Opening'], ['phrase', 'One phrase']], kind, k => { P.earClip = k; save(); render(); }, 'Clip length'),
+      h('div', { class: 'stats' }, sScore)),
+    discBtn, roundEl, sub, opts, after);
+  root.append(panel);
+  setupRound();
+}
+function earPairs(root) {
+  const size = P.pairsSize || 6;
+  const sel = shuffle(VERSES).slice(0, size);
+  const tiles = shuffle([...sel.map(v => ({ type: 'snd', v })), ...sel.map(v => ({ type: 'ref', v }))]);
+  let open = [], lock = false, moves = 0, found = 0, earned = 0, t0 = 0;
+  const sMoves = stat('0', 'flips'), sFound = stat(`0 / ${size}`, 'pairs');
+  const grid = h('div', { class: 'tiles' + (size === 9 ? ' n18' : '') });
+  tiles.forEach(t => {
+    const front = t.type === 'snd' ? h('div', { class: 'face front' }, icon('ear'), h('span', {}, 'Tap to replay')) : h('div', { class: 'face front' }, icon('bookref'), h('span', {}, t.v.ref));
+    const back = t.type === 'snd' ? h('div', { class: 'face back snd' }, icon('speaker'), h('small', {}, 'Sound')) : h('div', { class: 'face back ref' }, icon('bookref'), h('small', {}, 'Reference'));
+    t.front = front;
+    t.el = h('div', { class: 'tile', style: { '--c': t.v.c } }, h('div', { class: 'tile-in' }, back, front),
+      h('button', { 'aria-label': t.type === 'snd' ? 'Sound card' : 'Reference card', onclick: () => flip(t) }));
+    grid.append(t.el);
+  });
+  function playSnd(t) { const T = timings(t.v); return Player.play(t.v, { from: 0, to: T[Math.min(5, T.length - 1)][1] + 0.12 }); }
+  function flip(t) {
+    if (t.done) { if (t.type === 'snd') playSnd(t); return; }
+    if (lock || open.includes(t)) { if (t.type === 'snd' && open.includes(t)) playSnd(t); return; }
+    if (!t0) t0 = Date.now();
+    t.el.classList.add('up'); open.push(t);
+    if (t.type === 'snd') playSnd(t); else Chime.tap();
+    if (open.length < 2) return;
+    moves++; sMoves.val.textContent = moves;
+    const [a, b] = open;
+    if (a.v === b.v && a.type !== b.type) {
+      open = []; found++; sFound.val.textContent = `${found} / ${size}`; a.done = b.done = true;
+      setTimeout(() => {
+        [a, b].forEach(x => { x.el.classList.add('done'); x.front.innerHTML = ''; x.front.append(icon(x.v.icon), h('span', {}, x.v.short)); });
+        earned += 12; addPoints(12, b.el); Chime.note(found + 2);
+        if (found === size) setTimeout(finish, 500);
+      }, 350);
+    } else {
+      lock = true;
+      setTimeout(() => { a.el.classList.remove('up'); b.el.classList.remove('up'); open = []; lock = false; }, 1500);
+    }
+  }
+  function finish() {
+    const secs = Math.round((Date.now() - t0) / 1000); const perfect = size; const stars = moves <= perfect + 2 ? 3 : moves <= perfect * 2 ? 2 : 1;
+    const bonus = 15 * stars * (size === 9 ? 1.5 : 1) | 0; addPoints(bonus);
+    const k = 'pairs:' + size; const newBest = !P.best[k] || moves < P.best[k]; if (newBest) { P.best[k] = moves; save(); }
+    showMedal({ title: 'Every sound found its reference', sub: newBest ? 'Fewest flips so far' : `${size} pairs`, stars,
+      stats: [[`+${earned + bonus}`, 'points'], [String(moves), 'flips'], [fmtTime(secs), 'time']],
+      actions: [{ label: 'Play again', icon: 'replay', primary: true, fn: () => render() }, size === 6 ? { label: 'Try all nine', icon: 'next', fn: () => { P.pairsSize = 9; save(); render(); } } : { label: 'Name that verse', icon: 'target', fn: () => { P.earMode = 'name'; save(); render(); } }] });
+  }
+  root.append(h('div', { class: 'panel' },
+    h('div', { class: 'row between', style: { marginBottom: '16px' } },
+      seg([[6, '6 verses'], [9, 'All 9']], size, s => { P.pairsSize = s; save(); render(); }, 'Board size'),
+      h('div', { class: 'stats' }, sFound, sMoves)),
+    h('p', { class: 'hint-line', style: { marginBottom: '14px' } }, 'Flip a sound card to hear how a verse begins, then find the reference card that goes with it.'),
+    grid));
+}
+
+/* ============ BIBLE ORDER ============ */
+function viewOrder(root) {
+  let next = 0, mistakes = 0, t0 = 0, earned = 0;
+  const spines = BOOKS.map((b, i) => h('div', { class: 'spine' + (i === 39 ? ' nt' : ''), title: b, style: { height: (36 + ((i * 37) % 23)) + 'px' } }));
+  const caption = h('p', { class: 'hint-line', style: { marginTop: '10px', minHeight: '1.4em' } }, 'Each placed verse lights up its book on the shelf.');
+  const list = h('ol', { class: 'placed' });
+  const ghosts = VERSES.map((_, i) => h('li', { class: 'ghost' }, h('span', { class: 'n' }, i + 1), h('span', {}, '')));
+  ghosts.forEach(g => list.append(g));
+  const pool = h('div', { class: 'pool' });
+  const sMiss = stat('0', 'slips'), sDone = stat('0 / 9', 'placed');
+  shuffleNew(VERSES).forEach(v => {
+    const c = h('button', { class: 'rchip' }, v.ref); c._v = v;
+    c.onclick = () => tap(c); pool.append(c);
+  });
+  function tap(c) {
+    if (!t0) t0 = Date.now();
+    const v = c._v;
+    if (v.idx === next) {
+      c.classList.add('gone'); setTimeout(() => c.remove(), 300);
+      const li = h('li', { style: { '--c': v.c } }, h('span', { class: 'n' }, next + 1), h('span', { class: 'medal-sm', style: { width: '30px', height: '30px', boxShadow: 'none' } }, icon(v.icon)), h('b', { style: { fontWeight: 600 } }, v.ref), h('span', { class: 'bk' }, `Book ${v.bookNo} of 66`));
+      ghosts[next].replaceWith(li);
+      const sp = spines[v.bookNo - 1];
+      sp.classList.add('lit'); sp.style.setProperty('--c', sp._c ? `${sp._c}` : v.c);
+      if (sp._c) sp.style.background = `linear-gradient(${sp._c} 50%, ${v.c} 50%)`; sp._c = v.c;
+      caption.textContent = `${v.book} is book ${v.bookNo} of 66, in the ${v.bookNo <= 39 ? 'Old' : 'New'} Testament.`;
+      const pts = 10; earned += pts; addPoints(pts, li); Chime.note(next);
+      next++; sDone.val.textContent = `${next} / 9`;
+      if (next === 9) setTimeout(finish, 500);
+    } else {
+      mistakes++; sMiss.val.textContent = mistakes; Chime.wrong();
+      c.classList.remove('bad'); void c.offsetWidth; c.classList.add('bad');
+    }
+  }
+  function finish() {
+    const secs = Math.round((Date.now() - t0) / 1000);
+    const stars = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1; const bonus = 20 * stars; addPoints(bonus);
+    if (mistakes === 0 && (!P.best.order || secs < P.best.order)) { P.best.order = secs; save(); }
+    showMedal({ title: 'In Bible order', sub: 'Notice the colors: they run red to violet in the same order', stars,
+      stats: [[`+${earned + bonus}`, 'points'], [fmtTime(secs), 'time'], [String(mistakes), mistakes === 1 ? 'slip' : 'slips']],
+      actions: [{ label: 'Play again', icon: 'replay', primary: true, fn: () => render() }, { label: 'Match', icon: 'match', fn: () => go('match') }] });
+  }
+  root.append(h('div', { class: 'panel' },
+    h('div', { class: 'row between', style: { marginBottom: '16px' } }, h('div', { class: 'stats' }, sDone, sMiss), h('button', { class: 'btn sm', onclick: () => render() }, icon('shuffle'), 'Shuffle')),
+    h('div', { class: 'shelf', 'aria-hidden': 'true' }, spines),
+    h('div', { class: 'shelf-legend' }, h('span', {}, 'Old Testament'), h('span', {}, 'New Testament')),
+    caption,
+    pool,
+    list));
+}
+
+const VIEWS = { home: viewHome, listen: viewListen, fade: viewFade, type: viewType, build: viewBuild, match: viewMatch, ear: viewEar, order: viewOrder };
+
+/* ============ Boot ============ */
+function applyTheme() {
+  if (P.theme) document.documentElement.dataset.theme = P.theme; else delete document.documentElement.dataset.theme;
+  const dark = P.theme ? P.theme === 'dark' : !matchMedia('(prefers-color-scheme: light)').matches;
+  const tb = $('#themeBtn'); tb.innerHTML = ''; tb.append(icon(dark ? 'sun' : 'moon')); tb.setAttribute('aria-label', dark ? 'Switch to light' : 'Switch to dark');
+  document.querySelector('meta[name="theme-color"]').content = dark ? '#121731' : '#F2F3FA';
+}
+function applyChimes() { const b = $('#chimeBtn'); b.innerHTML = ''; b.append(icon(P.chimes ? 'note' : 'noteoff')); b.setAttribute('aria-pressed', String(!!P.chimes)); b.setAttribute('aria-label', P.chimes ? 'Turn chimes off' : 'Turn chimes on'); }
+$('#themeBtn').onclick = () => { const dark = P.theme ? P.theme === 'dark' : !matchMedia('(prefers-color-scheme: light)').matches; P.theme = dark ? 'light' : 'dark'; save(); applyTheme(); };
+$('#chimeBtn').onclick = () => { P.chimes = !P.chimes; save(); applyChimes(); if (P.chimes) Chime.tap(); };
+document.querySelectorAll('[data-ic]').forEach(s => s.replaceWith(icon(s.dataset.ic === 'flame' ? 'flamesm' : s.dataset.ic)));
+document.querySelectorAll('[data-mark]').forEach(s => (s.innerHTML = roseSVG({ mini: true })));
+const fav = document.createElement('link'); fav.rel = 'icon'; fav.href = 'data:image/svg+xml,' + encodeURIComponent(roseSVG({ mini: true }).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ')); document.head.append(fav);
+$('#ptsN').textContent = P.points.toLocaleString();
+$('#streakN').textContent = P.streak.n;
+applyTheme(); applyChimes();
+document.addEventListener('focusin', e => { if (e.target.matches('input[type=text]') && matchMedia('(max-width: 899px)').matches) document.body.classList.add('kb'); });
+document.addEventListener('focusout', e => { if (e.target.matches('input[type=text]')) document.body.classList.remove('kb'); });
+window.addEventListener('hashchange', render);
+render();
+</script>
+</body>
+</html>
