@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sam Bang</title>
+  <meta name="description" content="Hi, I'm Sam, a sinner saved by Christ Jesus.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-deep: #070d22;
+      --navy: #0f1d44;
+      --navy-soft: #1d2f63;
+      --glow: #ffb45e;          /* warm sunset glow, picked from the photo */
+      --bubble: #fbf6ec;
+      --bubble-text: #16213f;
+      --text: #e9ecf7;
+      --muted: #9aa6cc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      font-family: "Nunito", system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: var(--text);
+      background-color: var(--navy-deep);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% 110%, rgba(255, 180, 94, 0.10), transparent 70%),
+        radial-gradient(ellipse 70% 60% at 50% 0%, var(--navy-soft), transparent 75%),
+        linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+      overflow-x: hidden;
+    }
+
+    /* ---------- Stars ---------- */
+    #stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      animation: twinkle var(--dur) ease-in-out var(--delay) infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--min); }
+      50%      { opacity: var(--max); }
+    }
+
+    /* ---------- Layout ---------- */
+    main {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    /* ---------- Intro: avatar + chat bubble ---------- */
+    .intro {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .avatar {
+      flex-shrink: 0;
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.85);
+      box-shadow:
+        0 0 0 4px rgba(255, 180, 94, 0.18),
+        0 0 22px 4px rgba(255, 180, 94, 0.45);
+    }
+
+    .bubble {
+      position: relative;
+      background: var(--bubble);
+      color: var(--bubble-text);
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.45;
+      padding: 16px 20px;
+      border-radius: 22px 22px 22px 6px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      margin-bottom: 10px;
+      transform-origin: bottom left;
+      animation: pop-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.25) 0.3s both;
+    }
+    /* little tail pointing at the avatar */
+    .bubble::before {
+      content: "";
+      position: absolute;
+      left: -7px;
+      bottom: 0;
+      width: 16px;
+      height: 16px;
+      background: var(--bubble);
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    }
+
+    @keyframes pop-in {
+      from { opacity: 0; transform: scale(0.85) translateY(8px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ---------- Work ---------- */
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+      padding-left: 4px;
+    }
+
+    .work-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .work-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      text-decoration: none;
+      color: inherit;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+    .work-card:hover,
+    .work-card:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 180, 94, 0.55);
+      box-shadow: 0 8px 28px rgba(255, 180, 94, 0.12);
+      outline: none;
+    }
+
+    .work-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      background: rgba(255, 180, 94, 0.14);
+    }
+
+    .work-text { flex: 1; min-width: 0; }
+    .work-title,
+    .work-sub { display: block; }
+    .work-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .work-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .work-arrow {
+      flex-shrink: 0;
+      font-size: 1.2rem;
+      color: var(--muted);
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .work-card:hover .work-arrow,
+    .work-card:focus-visible .work-arrow {
+      transform: translateX(4px);
+      color: var(--glow);
+    }
+
+    /* ---------- Small screens ---------- */
+    @media (max-width: 480px) {
+      .intro { gap: 12px; margin-bottom: 44px; }
+      .avatar { width: 76px; height: 76px; }
+      .bubble { font-size: 1rem; padding: 13px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .star, .bubble { animation: none; }
+      .work-card, .work-arrow { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="stars" aria-hidden="true"></div>
+
+  <main>
+    <section class="intro">
+      <img class="avatar" src="/avatar.jpg" alt="Photo of Sam" width="108" height="108">
+      <p class="bubble">Hi, I'm Sam, a sinner saved by Christ Jesus.</p>
+    </section>
+
+    <section>
+      <h2 class="section-label">Things I've made</h2>
+      <ul class="work-list">
+        <li>
+          <a class="work-card" href="/%EC%84%B1%EA%B2%BD_%EA%B5%AC%EC%A0%88_%EC%95%94%EC%86%A1_%ED%80%B4%EC%A6%88_%EB%8C%80%ED%9A%8C/">
+            <span class="work-icon" aria-hidden="true">📖</span>
+            <span class="work-text">
+              <span class="work-title" lang="ko">성경 구절 암송 퀴즈 대회</span>
+              <span class="work-sub">Bible verse memorization quiz</span>
+            </span>
+            <span class="work-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <!-- To add another project, copy the <li>...</li> block above and change the link, icon and text. -->
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    // Scatter some twinkling stars across the background.
+    (function () {
+      var sky = document.getElementById("stars");
+      var count = Math.round((window.innerWidth * window.innerHeight) / 9000);
+      count = Math.max(60, Math.min(count, 220));
+      for (var i = 0; i < count; i++) {
+        var s = document.createElement("span");
+        var size = Math.random() < 0.85 ? 1 + Math.random() : 2 + Math.random() * 1.2;
+        s.className = "star";
+        s.style.width = s.style.height = size + "px";
+        s.style.left = Math.random() * 100 + "%";
+        s.style.top = Math.random() * 100 + "%";
+        s.style.setProperty("--min", (0.15 + Math.random() * 0.3).toFixed(2));
+        s.style.setProperty("--max", (0.6 + Math.random() * 0.4).toFixed(2));
+        s.style.setProperty("--dur", (2.5 + Math.random() * 4).toFixed(1) + "s");
+        s.style.setProperty("--delay", (-Math.random() * 6).toFixed(1) + "s");
+        if (size > 2) s.style.boxShadow = "0 0 6px rgba(255,255,255,0.7)";
+        sky.appendChild(s);
+      }
+    })();
+  </script>
+</body>
+</html>
