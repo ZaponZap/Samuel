@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ko" data-theme="dark">
+<html lang="ko" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>성경 구절 암송 퀴즈 대회</title>
-<meta name="description" content="New Life Korean Church · 2026년 10월 25일 성경 구절 암송 퀴즈 대회를 위한 연습">
-<meta name="theme-color" content="#013720">
+<meta name="description" content="뉴라이프 한인교회 · 2026년 10월 25일 성경 구절 암송 퀴즈 대회를 위한 연습">
+<meta name="theme-color" content="#EDF4EF">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,13 +17,13 @@
   --font:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;
   --serif:'Noto Serif KR','Nanum Myeongjo','AppleMyungjo',Georgia,serif;
   color-scheme:dark;
-  --bg:#013720; --bg-2:#012D1A; --surface:#0A3F28; --surface-2:#124830; --raise:#1A5139;
-  --line:rgba(255,255,255,.11); --line-2:rgba(255,255,255,.22);
-  --text:#F2F7F3; --muted:#A3C0B0; --faint:rgba(242,247,243,.5);
-  --primary:#F2F7F3; --on-primary:#013720;
-  --gold:#E9C97E; --ink:#05301B; --bad:#FF9D90; --focus:#E9C97E;
-  --pane-off:rgba(255,255,255,.07);
-  --mix:#ffffff; --mixamt:16%;
+  --bg:#151C19; --bg-2:#101613; --surface:#1C2521; --surface-2:#242E29; --raise:#2B3631;
+  --line:rgba(255,255,255,.085); --line-2:rgba(255,255,255,.17);
+  --text:#E7EEEA; --muted:#9BAEA4; --faint:rgba(231,238,234,.45);
+  --primary:#E7EEEA; --on-primary:#0F2A1D;
+  --gold:#D9BD79; --ink:#05301B; --bad:#F2998D; --focus:#D9BD79;
+  --pane-off:rgba(255,255,255,.06);
+  --mix:#ffffff; --mixamt:10%;
   --shadow:0 18px 40px -26px rgba(0,0,0,.75);
   --r-lg:20px; --r-md:14px; --r-sm:10px; --nav-h:62px;
 }
@@ -57,12 +57,13 @@ h1,h2,h3,h4,p,ol,ul{margin:0}
 .side{display:none}
 main{padding:0 1rem calc(var(--nav-h) + 2rem + env(safe-area-inset-bottom));max-width:880px;margin:0 auto;min-width:0}
 @media (min-width:900px){
-  .app{display:grid;grid-template-columns:256px minmax(0,1fr)}
+  .app{display:grid;grid-template-columns:268px minmax(0,1fr)}
   .side{display:flex;flex-direction:column;position:sticky;top:0;height:100dvh;padding:22px 14px 18px;background:var(--bg-2);border-right:1px solid var(--line);overflow-y:auto}
   main{padding:0 40px 64px;width:100%}
 }
-.brand{display:flex;align-items:center;gap:11px;padding:0 8px 16px;font-weight:700;font-size:.98rem;line-height:1.3;letter-spacing:-.02em}
-.brand .mark{width:40px;height:40px;flex:none}
+.brand{display:flex;align-items:center;gap:10px;padding:0 6px 16px;font-weight:700;font-size:.9rem;line-height:1.3;letter-spacing:-.025em;white-space:nowrap}
+.brand .mark{width:44px;height:44px;flex:none}
+.mark svg{width:100%;height:100%;display:block}
 .brand small{display:block;font-weight:500;font-size:.74rem;color:var(--muted);letter-spacing:0}
 .navgroup h4{font-size:.76rem;font-weight:600;color:var(--muted);margin:18px 12px 6px;letter-spacing:.01em}
 .navi{display:flex;align-items:center;gap:11px;width:100%;padding:8px 10px;border-radius:12px;font-weight:500;font-size:.93rem;text-align:left;color:var(--muted);transition:background .2s,color .2s}
@@ -74,7 +75,7 @@ main{padding:0 1rem calc(var(--nav-h) + 2rem + env(safe-area-inset-bottom));max-
 
 .topbar{display:flex;align-items:center;gap:8px;padding:12px 0 4px}
 .brand-m{display:flex;align-items:center;gap:9px;font-weight:700;font-size:.95rem;margin-right:auto;min-width:0;letter-spacing:-.02em}
-.brand-m .mark{width:30px;height:30px;flex:none}
+.brand-m .mark{width:34px;height:34px;flex:none}
 .brand-m span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (min-width:900px){.brand-m{visibility:hidden}}
 @media (max-width:360px){.brand-m span{display:none}}
@@ -314,7 +315,9 @@ body.kb .bnav{display:none}
 .hero .sub-en{font-size:.9rem;color:var(--muted);font-weight:500;margin-top:2px}
 .hero .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:.9rem;font-weight:500}
 .hero .meta b{color:var(--text);font-weight:600}
-.dday{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:var(--gold);color:var(--ink);font-weight:800;font-size:.8rem;letter-spacing:.02em}
+.dday{display:inline-flex;align-items:center;height:26px;padding:0 11px;border-radius:999px;background:#013720;color:#fff;font-weight:700;font-size:.8rem;white-space:nowrap}
+:root[data-theme="dark"] .dday{background:var(--gold);color:var(--ink)}
+.dday.past{background:var(--surface-2);color:var(--muted)}
 @media (max-width:599px){
   .hero{grid-template-columns:1fr;justify-items:center;text-align:center;gap:12px;padding:8px 0 18px}
   .seal{width:92px;height:92px}
@@ -382,7 +385,7 @@ body.kb .bnav{display:none}
 .intro p{color:var(--muted);margin:6px 0 16px;max-width:42ch}
 
 /* ================= Modal ================= */
-.modal-back{position:fixed;inset:0;z-index:60;background:rgba(0,20,10,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px;opacity:0;transition:opacity .25s}
+.modal-back{position:fixed;inset:0;z-index:60;background:rgba(6,14,10,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px;opacity:0;transition:opacity .25s}
 .modal-back.in{opacity:1}
 .modal{width:min(460px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:26px 22px 20px;text-align:center;transform:translateY(16px) scale(.97);transition:transform .4s cubic-bezier(.2,1.4,.4,1)}
 .modal-back.in .modal{transform:none}
@@ -441,13 +444,13 @@ body.kb .bnav{display:none}
 <body>
 <div class="app">
   <aside class="side" aria-label="Menu">
-    <a class="brand" href="#/home"><span class="mark" data-mark></span><span id="brandTitle"></span></a>
+    <a class="brand" href="./" data-home><span class="mark" data-mark></span><span id="brandTitle"></span></a>
     <nav id="sidenav"></nav>
     <div class="side-foot" id="sideFoot"></div>
   </aside>
   <main id="main">
     <header class="topbar">
-      <a class="brand-m" href="#/home"><span class="mark" data-mark></span><span id="brandShort"></span></a>
+      <a class="brand-m" href="./" data-home><span class="mark" data-mark></span><span id="brandShort"></span></a>
       <div class="pill pts" id="ptsPill"><span data-ic="star"></span><b id="ptsN">0</b></div>
       <div class="lang" role="group" aria-label="Language">
         <button data-lang="ko"><span class="l-long">한국어</span><span class="l-short">한</span></button>
@@ -476,6 +479,7 @@ body.kb .bnav{display:none}
    ===================================================================== */
 const AUDIO_DIRS = ['./', './성경_구절_암송_퀴즈_대회/', 'https://raw.githubusercontent.com/ZaponZap/Samuel/main/성경_구절_암송_퀴즈_대회/'];
 const EVENT_DATE = [2026, 10, 25];
+const EVENT_TZ = 'America/Vancouver';   // Pacific time
 /* Word timings measured from the recordings: [start, end] in seconds for each word. */
 const TIMINGS = {
   en: {
@@ -647,8 +651,11 @@ const STR = {
   title:{ ko:'성경 구절 암송 퀴즈 대회', en:'성경 구절 암송 퀴즈 대회' },
   titleSub:{ ko:'', en:'Bible Verse Memory Quiz' },
   short:{ ko:'성경 구절 암송', en:'Verse Memory' },
-  church:{ ko:'New Life Korean Church', en:'New Life Korean Church' },
+  church:{ ko:'뉴라이프 한인교회', en:'New Life Korean Church' },
   eventDate:{ ko:'2026년 10월 25일 주일', en:'Sunday, October 25, 2026' },
+  daysLeft:{ ko:n=>`${n}일 남음`, en:n=>n === 1 ? '1 day left' : `${n} days left` },
+  today:{ ko:'오늘', en:'Today' },
+  daysAgo:{ ko:n=>`${n}일 전`, en:n=>n === 1 ? '1 day ago' : `${n} days ago` },
   sideFoot:{ ko:'열 구절을 월별 순서로 정리했습니다.<br>진행 기록은 이 브라우저에 저장됩니다.', en:'Ten verses in month order.<br>Progress is saved in this browser.' },
   home:{ ko:'홈', en:'Home' }, listen:{ ko:'듣기', en:'Listening' }, practice:{ ko:'연습', en:'Practice' }, learn:{ ko:'배우기', en:'Learning' },
   type:{ ko:'타이핑', en:'Type it' }, blanks:{ ko:'빈칸 채우기', en:'Fill the blanks' }, build:{ ko:'순서 맞추기', en:'Build it' },
@@ -859,7 +866,7 @@ const store = {
 };
 
 /* ============ Language ============ */
-const P = Object.assign({ lang:'ko', theme:'dark', chimes:true, points:0, rate:1, by:{} }, store.get('progress', {}));
+const P = Object.assign({ lang:'ko', chimes:true, points:0, rate:1, by:{} }, store.get('progress', {}));
 let LANG = P.lang === 'en' ? 'en' : 'ko';
 function t(key, ...args) { const s = STR[key]; if (!s) return key; const v = s[LANG] ?? s.ko; return typeof v === 'function' ? v(...args) : v; }
 const hasBatchim = w => { const c = w.charCodeAt(w.length - 1) - 0xAC00; return c >= 0 && c < 11172 && c % 28 !== 0; };
@@ -1230,8 +1237,10 @@ function sealSVG(cls = 'seal') {
     <path d="M94 62h12v22h21v12h-21v42H94V96H73V84h21z" fill="#FFFFFF"/>
   </svg>`;
 }
+/* The church logo ("NEW LIFE / KOREAN") redrawn as vector paths inside a circle. */
+const LOGO_TEXT = 'M18.63 34.05H20.28Q20.36 34.05 20.43 34.11Q20.49 34.18 20.49 34.27V46.36Q20.49 46.45 20.43 46.52Q20.36 46.58 20.28 46.58H18.68Q18.5 46.58 18.43 46.43L13.28 37.99Q13.24 37.93 13.21 37.94Q13.17 37.95 13.17 38.02L13.21 46.36Q13.21 46.45 13.14 46.52Q13.08 46.58 12.99 46.58H11.35Q11.26 46.58 11.19 46.52Q11.13 46.45 11.13 46.36V34.27Q11.13 34.18 11.19 34.11Q11.26 34.05 11.35 34.05H12.94Q13.12 34.05 13.19 34.19L18.32 42.64Q18.36 42.69 18.4 42.69Q18.43 42.68 18.43 42.61L18.41 34.27Q18.41 34.18 18.48 34.11Q18.54 34.05 18.63 34.05ZM31.52 35.84H25.42Q25.33 35.84 25.33 35.93V39.28Q25.33 39.37 25.42 39.37H29.52Q29.61 39.37 29.67 39.43Q29.73 39.49 29.73 39.58V40.94Q29.73 41.03 29.67 41.09Q29.61 41.16 29.52 41.16H25.42Q25.33 41.16 25.33 41.25V44.7Q25.33 44.79 25.42 44.79H31.52Q31.61 44.79 31.68 44.85Q31.74 44.91 31.74 45V46.36Q31.74 46.45 31.68 46.52Q31.61 46.58 31.52 46.58H23.47Q23.38 46.58 23.32 46.52Q23.26 46.45 23.26 46.36V34.27Q23.26 34.18 23.32 34.11Q23.38 34.05 23.47 34.05H31.52Q31.61 34.05 31.68 34.11Q31.74 34.18 31.74 34.27V35.63Q31.74 35.72 31.68 35.78Q31.61 35.84 31.52 35.84ZM36.19 46.4 32.93 34.28 32.91 34.21Q32.91 34.05 33.11 34.05H34.86Q35.06 34.05 35.11 34.23L37.15 42.39Q37.17 42.44 37.21 42.44Q37.24 42.44 37.26 42.39L39.21 34.23Q39.26 34.05 39.44 34.05H41.16Q41.36 34.05 41.41 34.23L43.49 42.41Q43.5 42.46 43.54 42.46Q43.58 42.46 43.59 42.41L45.6 34.23Q45.65 34.05 45.85 34.05H47.51Q47.76 34.05 47.71 34.28L44.61 46.4Q44.56 46.58 44.36 46.58H42.7Q42.5 46.58 42.45 46.4L40.35 37.86Q40.34 37.81 40.3 37.8Q40.27 37.79 40.25 37.86L38.24 46.4Q38.19 46.58 38.01 46.58H36.44Q36.24 46.58 36.19 46.4ZM53.85 46.36V34.27Q53.85 34.18 53.91 34.11Q53.98 34.05 54.07 34.05H55.71Q55.8 34.05 55.86 34.11Q55.93 34.18 55.93 34.27V44.7Q55.93 44.79 56.02 44.79H62.01Q62.1 44.79 62.16 44.85Q62.23 44.91 62.23 45V46.36Q62.23 46.45 62.16 46.52Q62.1 46.58 62.01 46.58H54.07Q53.98 46.58 53.91 46.52Q53.85 46.45 53.85 46.36ZM64.43 46.36V34.27Q64.43 34.18 64.49 34.11Q64.55 34.05 64.64 34.05H66.29Q66.38 34.05 66.44 34.11Q66.5 34.18 66.5 34.27V46.36Q66.5 46.45 66.44 46.52Q66.38 46.58 66.29 46.58H64.64Q64.55 46.58 64.49 46.52Q64.43 46.45 64.43 46.36ZM77.59 35.84H71.5Q71.41 35.84 71.41 35.93V39.28Q71.41 39.37 71.5 39.37H75.6Q75.69 39.37 75.75 39.43Q75.81 39.49 75.81 39.58V40.94Q75.81 41.03 75.75 41.09Q75.69 41.16 75.6 41.16H71.5Q71.41 41.16 71.41 41.25V46.36Q71.41 46.45 71.35 46.52Q71.29 46.58 71.2 46.58H69.55Q69.46 46.58 69.4 46.52Q69.34 46.45 69.34 46.36V34.27Q69.34 34.18 69.4 34.11Q69.46 34.05 69.55 34.05H77.59Q77.67 34.05 77.74 34.11Q77.8 34.18 77.8 34.27V35.63Q77.8 35.72 77.74 35.78Q77.67 35.84 77.59 35.84ZM88.76 35.84H82.66Q82.57 35.84 82.57 35.93V39.28Q82.57 39.37 82.66 39.37H86.76Q86.85 39.37 86.91 39.43Q86.98 39.49 86.98 39.58V40.94Q86.98 41.03 86.91 41.09Q86.85 41.16 86.76 41.16H82.66Q82.57 41.16 82.57 41.25V44.7Q82.57 44.79 82.66 44.79H88.76Q88.85 44.79 88.92 44.85Q88.98 44.91 88.98 45V46.36Q88.98 46.45 88.92 46.52Q88.85 46.58 88.76 46.58H80.71Q80.62 46.58 80.56 46.52Q80.5 46.45 80.5 46.36V34.27Q80.5 34.18 80.56 34.11Q80.62 34.05 80.71 34.05H88.76Q88.85 34.05 88.92 34.11Q88.98 34.18 88.98 34.27V35.63Q88.98 35.72 88.92 35.78Q88.85 35.84 88.76 35.84ZM10.88 65.73V53.64Q10.88 53.55 10.94 53.48Q11 53.42 11.09 53.42H12.74Q12.83 53.42 12.89 53.48Q12.95 53.55 12.95 53.64V58.99Q12.95 59.04 12.99 59.06Q13.03 59.08 13.06 59.04L17.71 53.55Q17.82 53.42 17.98 53.42H19.84Q20.02 53.42 20.02 53.55Q20.02 53.6 19.97 53.69L15.87 58.72Q15.82 58.79 15.85 58.84L20.26 65.7Q20.29 65.81 20.29 65.82Q20.29 65.95 20.11 65.95H18.23Q18.07 65.95 17.98 65.81L14.44 60.29Q14.37 60.19 14.31 60.28L12.99 61.81Q12.95 61.89 12.95 61.94V65.73Q12.95 65.82 12.89 65.89Q12.83 65.95 12.74 65.95H11.09Q11 65.95 10.94 65.89Q10.88 65.82 10.88 65.73ZM24.2 61.73V57.65Q24.2 56.36 24.77 55.36Q25.35 54.37 26.38 53.82Q27.41 53.28 28.75 53.28Q30.11 53.28 31.14 53.82Q32.17 54.37 32.74 55.36Q33.31 56.36 33.31 57.65V61.73Q33.31 63.03 32.74 64.03Q32.17 65.04 31.14 65.58Q30.11 66.13 28.75 66.13Q27.41 66.13 26.37 65.58Q25.33 65.04 24.77 64.03Q24.2 63.03 24.2 61.73ZM31.24 61.8V57.63Q31.24 56.46 30.56 55.77Q29.88 55.07 28.75 55.07Q27.64 55.07 26.96 55.77Q26.28 56.46 26.28 57.63V61.8Q26.28 62.94 26.96 63.64Q27.64 64.34 28.75 64.34Q29.88 64.34 30.56 63.64Q31.24 62.94 31.24 61.8ZM45.5 65.79 43.13 60.63Q43.1 60.56 43.03 60.56H40.88Q40.79 60.56 40.79 60.65V65.73Q40.79 65.82 40.73 65.89Q40.66 65.95 40.58 65.95H38.93Q38.84 65.95 38.78 65.89Q38.71 65.82 38.71 65.73V53.64Q38.71 53.55 38.78 53.48Q38.84 53.42 38.93 53.42H43.85Q44.94 53.42 45.78 53.88Q46.62 54.33 47.09 55.17Q47.55 56 47.55 57.07Q47.55 58.31 46.92 59.18Q46.28 60.04 45.16 60.38Q45.12 60.38 45.1 60.42Q45.08 60.45 45.1 60.49L47.63 65.7Q47.66 65.77 47.66 65.81Q47.66 65.95 47.46 65.95H45.75Q45.57 65.95 45.5 65.79ZM40.79 55.3V58.86Q40.79 58.95 40.88 58.95H43.56Q44.42 58.95 44.95 58.44Q45.48 57.93 45.48 57.09Q45.48 56.25 44.95 55.73Q44.42 55.21 43.56 55.21H40.88Q40.79 55.21 40.79 55.3ZM60.29 55.21H54.19Q54.1 55.21 54.1 55.3V58.65Q54.1 58.74 54.19 58.74H58.29Q58.37 58.74 58.44 58.8Q58.5 58.86 58.5 58.95V60.31Q58.5 60.4 58.44 60.46Q58.37 60.53 58.29 60.53H54.19Q54.1 60.53 54.1 60.62V64.07Q54.1 64.16 54.19 64.16H60.29Q60.38 64.16 60.44 64.22Q60.5 64.28 60.5 64.37V65.73Q60.5 65.82 60.44 65.89Q60.38 65.95 60.29 65.95H52.24Q52.15 65.95 52.08 65.89Q52.02 65.82 52.02 65.73V53.64Q52.02 53.55 52.08 53.48Q52.15 53.42 52.24 53.42H60.29Q60.38 53.42 60.44 53.48Q60.5 53.55 60.5 53.64V55Q60.5 55.09 60.44 55.15Q60.38 55.21 60.29 55.21ZM73.06 65.77 72.47 63.85Q72.43 63.78 72.38 63.78H67.65Q67.6 63.78 67.56 63.85L66.97 65.77Q66.92 65.95 66.74 65.95H64.95Q64.84 65.95 64.79 65.89Q64.74 65.82 64.77 65.7L68.65 53.6Q68.71 53.42 68.89 53.42H71.12Q71.3 53.42 71.36 53.6L75.26 65.7Q75.28 65.73 75.28 65.79Q75.28 65.95 75.08 65.95H73.29Q73.11 65.95 73.06 65.77ZM68.19 62.15H71.82Q71.93 62.15 71.89 62.05L70.05 56.05Q70.03 55.98 70 55.98Q69.96 55.98 69.94 56.05L68.12 62.05Q68.1 62.15 68.19 62.15ZM87.3 53.42H88.94Q89.03 53.42 89.1 53.48Q89.16 53.55 89.16 53.64V65.73Q89.16 65.82 89.1 65.89Q89.03 65.95 88.94 65.95H87.35Q87.17 65.95 87.1 65.81L81.95 57.36Q81.91 57.31 81.88 57.31Q81.84 57.32 81.84 57.39L81.88 65.73Q81.88 65.82 81.81 65.89Q81.75 65.95 81.66 65.95H80.02Q79.93 65.95 79.86 65.89Q79.8 65.82 79.8 65.73V53.64Q79.8 53.55 79.86 53.48Q79.93 53.42 80.02 53.42H81.61Q81.79 53.42 81.86 53.57L86.99 62.01Q87.03 62.07 87.07 62.06Q87.1 62.05 87.1 61.98L87.08 53.64Q87.08 53.55 87.15 53.48Q87.21 53.42 87.3 53.42Z';
 function markSVG() {
-  return `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31.5" fill="#FFFFFF"/><circle cx="32" cy="32" r="29.5" fill="#013720"/><circle cx="32" cy="32" r="25.5" fill="none" stroke="#FFFFFF" stroke-width="1.4"/><path d="M29 15h6v10h10v6H35v18h-6V31H19v-6h10z" fill="#FFFFFF"/></svg>`;
+  return `<svg viewBox="0 0 100 100" role="img" aria-label="New Life Korean"><circle cx="50" cy="50" r="50" fill="#013720"/><path fill="#FFFFFF" d="${LOGO_TEXT}"/></svg>`;
 }
 
 /* ============ The cross: one pane per verse ============ */
@@ -1256,7 +1265,10 @@ let leaveFns = [];
 const onLeave = fn => leaveFns.push(fn);
 let state = { act: 'home', v: VERSES.find(x => x.id === P.verse) || VERSES[0], extra: null };
 const cur = () => state.v;
+const homeURL = () => location.pathname + location.search;
+let shownHash = null;
 function go(act, v, extra) {
+  if (act === 'home') { if (location.hash) history.pushState(null, '', homeURL()); render(); return; }
   const a = ACT[act]; v = v || cur();
   let hash = a && a.per ? `#/${act}/${v.id}` : `#/${act}`;
   if (extra) hash += '/' + extra;
@@ -1273,6 +1285,8 @@ function render() {
   document.querySelectorAll('.modal-back').forEach(m => m.remove());
   document.body.classList.remove('kb');
   const { act, v, extra } = parseHash();
+  if (act === 'home' && location.hash) history.replaceState(null, '', homeURL());   // old #/home links
+  shownHash = location.hash;
   state.act = act; state.extra = extra || null;
   if (v) { state.v = v; P.verse = v.id; save(); }
   const a = ACT[act];
@@ -1475,20 +1489,27 @@ function nextStep() {
   for (const v of VERSES) if (!paneLit(v)) return { v, level: nextLevelFor(v) };
   return null;
 }
-function ddayLabel() {
-  const now = new Date(); const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const ev = new Date(EVENT_DATE[0], EVENT_DATE[1] - 1, EVENT_DATE[2]);
-  const days = Math.round((ev - today) / 864e5);
-  return days > 0 ? `D-${days}` : days === 0 ? 'D-DAY' : null;
+/* Today's date in Pacific time, whatever time zone the device is in. */
+function pacificToday() {
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', { timeZone: EVENT_TZ, year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(new Date());
+    const get = ty => +parts.find(p => p.type === ty).value;
+    return [get('year'), get('month'), get('day')];
+  } catch (e) { const d = new Date(); return [d.getFullYear(), d.getMonth() + 1, d.getDate()]; }
+}
+function countdown() {
+  const [y, m, d] = pacificToday();
+  const days = Math.round((Date.UTC(EVENT_DATE[0], EVENT_DATE[1] - 1, EVENT_DATE[2]) - Date.UTC(y, m - 1, d)) / 864e5);
+  return days > 0 ? { text: t('daysLeft', days), cls: '' } : days === 0 ? { text: t('today'), cls: ' now' } : { text: t('daysAgo', -days), cls: ' past' };
 }
 function viewHome(root) {
-  const lit = litCount(), nx = nextStep(), dd = ddayLabel(), mastered = S().mastered;
+  const lit = litCount(), nx = nextStep(), dd = countdown(), mastered = S().mastered;
   root.append(h('section', { class: 'hero' },
     h('div', { html: sealSVG() }).firstElementChild,
     h('div', {},
       h('h1', {}, t('title')),
       LANG === 'en' ? h('p', { class: 'sub-en' }, t('titleSub')) : null,
-      h('div', { class: 'meta' }, h('b', {}, t('church')), h('span', {}, t('eventDate')), dd ? h('span', { class: 'dday' }, dd) : null))));
+      h('div', { class: 'meta' }, h('b', {}, t('church')), h('span', {}, t('eventDate')), h('span', { class: 'dday' + dd.cls }, dd.text)))));
 
   const cross = h('div', { class: 'crosswrap', html: crossSVG() });
   const pick = e => { const g = e.target.closest('[data-i]'); if (g) showReport(VERSES[+g.dataset.i]); };
@@ -1511,7 +1532,7 @@ function viewHome(root) {
 
   root.append(h('div', { class: 'sec-h' }, h('h2', {}, t('versesByMonth')), h('p', {}, t('monthOrder'))));
   const list = h('div', { class: 'vlist' });
-  const thisMonth = new Date().getMonth() + 1;
+  const thisMonth = pacificToday()[1];
   VERSES.forEach(v => {
     const d = L(v), litV = paneLit(v);
     const { p: txt, words } = verseText(v, 'vr-text');
@@ -2016,13 +2037,13 @@ const VIEWS = { home: viewHome, listen: viewListen, type: viewType, blanks: view
 
 /* ============ Boot ============ */
 function applyTheme() {
-  const dark = P.theme !== 'light';
+  const dark = P.themeChoice === 'dark';   // light is the default
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
   const tb = $('#themeBtn'); tb.innerHTML = ''; tb.append(icon(dark ? 'sun' : 'moon')); tb.setAttribute('aria-label', dark ? t('toLight') : t('toDark')); tb.title = tb.getAttribute('aria-label');
-  document.querySelector('meta[name="theme-color"]').content = dark ? '#013720' : '#EDF4EF';
+  document.querySelector('meta[name="theme-color"]').content = dark ? '#151C19' : '#EDF4EF';
 }
 function applyChimes() { const b = $('#chimeBtn'); b.innerHTML = ''; b.append(icon(P.chimes ? 'note' : 'noteoff')); b.setAttribute('aria-pressed', String(!!P.chimes)); b.setAttribute('aria-label', P.chimes ? t('chimesOn') : t('chimesOff')); b.title = b.getAttribute('aria-label'); }
-$('#themeBtn').onclick = () => { P.theme = P.theme === 'light' ? 'dark' : 'light'; save(); applyTheme(); };
+$('#themeBtn').onclick = () => { P.themeChoice = P.themeChoice === 'dark' ? 'light' : 'dark'; save(); applyTheme(); };
 $('#chimeBtn').onclick = () => { P.chimes = !P.chimes; save(); applyChimes(); if (P.chimes) Chime.tap(); };
 document.querySelectorAll('.lang button').forEach(b => b.onclick = () => { if (LANG === b.dataset.lang) return; LANG = P.lang = b.dataset.lang; save(); Player.stop(); render(); });
 document.querySelectorAll('[data-ic]').forEach(s => s.replaceWith(icon(s.dataset.ic)));
@@ -2032,7 +2053,10 @@ $('#ptsN').textContent = P.points.toLocaleString();
 Player.init();
 document.addEventListener('focusin', e => { if (e.target.matches('input.tinput') && matchMedia('(max-width: 899px)').matches) document.body.classList.add('kb'); });
 document.addEventListener('focusout', e => { if (e.target.matches('input.tinput')) document.body.classList.remove('kb'); });
-window.addEventListener('hashchange', render);
+const onNav = () => { if (location.hash !== shownHash) render(); };
+window.addEventListener('hashchange', onNav);
+window.addEventListener('popstate', onNav);
+document.querySelectorAll('[data-home]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go('home'); }));
 render();
 </script>
 </body>
