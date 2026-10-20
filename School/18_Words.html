@@ -1,8 +1,12 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Group 16 Word Display</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" type="image/png" href="/favicon.png">
 <style>
-/* Layout: one full-screen stage. A single Start button, then one centered word at a time.
+/* One full-screen stage: a single Start button, then one centered word at a time.
    One fixed black-on-white look on purpose, so every participant sees exactly the same screen. */
 :root {
   --paper: #ffffff;
@@ -10,10 +14,12 @@
   --font: Arial, "Helvetica Neue", Helvetica, sans-serif;
   color-scheme: light;
 }
+[hidden] { display: none !important; }
 html, body { height: 100%; }
 html { background: var(--paper); box-sizing: border-box; }
 body {
   box-sizing: border-box;
+  margin: 0;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font);
@@ -55,7 +61,8 @@ body.running { cursor: none; }
   .start:active { transform: none; }
 }
 </style>
-
+</head>
+<body>
 <main class="stage">
   <button id="start" class="start" type="button">Start</button>
   <p id="word" class="word" hidden></p>
@@ -65,7 +72,7 @@ body.running { cursor: none; }
 // The 18 study words. Same words for everyone; the order is shuffled on every run.
 const WORDS = [
   "sting", "trash", "chaos", "rumor", "smoke", "delay", "drain", "alley", "ghost",
-  "dress", "hotel", "space", "plant", "candy", "dream", "music", "puppy", "prize"
+  "dress", "hotel", "river", "plant", "candy", "dream", "music", "puppy", "prize"
 ];
 const WORD_MS = 2000;     // each word stays on screen for 2 seconds
 const LEAD_IN_MS = 1000;  // short blank pause after Start, so the screen settles before word 1
@@ -166,5 +173,5 @@ function onFullscreenChange() {
 document.addEventListener("fullscreenchange", onFullscreenChange);
 document.addEventListener("webkitfullscreenchange", onFullscreenChange);
 </script>
-
-</body></html>
+</body>
+</html>
