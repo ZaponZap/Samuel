@@ -1,0 +1,1364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who Controls the Switch?</title>
+<meta name="description" content="Starlink, the war in Ukraine, and what international law actually says. A plain-English legal explainer, updated October 21, 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<style>
+:root{
+  --ink:#14213D; --ink-2:#3B4866; --ink-3:#5F6A84;
+  --paper:#F3F5FA; --paper-2:#E9EDF5; --card:#FFFFFF; --line:#D9E0EC; --line-2:#C5CEDF;
+  --sky-1:#0B1230; --sky-2:#16245C; --sky-3:#25397F; --star:#E9EEFF;
+  --ru:#B23A48; --ua:#2E62D9; --us:#6B4FD3; --sx:#0E8E8A; --eu:#B9800F; --un:#5A6478;
+  --f-charter:#2F6FB0; --f-icj:#4B3FA6; --f-vclt:#2B8569; --f-resp:#B0602A; --f-war:#9E3550; --f-space:#1C88A8;
+  --v0:#9E1F2E; --v1:#CF5B3D; --v2:#C38F1E; --v3:#4F9462; --v4:#2B7451; --vx:#7A8499;
+  --sans:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Source Serif 4","Source Serif Pro",Georgia,"Times New Roman",serif;
+  --r-lg:18px; --r-md:12px; --r-sm:7px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:18px; line-height:1.6}
+a{color:var(--ua); text-underline-offset:3px}
+a:hover{color:#1d47ad}
+:focus-visible{outline:3px solid #F2B705; outline-offset:2px; border-radius:6px}
+h1,h2,h3,h4{font-family:var(--serif); color:var(--ink); line-height:1.18; margin:0}
+p{margin:0 0 1em}
+.wrap{max-width:1160px; margin:0 auto; padding:0 24px}
+.prose{max-width:70ch}
+.muted{color:var(--ink-3)}
+.skip{position:absolute; left:-999px; top:8px; background:#fff; padding:8px 12px; z-index:100}
+.skip:focus{left:8px}
+
+/* ---------- Hero ---------- */
+.hero{position:relative; overflow:hidden; color:#F2F5FF; background:linear-gradient(180deg,var(--sky-1) 0%,var(--sky-2) 58%,var(--sky-3) 100%); min-height:min(86vh,700px); display:flex; flex-direction:column}
+.hero svg.sky{position:absolute; inset:0; width:100%; height:100%}
+.hero::after{content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg,rgba(11,18,48,.88) 0%,rgba(11,18,48,.62) 38%,rgba(11,18,48,0) 66%)}
+@media (max-width:760px){.hero::after{background:linear-gradient(180deg,rgba(11,18,48,.55),rgba(11,18,48,.75))}}
+.hero-inner{position:relative; z-index:2; padding-top:64px; padding-bottom:40px}
+.hero h1{font-size:clamp(2.6rem,6.4vw,5.2rem); color:#fff; font-weight:700; letter-spacing:-0.01em; max-width:12ch}
+.hero .lede{font-size:clamp(1.1rem,2vw,1.35rem); color:#C9D3F2; max-width:44ch; margin:18px 0 26px}
+.verdict-mini{display:grid; gap:10px; max-width:560px; margin:0; padding:0; list-style:none}
+.verdict-mini li{display:grid; grid-template-columns:14px 1fr; gap:12px; align-items:baseline; background:rgba(9,16,44,.55); border:1px solid rgba(255,255,255,.14); border-radius:var(--r-md); padding:10px 14px; backdrop-filter:blur(3px)}
+.verdict-mini .dot{width:12px; height:12px; border-radius:50%; transform:translateY(2px)}
+.verdict-mini b{color:#fff}
+.verdict-mini span{color:#D9E0F7}
+.hero .asof{margin-top:22px; font-size:.92rem; color:#9FAED8}
+.hero-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:22px}
+.btn{display:inline-flex; align-items:center; gap:8px; font-weight:700; text-decoration:none; border-radius:999px; padding:11px 18px; font-size:1rem}
+.btn-light{background:#fff; color:var(--sky-1)}
+.btn-light:hover{background:#E7ECFF; color:var(--sky-1)}
+.btn-ghost{border:1.5px solid rgba(255,255,255,.5); color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.1); color:#fff}
+.orbit-sats{transform-box:view-box; transform-origin:920px 1500px; animation:orbit 10s linear infinite}
+@keyframes orbit{from{transform:rotate(0deg)} to{transform:rotate(-8deg)}}
+.beam{stroke-dasharray:6 8; animation:beam 1.6s linear infinite}
+@keyframes beam{to{stroke-dashoffset:-28}}
+@media (prefers-reduced-motion:reduce){.orbit-sats,.beam{animation:none}}
+
+/* ---------- Nav ---------- */
+.toc{position:sticky; top:0; z-index:20; background:rgba(243,245,250,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+.toc ul{display:flex; gap:6px; list-style:none; margin:0 auto; padding:10px 24px; max-width:1160px; overflow-x:auto; scrollbar-width:none}
+.toc ul::-webkit-scrollbar{display:none}
+.toc a{display:block; white-space:nowrap; text-decoration:none; color:var(--ink-2); font-weight:500; font-size:.95rem; padding:7px 13px; border-radius:999px}
+.toc a:hover{background:var(--paper-2); color:var(--ink)}
+.toc a.on{background:var(--ink); color:#fff}
+
+/* ---------- Sections ---------- */
+section.block{padding-top:72px; padding-bottom:24px; scroll-margin-top:60px}
+.sec-head{display:grid; grid-template-columns:auto 1fr; gap:6px 18px; align-items:start; margin-bottom:28px}
+.sec-num{font-family:var(--serif); font-size:1.05rem; font-weight:700; color:#fff; background:var(--ink); width:38px; height:38px; border-radius:50%; display:grid; place-items:center; margin-top:4px}
+.sec-head h2{font-size:clamp(1.9rem,3.6vw,2.7rem); font-weight:700}
+.sec-head p{grid-column:2; margin:8px 0 0; color:var(--ink-2); max-width:62ch; font-size:1.08rem}
+h3.sub{font-size:1.5rem; margin:48px 0 14px; font-weight:600}
+@media (max-width:600px){.sec-head p{grid-column:1 / -1}}
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--r-lg); padding:24px}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+@media (max-width:900px){.grid2,.grid3{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.grid4{grid-template-columns:1fr}}
+figure{margin:0}
+figcaption{font-size:.88rem; color:var(--ink-3); margin-top:10px}
+.svgbox{width:100%; height:auto; display:block}
+.callout{border-left:5px solid var(--ink); background:#fff; padding:16px 20px; border-radius:0 var(--r-md) var(--r-md) 0; margin:24px 0}
+.callout p:last-child{margin:0}
+
+/* ---------- Basics ---------- */
+.steps{list-style:none; padding:0; margin:0; display:grid; gap:14px; counter-reset:s}
+.steps li{display:grid; grid-template-columns:34px 1fr; gap:12px; align-items:start}
+.steps li::before{counter-increment:s; content:counter(s); width:30px; height:30px; border-radius:50%; background:var(--sx); color:#fff; font-weight:700; display:grid; place-items:center; font-size:.95rem}
+.switch-card{position:relative; overflow:hidden}
+.switch-card h4{font-family:var(--sans); font-size:1.15rem; margin:12px 0 6px}
+.switch-card p{font-size:.98rem; margin:0}
+.switch-card .used{margin-top:12px; padding-top:12px; border-top:1px dashed var(--line-2); font-size:.92rem; color:var(--ink-2)}
+.compare{width:100%; border-collapse:separate; border-spacing:0; font-size:.98rem; background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); overflow:hidden}
+.compare th,.compare td{padding:13px 16px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line)}
+.compare tr:last-child td{border-bottom:0}
+.compare thead th{background:var(--paper-2); font-size:1.05rem}
+.compare tbody th{font-weight:700; color:var(--ink-2); width:24%}
+.stat{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); padding:20px}
+.stat .n{font-family:var(--serif); font-size:2.3rem; font-weight:700; line-height:1; color:var(--ink)}
+.stat .l{margin-top:8px; font-size:.95rem; color:var(--ink-2)}
+.stat .s{margin-top:6px; font-size:.8rem; color:var(--ink-3)}
+.uses{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:16px}
+@media (max-width:900px){.uses{grid-template-columns:1fr 1fr}}
+.use{display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:var(--r-md); padding:14px}
+.use svg{flex:0 0 36px}
+.use b{display:block}
+.use span{font-size:.92rem; color:var(--ink-2)}
+.path{display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; margin-top:10px}
+.path .stop{position:relative; padding:0 10px 0 0}
+.path .stop .ico{width:64px; height:64px; border-radius:50%; display:grid; place-items:center; background:#fff; border:2px solid var(--ru); position:relative; z-index:2}
+.path .stop.cut .ico{border-color:var(--sx); background:#E6F5F4}
+.path .stop::after{content:""; position:absolute; top:31px; left:64px; right:0; height:2px; background:repeating-linear-gradient(90deg,var(--ru) 0 8px,transparent 8px 14px)}
+.path .stop:last-child::after{display:none}
+.path .stop.cut::after{display:none}
+.path h4{font-family:var(--sans); font-size:1.02rem; margin:12px 0 4px}
+.path p{font-size:.92rem; color:var(--ink-2); margin:0}
+@media (max-width:900px){.path{grid-template-columns:1fr; gap:18px}.path .stop{display:grid; grid-template-columns:64px 1fr; gap:14px}.path .stop::after{display:none}.path h4{margin-top:4px}}
+
+/* ---------- Timeline ---------- */
+.legend{display:flex; flex-wrap:wrap; gap:8px 18px; margin:0 0 16px; padding:0; list-style:none; font-size:.92rem; color:var(--ink-2)}
+.legend li{display:flex; align-items:center; gap:7px}
+.legend i{width:12px; height:12px; border-radius:50%; display:inline-block}
+.tl-scroll{overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch}
+.tl{position:relative; min-width:1040px; height:168px; background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); padding:0 10px}
+.tl-groups{position:absolute; inset:0 10px; display:flex}
+.tl-group{position:relative; border-right:1px dashed var(--line-2); height:100%}
+.tl-group:last-child{border-right:0}
+.tl-group .gl{position:absolute; left:10px; top:12px; font-family:var(--serif); font-weight:700; font-size:1rem; color:var(--ink-2)}
+.tl-group.hot{background:linear-gradient(180deg,rgba(178,58,72,.06),rgba(178,58,72,.02))}
+.tl-group.hot .gl{color:var(--ru)}
+.tl-axis{position:absolute; left:10px; right:10px; top:86px; height:3px; background:var(--line-2); border-radius:2px}
+.tl-dot{position:absolute; top:86px; width:22px; height:22px; margin:-10px 0 0 -11px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 0 1.5px var(--line-2); cursor:pointer; padding:0; transition:transform .12s ease}
+.tl-dot:hover,.tl-dot.on{transform:scale(1.35); box-shadow:0 0 0 2px var(--ink)}
+.tl-dot.on{z-index:3}
+.tl-tick{position:absolute; top:108px; transform:translateX(-50%); font-size:.72rem; color:var(--ink-3); white-space:nowrap; pointer-events:none}
+.tl-tick.lo{top:128px}
+.tl-tick.on{color:var(--ink); font-weight:700}
+.tl-panel{margin-top:16px; display:grid; grid-template-columns:1.2fr 1fr; gap:0; background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); overflow:hidden; min-height:220px}
+.tl-panel .what{padding:24px 26px; border-top:6px solid var(--ink)}
+.tl-panel .why{padding:24px 26px; background:#F7F4EC; border-top:6px solid #D8C9A1}
+.tl-date{font-weight:700; color:var(--ink-3); font-size:.95rem}
+.tl-panel h3{font-size:1.6rem; margin:6px 0 10px}
+.tl-panel .actor{display:inline-flex; align-items:center; gap:7px; font-size:.88rem; font-weight:700; padding:3px 11px; border-radius:999px; color:#fff}
+.tl-panel .why h4{font-family:var(--sans); font-size:1.05rem; margin:0 0 8px; color:#6B5A2E}
+.tl-panel .why p{color:#3E3A30}
+.lawlink{display:inline-flex; align-items:center; gap:6px; font-weight:700; font-size:.95rem; text-decoration:none; background:#fff; border:1.5px solid #CDBB8C; color:#5A4A20; border-radius:999px; padding:6px 13px; cursor:pointer; font-family:var(--sans)}
+.lawlink:hover{background:#FFF8E6}
+.tl-nav{display:flex; gap:8px; margin-top:12px; align-items:center; font-size:.92rem; color:var(--ink-3)}
+.tl-nav button{font:inherit; font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--line-2); border-radius:999px; padding:6px 14px; cursor:pointer}
+.tl-nav button:hover{background:var(--paper-2)}
+@media (max-width:800px){.tl-panel{grid-template-columns:1fr}}
+
+/* ---------- Law ---------- */
+.layers{display:grid; gap:10px; margin:6px 0 10px}
+.layer{display:grid; grid-template-columns:200px 1fr 220px; gap:16px; align-items:center; background:#fff; border:1px solid var(--line); border-radius:var(--r-md); padding:14px 18px; border-left:8px solid var(--c)}
+.layer b{font-family:var(--serif); font-size:1.15rem}
+.layer .who{font-size:.9rem; color:var(--ink-2)}
+@media (max-width:800px){.layer{grid-template-columns:1fr}}
+.filters{display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 22px}
+.filters button{font:inherit; font-size:.92rem; font-weight:700; border:1.5px solid var(--line-2); background:#fff; color:var(--ink-2); border-radius:999px; padding:7px 14px; cursor:pointer; display:inline-flex; align-items:center; gap:7px}
+.filters button i{width:10px; height:10px; border-radius:50%; display:inline-block}
+.filters button[aria-pressed="true"]{background:var(--ink); color:#fff; border-color:var(--ink)}
+.laws{display:grid; gap:20px}
+.law{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); overflow:hidden; scroll-margin-top:80px; transition:box-shadow .3s}
+.law.flash{box-shadow:0 0 0 4px #F2B705}
+.law-top{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; padding:16px 24px; border-bottom:1px solid var(--line); background:linear-gradient(90deg,color-mix(in srgb,var(--fc) 10%,#fff),#fff 70%)}
+.law-top .src{font-weight:800; color:var(--fc); font-size:.95rem}
+.law-top h3{font-size:1.35rem; flex:1 1 300px}
+.course{font-size:.8rem; font-weight:700; color:#5A4A20; background:#FBF1D6; border:1px solid #E7D49F; border-radius:999px; padding:3px 10px}
+.law-body{display:grid; grid-template-columns:1.15fr 1fr; gap:0}
+.law-text{padding:22px 24px; border-right:1px solid var(--line); background:#FCFCFE}
+.law-text blockquote{margin:0 0 14px; font-family:var(--serif); font-size:1.05rem; line-height:1.72; color:#1E2A47; border-left:4px solid var(--fc); padding:2px 0 2px 16px}
+.law-text blockquote:last-child{margin-bottom:0}
+.law-text cite{display:block; font-style:normal; font-family:var(--sans); font-weight:700; font-size:.82rem; color:var(--ink-3); margin-bottom:4px}
+.law-explain{padding:22px 24px}
+.law-explain h4{font-family:var(--sans); font-size:.98rem; color:var(--fc); margin:0 0 6px}
+.law-explain p{font-size:1rem}
+.law-explain p:last-of-type{margin-bottom:0}
+.parties{display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; padding-top:14px; border-top:1px dashed var(--line-2); font-size:.85rem}
+.parties span{border-radius:999px; padding:3px 10px; background:var(--paper-2); color:var(--ink-2)}
+.parties span.y{background:#E4F2EA; color:#1F5A3E}
+.parties span.n{background:#F6E5E7; color:#7A1E2B}
+@media (max-width:860px){.law-body{grid-template-columns:1fr}.law-text{border-right:0; border-bottom:1px solid var(--line)}}
+
+/* ---------- Verdicts ---------- */
+.scale-key{display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.88rem; color:var(--ink-2); margin:0 0 22px; padding:0; list-style:none}
+.scale-key li{display:flex; align-items:center; gap:7px}
+.scale-key i{width:14px; height:14px; border-radius:4px; display:inline-block}
+.actor-block{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); margin-bottom:22px; overflow:hidden}
+.actor-head{display:flex; align-items:center; gap:12px; padding:16px 22px; color:#fff}
+.actor-head h3{color:#fff; font-size:1.4rem}
+.actor-head span{opacity:.9; font-size:.95rem}
+.vrow{display:grid; grid-template-columns:minmax(200px,1.1fr) 260px 1.6fr; gap:18px; align-items:center; padding:16px 22px; border-top:1px solid var(--line)}
+.vrow:first-of-type{border-top:0}
+.vrow .act{font-weight:700}
+.meter{position:relative; height:12px; border-radius:999px; background:linear-gradient(90deg,var(--v0),var(--v1),var(--v2),var(--v3),var(--v4)); opacity:.28}
+.meter-wrap{position:relative}
+.meter-wrap .pin{position:absolute; top:-6px; width:24px; height:24px; margin-left:-12px; border-radius:50%; border:4px solid #fff; box-shadow:0 0 0 1.5px rgba(20,33,61,.35)}
+.meter-wrap .vl{margin-top:12px; font-size:.86rem; font-weight:700}
+.meter-wrap.other .meter{background:repeating-linear-gradient(90deg,#C9D0DD 0 6px,transparent 6px 10px); opacity:1}
+.vrow .why{font-size:.96rem; color:var(--ink-2)}
+.vrow .why .refs{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+.ref{font:inherit; font-size:.8rem; font-weight:700; padding:3px 10px; border-radius:999px; border:1px solid var(--line-2); background:var(--paper); color:var(--ink-2); cursor:pointer}
+.ref:hover{background:#FFF4D6; border-color:#E2C877}
+.vnote{padding:14px 22px; background:var(--paper); border-top:1px solid var(--line); font-size:.94rem; color:var(--ink-2)}
+@media (max-width:860px){.vrow{grid-template-columns:1fr; gap:10px}}
+
+/* ---------- Decision tree ---------- */
+.tree{display:grid; gap:0; justify-items:center; max-width:940px; margin:0 auto}
+.node{background:#fff; border:1.5px solid var(--line-2); border-radius:var(--r-md); padding:16px 20px; text-align:center; max-width:560px; width:100%}
+.node.q{background:var(--ink); color:#fff; border-color:var(--ink); border-radius:999px; max-width:440px; font-weight:700; font-size:1.08rem}
+.node.start{border-color:var(--ru); background:#FBEFF0}
+.node.end{border:2px solid var(--sx); background:#E8F6F5; max-width:720px}
+.node h4{font-family:var(--sans); font-size:1.08rem; margin:0 0 6px}
+.node p{margin:0; font-size:.97rem; color:var(--ink-2)}
+.node .refs{display:flex; justify-content:center; flex-wrap:wrap; gap:6px; margin-top:10px}
+.down{width:2px; height:34px; background:var(--ink-3); position:relative}
+.down::after{content:""; position:absolute; bottom:-2px; left:-5px; border:6px solid transparent; border-top:8px solid var(--ink-3); border-bottom:0}
+.split{display:grid; grid-template-columns:1fr 1fr; gap:28px; width:100%; position:relative; padding-top:34px}
+.split::before{content:""; position:absolute; top:0; left:25%; right:25%; height:2px; background:var(--ink-3)}
+.split .branch{display:grid; justify-items:center; position:relative}
+.split .branch::before{content:""; position:absolute; top:-34px; left:50%; width:2px; height:34px; background:var(--ink-3)}
+.branch .tag{font-size:.82rem; font-weight:700; color:#fff; border-radius:999px; padding:3px 11px; margin-bottom:10px}
+.merge{width:100%; height:34px; position:relative}
+.merge::before{content:""; position:absolute; bottom:0; left:25%; right:25%; height:2px; background:var(--ink-3)}
+.merge::after{content:""; position:absolute; top:0; left:25%; width:2px; height:34px; background:var(--ink-3)}
+.merge i{position:absolute; top:0; right:25%; width:2px; height:34px; background:var(--ink-3)}
+@media (max-width:760px){.split{grid-template-columns:1fr; padding-top:18px}.split::before,.split .branch::before,.merge{display:none}.split .branch{margin-bottom:6px}}
+.flip{margin-top:28px}
+.flip li{margin-bottom:8px}
+
+/* ---------- Cases & map ---------- */
+.case{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); padding:20px 22px; display:flex; flex-direction:column}
+.case .court{font-size:.85rem; font-weight:700; color:var(--f-icj)}
+.case h4{font-size:1.2rem; margin:4px 0 10px}
+.case p{font-size:.96rem; margin:0 0 10px}
+.case .link{margin-top:auto; padding-top:10px; border-top:1px dashed var(--line-2); font-size:.94rem; color:var(--ink-2)}
+.case .link b{color:var(--ink)}
+.map{position:relative; background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); padding:22px 20px; margin-top:8px}
+.map-cols{display:grid; grid-template-columns:1fr 1fr 1fr; gap:90px; position:relative; z-index:2}
+.map-col h4{font-family:var(--sans); font-size:1rem; color:var(--ink-3); margin:0 0 12px; text-align:center}
+.mnode{display:block; width:100%; text-align:left; font:inherit; font-size:.9rem; line-height:1.3; padding:8px 12px; margin-bottom:8px; background:#fff; border:1.5px solid var(--line-2); border-left:5px solid var(--c); border-radius:var(--r-sm); cursor:pointer; color:var(--ink); transition:opacity .15s, background .15s}
+.map.active .mnode{opacity:.32}
+.map.active .mnode.lit{opacity:1; background:#FFF9E8}
+.map.active .mnode.me{opacity:1; background:#FFEFC2; border-color:#D9A920}
+.map svg.edges{position:absolute; inset:0; width:100%; height:100%; z-index:1; pointer-events:none}
+.map svg.edges path{fill:none; stroke:#C5CEDF; stroke-width:1.4; transition:stroke .15s, opacity .15s}
+.map.active svg.edges path{opacity:.15}
+.map.active svg.edges path.lit{opacity:1; stroke:#C9961A; stroke-width:2.4}
+.map-info{margin-top:14px; padding:14px 18px; border-radius:var(--r-md); background:var(--paper); min-height:56px; font-size:.97rem; color:var(--ink-2)}
+@media (max-width:860px){.map-cols{grid-template-columns:1fr; gap:16px}.map svg.edges{display:none}}
+
+/* ---------- Forums ---------- */
+.forum{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg); padding:20px; position:relative}
+.forum .st{display:inline-block; font-size:.82rem; font-weight:800; border-radius:999px; padding:3px 11px; color:#fff}
+.forum h4{font-family:var(--sans); font-size:1.12rem; margin:12px 0 6px}
+.forum p{font-size:.95rem; margin:0; color:var(--ink-2)}
+.forum .rule{font-size:.85rem; margin-top:10px; color:var(--ink-3)}
+.door{position:absolute; right:18px; top:16px}
+.forum.wide{grid-column:1/-1; border:2px solid var(--us); background:#F6F3FF}
+.forum.wide p{max-width:80ch}
+
+/* ---------- Stance ---------- */
+.stance{background:linear-gradient(160deg,var(--sky-1),var(--sky-2)); color:#E8EDFF; border-radius:28px; padding:48px 44px; position:relative; overflow:hidden}
+.stance h2{color:#fff}
+.stance .switch-art{position:absolute; right:44px; top:52px; width:230px; opacity:.95}
+@media (max-width:1000px){.stance .switch-art{display:none}}
+.stance .claim{font-family:var(--serif); font-size:clamp(1.5rem,3vw,2.15rem); line-height:1.35; color:#fff; max-width:34ch; margin:16px 0 30px; font-weight:600}
+.stance .three{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+.stance .pt{background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:var(--r-lg); padding:20px}
+.stance .pt h3{color:#fff; font-size:1.25rem; margin:8px 0 10px}
+.stance .pt p{font-size:.98rem; color:#D3DBF5}
+.stance .pt .badge{display:inline-block; font-size:.82rem; font-weight:800; padding:3px 11px; border-radius:999px; color:#fff}
+@media (max-width:900px){.stance .three{grid-template-columns:1fr}.stance{padding:32px 22px}}
+.counter{display:grid; gap:14px; margin-top:10px}
+.counter .c{background:#fff; border:1px solid var(--line); border-radius:var(--r-md); padding:16px 20px; display:grid; grid-template-columns:1fr 1fr; gap:20px}
+.counter .c h4{font-family:var(--sans); font-size:1rem; margin:0 0 4px}
+.counter .c p{margin:0; font-size:.96rem; color:var(--ink-2)}
+.counter .c .resp h4{color:var(--sx)}
+@media (max-width:760px){.counter .c{grid-template-columns:1fr}}
+ol.fix{padding-left:22px}
+ol.fix li{margin-bottom:10px}
+
+/* ---------- Sources ---------- */
+.sources{columns:2; column-gap:40px; font-size:.92rem}
+.sources h4{font-family:var(--sans); font-size:1rem; margin:0 0 8px; break-after:avoid}
+.sources ul{margin:0 0 22px; padding-left:18px}
+.sources li{margin-bottom:5px; break-inside:avoid}
+@media (max-width:760px){.sources{columns:1}}
+footer{padding:40px 0 60px; color:var(--ink-3); font-size:.9rem}
+</style>
+</head>
+<body>
+<a class="skip" href="#basics">Skip to content</a>
+
+<!-- =================== HERO =================== -->
+<header class="hero">
+  <svg class="sky" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="earthG" cx="50%" cy="0%" r="70%">
+        <stop offset="0%" stop-color="#2E6AB8"/>
+        <stop offset="35%" stop-color="#1A4688"/>
+        <stop offset="100%" stop-color="#0B1E45"/>
+      </radialGradient>
+      <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="8"/></filter>
+      <g id="sat">
+        <rect x="-5" y="-4" width="10" height="8" rx="1.5" fill="#F4F7FF"/>
+        <rect x="-26" y="-3" width="18" height="6" fill="#7FB4FF" opacity=".9"/>
+        <rect x="8" y="-3" width="18" height="6" fill="#7FB4FF" opacity=".9"/>
+        <line x1="-8" y1="0" x2="-5" y2="0" stroke="#F4F7FF" stroke-width="1.5"/>
+        <line x1="5" y1="0" x2="8" y2="0" stroke="#F4F7FF" stroke-width="1.5"/>
+      </g>
+    </defs>
+    <g id="stars"></g>
+    <g transform="translate(320 0)">
+    <circle cx="600" cy="1500" r="1290" fill="none" stroke="#A9BBF0" stroke-opacity=".28" stroke-width="1.2" stroke-dasharray="3 7"/>
+    <circle cx="600" cy="1500" r="1162" fill="none" stroke="#7CC4FF" stroke-width="14" opacity=".45" filter="url(#glow)"/>
+    <circle cx="600" cy="1500" r="1150" fill="url(#earthG)"/>
+    <line class="beam" x1="600" y1="212" x2="760" y2="359" stroke="#FFD66B" stroke-width="2" stroke-opacity=".85"/>
+    <line class="beam" x1="600" y1="212" x2="472" y2="292" stroke="#FFD66B" stroke-width="2" stroke-opacity=".85"/>
+    <g transform="translate(760 365)">
+      <rect x="-2" y="-6" width="4" height="14" fill="#DDE6FF"/>
+      <path d="M-16 -8 Q0 -2 16 -14 L12 -18 Q0 -8 -12 -12 Z" fill="#F4F7FF"/>
+    </g>
+    <g transform="translate(472 296) rotate(-12)">
+      <path d="M-20 4 L0 -6 L20 4 L0 0 Z" fill="#F4F7FF"/>
+      <rect x="-3" y="-8" width="6" height="12" rx="2" fill="#DDE6FF"/>
+    </g>
+    </g>
+    <g class="orbit-sats">
+      <g transform="rotate(-48 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(-40 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(-32 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(-24 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(-16 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(-8 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(0 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(8 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(16 920 1500)"><use href="#sat" x="920" y="210"/></g>
+      <g transform="rotate(24 920 1500)"><use href="#sat" x="920" y="210"/></g>
+    </g>
+  </svg>
+  <div class="wrap hero-inner">
+    <h1>Who controls the switch?</h1>
+    <p class="lede">Starlink, the war in Ukraine, and what international law actually says. Explained in plain English, with the law quoted word for word.</p>
+    <ul class="verdict-mini">
+      <li><i class="dot" style="background:#FF8A96"></i><div><b>Russia</b> <span>is breaking international law, clearly and repeatedly.</span></div></li>
+      <li><i class="dot" style="background:#B5A3FF"></i><div><b>The United States</b> <span>is squeezing Ukraine, but most likely within international law.</span></div></li>
+      <li><i class="dot" style="background:#5FD6CF"></i><div><b>Musk and SpaceX</b> <span>have not broken international law. That is the real problem.</span></div></li>
+    </ul>
+    <div class="hero-actions">
+      <a class="btn btn-light" href="#basics">Start with how Starlink works</a>
+      <a class="btn btn-ghost" href="#law">Go to the law</a>
+    </div>
+    <p class="asof">Updated October 21, 2026. Built from public reporting and treaty texts. Some key facts rest on anonymous sources and are still disputed.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <ul>
+    <li><a href="#basics">Starlink basics</a></li>
+    <li><a href="#russia">How Russia used it</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#law">The law</a></li>
+    <li><a href="#verdicts">Who broke it?</a></li>
+    <li><a href="#musk">The Musk question</a></li>
+    <li><a href="#cases">Cases and connections</a></li>
+    <li><a href="#forums">Where it gets decided</a></li>
+    <li><a href="#stance">My stance</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ul>
+</nav>
+
+<main>
+<!-- =================== 1. BASICS =================== -->
+<section class="block wrap" id="basics">
+  <div class="sec-head">
+    <span class="sec-num">1</span>
+    <h2>Starlink in plain words</h2>
+    <p>Starlink is internet from space. Since February 2022 it has been one of the most important tools Ukraine has. Understanding how it works explains how one switch can change a war.</p>
+  </div>
+
+  <div class="grid2">
+    <figure class="card">
+      <svg class="svgbox" viewBox="0 0 560 330" role="img" aria-label="How a Starlink connection travels from a dish to the internet">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0E8E8A"/></marker>
+        </defs>
+        <rect x="0" y="0" width="560" height="330" rx="14" fill="#F2F6FF"/>
+        <path d="M0 268 Q280 238 560 268 L560 330 L0 330 Z" fill="#DCE6F7"/>
+        <path d="M30 70 Q280 22 530 70" fill="none" stroke="#A9B6D6" stroke-dasharray="4 6"/>
+        <text x="30" y="58" font-size="12" fill="#5F6A84" font-family="Atkinson Hyperlegible Next, Atkinson Hyperlegible, sans-serif">orbit, about 550 km up</text>
+        <!-- satellites -->
+        <g transform="translate(170 56)"><rect x="-6" y="-5" width="12" height="10" rx="2" fill="#14213D"/><rect x="-30" y="-3" width="22" height="6" fill="#2E62D9"/><rect x="8" y="-3" width="22" height="6" fill="#2E62D9"/></g>
+        <g transform="translate(390 56)"><rect x="-6" y="-5" width="12" height="10" rx="2" fill="#14213D"/><rect x="-30" y="-3" width="22" height="6" fill="#2E62D9"/><rect x="8" y="-3" width="22" height="6" fill="#2E62D9"/></g>
+        <!-- links -->
+        <line x1="96" y1="236" x2="162" y2="70" stroke="#0E8E8A" stroke-width="2.5" marker-end="url(#ar)"/>
+        <line x1="206" y1="56" x2="352" y2="56" stroke="#0E8E8A" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#ar)"/>
+        <line x1="396" y1="70" x2="440" y2="228" stroke="#0E8E8A" stroke-width="2.5" marker-end="url(#ar)"/>
+        <line x1="474" y1="248" x2="510" y2="248" stroke="#0E8E8A" stroke-width="2.5" marker-end="url(#ar)"/>
+        <!-- dish -->
+        <g transform="translate(86 252)"><rect x="-3" y="-4" width="6" height="18" fill="#14213D"/><path d="M-24 -6 Q0 2 22 -18 L17 -24 Q0 -8 -18 -14 Z" fill="#14213D"/></g>
+        <!-- gateway -->
+        <g transform="translate(450 250)"><rect x="-16" y="-8" width="32" height="22" rx="3" fill="#14213D"/><path d="M-10 -8 Q0 -26 12 -14" fill="none" stroke="#14213D" stroke-width="3"/></g>
+        <!-- cloud -->
+        <g transform="translate(530 246)"><circle cx="0" cy="0" r="12" fill="#14213D"/><circle cx="-12" cy="6" r="9" fill="#14213D"/><circle cx="12" cy="6" r="9" fill="#14213D"/></g>
+        <!-- badges -->
+        <g font-family="Atkinson Hyperlegible Next, Atkinson Hyperlegible, sans-serif" font-weight="700" font-size="13" fill="#fff" text-anchor="middle">
+          <circle cx="112" cy="150" r="13" fill="#0E8E8A"/><text x="112" y="155">1</text>
+          <circle cx="280" cy="38" r="13" fill="#0E8E8A"/><text x="280" y="43">2</text>
+          <circle cx="436" cy="146" r="13" fill="#0E8E8A"/><text x="436" y="151">3</text>
+          <circle cx="492" cy="222" r="13" fill="#0E8E8A"/><text x="492" y="227">4</text>
+        </g>
+        <g font-family="Atkinson Hyperlegible Next, Atkinson Hyperlegible, sans-serif" font-size="13" fill="#14213D">
+          <text x="40" y="306">Dish (terminal)</text>
+          <text x="404" y="306">Ground station</text>
+          <text x="506" y="282">Internet</text>
+        </g>
+      </svg>
+      <figcaption>A Starlink connection in four hops. Starshield, the military version, uses the same satellites.</figcaption>
+    </figure>
+    <div>
+      <ol class="steps">
+        <li><div><b>The dish finds a satellite.</b> A flat dish about the size of a pizza box (the Starlink Mini is smaller) steers a narrow radio beam at a satellite passing overhead. The narrow beam makes it hard to jam.</div></li>
+        <li><div><b>Satellites pass the signal along.</b> More than 10,000 satellites fly in low orbit. Some pass data to each other by laser, so the signal can cross a war zone in the sky.</div></li>
+        <li><div><b>A ground station connects it.</b> A satellite beams the data down to a gateway, sometimes in another country, which plugs into ordinary internet cables.</div></li>
+        <li><div><b>The dish reports where it is.</b> Each dish knows its location, identity and speed. That is what lets SpaceX switch service on or off, very precisely.</div></li>
+      </ol>
+    </div>
+  </div>
+
+  <h3 class="sub">The three switches SpaceX holds</h3>
+  <p class="prose">Because every dish reports its place, its ID and its speed, the company running the network can make three kinds of decisions from its control room. In 2026 all three were used: first against Russia, then against Ukraine.</p>
+  <div class="grid3">
+    <article class="card switch-card">
+      <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#E6F5F4"/><path d="M32 14c-8 0-14 6-14 14 0 10 14 22 14 22s14-12 14-22c0-8-6-14-14-14z" fill="#0E8E8A"/><circle cx="32" cy="28" r="5" fill="#fff"/></svg>
+      <h4>Where: geofencing</h4>
+      <p>Service can be turned off in whole areas. Starlink has never been active inside Russia, so a dish carried there simply does not work.</p>
+      <p class="used">Used for: keeping Starlink dark inside Russia since 2022.</p>
+    </article>
+    <article class="card switch-card">
+      <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#E6F5F4"/><rect x="18" y="16" width="28" height="34" rx="4" fill="#0E8E8A"/><path d="M23 26l3 3 5-6M23 36l3 3 5-6" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="34" y="25" width="8" height="3" rx="1.5" fill="#fff"/><rect x="34" y="35" width="8" height="3" rx="1.5" fill="#fff"/></svg>
+      <h4>Who: the whitelist</h4>
+      <p>Only dishes on an approved list get service. Since February 2026, a dish in Ukraine only works if Ukraine's Defence Ministry has registered it.</p>
+      <p class="used">Used for: cutting off Russian troops using smuggled dishes (February 2026).</p>
+    </article>
+    <article class="card switch-card">
+      <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#FBEFF0"/><path d="M12 40a20 20 0 0 1 40 0" fill="none" stroke="#B23A48" stroke-width="5" stroke-linecap="round"/><line x1="32" y1="40" x2="22" y2="24" stroke="#14213D" stroke-width="3.5" stroke-linecap="round"/><circle cx="32" cy="40" r="4" fill="#14213D"/></svg>
+      <h4>How fast: the speed cap</h4>
+      <p>A dish moving faster than a set speed loses its link. That stops it working on fast drones, while dishes on the ground keep working.</p>
+      <p class="used">Used for: grounding Russian strike drones (January 2026), then slowing Ukraine's own interceptors (October 2026).</p>
+    </article>
+  </div>
+
+  <h3 class="sub">Why the October speed cap mattered</h3>
+  <figure class="card">
+    <svg class="svgbox" viewBox="0 0 760 270" role="img" aria-label="Speed line showing the 161 km/h cap far below the 400 km/h speed of Russian jet drones">
+      <g font-family="Atkinson Hyperlegible Next, Atkinson Hyperlegible, sans-serif">
+        <text x="24" y="30" font-size="17" font-weight="700" fill="#14213D">The cap sits far below the speed of the drones Ukraine must catch</text>
+        <text x="24" y="52" font-size="13" fill="#5F6A84">Speed of a moving dish, kilometres per hour</text>
+        <!-- danger zone 161-400 -->
+        <rect x="283" y="118" width="361" height="40" fill="#B23A48" fill-opacity=".09"/>
+        <text x="470" y="134" text-anchor="middle" font-size="13" fill="#8F1D2C" font-weight="700">Interceptors need this range.</text><text x="470" y="151" text-anchor="middle" font-size="13" fill="#8F1D2C">After the cap, they lose their link.</text>
+        <!-- axis -->
+        <line x1="40" y1="160" x2="720" y2="160" stroke="#14213D" stroke-width="2"/>
+        <g font-size="12" fill="#5F6A84" text-anchor="middle">
+          <line x1="40" y1="160" x2="40" y2="167" stroke="#14213D"/><text x="40" y="183">0</text>
+          <line x1="191" y1="160" x2="191" y2="167" stroke="#14213D"/><text x="191" y="183">100</text>
+          <line x1="342" y1="160" x2="342" y2="167" stroke="#14213D"/><text x="342" y="183">200</text>
+          <line x1="493" y1="160" x2="493" y2="167" stroke="#14213D"/><text x="493" y="183">300</text>
+          <line x1="644" y1="160" x2="644" y2="167" stroke="#14213D"/><text x="644" y="183">400</text>
+        </g>
+        <!-- 70 ordinary -->
+        <line x1="146" y1="160" x2="146" y2="214" stroke="#5F6A84" stroke-dasharray="3 3"/>
+        <circle cx="146" cy="160" r="5" fill="#5F6A84"/>
+        <text x="152" y="210" font-size="12.5" fill="#3B4866">~70: ordinary Starlink dish stops working well</text>
+        <!-- 75-90 band Jan -->
+        <rect x="153" y="76" width="23" height="84" fill="#0E8E8A" fill-opacity=".25"/>
+        <text x="40" y="72" font-size="12.5" fill="#0B6C69" font-weight="700">75–90: Jan 2026 cap that grounded Russian drones</text>
+        <!-- 161 -->
+        <line x1="283" y1="94" x2="283" y2="160" stroke="#B23A48" stroke-width="3"/>
+        <circle cx="283" cy="160" r="7" fill="#B23A48"/>
+        <text x="290" y="100" font-size="14" fill="#8F1D2C" font-weight="700">161: Oct 2026 cap on Ukraine's Starshield</text>
+        <!-- 400 -->
+        <line x1="644" y1="104" x2="644" y2="160" stroke="#14213D" stroke-width="2"/>
+        <circle cx="644" cy="160" r="6" fill="#14213D"/>
+        <text x="716" y="232" font-size="12.5" fill="#14213D" text-anchor="end">~400: Russian jet drones. Starshield worked this fast before October.</text>
+        <line x1="644" y1="167" x2="644" y2="218" stroke="#14213D" stroke-dasharray="3 3"/>
+        <!-- 450 -->
+        <circle cx="720" cy="160" r="5" fill="none" stroke="#2E62D9" stroke-width="2"/>
+        <text x="716" y="256" font-size="12.5" fill="#2E62D9" text-anchor="end">450: the limit Ukraine is asking for</text>
+      </g>
+    </svg>
+    <figcaption>Figures from CBS News, Axios, DroneXL, the Kyiv Post and President Zelenskyy's statements, October 2026. Some Ukrainian units reported drops as low as 90–130 km/h.</figcaption>
+  </figure>
+
+  <h3 class="sub">Starlink and Starshield are not the same thing</h3>
+  <table class="compare">
+    <thead><tr><th scope="col"></th><th scope="col">Starlink</th><th scope="col">Starshield</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Who it is for</th><td>Anyone who buys a dish: homes, hospitals, soldiers, volunteers.</td><td>Governments and militaries only. Encrypted and built for war.</td></tr>
+      <tr><th scope="row">Who decides access</th><td>SpaceX, under its terms of service.</td><td>Musk says the US government owns and controls it. CBS reports SpaceX licenses the technology to the US.</td></tr>
+      <tr><th scope="row">Speed while moving</th><td>Ordinary dishes degrade above about 70 km/h.</td><td>No built-in cap. It ran on drones at around 400 km/h until October 2026.</td></tr>
+      <tr><th scope="row">Who pays in Ukraine</th><td>Poland, other donors, and SpaceX in the early months.</td><td>The Pentagon.</td></tr>
+      <tr><th scope="row">Use in attacks</th><td>SpaceX limited drone control in 2023. Offensive use is restricted.</td><td>Designed for military use, including drones and strikes.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">How much Ukraine depends on it</h3>
+  <div class="grid4">
+    <div class="stat"><div class="n">50,000+</div><div class="l">dishes sent to Ukraine since 2022</div><div class="s">Modern Diplomacy, October 2026</div></div>
+    <div class="stat"><div class="n">~30,000</div><div class="l">paid for by Poland, about $121 million in total</div><div class="s">Polish Digital Ministry, October 2026</div></div>
+    <div class="stat"><div class="n">10,000+</div><div class="l">Starlink satellites in orbit</div><div class="s">Europe's OneWeb has 648</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">working replacements today</div><div class="s">The EU says its IRIS² network is due around 2029</div></div>
+  </div>
+  <div class="uses">
+    <div class="use"><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#E9EFFD"/><path d="M8 20l10-6 10 6-10-2z" fill="#2E62D9"/></svg><div><b>Flying drones</b><span>Strike drones, scouting drones, and interceptors that chase Russian Shaheds.</span></div></div>
+    <div class="use"><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#E9EFFD"/><circle cx="18" cy="18" r="8" fill="none" stroke="#2E62D9" stroke-width="2.5"/><circle cx="18" cy="18" r="2.5" fill="#2E62D9"/><path d="M18 6v6M18 24v6M6 18h6M24 18h6" stroke="#2E62D9" stroke-width="2"/></svg><div><b>Targeting</b><span>Battlefield apps that share where enemy units are, in real time.</span></div></div>
+    <div class="use"><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#E9EFFD"/><path d="M10 13h16v10H17l-5 4v-4h-2z" fill="#2E62D9"/></svg><div><b>Front-line talk</b><span>Units, logistics and commanders stay connected when cables and towers are destroyed.</span></div></div>
+    <div class="use"><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#E9EFFD"/><path d="M18 9v18M9 18h18" stroke="#2E62D9" stroke-width="4" stroke-linecap="round"/></svg><div><b>Civilian lifeline</b><span>Hospitals, energy crews and heated shelters keep internet during blackouts.</span></div></div>
+  </div>
+</section>
+
+<!-- =================== RUSSIA =================== -->
+<section class="block wrap" id="russia">
+  <div class="sec-head">
+    <span class="sec-num">2</span>
+    <h2>How Russia ended up using Starlink</h2>
+    <p>SpaceX has never sold Starlink to Russia. Russian forces got it anyway, through smuggling, and used it until the whitelist shut them out.</p>
+  </div>
+  <div class="path">
+    <div class="stop">
+      <div class="ico"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M5 11h20l-2 13H7z" fill="#B23A48"/><path d="M10 11a5 5 0 0 1 10 0" fill="none" stroke="#B23A48" stroke-width="2.4"/></svg></div>
+      <div><h4>1. Bought abroad</h4><p>Dishes are bought in third countries. In 2024 Ukrainian intelligence aired an intercept of Russian soldiers discussing buying them in Arab countries for about 200,000 rubles each.</p></div>
+    </div>
+    <div class="stop">
+      <div class="ico"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="4" y="9" width="15" height="11" rx="1.5" fill="#B23A48"/><path d="M19 13h4l3 4v3h-7z" fill="#B23A48"/><circle cx="9" cy="22" r="2.5" fill="#14213D"/><circle cx="22" cy="22" r="2.5" fill="#14213D"/></svg></div>
+      <div><h4>2. Smuggled in</h4><p>“Parallel import” networks move them to the front, past US export controls.</p></div>
+    </div>
+    <div class="stop">
+      <div class="ico"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M6 20 Q15 24 24 12 L21 9 Q14 18 8 16 Z" fill="#B23A48"/><rect x="13" y="20" width="3" height="6" fill="#B23A48"/></svg></div>
+      <div><h4>3. Switched on over Ukraine</h4><p>Starlink is off inside Russia, but it covers Ukraine. Dishes used in occupied areas or near the front could connect.</p></div>
+    </div>
+    <div class="stop">
+      <div class="ico"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 18l12-8 12 8-12-3z" fill="#B23A48"/><rect x="12" y="7" width="6" height="4" rx="1" fill="#14213D"/></svg></div>
+      <div><h4>4. Strapped to drones</h4><p>Starlink Minis were mounted on Shahed, Molniya and BM-35 strike drones. A satellite link resists jamming and lets a pilot steer from far away.</p></div>
+    </div>
+    <div class="stop cut">
+      <div class="ico"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="11" fill="none" stroke="#0E8E8A" stroke-width="3"/><path d="M7 23L23 7" stroke="#0E8E8A" stroke-width="3"/></svg></div>
+      <div><h4>5. Cut off</h4><p>After a January 2026 drone strike on a passenger train, SpaceX and Ukraine built the whitelist. A Russian official admitted Russian systems were down for two weeks.</p></div>
+    </div>
+  </div>
+  <div class="callout" style="border-color:var(--ru)">
+    <p><b>Is it illegal for Russia to use Starlink?</b> Not by itself, under international law. Using a smuggled radio is not a war crime. It breaks US export rules and SpaceX's terms. Under the law of war, what matters is <em>what the drones hit</em>. Steering a drone into a civilian passenger train is the likely crime, whatever the drone uses to steer.</p>
+  </div>
+</section>
+
+<!-- =================== TIMELINE =================== -->
+<section class="block wrap" id="timeline">
+  <div class="sec-head">
+    <span class="sec-num">3</span>
+    <h2>Timeline: what happened, step by step</h2>
+    <p>Hover over, tap or arrow-key through each dot. The panel shows what happened and which law it touches. October 2026 is shown in detail because so much happened in a few days.</p>
+  </div>
+  <ul class="legend" id="legend"></ul>
+  <div class="tl-scroll"><div class="tl" id="tl" role="listbox" aria-label="Timeline events"></div></div>
+  <div class="tl-nav"><button type="button" id="tlPrev">Previous</button><button type="button" id="tlNext">Next</button><span id="tlCount"></span></div>
+  <div class="tl-panel" aria-live="polite">
+    <div class="what" id="tlWhat"></div>
+    <div class="why" id="tlWhy"></div>
+  </div>
+</section>
+
+<!-- =================== LAW =================== -->
+<section class="block wrap" id="law">
+  <div class="sec-head">
+    <span class="sec-num">4</span>
+    <h2>The law, word for word</h2>
+    <p>International law is mostly a set of rules between countries. Companies and people are covered mainly by their own country's laws and by war-crimes law. Keep that in mind: it decides the Musk question.</p>
+  </div>
+
+  <div class="layers">
+    <div class="layer" style="--c:var(--f-charter)"><b>When may you fight?</b><span>The UN Charter bans attacking other countries and allows self-defence.</span><span class="who">Main question for Russia</span></div>
+    <div class="layer" style="--c:var(--f-war)"><b>How must you fight?</b><span>The Geneva Conventions and their protocols limit targets and protect civilians.</span><span class="who">Binds Russia and Ukraine</span></div>
+    <div class="layer" style="--c:var(--f-resp)"><b>Who answers for what?</b><span>State responsibility, space law, neutrality and war-crimes law assign blame.</span><span class="who">Main question for the US, Musk and SpaceX</span></div>
+    <div class="layer" style="--c:var(--f-icj)"><b>Who decides?</b><span>The ICJ Statute and treaty rules set who can judge and how treaties are read.</span><span class="who">Explains why few courts can rule</span></div>
+  </div>
+
+  <div class="filters" id="filters" role="group" aria-label="Filter laws by source"></div>
+  <div class="laws" id="laws"></div>
+</section>
+
+<!-- =================== VERDICTS =================== -->
+<section class="block wrap" id="verdicts">
+  <div class="sec-head">
+    <span class="sec-num">5</span>
+    <h2>Who is breaking international law? Who isn't?</h2>
+    <p>Each action is placed on a scale from clear breach to clearly lawful. Tap a law tag to jump to its exact text.</p>
+  </div>
+  <ul class="scale-key">
+    <li><i style="background:var(--v0)"></i>Clear breach</li>
+    <li><i style="background:var(--v1)"></i>Likely breach</li>
+    <li><i style="background:var(--v2)"></i>Contested</li>
+    <li><i style="background:var(--v3)"></i>Likely lawful</li>
+    <li><i style="background:var(--v4)"></i>Lawful</li>
+    <li><i style="background:repeating-linear-gradient(90deg,#9AA3B5 0 4px,#E3E7EF 4px 7px)"></i>Not an international-law question</li>
+  </ul>
+  <div id="verdictBoard"></div>
+</section>
+
+<!-- =================== MUSK =================== -->
+<section class="block wrap" id="musk">
+  <div class="sec-head">
+    <span class="sec-num">6</span>
+    <h2>Is Musk breaking international law?</h2>
+    <p>Follow the legal test step by step. The answer is the same whichever report about who gave the order turns out to be true.</p>
+  </div>
+  <div class="tree">
+    <div class="node start"><h4>October 13–14, 2026</h4><p>Starshield stops working for Ukrainian terminals moving faster than about 161 km/h. Interceptor drones fail during Russian attacks.</p></div>
+    <div class="down"></div>
+    <div class="node q">Who gave the order?</div>
+    <div class="split">
+      <div class="branch">
+        <span class="tag" style="background:var(--us)">Reuters, Oct 15: the White House</span>
+        <div class="node"><h4>Then it is US government conduct</h4><p>Acts of officials count as acts of the state. If SpaceX only carried out their instruction, that also counts as US conduct.</p><div class="refs"><button class="ref" data-law="arsiwa-4-8">ARSIWA Art. 4 and 8</button></div></div>
+      </div>
+      <div class="branch">
+        <span class="tag" style="background:var(--sx)">WSJ and CBS, Oct 21: Musk</span>
+        <div class="node"><h4>Then it is private conduct, but the US still answers</h4><p>A private choice is not the state's act. But the US answers internationally for its companies' space activities and must supervise them.</p><div class="refs"><button class="ref" data-law="ost-3-6">Outer Space Treaty Art. VI</button></div></div>
+      </div>
+    </div>
+    <div class="merge"><i></i></div>
+    <div class="node q">Did it break a rule binding the US?</div>
+    <div class="down"></div>
+    <div class="node"><h4>No</h4><p>No treaty or custom obliges the US, or SpaceX, to keep supplying Starshield. The 2024 US–Ukraine pact says its annex creates no legal obligations. Neutrality law says outsiders do not have to provide radio links at all.</p><div class="refs"><button class="ref" data-law="hague-8-9">Hague V Art. 8</button><button class="ref" data-law="vclt-26">VCLT Art. 26</button></div></div>
+    <div class="down"></div>
+    <div class="node q">Did anyone help Russia commit a crime, on purpose?</div>
+    <div class="down"></div>
+    <div class="node"><h4>No evidence of that</h4><p>Slowing the victim's link is not, in law, helping the attacker. Complicity needs help that contributes to a specific wrong, and knowledge or purpose. War-crimes liability needs the purpose of facilitating a crime.</p><div class="refs"><button class="ref" data-law="arsiwa-16">ARSIWA Art. 16</button><button class="ref" data-law="rome-25">Rome Statute Art. 25(3)(c)</button></div></div>
+    <div class="down"></div>
+    <div class="node end"><h4>Result: no breach of international law</h4><p>But one company boss or one office can quietly weaken an ally's air defence in the middle of an attack, without notice, and no international rule stops it. That is a gap in the law, not a breach of it.</p></div>
+  </div>
+  <div class="card flip">
+    <h4 style="font-family:var(--sans); margin:0 0 10px">What would change this answer</h4>
+    <ul>
+      <li>Evidence the cap was timed to help a specific Russian strike, with that purpose. That could engage complicity rules and, for individuals, war-crimes law.</li>
+      <li>A published contract or treaty that guarantees Ukraine uninterrupted service. Breaking it would then be a legal wrong, under contract law or the treaty.</li>
+      <li>A US decision to treat the war as neutral ground. Then Hague V's equal-treatment rule (Art. 9) would apply, and restricting only Ukraine would be a problem.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =================== CASES =================== -->
+<section class="block wrap" id="cases">
+  <div class="sec-head">
+    <span class="sec-num">7</span>
+    <h2>Cases that shape the answer</h2>
+    <p>Court decisions bind only the parties in that case (ICJ Statute Art. 59). Courts still follow them closely, so they show how the rules above are applied.</p>
+  </div>
+  <div class="grid3" id="caseGrid"></div>
+
+  <h3 class="sub">Connection map: events, laws and cases</h3>
+  <p class="prose">Hover over or tap any item. The map lights up the chain: which laws an event touches, and which cases tell us how those laws work.</p>
+  <div class="map" id="map">
+    <svg class="edges" id="edges" aria-hidden="true"></svg>
+    <div class="map-cols">
+      <div class="map-col" id="colE"><h4>Events</h4></div>
+      <div class="map-col" id="colL"><h4>Laws</h4></div>
+      <div class="map-col" id="colC"><h4>Cases and rulings</h4></div>
+    </div>
+    <div class="map-info" id="mapInfo" aria-live="polite">Pick an item to see how it connects.</div>
+  </div>
+</section>
+
+<!-- =================== FORUMS =================== -->
+<section class="block wrap" id="forums">
+  <div class="sec-head">
+    <span class="sec-num">8</span>
+    <h2>Where could this actually be decided?</h2>
+    <p>Breaking a rule and getting a ruling are different things. Most international courts need the accused country's consent.</p>
+  </div>
+  <div class="grid3" id="forumGrid"></div>
+</section>
+
+<!-- =================== STANCE =================== -->
+<section class="block wrap" id="stance">
+  <div class="stance">
+    <svg class="switch-art" viewBox="0 0 230 150" aria-hidden="true">
+      <rect x="10" y="40" width="150" height="70" rx="35" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+      <circle cx="125" cy="75" r="27" fill="#5FD6CF"/>
+      <text x="34" y="81" font-size="16" font-weight="700" fill="#C9D3F2" font-family="Atkinson Hyperlegible Next, Atkinson Hyperlegible, sans-serif">ON</text>
+      <path d="M170 75 h28" stroke="#FFD66B" stroke-width="2" stroke-dasharray="4 5"/>
+      <circle cx="210" cy="75" r="9" fill="none" stroke="#FFD66B" stroke-width="2"/>
+      <text x="10" y="138" font-size="13" fill="#9FAED8" font-family="Atkinson Hyperlegible Next, Atkinson Hyperlegible, sans-serif">One switch, no rule about who flips it</text>
+    </svg>
+    <h2>My stance</h2>
+    <p class="claim">Russia is the law-breaker. The United States is using lawful pressure in ways that weaken the victim. Musk has not broken international law, and that is exactly what the law now needs to fix.</p>
+    <div class="three">
+      <div class="pt">
+        <span class="badge" style="background:var(--v0)">Clear breach</span>
+        <h3>On Russia</h3>
+        <p>The invasion breaks the most basic rule in the UN Charter. Russia defies a binding World Court order. ICC judges see reasonable grounds for war crimes in its strikes on Ukraine's power grid. Its use of smuggled Starlinks is not the crime; what those drones hit is.</p>
+      </div>
+      <div class="pt">
+        <span class="badge" style="background:var(--v3)">Lawful, but corrosive</span>
+        <h3>On the United States</h3>
+        <p>No rule forces a country to keep helping another. The diesel deal and the cap do not meet the legal test for complicity. The real legal limits are ahead: no recognition of land taken by force, and no deal that binds Ukraine without its consent. The live questions today are under US law.</p>
+      </div>
+      <div class="pt">
+        <span class="badge" style="background:var(--v4)">No breach, a gap</span>
+        <h3>On Musk and SpaceX</h3>
+        <p>Most of these rules bind states, not companies. The Outer Space Treaty puts the duty on Washington to supervise SpaceX. A 1907 neutrality treaty shows the law once cared about private wartime networks, but it was written for telegraphs, and it does not fit.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub">The strongest arguments against my view</h3>
+  <div class="counter">
+    <div class="c"><div><h4>“Ensure respect” creates a duty to keep helping</h4><p>The Red Cross reads Common Article 1 as requiring outside countries to do what they reasonably can to stop violations. Deliberately degrading a uniquely effective air-defence tool during attacks on civilians could fail that test.</p></div><div class="resp"><h4>My response</h4><p>This is the best argument. But several states reject the broad reading, and no court has applied it to cutting support for a victim. It is a serious legal argument, not yet settled law.</p></div></div>
+    <div class="c"><div><h4>The diesel deal funds the war, so the US is aiding Russia</h4><p>Lifting sanctions puts money in Russia's budget, which pays for missiles that hit cities.</p></div><div class="resp"><h4>My response</h4><p>Article 16 needs help that contributes to a specific wrongful act. General revenue is too far removed, and there is no duty to impose sanctions in the first place.</p></div></div>
+    <div class="c"><div><h4>Ukraine relied on Starshield in good faith</h4><p>The US encouraged Ukraine to build its defence around Starshield. Cutting it without warning breaks the spirit of good faith.</p></div><div class="resp"><h4>My response</h4><p>Good faith applies to binding promises (VCLT Art. 26). The public agreements contain none for Starshield. This is a strong political and moral point, but a weak legal one.</p></div></div>
+    <div class="c"><div><h4>Cutting off only Russia broke neutrality first</h4><p>Hague V says a neutral that restricts radio links must restrict both sides equally.</p></div><div class="resp"><h4>My response</h4><p>The US is not neutral toward a state that 141 countries named as an aggressor. Many lawyers accept this “qualified neutrality.” And Hague V's own Article 20 limits its reach.</p></div></div>
+  </div>
+
+  <h3 class="sub">What should happen next</h3>
+  <ol class="fix prose">
+    <li><b>Find out who gave the order.</b> The Pentagon's inspector general inquiry, requested by senators from both parties, should say who decided and on what authority.</li>
+    <li><b>Write notice terms into the contracts.</b> Allies who depend on a private network need a binding promise of warning before any cut, and a named official who must approve it.</li>
+    <li><b>Use the Outer Space Treaty as written.</b> Article VI already says the US must authorize and supervise SpaceX. Clear rules for wartime service decisions would make that duty real.</li>
+    <li><b>Ask the World Court.</b> The General Assembly can request an advisory opinion (Charter Art. 96) on what states owe when private satellites carry a war.</li>
+    <li><b>Build backups.</b> Europe's Govsatcom adds commercial capacity in early 2027 and IRIS² is due around 2029. Until then, Ukraine has no full alternative.</li>
+  </ol>
+  <p class="muted prose">This is an analysis of public treaty texts and reporting, not legal advice. Who ordered the October cap is still disputed: Reuters points to the White House, the Telegraph to Musk with Trump's agreement, and the Wall Street Journal and CBS to Musk. The contracts behind Starshield are not public.</p>
+</section>
+
+<!-- =================== SOURCES =================== -->
+<section class="block wrap" id="sources">
+  <div class="sec-head">
+    <span class="sec-num">9</span>
+    <h2>Sources</h2>
+    <p>Legal texts first, then reporting. Dates in the timeline come from these.</p>
+  </div>
+  <div class="sources">
+    <h4>Legal texts</h4>
+    <ul>
+      <li><a href="https://www.un.org/en/about-us/un-charter/full-text">Charter of the United Nations</a></li>
+      <li><a href="https://www.icj-cij.org/statute">Statute of the International Court of Justice</a></li>
+      <li><a href="https://legal.un.org/ilc/texts/instruments/english/conventions/1_1_1969.pdf">Vienna Convention on the Law of Treaties (1969)</a></li>
+      <li><a href="https://legal.un.org/ilc/texts/instruments/english/draft_articles/9_6_2001.pdf">ILC Articles on Responsibility of States (2001)</a></li>
+      <li><a href="https://avalon.law.yale.edu/20th_century/usmu016.asp">Outer Space Treaty (1967)</a></li>
+      <li><a href="https://lagen.nu/icrc/200">Hague Convention V on Neutral Powers (1907)</a></li>
+      <li><a href="https://ihl-databases.icrc.org/en/ihl-treaties/api-1977/article-52">Additional Protocol I, Article 52 (ICRC)</a></li>
+      <li><a href="https://www.icc-cpi.int/sites/default/files/RS-Eng.pdf">Rome Statute of the ICC</a></li>
+    </ul>
+    <h4>Legal analysis</h4>
+    <ul>
+      <li><a href="https://www.diplomacyandlaw.com/post/starshield-ukraine">Diplomacy and Law: Starshield under international law</a></li>
+      <li><a href="https://voelkerrechtsblog.org/129-words-and-the-weight-of-worlds/">Völkerrechtsblog: reading Article VI of the Outer Space Treaty</a></li>
+      <li><a href="https://www.justsecurity.org/34379/state-complicity-states-bad-acts-and-avoid-2">Just Security: state complicity under Article 16</a></li>
+      <li><a href="https://www.cambridge.org/core/product/BC4D96094CEE78BC045FF8F98DDF3E13/core-reader">ICLQ: Common Article 1 of the Geneva Conventions</a></li>
+      <li><a href="https://www.cov.com/en/news-and-insights/news/2024/02/covington-secures-crucial-victory-in-case-before-the-world-court-relating-to-russias-full-scale-invasion-of-ukraine">Covington: ICJ ruling and the 2022 order</a></li>
+      <li><a href="https://asil.org/ilib/icj-delivers-order-ukraine-v-russia-case/">ASIL: ICJ order of 16 March 2022</a></li>
+      <li><a href="https://www.asil.org/ILIB/ecthr-finds-russia-committed-grave-international-law-violations-ukraine">ASIL: ECtHR judgment of 9 July 2025</a></li>
+      <li><a href="https://hrw.org/news/2024/06/26/new-icc-warrants-issued-ukraine-crimes">Human Rights Watch: ICC warrants over grid strikes</a></li>
+      <li><a href="https://www.euronews.com/my-europe/2026/05/15/point-of-no-return-36-countries-join-special-tribunal-to-prosecute-vladimir-putin">Euronews: 36 countries back the aggression tribunal</a></li>
+    </ul>
+    <h4>October 2026 reporting</h4>
+    <ul>
+      <li><a href="https://www.cbsnews.com/news/elon-musk-ukraine-spacex-starshield-trump-administration/">CBS News: Musk chose to restrict Ukraine's access</a></li>
+      <li><a href="https://www.staradvertiser.com/2026/10/16/breaking-news/u-s-officials-white-house-ordered-starshield-limits-for-ukraine/">Reuters: order came from inside the White House</a></li>
+      <li><a href="https://kyivindependent.com/musk-asked-trump-to-restrict-ukraines-starlink-service-telegraph-reports/">Kyiv Independent: the Telegraph's report</a></li>
+      <li><a href="https://www.aljazeera.com/news/2026/10/14/ukraine-accuses-elon-musks-spacex-of-throttling-starlink-terminals">Al Jazeera: Musk says US military controls limits</a></li>
+      <li><a href="https://www.axios.com/2026/10/17/zelensky-starlink-elon-musk-trump">Axios: Zelensky says system still restricted</a></li>
+      <li><a href="https://united24media.com/war-in-ukraine/zelenskyy-says-starshield-limits-remain-as-us-restores-missile-intelligence-sharing-23691">UNITED24: limits remain, missile intelligence restored</a></li>
+      <li><a href="https://www.aljazeera.com/news/2026/10/18/rubio-says-ukraine-without-access-to-starshield-future-under-discussion">Al Jazeera: Rubio on Starshield</a></li>
+      <li><a href="https://www.timesofisrael.com/liveblog_entry/us-threatens-to-block-arms-for-ukraine-over-refinery-attacks-ft-reports/">Reuters/FT: threats over refinery strikes</a></li>
+      <li><a href="https://www.cnbc.com/2026/10/09/trump-putin-russian-diesel-us-global-markets.html">CNBC: the diesel deal</a></li>
+      <li><a href="https://www.hsfkramer.com/notes/sanctions/2026-posts/trump-administration-waives-new-russia-sanctions-and-tariffs-under-graham-act">HSF Kramer: Graham Act waivers</a></li>
+      <li><a href="https://www.consilium.europa.eu/en/meetings/european-council/2026/10/15-16/">European Council conclusions, Oct 15–16</a></li>
+      <li><a href="https://www.aljazeera.com/news/2026/10/21/witkoff-in-russia-for-putin-meeting-after-positive-talks-with-zelenskyy">Al Jazeera: Putin and Zelenskyy back three-way talks</a></li>
+      <li><a href="https://thehill.com/homenews/senate/6152690-senators-demand-starshield-probe/">The Hill: senators press the Pentagon</a></li>
+      <li><a href="https://www.kyivpost.com/post/87219">Kyiv Post: Ukraine seeks a 450 km/h limit</a></li>
+    </ul>
+    <h4>Starlink history and Russian use</h4>
+    <ul>
+      <li><a href="https://euronews.com/2026/02/02/musks-spacex-and-ukraines-defence-ministry-to-block-russias-use-of-starlink">Euronews: SpaceX and Ukraine block Russian use (Feb 2026)</a></li>
+      <li><a href="https://www.fdd.org/analysis/2026/02/06/spacex-blocks-russias-starlink-access-but-ubiquitis-tech-remains-ubiquitous/">FDD: the whitelist</a></li>
+      <li><a href="https://dronexl.co/2026/01/31/spacex-starlink-speed-limit-russian-drones/">DroneXL: January 2026 speed limit</a></li>
+      <li><a href="https://www.yahoo.com/news/articles/ukraine-working-spacex-stop-russian-140703553.html">Reuters: Starlinks on Russian drones, train attack</a></li>
+      <li><a href="https://www.yahoo.com/news/articles/russian-official-acknowledges-starlink-systems-185202491.html">Reuters: Russian official admits two-week outage</a></li>
+      <li><a href="https://www.deccanherald.com/amp/story/world%2Fukraine-says-russia-buying-starlink-terminals-in-arab-countries-2892392">Reuters: Russia buying Starlinks in Arab countries (2024)</a></li>
+      <li><a href="https://www.rferl.org/a/russia-western-commercial-satellites-legitimate-targets/32102888.html">RFE/RL: Russia calls commercial satellites possible targets (2022)</a></li>
+      <li><a href="https://www.stripes.com/theaters/europe/2023-02-09/spacex-questions-ukraine-use-starlink-9089307.html">Stars and Stripes: SpaceX limits drone use (2023)</a></li>
+      <li><a href="https://globalnews.ca/news/11030688/us-could-cut-ukraines-access-to-starlink-internet-services-over-minerals-sources">Reuters: Starlink raised in minerals talks (2025)</a></li>
+      <li><a href="https://ukranews.com/en/news/1181813-poland-s-ministry-of-digital-affairs-reveals-how-much-it-spent-on-starlink-for-ukraine-media-reports">Ukrainian News: Poland's Starlink spending</a></li>
+      <li><a href="https://moderndiplomacy.eu/2026/10/20/ukraine-starlink-starshield-kill-switch-military-sovereignty-europe/">Modern Diplomacy: terminals, OneWeb comparison</a></li>
+      <li><a href="https://www.kpbs.org/news/international/2025/02/24/u-s-votes-against-a-u-n-resolution-urging-russias-withdrawal-from-ukraine">AP via KPBS: US votes against Ukraine's UN resolution (2025)</a></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <p>Prepared October 21, 2026. Legal texts are quoted from the official versions linked above, including the UN Charter, ICJ Statute and Vienna Convention in your course files. Not legal advice.</p>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Stars ---------- */
+var starG = document.getElementById("stars");
+var seed = 7;
+function rnd(){ seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+var ns = "http://www.w3.org/2000/svg";
+for (var i = 0; i < 110; i++){
+  var c = document.createElementNS(ns, "circle");
+  c.setAttribute("cx", (rnd()*1200).toFixed(1));
+  c.setAttribute("cy", (rnd()*420).toFixed(1));
+  c.setAttribute("r", (rnd()*1.3+0.3).toFixed(2));
+  c.setAttribute("fill", "#E9EEFF");
+  c.setAttribute("opacity", (rnd()*0.6+0.25).toFixed(2));
+  starG.appendChild(c);
+}
+
+/* ---------- Shared ---------- */
+var ACTORS = {
+  ru:{name:"Russia", c:"var(--ru)"},
+  ua:{name:"Ukraine", c:"var(--ua)"},
+  us:{name:"US government", c:"var(--us)"},
+  sx:{name:"Musk and SpaceX", c:"var(--sx)"},
+  eu:{name:"Europe", c:"var(--eu)"},
+  un:{name:"Courts and the UN", c:"var(--un)"}
+};
+
+/* ---------- Laws ---------- */
+var FAM = {
+  charter:{name:"UN Charter", c:"var(--f-charter)"},
+  icj:{name:"ICJ Statute", c:"var(--f-icj)"},
+  vclt:{name:"Vienna Convention on Treaties", c:"var(--f-vclt)"},
+  resp:{name:"State responsibility", c:"var(--f-resp)"},
+  war:{name:"Laws of war and war crimes", c:"var(--f-war)"},
+  space:{name:"Space and neutrality", c:"var(--f-space)"}
+};
+
+var LAWS = [
+ {id:"charter-2-4", fam:"charter", course:true, title:"The ban on force",
+  q:[{cite:"UN Charter, Article 2(4)", t:"All Members shall refrain in their international relations from the threat or use of force against the territorial integrity or political independence of any state, or in any other manner inconsistent with the Purposes of the United Nations."}],
+  plain:"Countries may not attack, or threaten to attack, other countries. This is the most basic rule of the modern world order.",
+  link:"Russia's invasion is the clearest breach in this whole story. In March 2022, 141 countries in the General Assembly demanded Russia withdraw. The ban on aggression is also a “peremptory” rule: no treaty or deal can set it aside.",
+  parties:[["y","Russia"],["y","Ukraine"],["y","United States"],["","All UN members"]]},
+ {id:"charter-51", fam:"charter", course:true, title:"The right to self-defence",
+  q:[{cite:"UN Charter, Article 51", t:"Nothing in the present Charter shall impair the inherent right of individual or collective self-defence if an armed attack occurs against a Member of the United Nations, until the Security Council has taken measures necessary to maintain international peace and security. Measures taken by Members in the exercise of this right of self-defence shall be immediately reported to the Security Council and shall not in any way affect the authority and responsibility of the Security Council under the present Charter to take at any time such action as it deems necessary in order to maintain or restore international peace and security."}],
+  plain:"If you are attacked, you may defend yourself, and other countries may help you (“collective” self-defence), until the Security Council steps in.",
+  link:"Ukraine's fight, including strikes inside Russia, is self-defence. Countries and companies that arm or connect Ukraine are helping lawful self-defence. The “until the Security Council” part never kicks in, because Russia can veto any Council action (see Article 27).",
+  parties:[["y","Russia"],["y","Ukraine"],["y","United States"]]},
+ {id:"charter-27", fam:"charter", course:true, title:"The veto, and why the UN is stuck",
+  q:[{cite:"UN Charter, Article 27(3)", t:"Decisions of the Security Council on all other matters shall be made by an affirmative vote of nine members including the concurring votes of the permanent members; provided that, in decisions under Chapter VI, and under paragraph 3 of Article 52, a party to a dispute shall abstain from voting."},
+     {cite:"UN Charter, Article 2(5)", t:"All Members shall give the United Nations every assistance in any action it takes in accordance with the present Charter, and shall refrain from giving assistance to any state against which the United Nations is taking preventive or enforcement action."}],
+  plain:"Binding Security Council decisions need all five permanent members to agree. A party to a dispute must sit out only peaceful-settlement votes, not enforcement votes. And if the UN ever acts against a country, no member may help that country.",
+  link:"Russia is a permanent member, so it can block any binding action against itself. That is why Article 2(5), which would forbid helping Russia, never switches on. It is also why courts and tribunals carry so much weight in this war.",
+  parties:[["y","Russia (veto holder)"],["y","United States (veto holder)"],["y","Ukraine"]]},
+ {id:"icj-41", fam:"icj", course:true, title:"Emergency court orders must be obeyed",
+  q:[{cite:"ICJ Statute, Article 41(1)", t:"The Court shall have the power to indicate, if it considers that circumstances so require, any provisional measures which ought to be taken to preserve the respective rights of either party."},
+     {cite:"UN Charter, Article 94(1)", t:"Each Member of the United Nations undertakes to comply with the decision of the International Court of Justice in any case to which it is a party."}],
+  plain:"While a case runs, the World Court can order emergency steps. Every UN member promises to obey the Court in its own cases.",
+  link:"On March 16, 2022, the Court ordered Russia to immediately suspend its military operations, by 13 votes to 2. In LaGrand (2001) the Court held that such orders are binding. Russia has kept fighting, so it is breaching the order. Ukraine has asked for reparations for that breach.",
+  parties:[["y","Russia"],["y","Ukraine"],["y","United States"]]},
+ {id:"icj-36", fam:"icj", course:true, title:"No consent, no case",
+  q:[{cite:"ICJ Statute, Article 36(1)", t:"The jurisdiction of the Court comprises all cases which the parties refer to it and all matters specially provided for in the Charter of the United Nations or in treaties and conventions in force."},
+     {cite:"ICJ Statute, Article 36(2)", t:"The states parties to the present Statute may at any time declare that they recognize as compulsory ipso facto and without special agreement, in relation to any other state accepting the same obligation, the jurisdiction of the Court in all legal disputes concerning: a. the interpretation of a treaty; b. any question of international law; c. the existence of any fact which, if established, would constitute a breach of an international obligation; d. the nature or extent of the reparation to be made for the breach of an international obligation."}],
+  plain:"The World Court can only hear a case if both countries agreed: by a special deal, by a clause in a treaty, or by a standing declaration accepting the Court.",
+  link:"This is the main gate. Ukraine had to sue Russia under the Genocide Convention, because that treaty has a clause sending disputes to the Court. Ukraine could not take the US to the Court over Starshield: the US withdrew its standing acceptance, effective 1986, during the Nicaragua v. United States case.",
+  parties:[["y","All UN members are parties to the Statute"],["n","US: no standing acceptance since 1986"]]},
+ {id:"icj-38", fam:"icj", course:true, title:"Where international law comes from",
+  q:[{cite:"ICJ Statute, Article 38(1)", t:"The Court, whose function is to decide in accordance with international law such disputes as are submitted to it, shall apply: a. international conventions, whether general or particular, establishing rules expressly recognized by the contesting states; b. international custom, as evidence of a general practice accepted as law; c. the general principles of law recognized by civilized nations; d. subject to the provisions of Article 59, judicial decisions and the teachings of the most highly qualified publicists of the various nations, as subsidiary means for the determination of rules of law."},
+     {cite:"ICJ Statute, Article 59", t:"The decision of the Court has no binding force except between the parties and in respect of that particular case."}],
+  plain:"Law comes from treaties, from custom (what states do because they believe they must), and from general principles. Court cases and expert writing help find it. A ruling formally binds only the parties to that case.",
+  link:"Several rules on this page are not treaties, such as the Articles on State Responsibility. They count because they reflect custom; the ICJ said so for Article 16 in Bosnia v. Serbia (2007). Earlier cases like Nicaragua do not bind the US in a new dispute, but they show how a court would reason.",
+  parties:[["y","All UN members"]]},
+ {id:"vclt-31-32", fam:"vclt", course:true, title:"How to read a treaty",
+  q:[{cite:"VCLT, Article 31(1)", t:"A treaty shall be interpreted in good faith in accordance with the ordinary meaning to be given to the terms of the treaty in their context and in the light of its object and purpose."},
+     {cite:"VCLT, Article 32", t:"Recourse may be had to supplementary means of interpretation, including the preparatory work of the treaty and the circumstances of its conclusion, in order to confirm the meaning resulting from the application of article 31, or to determine the meaning when the interpretation according to article 31: a. leaves the meaning ambiguous or obscure; or b. leads to a result which is manifestly absurd or unreasonable."}],
+  plain:"Read a treaty's words in their normal sense, in context, and in light of what the treaty is for. Look at drafting history only to confirm that reading, or when the words are unclear or lead somewhere absurd.",
+  link:"Two old phrases drive the Musk question. Does Hague V's 1907 “wireless telegraphy apparatus” cover satellite internet? Read for its purpose (rules for wartime radio links), probably yes. Does the Outer Space Treaty's “national activities” cover everything SpaceX does, or only what the government directs? Scholars split. One reading, built on Article 31, says only acts attributable to the state count.",
+  parties:[["y","Russia"],["y","Ukraine"],["","US: signed, not ratified; treats much of it as custom"]]},
+ {id:"vclt-26", fam:"vclt", course:true, title:"Promises must be kept",
+  q:[{cite:"VCLT, Article 26", t:"Every treaty in force is binding upon the parties to it and must be performed by them in good faith."}],
+  plain:"A binding deal must be kept, honestly. But only binding deals count.",
+  link:"No published treaty promises Ukraine Starlink or Starshield. The 2024 US–Ukraine security agreement's annex says it creates no legal rights or obligations. Musk's 2025 pledge on X that Starlink would “never” switch off is not a treaty at all. So there is no broken promise in the legal sense.",
+  parties:[["y","Russia"],["y","Ukraine"],["","US: applies as custom"]]},
+ {id:"vclt-34", fam:"vclt", course:true, title:"No deal about Ukraine without Ukraine",
+  q:[{cite:"VCLT, Article 34", t:"A treaty does not create either obligations or rights for a third State without its consent."}],
+  plain:"A treaty cannot bind a country that did not agree to it.",
+  link:"A US–Russia agreement cannot hand away Ukrainian land or bind Ukraine. That is why Zelenskyy insists Ukraine must be at the table, and that Ukraine's parliament must approve any deal. It matters now, with three-way talks planned for November and a reported push for a deal by the G20 in December.",
+  parties:[["y","Russia"],["y","Ukraine"],["","US: applies as custom"]]},
+ {id:"vclt-52-53", fam:"vclt", course:true, title:"Deals forced by war can be void",
+  q:[{cite:"VCLT, Article 52", t:"A treaty is void if its conclusion has been procured by the threat or use of force in violation of the principles of international law embodied in the Charter of the United Nations."},
+     {cite:"VCLT, Article 53", t:"A treaty is void if, at the time of its conclusion, it conflicts with a peremptory norm of general international law. For the purposes of the present Convention, a peremptory norm of general international law is a norm accepted and recognized by the international community of States as a whole as a norm from which no derogation is permitted and which can be modified only by a subsequent norm of general international law having the same character."},
+     {cite:"VCLT, Article 75", t:"The provisions of the present Convention are without prejudice to any obligation in relation to a treaty which may arise for an aggressor State in consequence of measures taken in conformity with the Charter of the United Nations with reference to that State’s aggression."}],
+  plain:"A treaty forced on a country by illegal military force is void. So is a treaty that clashes with a fundamental rule, like the ban on aggression. These protections are for the victim, not the aggressor.",
+  link:"If Russia forces terms on Ukraine through its invasion, Ukraine could later argue the deal is void. US pressure, such as cutting aid or threats about intelligence, is not “force” here: economic and political pressure was left out of Article 52's text in 1969. Any deal that recognizes land taken by force would also run into Article 53.",
+  parties:[["y","Russia"],["y","Ukraine"],["","US: largely as custom"]]},
+ {id:"arsiwa-4-8", fam:"resp", title:"Whose act is it?",
+  q:[{cite:"ILC Articles on State Responsibility (ARSIWA), Article 4(1)", t:"The conduct of any State organ shall be considered an act of that State under international law, whether the organ exercises legislative, executive, judicial or any other functions, whatever position it holds in the organization of the State, and whatever its character as an organ of the central Government or of a territorial unit of the State."},
+     {cite:"ILC Articles on State Responsibility, Article 8", t:"The conduct of a person or group of persons shall be considered an act of a State under international law if the person or group of persons is in fact acting on the instructions of, or under the direction or control of, that State in carrying out the conduct."}],
+  plain:"A country is responsible for what its officials do. It is also responsible for what private people or companies do on its instructions or under its control.",
+  link:"If the White House or Pentagon ordered the cap (Reuters), it is US conduct. If Musk decided on his own (WSJ, CBS), it is not, unless he was acting on officials' instructions. CBS says he spoke with administration officials first to learn the president's thinking. That is not yet proof of an instruction.",
+  parties:[["","Not a treaty: written by the UN's law experts in 2001; key parts are customary law binding all states"]]},
+ {id:"arsiwa-16", fam:"resp", title:"Helping another country break the law",
+  q:[{cite:"ILC Articles on State Responsibility, Article 16", t:"A State which aids or assists another State in the commission of an internationally wrongful act by the latter is internationally responsible for doing so if: (a) that State does so with knowledge of the circumstances of the internationally wrongful act; and (b) the act would be internationally wrongful if committed by that State."}],
+  plain:"A country is responsible if it knowingly helps another country commit an illegal act that would be illegal for the helper too.",
+  link:"This is the legal test for “complicity.” The diesel deal and waived sanctions put money in Russia's budget, but the help must actually contribute to a specific wrongful act, and general revenue is too far removed. Slowing Ukraine's link is withholding help from the victim, not helping the attacker. On current facts, the test is not met.",
+  parties:[["","Customary law: the ICJ said so in Bosnia v. Serbia (2007)"]]},
+ {id:"arsiwa-41", fam:"resp", title:"Do not recognize an illegal result",
+  q:[{cite:"ILC Articles on State Responsibility, Article 41(1) and (2)", t:"1. States shall cooperate to bring to an end through lawful means any serious breach within the meaning of article 40. 2. No State shall recognize as lawful a situation created by a serious breach within the meaning of article 40, nor render aid or assistance in maintaining that situation."}],
+  plain:"When a country seriously breaks a fundamental rule, like the ban on aggression, other countries must not treat the result as lawful, and must not help keep it in place.",
+  link:"This is where the US faces real legal risk. If a peace deal had the US formally recognize Crimea or other occupied land as Russian, that would clash with this rule and with the ICJ's 2004 Wall opinion. Pressing for a ceasefire is fine. Blessing the land grab is not.",
+  parties:[["","Customary law, reflected in ICJ opinions"]]},
+ {id:"geneva-ca1", fam:"war", title:"Respect, and ensure respect",
+  q:[{cite:"Geneva Conventions of 1949, Common Article 1", t:"The High Contracting Parties undertake to respect and to ensure respect for the present Convention in all circumstances."}],
+  plain:"Every country promises to obey the Geneva Conventions itself, and to make sure others obey them too.",
+  link:"The Red Cross reads “ensure respect” as a duty for outside countries to use their influence to stop violations, and never to encourage them. Some states disagree. It is the strongest argument that deliberately weakening Ukraine's air defence while Russia bombs civilians carries legal weight. No court has applied it that way.",
+  parties:[["y","Russia"],["y","Ukraine"],["y","United States"],["","Every country in the world"]]},
+ {id:"api-52", fam:"war", title:"What counts as a lawful target",
+  q:[{cite:"Additional Protocol I (1977), Article 52(2)", t:"Attacks shall be limited strictly to military objectives. In so far as objects are concerned, military objectives are limited to those objects which by their nature, location, purpose or use make an effective contribution to military action and whose total or partial destruction, capture or neutralization, in the circumstances ruling at the time, offers a definite military advantage."}],
+  plain:"You may only attack things that truly help the enemy's military, and only when destroying them gives a clear military gain. Civilian things are off limits.",
+  link:"Three live questions. Russia's strikes on Ukraine's power grid: ICC judges found reasonable grounds of war crimes. Ukraine's strikes on refineries: lawful if they fuel the army, and each strike must still be proportionate. Russia's threat to hit Starlink satellites: a satellite used for military links can qualify, but debris would harm everyone in orbit.",
+  parties:[["y","Russia"],["y","Ukraine"],["n","United States (not ratified)"]]},
+ {id:"rome-25", fam:"war", title:"Personal guilt for helping a war crime",
+  q:[{cite:"Rome Statute of the ICC, Article 25(3)(c)", t:"In accordance with this Statute, a person shall be criminally responsible and liable for punishment for a crime within the jurisdiction of the Court if that person: … (c) For the purpose of facilitating the commission of such a crime, aids, abets or otherwise assists in its commission or its attempted commission, including providing the means for its commission;"}],
+  plain:"A person can be guilty of a war crime they did not commit themselves, if they helped it happen in order to make it happen, including by supplying the means.",
+  link:"Could Musk be a war criminal for slowing Ukraine's drones? No: that facilitates no crime, and there is no purpose of facilitating one. Could someone who knowingly sold Starlinks to Russian units for attacks on civilians be liable? In principle, yes. The ICC can try crimes on Ukrainian soil whoever commits them.",
+  parties:[["y","Ukraine (member since 2025)"],["n","Russia"],["n","United States"]]},
+ {id:"ost-3-6", fam:"space", title:"Your country answers for your companies in space",
+  q:[{cite:"Outer Space Treaty (1967), Article III", t:"States Parties to the Treaty shall carry on activities in the exploration and use of outer space, including the moon and other celestial bodies, in accordance with international law, including the Charter of the United Nations, in the interest of maintaining international peace and security and promoting international co-operation and understanding."},
+     {cite:"Outer Space Treaty (1967), Article VI", t:"States Parties to the Treaty shall bear international responsibility for national activities in outer space, including the moon and other celestial bodies, whether such activities are carried on by governmental agencies or by non-governmental entities, and for assuring that national activities are carried out in conformity with the provisions set forth in the present Treaty. The activities of non-governmental entities in outer space, including the moon and other celestial bodies, shall require authorization and continuing supervision by the appropriate State Party to the Treaty."}],
+  plain:"Space activities must follow international law, including the UN Charter. A country answers internationally for its companies' space activities, and must license them and keep watching them.",
+  link:"SpaceX is American, so the US answers internationally for its space activities and must supervise it. That does not make a speed setting illegal: a rule still has to be broken, and throttling a victim's link does not break the Charter. But it means “Musk did it alone” does not end the US's role. Its duty to supervise remains.",
+  parties:[["y","Russia"],["y","Ukraine"],["y","United States"]]},
+ {id:"hague-8-9", fam:"space", title:"The 1907 rule for wartime radio",
+  q:[{cite:"Hague Convention V (1907), Article 8", t:"A neutral Power is not called upon to forbid or restrict the use on behalf of the belligerents of telegraph or telephone cables or of wireless telegraphy apparatus belonging to it or to companies or private individuals."},
+     {cite:"Hague Convention V (1907), Article 9", t:"Every measure of restriction or prohibition taken by a neutral Power in regard to the matters referred to in Articles 7 and 8 must be impartially applied by it to both belligerents. A neutral Power must see to the same obligation being observed by companies or private individuals owning telegraph or telephone cables or wireless telegraphy apparatus."},
+     {cite:"Hague Convention V (1907), Article 20", t:"The provisions of the present Convention do not apply except between Contracting Powers and then only if all the belligerents are Parties to the Convention."}],
+  plain:"An outside, neutral country does not have to stop warring sides from using its radio links, or a company's. But if it restricts them, it must restrict both sides equally, and make its companies do the same.",
+  link:"This is the oldest rule that fits Starlink almost exactly. Read with VCLT Article 31, “wireless telegraphy apparatus” plausibly covers satellite internet. The twist: SpaceX cut Russia off completely while serving Ukraine. Under strict neutrality that is unequal. But the US is not neutral; it openly backs a victim of aggression, a position many lawyers call “qualified neutrality.” Article 20 also limits the treaty's reach. The upshot: no duty to provide service, and no clear bar on favouring the victim.",
+  parties:[["","Old treaty with limited membership; core neutrality rules treated as customary law"]]}
+];
+
+var lawById = {};
+LAWS.forEach(function(l){ lawById[l.id] = l; });
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+var lawsEl = document.getElementById("laws");
+LAWS.forEach(function(l){
+  var f = FAM[l.fam];
+  var art = document.createElement("article");
+  art.className = "law"; art.id = "law-" + l.id; art.dataset.fam = l.fam;
+  art.style.setProperty("--fc", f.c);
+  var qs = l.q.map(function(q){ return '<blockquote><cite>' + esc(q.cite) + '</cite>' + esc(q.t) + '</blockquote>'; }).join("");
+  var ps = l.parties.map(function(p){ return '<span class="' + p[0] + '">' + (p[0]==="y"?"Bound: ":p[0]==="n"?"Not bound: ":"") + esc(p[1]) + '</span>'; }).join("");
+  art.innerHTML =
+    '<div class="law-top"><span class="src">' + esc(f.name) + '</span><h3>' + esc(l.title) + '</h3>' + (l.course ? '<span class="course">In your course files</span>' : '') + '</div>' +
+    '<div class="law-body"><div class="law-text">' + qs + '</div>' +
+    '<div class="law-explain"><h4>In plain English</h4><p>' + esc(l.plain) + '</p><h4>How it connects to this conflict</h4><p>' + esc(l.link) + '</p><div class="parties">' + ps + '</div></div></div>';
+  lawsEl.appendChild(art);
+});
+
+/* Filters */
+var filtersEl = document.getElementById("filters");
+var famKeys = ["all"].concat(Object.keys(FAM));
+famKeys.forEach(function(k){
+  var b = document.createElement("button");
+  b.type = "button"; b.dataset.f = k;
+  b.setAttribute("aria-pressed", k==="all" ? "true" : "false");
+  b.innerHTML = (k==="all" ? "" : '<i style="background:' + FAM[k].c + '"></i>') + (k==="all" ? "All laws" : esc(FAM[k].name));
+  b.addEventListener("click", function(){ setFilter(k); });
+  filtersEl.appendChild(b);
+});
+function setFilter(k){
+  Array.prototype.forEach.call(filtersEl.children, function(b){ b.setAttribute("aria-pressed", b.dataset.f===k ? "true":"false"); });
+  Array.prototype.forEach.call(lawsEl.children, function(a){ a.hidden = !(k==="all" || a.dataset.fam===k); });
+}
+function goToLaw(id){
+  var el = document.getElementById("law-" + id);
+  if (!el) return;
+  setFilter("all");
+  el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+  el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+  setTimeout(function(){ el.classList.remove("flash"); }, 2200);
+}
+document.addEventListener("click", function(e){
+  var t = e.target.closest("[data-law]");
+  if (t){ e.preventDefault(); goToLaw(t.dataset.law); }
+});
+var SHORT = {"charter-2-4":"UN Charter Art. 2(4)","charter-51":"UN Charter Art. 51","charter-27":"UN Charter Art. 27(3) and 2(5)","icj-41":"ICJ Statute Art. 41","icj-36":"ICJ Statute Art. 36","icj-38":"ICJ Statute Art. 38 and 59","vclt-31-32":"VCLT Art. 31–32","vclt-26":"VCLT Art. 26","vclt-34":"VCLT Art. 34","vclt-52-53":"VCLT Art. 52–53","arsiwa-4-8":"ARSIWA Art. 4 and 8","arsiwa-16":"ARSIWA Art. 16","arsiwa-41":"ARSIWA Art. 41","geneva-ca1":"Geneva Common Art. 1","api-52":"AP I Art. 52(2)","rome-25":"Rome Statute Art. 25(3)(c)","ost-3-6":"Outer Space Treaty Art. VI","hague-8-9":"Hague V Art. 8–9"};
+function lawShort(id){ return SHORT[id] || id; }
+
+/* ---------- Timeline ---------- */
+var GROUPS = [
+  {key:"2022", label:"2022"},
+  {key:"2023", label:"2023"},
+  {key:"2024", label:"2024"},
+  {key:"2025", label:"2025"},
+  {key:"2026", label:"Jan–Sep 2026"},
+  {key:"oct", label:"October 2026", hot:true}
+];
+var EV = [
+ {g:"2022", d:"Feb 24, 2022", tick:"Feb 24", a:"ru", t:"Russia invades Ukraine", x:"Russia launches a full-scale invasion. Internet and phone networks are bombed and hacked.", l:"The UN Charter bans using force against another country. This is the clearest breach in the story.", law:"charter-2-4"},
+ {g:"2022", d:"Feb 26–28, 2022", tick:"Feb 26", a:"sx", t:"Starlink switched on in Ukraine", x:"Ukraine's digital minister asks Musk on X for help. Service goes live within days, and the first truckload of dishes arrives on February 28.", l:"No law required this, and no law forbade it. A private company chose to help a country defending itself.", law:"hague-8-9"},
+ {g:"2022", d:"Mar 2, 2022", tick:"Mar 2", a:"un", t:"The UN condemns the invasion", x:"141 countries in the General Assembly demand that Russia withdraw.", l:"Assembly votes are not binding, but they show what most countries believe the law is.", law:"charter-2-4"},
+ {g:"2022", d:"Mar 16, 2022", tick:"Mar 16", a:"un", t:"World Court orders Russia to stop", x:"The ICJ orders Russia to immediately suspend its military operations, by 13 votes to 2. Russia keeps fighting.", l:"Emergency orders of the Court are binding. Ignoring this one is a separate breach.", law:"icj-41"},
+ {g:"2022", d:"Sep 2022", tick:"Sep", a:"sx", t:"Musk refuses coverage near Crimea", x:"Ukraine asks for Starlink near Crimea to attack Russian warships. Musk says no. Coverage there had not been switched on.", l:"A company has no international duty to extend its service, even to a victim of aggression.", law:"hague-8-9"},
+ {g:"2022", d:"Oct 2022", tick:"Oct", a:"sx", t:"“We can't fund this forever”", x:"Musk says Starlink costs SpaceX about $20 million a month in Ukraine, then agrees to keep paying.", l:"Help given freely can be reduced. That is why who pays, and on what terms, matters so much later.", law:"vclt-26"},
+ {g:"2022", d:"Oct 26, 2022", tick:"Oct 26", a:"ru", t:"Russia threatens commercial satellites", x:"A Russian diplomat tells a UN committee that “quasi-civilian” satellites may become legitimate targets.", l:"A satellite used for military links can become a military target, but any attack must be proportionate.", law:"api-52"},
+ {g:"2023", d:"Feb 8, 2023", tick:"Feb 8", a:"sx", t:"SpaceX limits drone use", x:"SpaceX's president says Starlink was never meant to be weaponized. The company acts to stop Ukraine using it to fly drones.", l:"A company's terms of service are a contract question, not international law.", law:"ost-3-6"},
+ {g:"2023", d:"Mar 17, 2023", tick:"Mar 17", a:"un", t:"ICC arrest warrant for Putin", x:"The International Criminal Court seeks Putin's arrest over the unlawful deportation of Ukrainian children.", l:"Individuals, even heads of state, can be charged with war crimes.", law:"rome-25"},
+ {g:"2023", d:"Jun 1, 2023", tick:"Jun 1", a:"us", t:"The Pentagon starts paying", x:"The Pentagon confirms a contract with SpaceX for Starlink service in Ukraine. The terms are not public.", l:"Once a government buys and directs a service, how it is used can become that government's conduct.", law:"arsiwa-4-8"},
+ {g:"2024", d:"Feb 2, 2024", tick:"Feb 2", a:"un", t:"ICJ keeps Ukraine's case alive", x:"The Court rules it can hear part of Ukraine's case against Russia. Ukraine's lawyers say the 2022 order stays in force.", l:"The Court can only hear what countries consented to. Here, consent came through the Genocide Convention.", law:"icj-36"},
+ {g:"2024", d:"Feb 11–13, 2024", tick:"Feb 12", a:"ru", t:"Russian troops caught using Starlink", x:"Ukrainian intelligence says Russian units use smuggled Starlinks, some bought in Arab countries. SpaceX says it does no business with Russia.", l:"Smuggling breaks US export rules and SpaceX's terms. It is not, by itself, a breach of the law of war.", law:"hague-8-9"},
+ {g:"2024", d:"Mar 5 and Jun 24, 2024", tick:"Mar–Jun", a:"un", t:"ICC warrants over power-grid strikes", x:"Four top Russian commanders, including Shoigu and Gerasimov, are wanted over missile strikes on Ukraine's electricity system.", l:"Attacking civilian power plants can be a war crime. This shapes the debate about energy strikes on both sides.", law:"api-52"},
+ {g:"2024", d:"Jun 13, 2024", tick:"Jun 13", a:"us", t:"US–Ukraine security agreement", x:"A ten-year defence cooperation pact is signed. Its annex says it creates no legal rights or obligations.", l:"No treaty promises Ukraine Starlink or Starshield. Cutting it breaks no binding promise.", law:"vclt-26"},
+ {g:"2025", d:"Jan 1, 2025", tick:"Jan 1", a:"ua", t:"Ukraine joins the ICC", x:"Ukraine becomes the court's 125th member.", l:"The ICC can try war crimes on Ukrainian soil, whoever commits them.", law:"rome-25"},
+ {g:"2025", d:"Feb 22, 2025", tick:"Feb 22", a:"us", t:"Starlink as a bargaining chip?", x:"Reuters reports that US negotiators raised cutting Starlink during talks on a minerals deal. Musk calls the report false.", l:"Pressure through aid is lawful. Only force, not economic pressure, voids a treaty.", law:"vclt-52-53"},
+ {g:"2025", d:"Feb 24, 2025", tick:"Feb 24", a:"us", t:"US votes with Russia at the UN", x:"The US votes against Ukraine's resolution condemning the invasion. It passes anyway, 93 to 18.", l:"UN votes are political acts. They are not legal breaches, but they signal a shift.", law:"charter-2-4"},
+ {g:"2025", d:"Mar 2025", tick:"Mar", a:"sx", t:"“Starlink will never turn off”", x:"After a public clash with Poland's foreign minister, Musk says Starlink will never turn off its terminals or be used as a bargaining chip.", l:"A promise on social media is not a binding legal commitment.", law:"vclt-26"},
+ {g:"2025", d:"Jun 25, 2025", tick:"Jun 25", a:"eu", t:"Deal to build an aggression tribunal", x:"Ukraine and the Council of Europe sign an agreement to create a court for Russia's crime of aggression.", l:"The ICC cannot try Russia's leaders for aggression, so a special tribunal fills the gap.", law:"charter-2-4"},
+ {g:"2025", d:"Jul 9, 2025", tick:"Jul 9", a:"un", t:"European rights court rules against Russia", x:"The European Court of Human Rights finds Russia responsible for grave violations, including the downing of flight MH17.", l:"Acts of forces a country controls count as that country's own acts.", law:"arsiwa-4-8"},
+ {g:"2026", d:"Jan 27, 2026", tick:"Jan 27", a:"ru", t:"Drones hit a passenger train", x:"Russian drones strike a passenger train in Kharkiv region. Ukraine finds Starlink dishes on wreckage of Russian drones.", l:"Attacking a civilian train is a likely war crime, whatever the drone uses to steer.", law:"api-52"},
+ {g:"2026", d:"Late Jan 2026", tick:"Jan 31", a:"sx", t:"Emergency cap grounds Russian drones", x:"SpaceX cuts service to dishes moving faster than about 75–90 km/h, knocking out Starlink-guided strike drones.", l:"Restricting the aggressor is lawful. Strict neutrality would demand equal treatment, but the US is not neutral.", law:"hague-8-9"},
+ {g:"2026", d:"Feb 2026", tick:"Feb", a:"sx", t:"The whitelist", x:"Only dishes registered by Ukraine's Defence Ministry keep working in Ukraine. Russian-held Starlinks go dark; a Russian official admits a two-week outage.", l:"Favouring the victim of aggression fits “qualified neutrality.” No rule required SpaceX to serve Russia.", law:"hague-8-9"},
+ {g:"2026", d:"Feb 28, 2026", tick:"Feb 28", a:"us", t:"US–Israel war on Iran begins", x:"Strikes on Iran lead to a blockade of the Strait of Hormuz. Oil and diesel prices surge worldwide.", l:"Background: high fuel prices become the reason Washington later presses Ukraine to stop hitting refineries.", law:null},
+ {g:"2026", d:"May 15, 2026", tick:"May 15", a:"eu", t:"36 countries back the tribunal", x:"36 countries and the EU approve the next step toward the Special Tribunal for the Crime of Aggression.", l:"A path to try the decision to invade, which the UN Charter forbids.", law:"charter-2-4"},
+ {g:"2026", d:"Jul 8, 2026", tick:"Jul 8", a:"ru", t:"Russia bans diesel exports", x:"After Ukrainian drones knock out refineries, Russia stops selling diesel abroad. Prices jump.", l:"Refineries that fuel an army can be military targets, if each strike is proportionate.", law:"api-52"},
+ {g:"2026", d:"Sep 18, 2026", tick:"Sep 18", a:"us", t:"Tough Russia sanctions become law", x:"Congress passes the Graham Act by large majorities. Trump signs it. It lets the president waive its measures.", l:"Sanctions are a choice for each country. No international rule requires them.", law:"arsiwa-16"},
+ {g:"oct", d:"Oct 9, 2026", tick:"9", a:"us", t:"Diesel deal and refinery pressure", x:"Trump announces a deal for Russian diesel; Treasury waives diesel sanctions until April 2027. In Miami, US envoys reportedly threaten to cut intelligence over Ukraine's refinery strikes.", l:"Adding to Russia's revenue is not legal “aid” to a specific wrongful act.", law:"arsiwa-16"},
+ {g:"oct", d:"Oct 10–11, 2026", tick:"10–11", a:"us", t:"Threats and an “energy ceasefire”", x:"Trump says Ukraine needs a new president. The FT reports threats to cut intelligence and US weapons sales. Trump declares an energy ceasefire that Russia never confirms.", l:"Political pressure on an ally is lawful. The Red Cross argues outsiders still must not undercut respect for the laws of war.", law:"geneva-ca1"},
+ {g:"oct", d:"Oct 13–14, 2026", tick:"13–14", a:"us", t:"The cap", x:"No US missile warnings for two nights as missiles hit Kyiv. Starshield stops working for terminals moving faster than about 161 km/h. Interceptor drones fail.", l:"The US answers for SpaceX's space activities and must supervise it. But no rule obliges the US to keep supplying.", law:"ost-3-6"},
+ {g:"oct", d:"Oct 15, 2026", tick:"15", a:"us", t:"“From inside the White House”", x:"Reuters reports the order came from inside the White House. Ukraine resumes refinery strikes after a three-day pause.", l:"If officials ordered it, it is the US's own conduct.", law:"arsiwa-4-8"},
+ {g:"oct", d:"Oct 16, 2026", tick:"16", a:"us", t:"Sanctions waived", x:"Trump waives the Graham Act's tariffs. The Telegraph reports Musk pitched the cap and Trump agreed. EU leaders formally “regret” the diesel decision.", l:"Waiving sanctions is lawful. The real limit is on recognizing land taken by force.", law:"arsiwa-41"},
+ {g:"oct", d:"Oct 17–18, 2026", tick:"17–18", a:"ua", t:"Ukraine's road test", x:"Ukraine drives Starshield-equipped cars in the EU: no limit there, but a cut at 161 km/h inside Ukraine. Rubio says Ukraine has no Starshield access now.", l:"Proof the limit targets Ukraine. Who set it decides whose act it is.", law:"arsiwa-4-8"},
+ {g:"oct", d:"Oct 20, 2026", tick:"20", a:"us", t:"Oslo talks; warnings return", x:"US missile warnings are restored after talks in Oslo. Trump warns of “a very bad thing” if Ukraine does not make a deal.", l:"No deal can bind Ukraine without its consent.", law:"vclt-34"},
+ {g:"oct", d:"Oct 21, 2026", tick:"21", a:"sx", t:"“Musk made the call”", x:"The WSJ and CBS report Musk ordered the cap after talking with officials. Hegseth says the Pentagon did not. The cap is still on. Witkoff meets Putin; three-way talks are planned for November.", l:"If Musk acted alone, it is private conduct, and no international rule binds him here. The US still must supervise SpaceX.", law:"ost-3-6"}
+];
+
+var legendEl = document.getElementById("legend");
+Object.keys(ACTORS).forEach(function(k){
+  var li = document.createElement("li");
+  li.innerHTML = '<i style="background:' + ACTORS[k].c + '"></i>' + esc(ACTORS[k].name);
+  legendEl.appendChild(li);
+});
+
+var tl = document.getElementById("tl");
+var groupsWrap = document.createElement("div"); groupsWrap.className = "tl-groups";
+var axis = document.createElement("div"); axis.className = "tl-axis";
+tl.appendChild(groupsWrap); tl.appendChild(axis);
+var counts = {}; EV.forEach(function(e){ counts[e.g] = (counts[e.g]||0) + 1; });
+var total = EV.length;
+var dots = [], ticks = [];
+var cum = 0;
+GROUPS.forEach(function(g){
+  var n = counts[g.key] || 0;
+  var w = n / total * 100;
+  var div = document.createElement("div");
+  div.className = "tl-group" + (g.hot ? " hot" : "");
+  div.style.width = w + "%";
+  div.innerHTML = '<span class="gl">' + esc(g.label) + '</span>';
+  groupsWrap.appendChild(div);
+  var idx = 0;
+  EV.forEach(function(e, i){
+    if (e.g !== g.key) return;
+    var pos = (cum + (idx + 0.5)) / total * 100;
+    idx++;
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "tl-dot"; b.setAttribute("role","option");
+    b.style.left = "calc(10px + (100% - 20px) * " + (pos/100) + ")";
+    b.style.background = ACTORS[e.a].c;
+    b.setAttribute("aria-label", e.d + ": " + e.t);
+    b.dataset.i = i;
+    b.addEventListener("mouseenter", function(){ select(i); });
+    b.addEventListener("focus", function(){ select(i); });
+    b.addEventListener("click", function(){ select(i); });
+    tl.appendChild(b);
+    var tick = document.createElement("span");
+    tick.className = "tl-tick" + (i % 2 ? " lo" : ""); tick.textContent = e.tick; ticks[i] = tick;
+    tick.style.left = "calc(10px + (100% - 20px) * " + (pos/100) + ")";
+    tl.appendChild(tick);
+    dots[i] = b;
+  });
+  cum += n;
+});
+var cur = -1;
+var what = document.getElementById("tlWhat"), why = document.getElementById("tlWhy"), countEl = document.getElementById("tlCount");
+function select(i){
+  if (i < 0 || i >= EV.length || i === cur) return;
+  if (cur >= 0){ dots[cur].classList.remove("on"); dots[cur].setAttribute("aria-selected","false"); ticks[cur].classList.remove("on"); }
+  cur = i;
+  dots[i].classList.add("on"); dots[i].setAttribute("aria-selected","true"); ticks[i].classList.add("on");
+  var e = EV[i], A = ACTORS[e.a];
+  what.style.borderTopColor = A.c;
+  what.innerHTML = '<div class="tl-date">' + esc(e.d) + '</div><h3>' + esc(e.t) + '</h3><p>' + esc(e.x) + '</p><span class="actor" style="background:' + A.c + '">' + esc(A.name) + '</span>';
+  why.innerHTML = '<h4>The legal angle</h4><p>' + esc(e.l) + '</p>' + (e.law ? '<button type="button" class="lawlink" data-law="' + e.law + '">Read ' + esc(lawShort(e.law)) + '</button>' : '');
+  countEl.textContent = "Event " + (i+1) + " of " + EV.length;
+}
+tl.addEventListener("keydown", function(ev){
+  if (ev.key === "ArrowRight"){ ev.preventDefault(); select(Math.min(cur+1, EV.length-1)); dots[cur].focus(); }
+  if (ev.key === "ArrowLeft"){ ev.preventDefault(); select(Math.max(cur-1, 0)); dots[cur].focus(); }
+});
+document.getElementById("tlPrev").addEventListener("click", function(){ select(Math.max(cur-1,0)); });
+document.getElementById("tlNext").addEventListener("click", function(){ select(Math.min(cur+1,EV.length-1)); });
+var startIdx = 0; EV.forEach(function(e,i){ if (e.t === "The cap") startIdx = i; });
+select(startIdx);
+
+/* ---------- Verdicts ---------- */
+var VCOL = ["var(--v0)","var(--v1)","var(--v2)","var(--v3)","var(--v4)"];
+var VLAB = ["Clear breach","Likely breach","Contested","Likely lawful","Lawful"];
+var VERD = [
+ {a:"ru", sub:"The invader", rows:[
+  {act:"Invading Ukraine", v:0, why:"Breaks the ban on force, a peremptory rule. 141 countries said so in 2022.", refs:["charter-2-4","vclt-52-53"]},
+  {act:"Defying the World Court's 2022 order", v:0, why:"The ICJ ordered Russia to suspend operations. Such orders bind, and Russia keeps fighting.", refs:["icj-41"]},
+  {act:"Striking Ukraine's power grid and cities", v:1, why:"ICC judges found reasonable grounds for war crimes and crimes against humanity. No trial yet, so not proven in court.", refs:["api-52","rome-25"]},
+  {act:"Threatening to strike commercial satellites", v:2, why:"A satellite used for military links can become a target. Any attack must be proportionate, and debris would harm everyone.", refs:["api-52","ost-3-6"]},
+  {act:"Using smuggled Starlinks", v:"x", why:"Not a breach of international law in itself. It breaks US export rules and SpaceX's terms. What the drones hit is what counts.", refs:["hague-8-9","api-52"]}
+ ], note:null},
+ {a:"ua", sub:"The defender", rows:[
+  {act:"Fighting back, including strikes inside Russia", v:4, why:"Self-defence against an armed attack.", refs:["charter-51"]},
+  {act:"Striking Russian oil refineries", v:3, why:"Refineries that fuel an army can be military targets. Each strike must still be proportionate to the military gain.", refs:["api-52","charter-51"]}
+ ], note:"Ukraine is bound by the laws of war too. UN monitors have documented some abuses by Ukrainian forces, such as mistreatment of prisoners of war, on a far smaller scale than Russia's."},
+ {a:"us", sub:"The ally applying pressure", rows:[
+  {act:"Pausing missile warnings and slowing Starshield", v:3, why:"No treaty or custom obliges the US to keep supplying. Open questions are under US law, such as telling Congress when intelligence sharing is cut.", refs:["arsiwa-4-8","geneva-ca1"]},
+  {act:"The diesel deal and waived sanctions", v:3, why:"Sanctions are optional. Extra Russian revenue is too indirect to count as aiding a specific wrongful act.", refs:["arsiwa-16"]},
+  {act:"Pressing Ukraine to sign a peace deal", v:2, why:"Pressure is lawful. Recognizing land seized by force would not be, and no deal can bind Ukraine without its consent.", refs:["arsiwa-41","vclt-34","vclt-52-53"]},
+  {act:"Voting with Russia at the UN in 2025", v:4, why:"UN votes are political acts, not legal breaches.", refs:["charter-2-4"]}
+ ], note:null},
+ {a:"sx", sub:"The private network", rows:[
+  {act:"Switching Starlink on in 2022", v:4, why:"No duty to provide and no ban on providing. Helping a victim of aggression is lawful.", refs:["hague-8-9","charter-51"]},
+  {act:"Refusing coverage near Crimea", v:4, why:"A company may decline to extend its service.", refs:["hague-8-9"]},
+  {act:"Cutting off Russian users in 2026", v:4, why:"Consistent with US export controls. Equal treatment is required only of neutrals, and the US is not neutral toward an aggressor.", refs:["hague-8-9"]},
+  {act:"The October 2026 cap", v:3, why:"No international rule binds Musk here. If officials ordered it, it is US conduct, which still breaks no rule. Contract and US-law questions remain open.", refs:["arsiwa-4-8","ost-3-6"]}
+ ], note:null},
+ {a:"eu", sub:"Ukraine's main funders", rows:[
+  {act:"Poland paying for Ukraine's Starlink", v:4, why:"Funding a victim's self-defence is lawful.", refs:["charter-51"]}
+ ], note:null}
+];
+var board = document.getElementById("verdictBoard");
+VERD.forEach(function(blk){
+  var A = ACTORS[blk.a];
+  var d = document.createElement("div"); d.className = "actor-block";
+  var rows = blk.rows.map(function(r){
+    var other = r.v === "x";
+    var left = other ? 0 : (r.v / 4 * 100);
+    var meter = other
+      ? '<div class="meter-wrap other"><div class="meter"></div><div class="vl" style="color:#5F6A84">Not an international-law question</div></div>'
+      : '<div class="meter-wrap"><div class="meter"></div><span class="pin" style="left:' + left + '%;background:' + VCOL[r.v] + '"></span><div class="vl" style="color:' + VCOL[r.v] + '">' + VLAB[r.v] + '</div></div>';
+    var refs = r.refs.map(function(id){ return '<button type="button" class="ref" data-law="' + id + '">' + esc(lawShort(id)) + '</button>'; }).join("");
+    return '<div class="vrow"><div class="act">' + esc(r.act) + '</div>' + meter + '<div class="why">' + esc(r.why) + '<div class="refs">' + refs + '</div></div></div>';
+  }).join("");
+  d.innerHTML = '<div class="actor-head" style="background:' + A.c + '"><h3>' + esc(A.name) + '</h3><span>' + esc(blk.sub) + '</span></div>' + rows + (blk.note ? '<div class="vnote">' + esc(blk.note) + '</div>' : '');
+  board.appendChild(d);
+});
+
+/* ---------- Cases ---------- */
+var CASES = [
+ {court:"International Court of Justice, 1986", t:"Nicaragua v. United States", x:"The US funded and trained the Contra rebels. The Court found the US broke the ban on force. But it was not responsible for every Contra abuse: that needed “effective control” of the specific operation. During the case, the US withdrew its acceptance of the Court's compulsory jurisdiction.", link:"Paying for a service is not controlling every use of it. Starshield's settings are US acts only if officials instructed or controlled them."},
+ {court:"International Court of Justice, 2007", t:"Bosnia v. Serbia", x:"The Court confirmed that Article 16 on aiding another state reflects customary law. Serbia breached its duty to prevent genocide at Srebrenica, though it was not complicit.", link:"Sets a high bar for “complicity” claims, including any claim that the US is complicit in Russia's crimes."},
+ {court:"International Court of Justice, 2001", t:"LaGrand (Germany v. United States)", x:"The US executed a German national despite a Court order to wait. The Court ruled that its emergency orders are legally binding.", link:"Makes Russia's defiance of the March 2022 order a breach in its own right."},
+ {court:"International Court of Justice, 2022 to now", t:"Ukraine v. Russia (Genocide Convention)", x:"Ukraine argued Russia used false genocide claims to justify invading. In 2022 the Court ordered Russia to stop. In 2024 it kept a narrow part of the case, after 32 countries intervened for Ukraine.", link:"Shows Article 36 at work: Ukraine needed a treaty clause to get Russia before the Court at all."},
+ {court:"International Court of Justice, 2004", t:"The Wall advisory opinion", x:"The Court said that when a state seriously breaches fundamental rules, all other states must not recognize the illegal situation or help keep it in place.", link:"Limits what any peace deal can lawfully recognize. Blessing land taken by force would clash with it."},
+ {court:"International Criminal Court, 2023–2024", t:"Arrest warrants for Russian leaders", x:"Warrants for Putin and his children's commissioner over deported children (2023), and for four commanders, including Shoigu and Gerasimov, over strikes on Ukraine's power grid (2024).", link:"Shows how Article 52(2) on military targets applies to energy strikes, and that leaders can be held personally liable."},
+ {court:"European Court of Human Rights, 2025", t:"Ukraine and the Netherlands v. Russia", x:"The Grand Chamber found Russia responsible for grave violations since 2014, including MH17. Acts of separatist forces were attributed to Russia because it controlled them.", link:"A modern example of attribution through control, the same logic as Article 8."},
+ {court:"Council of Europe, 2025–2026", t:"Special Tribunal for the Crime of Aggression", x:"The ICC cannot try Russia's leaders for aggression. Ukraine and the Council of Europe signed a deal in 2025; 36 countries and the EU approved the next step in May 2026. It is still in its early phase.", link:"The first court since Nuremberg and Tokyo built to try the decision to start a war."},
+ {court:"UN General Assembly, 2022 and 2025", t:"Resolution ES-11/1 and the 2025 votes", x:"In 2022, 141 countries condemned the invasion. In 2025 the US voted with Russia against Ukraine's resolution, which passed 93 to 18.", link:"Not binding, but strong evidence of what most states think the law is, and of how US policy has shifted."}
+];
+var cg = document.getElementById("caseGrid");
+CASES.forEach(function(c){
+  var a = document.createElement("article"); a.className = "case";
+  a.innerHTML = '<span class="court">' + esc(c.court) + '</span><h4>' + esc(c.t) + '</h4><p>' + esc(c.x) + '</p><p class="link"><b>Why it matters here:</b> ' + esc(c.link) + '</p>';
+  cg.appendChild(a);
+});
+
+/* ---------- Connection map ---------- */
+var MN = {
+ E:[
+  {id:"ev-inv", t:"Russia invades (2022)", c:"var(--ru)", d:"The starting point. Judged under the ban on force, the right of self-defence, and the World Court's 2022 order."},
+  {id:"ev-grid", t:"Russia strikes Ukraine's power grid", c:"var(--ru)", d:"Judged under the rules on military targets, and personally under the Rome Statute. The ICC has issued warrants."},
+  {id:"ev-ref", t:"Ukraine strikes Russian refineries", c:"var(--ua)", d:"Self-defence, but each strike must meet the rules on military targets and proportionality."},
+  {id:"ev-rus", t:"Russia uses smuggled Starlinks", c:"var(--ru)", d:"Not a breach by itself. Neutrality law, targeting rules and war-crimes law govern what it is used for."},
+  {id:"ev-wl", t:"Whitelist cuts Russia off (2026)", c:"var(--sx)", d:"Unequal treatment of the two sides, which neutrality law would question for a true neutral. The US answers for SpaceX in space."},
+  {id:"ev-cap", t:"Starshield speed cap (Oct 2026)", c:"var(--us)", d:"Whose act it is depends on who ordered it. The US must supervise SpaceX. No forum exists for Ukraine to sue the US."},
+  {id:"ev-warn", t:"Missile warnings paused (Oct 2026)", c:"var(--us)", d:"No duty to share intelligence. The Red Cross reading of Common Article 1 is the main counter-argument."},
+  {id:"ev-dsl", t:"Diesel deal and sanctions waiver", c:"var(--us)", d:"The complicity question under Article 16. On current facts, too indirect."},
+  {id:"ev-deal", t:"Push for a peace deal", c:"var(--us)", d:"No deal binds Ukraine without consent. Deals forced by aggression can be void. Land taken by force must not be recognized."}
+ ],
+ L:[
+  {id:"l-24", law:"charter-2-4", t:"Charter Art. 2(4): no force", c:"var(--f-charter)"},
+  {id:"l-51", law:"charter-51", t:"Charter Art. 51: self-defence", c:"var(--f-charter)"},
+  {id:"l-41", law:"icj-41", t:"ICJ Statute Art. 41 and Charter Art. 94", c:"var(--f-icj)"},
+  {id:"l-36", law:"icj-36", t:"ICJ Statute Art. 36: consent", c:"var(--f-icj)"},
+  {id:"l-vc", law:"vclt-52-53", t:"VCLT Art. 34, 52, 53: deals", c:"var(--f-vclt)"},
+  {id:"l-48", law:"arsiwa-4-8", t:"ARSIWA Art. 4 and 8: whose act?", c:"var(--f-resp)"},
+  {id:"l-16", law:"arsiwa-16", t:"ARSIWA Art. 16: aiding a wrong", c:"var(--f-resp)"},
+  {id:"l-41r", law:"arsiwa-41", t:"ARSIWA Art. 41: non-recognition", c:"var(--f-resp)"},
+  {id:"l-ca1", law:"geneva-ca1", t:"Geneva Common Art. 1", c:"var(--f-war)"},
+  {id:"l-52", law:"api-52", t:"AP I Art. 52(2): lawful targets", c:"var(--f-war)"},
+  {id:"l-rome", law:"rome-25", t:"Rome Statute Art. 25(3)(c)", c:"var(--f-war)"},
+  {id:"l-ost", law:"ost-3-6", t:"Outer Space Treaty Art. VI", c:"var(--f-space)"},
+  {id:"l-hg", law:"hague-8-9", t:"Hague V Art. 8 and 9", c:"var(--f-space)"}
+ ],
+ C:[
+  {id:"c-nic", t:"Nicaragua v. US (1986)", c:"var(--un)", d:"Effective control for attribution; Common Article 1 binding; the US left compulsory jurisdiction during the case."},
+  {id:"c-bos", t:"Bosnia v. Serbia (2007)", c:"var(--un)", d:"Article 16 is customary law; complicity needs knowledge."},
+  {id:"c-lag", t:"LaGrand (2001)", c:"var(--un)", d:"The Court's emergency orders are binding."},
+  {id:"c-ukr", t:"Ukraine v. Russia, ICJ (2022–)", c:"var(--un)", d:"The 2022 order to stop; jurisdiction only through the Genocide Convention."},
+  {id:"c-wall", t:"Wall advisory opinion (2004)", c:"var(--un)", d:"No recognition of, or help maintaining, an illegal situation."},
+  {id:"c-icc", t:"ICC grid-strike warrants (2024)", c:"var(--un)", d:"Strikes on electricity infrastructure as alleged war crimes."},
+  {id:"c-echr", t:"ECtHR: Ukraine and Netherlands v. Russia (2025)", c:"var(--un)", d:"Acts of controlled forces attributed to Russia."},
+  {id:"c-trib", t:"Special Tribunal for Aggression (2025–)", c:"var(--un)", d:"A court to try the crime of aggression itself."},
+  {id:"c-unga", t:"UN General Assembly ES-11/1 (2022)", c:"var(--un)", d:"141 states condemn the invasion."}
+ ]
+};
+var EDGES = [
+ ["ev-inv","l-24"],["ev-inv","l-51"],["ev-inv","l-41"],
+ ["ev-grid","l-52"],["ev-grid","l-rome"],
+ ["ev-ref","l-52"],["ev-ref","l-51"],
+ ["ev-rus","l-hg"],["ev-rus","l-52"],["ev-rus","l-rome"],
+ ["ev-wl","l-hg"],["ev-wl","l-ost"],
+ ["ev-cap","l-48"],["ev-cap","l-ost"],["ev-cap","l-hg"],["ev-cap","l-ca1"],["ev-cap","l-36"],
+ ["ev-warn","l-ca1"],["ev-warn","l-48"],
+ ["ev-dsl","l-16"],
+ ["ev-deal","l-vc"],["ev-deal","l-41r"],
+ ["l-24","c-unga"],["l-24","c-trib"],["l-24","c-nic"],
+ ["l-51","c-nic"],
+ ["l-41","c-lag"],["l-41","c-ukr"],
+ ["l-36","c-ukr"],["l-36","c-nic"],
+ ["l-48","c-nic"],["l-48","c-bos"],["l-48","c-echr"],
+ ["l-16","c-bos"],
+ ["l-41r","c-wall"],
+ ["l-ca1","c-nic"],
+ ["l-52","c-icc"],
+ ["l-rome","c-icc"]
+];
+var nodeInfo = {}, nodeEl = {}, col = {};
+var map = document.getElementById("map"), svgE = document.getElementById("edges"), info = document.getElementById("mapInfo");
+[["E","colE"],["L","colL"],["C","colC"]].forEach(function(p){
+  var host = document.getElementById(p[1]);
+  MN[p[0]].forEach(function(n){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "mnode"; b.style.setProperty("--c", n.c);
+    b.textContent = n.t; b.dataset.id = n.id;
+    host.appendChild(b);
+    nodeEl[n.id] = b; nodeInfo[n.id] = n; col[n.id] = p[0];
+    b.addEventListener("mouseenter", function(){ light(n.id); });
+    b.addEventListener("focus", function(){ light(n.id); });
+    b.addEventListener("click", function(){ light(n.id); });
+  });
+});
+MN.L.forEach(function(n){ nodeInfo[n.id].d = lawById[n.law].plain; });
+var adj = {}; EDGES.forEach(function(e){ (adj[e[0]] = adj[e[0]] || []).push(e[1]); (adj[e[1]] = adj[e[1]] || []).push(e[0]); });
+var paths = [];
+function drawEdges(){
+  if (getComputedStyle(svgE).display === "none") return;
+  var mr = map.getBoundingClientRect();
+  svgE.setAttribute("viewBox", "0 0 " + mr.width + " " + mr.height);
+  svgE.innerHTML = ""; paths = [];
+  EDGES.forEach(function(e){
+    var a = nodeEl[e[0]].getBoundingClientRect(), b = nodeEl[e[1]].getBoundingClientRect();
+    var x1 = a.right - mr.left, y1 = a.top + a.height/2 - mr.top;
+    var x2 = b.left - mr.left, y2 = b.top + b.height/2 - mr.top;
+    var mx = (x1 + x2) / 2;
+    var p = document.createElementNS(ns, "path");
+    p.setAttribute("d", "M" + x1 + " " + y1 + " C" + mx + " " + y1 + " " + mx + " " + y2 + " " + x2 + " " + y2);
+    p.dataset.a = e[0]; p.dataset.b = e[1];
+    svgE.appendChild(p); paths.push(p);
+  });
+}
+function light(id){
+  map.classList.add("active");
+  var lit = {}; lit[id] = true;
+  var litEdges = [];
+  var c = col[id];
+  function walk(from, dir){
+    (adj[from] || []).forEach(function(nb){
+      var cn = col[nb];
+      var ok = (dir === "R" && ((col[from]==="E" && cn==="L") || (col[from]==="L" && cn==="C"))) ||
+               (dir === "L" && ((col[from]==="C" && cn==="L") || (col[from]==="L" && cn==="E")));
+      if (!ok) return;
+      litEdges.push(from + "|" + nb);
+      if (!lit[nb]){ lit[nb] = true; walk(nb, dir); }
+    });
+  }
+  if (c === "E") walk(id, "R");
+  else if (c === "C") walk(id, "L");
+  else { walk(id, "R"); walk(id, "L"); }
+  Object.keys(nodeEl).forEach(function(k){ nodeEl[k].classList.toggle("lit", !!lit[k]); nodeEl[k].classList.toggle("me", k === id); });
+  paths.forEach(function(p){
+    var on = litEdges.indexOf(p.dataset.a + "|" + p.dataset.b) >= 0 || litEdges.indexOf(p.dataset.b + "|" + p.dataset.a) >= 0;
+    p.classList.toggle("lit", on);
+  });
+  var n = nodeInfo[id];
+  var extra = n.law ? ' <button type="button" class="lawlink" data-law="' + n.law + '">Read the text</button>' : '';
+  info.innerHTML = '<b>' + esc(n.t) + ':</b> ' + esc(n.d) + extra;
+}
+map.addEventListener("mouseleave", function(){
+  map.classList.remove("active");
+});
+window.addEventListener("resize", function(){ clearTimeout(window.__rz); window.__rz = setTimeout(drawEdges, 120); });
+window.addEventListener("load", drawEdges);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawEdges);
+drawEdges();
+
+/* ---------- Forums ---------- */
+var FOR = [
+ {st:"Blocked", c:"var(--v0)", t:"UN Security Council", x:"Could order binding action against Russia, but Russia holds a veto.", r:"UN Charter Art. 27(3)"},
+ {st:"Narrow", c:"var(--v2)", t:"World Court: Ukraine v. Russia", x:"Running, but only on genocide-related claims, because that is all Russia consented to through a treaty.", r:"ICJ Statute Art. 36(1)"},
+ {st:"Blocked", c:"var(--v0)", t:"World Court: Ukraine v. United States", x:"No realistic path over Starshield. The US has not accepted the Court's standing jurisdiction since 1986, and no treaty clause covers this dispute.", r:"ICJ Statute Art. 36(2)"},
+ {st:"Possible", c:"var(--ua)", t:"World Court advisory opinion", x:"The General Assembly could ask what states owe when private satellites carry a war. Not binding, but influential.", r:"UN Charter Art. 96; ICJ Statute Art. 65"},
+ {st:"Open", c:"var(--v4)", t:"International Criminal Court", x:"Can try war crimes on Ukrainian soil by anyone. Warrants exist for Putin and four commanders. Cannot try Russia's aggression.", r:"Rome Statute Art. 25"},
+ {st:"Being built", c:"var(--eu)", t:"Special Tribunal for Aggression", x:"36 countries and the EU backed it in May 2026. It will try the decision to invade. Still in its early phase.", r:"Agreement with the Council of Europe, 2025"},
+ {st:"Active", c:"var(--us)", t:"US Congress and the Pentagon's watchdog", x:"Senators of both parties asked the inspector general to find out who ordered the cap. This is where the October cap is most likely to be judged.", r:"US law, not international law", wide:true}
+];
+var fg = document.getElementById("forumGrid");
+FOR.forEach(function(f){
+  var d = document.createElement("article"); d.className = "forum" + (f.wide ? " wide" : "");
+  var open = (f.st === "Open" || f.st === "Active" || f.st === "Possible");
+  var door = open
+    ? '<svg class="door" width="34" height="40" viewBox="0 0 34 40" aria-hidden="true"><rect x="3" y="2" width="28" height="36" rx="2" fill="none" stroke="#C5CEDF" stroke-width="2"/><path d="M3 2l16 5v30L3 38z" fill="' + f.c + '" opacity=".85"/></svg>'
+    : '<svg class="door" width="34" height="40" viewBox="0 0 34 40" aria-hidden="true"><rect x="3" y="2" width="28" height="36" rx="2" fill="' + f.c + '" opacity=".85"/><circle cx="24" cy="21" r="2.3" fill="#fff"/></svg>';
+  d.innerHTML = door + '<span class="st" style="background:' + f.c + '">' + esc(f.st) + '</span><h4>' + esc(f.t) + '</h4><p>' + esc(f.x) + '</p><p class="rule">' + esc(f.r) + '</p>';
+  fg.appendChild(d);
+});
+
+/* ---------- Nav highlight ---------- */
+var links = Array.prototype.slice.call(document.querySelectorAll(".toc a"));
+var secs = links.map(function(a){ return document.querySelector(a.getAttribute("href")); });
+if ("IntersectionObserver" in window){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){
+        var i = secs.indexOf(en.target);
+        links.forEach(function(a, j){ a.classList.toggle("on", j === i); });
+        if (links[i] && links[i].scrollIntoView){
+          var ul = links[i].parentNode.parentNode;
+          var lr = links[i].getBoundingClientRect(), ur = ul.getBoundingClientRect();
+          if (lr.left < ur.left || lr.right > ur.right) ul.scrollLeft += lr.left - ur.left - 24;
+        }
+      }
+    });
+  }, {rootMargin:"-45% 0px -50% 0px"});
+  secs.forEach(function(s){ if (s) io.observe(s); });
+}
+})();
+</script>
+</body>
+</html>
