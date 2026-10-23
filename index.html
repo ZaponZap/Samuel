@@ -1,262 +1,1636 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sam Bang</title>
-  <meta name="description" content="Hi, I'm Sam, a sinner saved by Christ Jesus.">
-  <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --navy-deep: #070d22;
-      --navy: #0f1d44;
-      --navy-soft: #1d2f63;
-      --glow: #ffb45e;          /* warm sunset glow, picked from the photo */
-      --bubble: #fbf6ec;
-      --bubble-text: #16213f;
-      --text: #e9ecf7;
-      --muted: #9aa6cc;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sam Bang | Notes on Faith</title>
+<meta name="description" content="Hi, I'm Sam, a sinner saved by Christ Jesus. Notes on TULIP, mental health and Romans 12, the Eucharist, and letters and prayers.">
+<meta name="theme-color" content="#04020b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10.3 2h3.4l-.3 5.9 6.3-.3v3.4l-6.3-.3.6 11.3h-4l.6-11.3-6.3.3V7.6l6.3.3z' fill='%23f1cf83' stroke='%23120a1c' stroke-width='1.1' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   Sam Bang: notes on faith.
+   Stained glass, out in space: the jewel colours of a rose window
+   (ruby, amber, gold, emerald, azure, sapphire, amethyst, rose) lit
+   against a quiet night sky. Headings in Cormorant Garamond; everything
+   I wrote is in Patrick Hand, which is close to my own handwriting.
+   ================================================================ */
+:root{
+  --gold:#f1cf83; --gold-deep:#b98a3c;
+  --ruby:#ff5d78; --sapphire:#5b8cff; --emerald:#3fd39b; --amethyst:#b07cff;
+  --azure:#6cc4ff; --amber:#ffb45e; --rosegl:#ff8fb4;
+  --lead:#120a1c; --space:#04020b;
+  --ink:#f4edfc; --soft:#ddd2ec; --mute:#a99dc0;
+  --line:rgba(195,162,255,.2);
+  --gilt:rgba(241,207,131,.5);
+  --serif:'Cormorant Garamond','Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+  --hand:'Patrick Hand','Segoe Print','Bradley Hand',system-ui,sans-serif;
+  --prism:linear-gradient(90deg,var(--ruby) 0 12%,var(--lead) 0 12.5%,var(--amber) 0 24.5%,var(--lead) 0 25%,var(--gold) 0 37%,var(--lead) 0 37.5%,
+    var(--emerald) 0 49.5%,var(--lead) 0 50%,var(--azure) 0 62%,var(--lead) 0 62.5%,var(--sapphire) 0 74.5%,var(--lead) 0 75%,
+    var(--amethyst) 0 87%,var(--lead) 0 87.5%,var(--rosegl) 0 100%);
+}
+*{box-sizing:border-box}
+html{background:var(--space);color-scheme:dark;-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;overflow-x:hidden;font:20px/1.55 var(--hand);color:var(--ink);
+  background:
+    radial-gradient(60vw 50vh at 12% 8%,rgba(176,124,255,.13),transparent 70%),
+    radial-gradient(55vw 45vh at 92% 30%,rgba(91,140,255,.11),transparent 70%),
+    radial-gradient(60vw 50vh at 30% 95%,rgba(255,93,120,.08),transparent 70%),
+    radial-gradient(40vw 40vh at 85% 92%,rgba(63,211,155,.06),transparent 70%),
+    var(--space);
+  background-attachment:fixed}
+a{color:#9fd3ff;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:#cfe9ff}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+::selection{background:rgba(176,124,255,.45)}
+p{margin:0 0 14px}
+b,strong{font-weight:400;color:#fff;text-shadow:0 0 .01px #fff}
+em{font-style:normal;color:var(--gold)}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ---------- the sky ---------- */
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+.craft{position:fixed;z-index:1;pointer-events:none}
+.rocket{left:0;top:0;width:34px;height:70px;opacity:0;animation:fly 64s linear infinite;animation-delay:6s}
+@keyframes fly{
+  0%{opacity:0;transform:translate(var(--x0),var(--y0)) rotate(var(--rot))}
+  3%{opacity:.9}
+  44%{opacity:.9}
+  48%,100%{opacity:0;transform:translate(var(--x1),var(--y1)) rotate(var(--rot))}
+}
+.rocket .flame{transform-origin:17px 56px;animation:flame .22s ease-in-out infinite alternate}
+@keyframes flame{from{transform:scaleY(.75)}to{transform:scaleY(1.15)}}
+.sat{right:5vw;top:15vh;width:84px;height:60px;opacity:.85;animation:bob 13s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-14deg)}50%{transform:translateY(10px) rotate(-6deg)}}
+.sat .blink{animation:blink 2.4s steps(2,jump-none) infinite}
+@keyframes blink{0%,60%{opacity:.15}61%,100%{opacity:1}}
+.planet{left:-70px;bottom:-60px;width:260px;height:180px;opacity:.55}
 
-    html, body { min-height: 100%; }
+/* ---------- page ---------- */
+.wrap{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 16px 40px}
 
-    body {
-      font-family: "Nunito", system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      color: var(--text);
-      background-color: var(--navy-deep);
-      background-image:
-        radial-gradient(ellipse 80% 50% at 50% 110%, rgba(255, 180, 94, 0.10), transparent 70%),
-        radial-gradient(ellipse 70% 60% at 50% 0%, var(--navy-soft), transparent 75%),
-        linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
-      background-attachment: fixed;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 48px 20px;
-      overflow-x: hidden;
-    }
+/* ---------- header ---------- */
+.hero{position:relative;text-align:center;padding:46px 0 22px;overflow-x:clip}
+.rose{position:relative;width:150px;height:150px;margin:0 auto 6px;
+  filter:drop-shadow(0 0 16px rgba(241,207,131,.3)) drop-shadow(0 0 38px rgba(176,124,255,.22))}
+.rose::before{content:"";position:absolute;inset:-22px;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle at 50% 40%,rgba(255,236,190,.26),rgba(176,124,255,.08) 55%,transparent 70%);animation:halo 9s ease-in-out infinite}
+@keyframes halo{0%,100%{opacity:.7;transform:scale(.97)}50%{opacity:1;transform:scale(1.03)}}
+.rays{position:absolute;left:50%;top:40%;width:620px;height:620px;margin:-310px 0 0 -310px;z-index:-2;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,236,190,.08) 0deg 2.6deg,transparent 2.6deg 10deg);
+  -webkit-mask:radial-gradient(circle at 50% 50%,#000 9%,rgba(0,0,0,.35) 22%,transparent 40%);
+          mask:radial-gradient(circle at 50% 50%,#000 9%,rgba(0,0,0,.35) 22%,transparent 40%);
+  animation:rays 14s ease-in-out infinite}
+@keyframes rays{0%,100%{opacity:.55;transform:rotate(0deg)}50%{opacity:1;transform:rotate(2.5deg)}}
+.pt-rose-svg{display:block;width:100%;height:100%}
+.pt-rose-svg .g{animation:glint 7s ease-in-out infinite}
+.pt-rose-svg .glory{animation:glory 8s ease-in-out infinite}
+@keyframes glint{0%,100%{opacity:.82}50%{opacity:1}}
+@keyframes glory{0%,100%{opacity:.7}50%{opacity:1}}
+.name{margin:14px 0 4px;font:700 58px/1 var(--serif);letter-spacing:.01em;
+  background:linear-gradient(180deg,#fff8e6 10%,#f1cf83 62%,#d99b62);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 14px rgba(241,207,131,.35))}
+.tag{margin:8px auto 14px;max-width:34ch;font-size:22px;line-height:1.35;color:var(--soft)}
+.motto{margin:0 auto;max-width:560px;padding:0;font:italic 500 19px/1.45 var(--serif);color:#e8dcf7}
+.motto cite{display:block;margin-top:4px;font:600 14px/1 var(--serif);font-style:normal;letter-spacing:.06em;color:var(--gold)}
 
-    /* ---------- Stars ---------- */
-    #stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .star {
-      position: absolute;
-      border-radius: 50%;
-      background: #fff;
-      animation: twinkle var(--dur) ease-in-out var(--delay) infinite;
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: var(--min); }
-      50%      { opacity: var(--max); }
-    }
+/* ---------- tabs ---------- */
+.tabs{position:sticky;top:10px;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:24px 0 20px;padding:6px;
+  border-radius:20px;border:1px solid rgba(241,207,131,.28);
+  background:linear-gradient(180deg,rgba(30,16,48,.86),rgba(16,8,28,.88));
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  box-shadow:0 14px 34px rgba(0,0,0,.45),0 0 26px rgba(176,124,255,.12)}
+.tab{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;min-height:58px;padding:8px 10px;border:0;border-radius:15px;cursor:pointer;
+  font:21px/1.1 var(--hand);color:var(--mute);background:transparent;transition:color .25s,background .25s}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+.tab[aria-selected="true"]{color:#fff;background:
+  radial-gradient(120% 140% at 50% 120%,color-mix(in srgb,var(--c) 34%,transparent),transparent 70%),
+  rgba(255,255,255,.05);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 55%,transparent),0 0 18px color-mix(in srgb,var(--c) 30%,transparent)}
+.tab .ti{flex:none;width:36px;height:36px;transition:transform .35s cubic-bezier(.2,.9,.3,1.4),filter .3s;filter:saturate(.55) brightness(.85)}
+.tab:hover .ti{transform:translateY(-2px) rotate(-6deg)}
+.tab[aria-selected="true"] .ti{filter:drop-shadow(0 0 8px color-mix(in srgb,var(--c) 70%,transparent));transform:scale(1.08)}
+.tab-glow{position:absolute;left:0;bottom:-1px;height:3px;border-radius:3px;background:var(--prism);
+  box-shadow:0 0 12px rgba(241,207,131,.55);transition:transform .45s cubic-bezier(.3,.9,.3,1),width .45s}
 
-    /* ---------- Layout ---------- */
-    main {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 560px;
-    }
+/* ---------- panes (stained glass along the top, gilt in the corners) ---------- */
+.panel{animation:enter .45s ease}
+.panel[hidden]{display:none}
+@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pane{position:relative;margin:0 0 20px;padding:22px 26px 22px;border:1px solid #3d2657;border-radius:4px;
+  background:
+    radial-gradient(440px 170px at 100% 0,rgba(176,124,255,.12),transparent 72%),
+    radial-gradient(380px 150px at 0 0,rgba(241,207,131,.07),transparent 70%),
+    radial-gradient(460px 190px at 30% 118%,rgba(255,93,120,.06),transparent 70%),
+    linear-gradient(180deg,rgba(29,15,46,.9),rgba(16,8,28,.92));
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  box-shadow:0 10px 26px rgba(0,0,0,.35),inset 0 0 0 1px rgba(241,207,131,.05)}
+.pane::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:4px;
+  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%) -100% 0/40% 100% no-repeat,var(--prism);
+  box-shadow:0 0 12px rgba(241,207,131,.28),0 2px 14px rgba(176,124,255,.25);animation:shine 11s ease-in-out infinite}
+@keyframes shine{0%,62%{background-position:-100% 0,0 0}100%{background-position:200% 0,0 0}}
+.pane::after{content:"";position:absolute;inset:7px;pointer-events:none;
+  background:
+    linear-gradient(var(--gilt),var(--gilt)) top left/16px 1px no-repeat,linear-gradient(var(--gilt),var(--gilt)) top left/1px 16px no-repeat,
+    linear-gradient(var(--gilt),var(--gilt)) top right/16px 1px no-repeat,linear-gradient(var(--gilt),var(--gilt)) top right/1px 16px no-repeat,
+    linear-gradient(var(--gilt),var(--gilt)) bottom left/16px 1px no-repeat,linear-gradient(var(--gilt),var(--gilt)) bottom left/1px 16px no-repeat,
+    linear-gradient(var(--gilt),var(--gilt)) bottom right/16px 1px no-repeat,linear-gradient(var(--gilt),var(--gilt)) bottom right/1px 16px no-repeat}
+.pane>*{position:relative;z-index:1}
+.pane>:last-child{margin-bottom:0}
 
-    /* ---------- Intro: avatar + chat bubble ---------- */
-    .intro {
-      display: flex;
-      align-items: flex-end;
-      gap: 16px;
-      margin-bottom: 56px;
-    }
+h2,h3,h4{font-weight:600}
+.pane-h{display:flex;align-items:center;gap:12px;margin:0 0 14px;font:600 33px/1.1 var(--serif);
+  background:linear-gradient(180deg,#fffaf0 15%,#f1cf83 85%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pane-h .orn{flex:none}
+.sub-h{margin:26px 0 10px;font:600 26px/1.15 var(--serif);color:#fff3d6}
+.orn{position:relative;display:inline-block;width:28px;height:28px;border-radius:50%;
+  background:
+    radial-gradient(circle,#fff6d8 0 14%,#e2b45a 15% 21%,transparent 22%),
+    radial-gradient(circle,#24143c 0 44%,transparent 45%),
+    repeating-conic-gradient(from -22.5deg,var(--lead) 0 4deg,transparent 4deg 45deg),
+    conic-gradient(from -22.5deg,var(--ruby) 0 12.5%,var(--amber) 0 25%,var(--gold) 0 37.5%,var(--emerald) 0 50%,var(--azure) 0 62.5%,var(--sapphire) 0 75%,var(--amethyst) 0 87.5%,var(--rosegl) 0 100%);
+  box-shadow:0 0 0 1.5px var(--lead),0 0 0 2.5px rgba(241,207,131,.6),0 0 14px rgba(241,207,131,.35),0 0 22px rgba(176,124,255,.25)}
+.lede{font-size:21px;color:var(--soft)}
 
-    .avatar {
-      flex-shrink: 0;
-      width: 108px;
-      height: 108px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid rgba(255, 255, 255, 0.85);
-      box-shadow:
-        0 0 0 4px rgba(255, 180, 94, 0.18),
-        0 0 22px 4px rgba(255, 180, 94, 0.45);
-    }
+/* scripture */
+.verse{margin:16px 0;padding:12px 16px 12px 18px;border-left:2px solid var(--gold);
+  background:linear-gradient(90deg,rgba(241,207,131,.09),rgba(241,207,131,.0) 80%)}
+.verse p{margin:0 0 4px;font:italic 500 22px/1.38 var(--serif);color:#fbf3ff}
+.verse cite{font:600 14px/1 var(--serif);font-style:normal;letter-spacing:.06em;color:var(--gold)}
+.verse.big p{font-size:26px}
+q,.q{font-family:var(--serif);font-style:italic;font-size:1.06em;color:#fbf2dc;quotes:"\201C" "\201D"}
+.ref{white-space:nowrap;font:600 .7em/1 var(--serif);letter-spacing:.05em;color:var(--gold);vertical-align:.08em}
 
-    .bubble {
-      position: relative;
-      background: var(--bubble);
-      color: var(--bubble-text);
-      font-size: 1.15rem;
-      font-weight: 600;
-      line-height: 1.45;
-      padding: 16px 20px;
-      border-radius: 22px 22px 22px 6px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-      margin-bottom: 10px;
-      transform-origin: bottom left;
-      animation: pop-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.25) 0.3s both;
-    }
-    /* little tail pointing at the avatar */
-    .bubble::before {
-      content: "";
-      position: absolute;
-      left: -7px;
-      bottom: 0;
-      width: 16px;
-      height: 16px;
-      background: var(--bubble);
-      clip-path: polygon(100% 0, 100% 100%, 0 100%);
-    }
+/* handwriting marks, after my notes */
+.u-red{text-decoration:underline;text-decoration-color:var(--ruby);text-decoration-thickness:2px;text-underline-offset:4px}
+.u-wavy{text-decoration:underline wavy;text-decoration-color:var(--ruby);text-underline-offset:5px}
+.u-ink{text-decoration:underline;text-decoration-color:rgba(244,237,252,.6);text-underline-offset:4px}
+.hl{background:linear-gradient(transparent 55%,rgba(63,211,155,.4) 55% 92%,transparent 92%);padding:0 2px}
+.star-note{color:var(--ruby)}
+.arrow{color:var(--gold);margin-right:4px}
 
-    @keyframes pop-in {
-      from { opacity: 0; transform: scale(0.85) translateY(8px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
+ul.stars{list-style:none;margin:0 0 14px;padding:0}
+ul.stars>li{position:relative;padding:4px 0 6px 30px}
+ul.stars>li::before{content:"\2605";position:absolute;left:2px;top:4px;color:var(--c,var(--gold));text-shadow:0 0 8px var(--c,var(--gold))}
 
-    /* ---------- Work ---------- */
-    .section-label {
-      font-size: 0.8rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 14px;
-      padding-left: 4px;
-    }
+/* ---------- 1. TULIP ---------- */
+.tulip-stage{display:grid;grid-template-columns:240px 1fr;gap:22px;align-items:center;margin:8px 0 18px}
+.tulip-svg{width:100%;max-width:240px;height:auto;display:block;margin:0 auto;overflow:visible}
+.petal{cursor:pointer;transition:transform .45s cubic-bezier(.2,.9,.3,1.3),filter .3s,opacity .3s}
+.petal path{transition:stroke .3s}
+.petal-letters text{font:700 28px/1 var(--serif);fill:#1a0d24;pointer-events:none;transition:transform .45s cubic-bezier(.2,.9,.3,1.3),opacity .3s}
+.tulip-svg.picked .petal{opacity:.72;filter:saturate(.7)}
+.tulip-svg.picked .petal-letters text{opacity:.75}
+.tulip-svg.picked .petal-letters text.on{opacity:1}
+.tulip-svg.picked .petal.on{opacity:1;filter:saturate(1.1) drop-shadow(0 0 10px var(--pc));transform:var(--lift)}
+.petal:hover{filter:brightness(1.12) drop-shadow(0 0 6px var(--pc))}
+.letters{display:flex;flex-wrap:wrap;gap:8px}
+.letter{display:grid;place-items:center;width:58px;height:58px;padding:0;border-radius:14px;cursor:pointer;
+  font:700 30px/1 var(--serif);color:#1b0e24;border:2px solid var(--lead);
+  background:radial-gradient(circle at 35% 28%,#fff 0,color-mix(in srgb,var(--c) 70%,#fff) 20%,var(--c) 55%,color-mix(in srgb,var(--c) 55%,#000));
+  box-shadow:0 0 0 1px rgba(241,207,131,.35);transition:transform .25s,box-shadow .25s}
+.letter:hover{transform:translateY(-3px)}
+.letter[aria-pressed="true"]{transform:translateY(-3px) scale(1.06);box-shadow:0 0 0 2px #fff,0 0 22px var(--c)}
+.letters-hint{margin:10px 0 0;font-size:17px;color:var(--mute)}
+.doc{--c:var(--gold);padding:18px 20px 16px;margin:0 0 16px;border:1px solid color-mix(in srgb,var(--c) 40%,#3d2657);border-radius:6px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 12%,transparent),transparent 55%),rgba(10,5,18,.5)}
+.doc[hidden]{display:none}
+.doc.show{animation:enter .4s ease}
+.doc-h{display:flex;align-items:baseline;gap:14px;margin:0 0 4px}
+.doc-h .big{font:700 64px/.8 var(--serif);color:var(--c);text-shadow:0 0 22px color-mix(in srgb,var(--c) 60%,transparent)}
+.doc-h h3{margin:0;font:600 30px/1.1 var(--serif);color:#fff}
+.aka{margin:0 0 12px;font-size:17px;color:var(--mute)}
+.gist{font-size:21px;color:#fff;border-left:3px solid var(--c);padding:2px 0 2px 12px;margin:0 0 14px}
+.doc h4{margin:16px 0 6px;font:600 21px/1.2 var(--serif);color:var(--c)}
+.why{counter-reset:w;list-style:none;margin:0;padding:0}
+.why>li{position:relative;padding:6px 0 8px 38px}
+.why>li::before{counter-increment:w;content:counter(w);position:absolute;left:0;top:7px;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;
+  font:700 15px/1 var(--serif);color:#1a0d24;background:var(--c)}
+details.but{margin:14px 0 0;border:1px dashed color-mix(in srgb,var(--c) 55%,transparent);border-radius:6px;background:rgba(255,255,255,.025)}
+details.but summary{cursor:pointer;list-style:none;padding:10px 14px;color:var(--ink)}
+details.but summary::-webkit-details-marker{display:none}
+details.but summary::before{content:"?";display:inline-grid;place-items:center;width:22px;height:22px;margin-right:10px;border-radius:50%;
+  font:700 14px/1 var(--serif);color:#1a0d24;background:var(--c);transition:transform .3s}
+details.but[open] summary::before{transform:rotate(360deg)}
+details.but>div{padding:0 16px 12px 46px;color:var(--soft)}
+.doc-nav{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;cursor:pointer;font:19px/1.1 var(--hand);color:var(--ink);
+  background:rgba(176,124,255,.12);border:1px solid rgba(241,207,131,.38);transition:background .2s,transform .2s}
+.btn:hover{background:rgba(176,124,255,.26);transform:translateY(-1px)}
+.btn[disabled]{opacity:.35;cursor:default;transform:none}
+.mine{margin:6px 0 0;padding:14px 16px;border-radius:6px;background:linear-gradient(90deg,rgba(91,140,255,.14),rgba(91,140,255,.02));border-left:3px solid var(--sapphire)}
 
-    .work-list {
-      list-style: none;
-      display: grid;
-      gap: 12px;
-    }
+/* ---------- 2. Everything to God ---------- */
+.story{font-size:21px}
+.pull{margin:20px 0;padding:16px 20px;text-align:center;font-size:25px;line-height:1.35;color:#fff;
+  border-top:1px solid rgba(63,211,155,.4);border-bottom:1px solid rgba(63,211,155,.4);
+  background:radial-gradient(60% 120% at 50% 50%,rgba(63,211,155,.1),transparent 70%)}
+.elijah{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0 14px}
+.elijah>div{padding:12px 14px;border-radius:6px;background:rgba(10,5,18,.5);border-top:3px solid var(--k)}
+.elijah b{display:block;font:600 19px/1.2 var(--serif);color:var(--k);margin-bottom:4px}
+.elijah span{font-size:18px;color:var(--soft)}
+.sky-check{display:grid;grid-template-columns:260px 1fr;gap:22px;align-items:center}
+.constellation{width:100%;max-width:260px;height:auto;display:block;margin:0 auto}
+.constellation .ln{stroke:rgba(241,207,131,0);stroke-width:1.6;transition:stroke .6s}
+.constellation .ln.on{stroke:rgba(241,207,131,.75)}
+.constellation .st circle.core{fill:#6a5c8c;stroke:rgba(241,207,131,.35);stroke-width:1;transition:fill .5s}
+.constellation .st circle.glow{fill:var(--sc);opacity:0;transition:opacity .5s}
+.constellation .st.on circle.core{fill:#fffbe8}
+.constellation .st.on circle.glow{opacity:.55}
+.constellation.all .ln.on{stroke:var(--gold);filter:drop-shadow(0 0 4px var(--gold))}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.chk{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;width:100%;padding:7px 10px;border-radius:10px;cursor:pointer;text-align:left;
+  font:19px/1.3 var(--hand);color:var(--soft);background:rgba(255,255,255,.03);border:1px solid rgba(195,162,255,.16);transition:background .25s,border-color .25s,color .25s}
+.chk:hover{background:rgba(255,255,255,.06)}
+.chk .dot{width:22px;height:22px;margin-top:1px;border-radius:50%;border:2px solid color-mix(in srgb,var(--sc) 70%,transparent);display:grid;place-items:center;
+  font:14px/1 var(--hand);color:transparent;transition:background .3s,color .3s,box-shadow .3s}
+.chk[aria-pressed="true"]{color:#fff;border-color:color-mix(in srgb,var(--sc) 55%,transparent);background:color-mix(in srgb,var(--sc) 12%,transparent)}
+.chk[aria-pressed="true"] .dot{background:var(--sc);color:#1a0d24;box-shadow:0 0 12px var(--sc)}
+.chk small{display:block;font-size:15.5px;color:var(--mute)}
+.sky-msg{min-height:28px;margin:12px 0 0;text-align:center;font-size:19px;color:var(--mute);transition:color .4s}
+.sky-msg.done{color:var(--gold)}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{display:flex;align-items:baseline;gap:12px;padding:11px 4px;cursor:pointer;list-style:none}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary .vv{flex:none;min-width:56px;font:600 15px/1 var(--serif);letter-spacing:.04em;color:var(--emerald)}
+.acc summary .tt{flex:1;color:#fff}
+.acc summary::after{content:"+";font:600 22px/1 var(--serif);color:var(--emerald);transition:transform .3s}
+.acc details[open] summary::after{transform:rotate(45deg)}
+.acc details>div{padding:0 6px 14px 72px;color:var(--soft)}
+.acc .q{display:block;margin-bottom:6px}
+.help{padding:16px 18px;border-radius:8px;border:1px solid rgba(108,196,255,.4);background:linear-gradient(135deg,rgba(108,196,255,.1),rgba(176,124,255,.05))}
+.help h3{margin:0 0 6px;font:600 23px/1.2 var(--serif);color:var(--azure)}
+.help .num{font-size:24px;color:#fff;white-space:nowrap}
 
-    .work-card {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 18px 20px;
-      border-radius: 16px;
-      text-decoration: none;
-      color: inherit;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-    }
-    .work-card:hover,
-    .work-card:focus-visible {
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 180, 94, 0.55);
-      box-shadow: 0 8px 28px rgba(255, 180, 94, 0.12);
-      outline: none;
-    }
+/* ---------- 3. Eucharist: my notes ---------- */
+.notes{position:relative;padding:20px 22px 18px 54px;margin:0 0 18px;border-radius:4px;
+  background:
+    linear-gradient(90deg,transparent 38px,rgba(255,93,120,.55) 38px 39.5px,transparent 39.5px),
+    repeating-linear-gradient(180deg,transparent 0 30px,rgba(140,180,255,.11) 30px 31px),
+    rgba(14,8,26,.78);
+  border:1px solid rgba(195,162,255,.18)}
+.notes::before{content:"";position:absolute;left:12px;top:26px;bottom:26px;width:12px;
+  background:radial-gradient(circle,#04020b 0 5px,transparent 6px) 0 0/12px 33.3% repeat-y}
+.notes h3{margin:0 0 8px;font:400 30px/1.15 var(--hand);color:#fff}
+.notes h3 .u-red{text-decoration-thickness:2px}
+.notes p,.notes li{line-height:31px}
+.notes ul.stars>li{padding-top:0;padding-bottom:0}
+.margin{display:block;margin:4px 0 8px;color:var(--ruby);font-size:19px}
+.vers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0 10px}
+.vers blockquote{margin:0;padding:10px 12px;border-radius:4px;background:rgba(255,255,255,.035);font-size:19px;line-height:1.45}
+.vers blockquote b{font-weight:400;color:var(--gold)}
+.vers cite{display:block;margin-top:4px;font-size:15px;color:var(--mute);font-style:normal}
 
-    .work-icon {
-      flex-shrink: 0;
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      font-size: 1.35rem;
-      background: rgba(255, 180, 94, 0.14);
-    }
+.views{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.view{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;cursor:pointer;font:19px/1.1 var(--hand);color:var(--soft);
+  background:color-mix(in srgb,var(--c) 10%,rgba(10,5,18,.6));border:1px solid color-mix(in srgb,var(--c) 45%,transparent);transition:all .25s}
+.view::before{content:"";width:9px;height:9px;transform:rotate(45deg);background:var(--c);box-shadow:0 0 8px var(--c)}
+.view[aria-selected="true"]{color:#fff;background:color-mix(in srgb,var(--c) 28%,rgba(10,5,18,.6));box-shadow:0 0 16px color-mix(in srgb,var(--c) 40%,transparent)}
+.view-card{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:16px 18px;border-radius:6px;border-left:3px solid var(--c);
+  background:linear-gradient(90deg,color-mix(in srgb,var(--c) 13%,transparent),transparent 70%),rgba(10,5,18,.45)}
+.view-card[hidden]{display:none}
+.view-card h4{margin:0 0 4px;font:600 24px/1.15 var(--serif);color:#fff}
+.view-card .who{font-size:16.5px;color:var(--mute);margin:0 0 6px}
+.view-card p:last-child{margin:0}
+.land{display:inline-block;margin-left:8px;padding:1px 9px;border-radius:999px;font-size:15px;color:#08142e;background:var(--sapphire);vertical-align:3px}
+.wine{width:132px;height:auto}
+.wine text{font:16px var(--hand);fill:var(--soft)}
 
-    .work-text { flex: 1; min-width: 0; }
-    .work-title,
-    .work-sub { display: block; }
-    .work-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fff;
-    }
-    .work-sub {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-top: 2px;
-    }
+.rounds{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px}
+.rnd{padding:6px 12px;border-radius:10px;cursor:pointer;font:18px/1.1 var(--hand);color:var(--mute);background:rgba(255,255,255,.03);border:1px solid var(--line);transition:all .2s}
+.rnd:hover{color:var(--ink)}
+.rnd[aria-selected="true"]{color:#fff;border-color:rgba(241,207,131,.6);background:rgba(241,207,131,.1);box-shadow:0 0 12px rgba(241,207,131,.18)}
+.rnd i{font-style:normal;color:var(--gold);margin-right:6px}
+.round[hidden]{display:none}
+.round h4{margin:0 0 12px;font:600 26px/1.15 var(--serif);color:#fff}
+.say{position:relative;margin:0 0 12px;padding:12px 16px 12px 16px;border-radius:12px;max-width:92%}
+.say::before{display:block;margin-bottom:2px;font:600 14px/1.2 var(--serif);letter-spacing:.06em}
+.say.r{border:1px solid rgba(91,140,255,.45);background:linear-gradient(135deg,rgba(91,140,255,.16),rgba(91,140,255,.04));border-top-left-radius:2px}
+.say.r::before{content:"Reformed";color:#a9c3ff}
+.say.c{margin-left:auto;border:1px solid rgba(255,93,120,.45);background:linear-gradient(225deg,rgba(255,93,120,.16),rgba(255,93,120,.04));border-top-right-radius:2px}
+.say.c::before{content:"Catholic answer";color:#ffb3c0}
+.say.r2::before{content:"Reformed reply"}
+.say[hidden]{display:none}
+.say.pop{animation:pop .45s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.say p{margin:0 0 8px;font-size:19px}
+.say p:last-child{margin:0}
+.next-say{margin:2px 0 4px}
+.round-foot{display:flex;justify-content:space-between;gap:8px;margin-top:10px}
 
-    .work-arrow {
-      flex-shrink: 0;
-      font-size: 1.2rem;
-      color: var(--muted);
-      transition: transform 0.2s ease, color 0.2s ease;
-    }
-    .work-card:hover .work-arrow,
-    .work-card:focus-visible .work-arrow {
-      transform: translateX(4px);
-      color: var(--glow);
-    }
+.lastday{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0 12px}
+.ld{padding:12px 14px;border-radius:6px;background:rgba(10,5,18,.55);border:1px solid var(--line);cursor:default;transition:border-color .3s}
+.ld b{display:block;font:600 15px/1.2 var(--serif);letter-spacing:.04em;color:var(--gold);margin-bottom:2px}
+.ld .who{display:inline-block;margin-bottom:6px;padding:1px 9px;border-radius:999px;font-size:15.5px;color:#1a0d24;background:var(--c)}
+.ld p{margin:0;font:italic 500 19px/1.38 var(--serif);color:#efe6fb}
+.ld mark{color:inherit;background:transparent;transition:background .3s,color .3s,box-shadow .3s;border-radius:3px}
+.lastday:hover mark,.lastday.lit mark{background:rgba(241,207,131,.28);color:#fff;box-shadow:0 0 0 2px rgba(241,207,131,.18)}
+.lastday:hover .ld,.lastday.lit .ld{border-color:rgba(241,207,131,.45)}
 
-    /* ---------- Small screens ---------- */
-    @media (max-width: 480px) {
-      .intro { gap: 12px; margin-bottom: 44px; }
-      .avatar { width: 76px; height: 76px; }
-      .bubble { font-size: 1rem; padding: 13px 16px; }
-    }
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.two>div{padding:12px 14px;border-radius:6px;border-top:3px solid var(--c);background:rgba(10,5,18,.5)}
+.two h5{margin:0 0 4px;font:600 19px/1.2 var(--serif);color:var(--c)}
+.two p{margin:0;font-size:19px;line-height:1.4}
+.reverence{margin:14px 0 0;text-align:center;font-size:23px;color:#fff}
+.reverence .ast{color:var(--ruby);margin-right:6px}
 
-    @media (prefers-reduced-motion: reduce) {
-      .star, .bubble { animation: none; }
-      .work-card, .work-arrow { transition: none; }
-    }
-  </style>
+/* videos: a picture first, the player only when asked for */
+.vid{position:relative;display:block;width:100%;max-width:680px;margin:0 auto;aspect-ratio:16/9;padding:0;border:0;border-radius:8px;overflow:hidden;cursor:pointer;background:#000;
+  box-shadow:0 0 0 1px rgba(241,207,131,.3),0 14px 30px rgba(0,0,0,.45)}
+.vid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s,filter .3s;filter:brightness(.82)}
+.vid:hover img{transform:scale(1.03);filter:brightness(.95)}
+.vid .play{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 30%,#fffaf0,#f1cf83 52%,#b98a3c);box-shadow:0 0 0 6px rgba(241,207,131,.18),0 0 26px rgba(241,207,131,.55);transition:transform .25s}
+.vid:hover .play{transform:scale(1.08)}
+.vid .play svg{width:24px;height:24px;margin-left:4px;fill:#2a1608}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid.short{aspect-ratio:9/16;max-width:250px;margin:0 auto}
+.vid-cap{margin:8px 0 0;font-size:18px;color:var(--soft)}
+.vid-cap b{color:#fff}
+.vid-cap a{font-size:16px}
+.vid-block{margin:12px 0 4px}
+.response{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:center;margin:14px 0 0;padding:14px;border-radius:8px;
+  border:1px solid rgba(255,93,120,.35);background:linear-gradient(135deg,rgba(255,93,120,.1),transparent 60%)}
+.response .vid.short{max-width:200px}
+.tagline{display:inline-block;padding:1px 10px;border-radius:999px;font-size:15px;color:#1a0d24;background:var(--c);margin-bottom:6px}
+
+/* ---------- 4. On the horizon ---------- */
+.orbit-wrap{display:grid;grid-template-columns:300px 1fr;gap:22px;align-items:center}
+.orbits{width:100%;max-width:300px;height:auto;display:block;margin:0 auto}
+.orbits .ring{fill:none;stroke:rgba(195,162,255,.22);stroke-width:1}
+.orbits .ring.dash{stroke-dasharray:3 6}
+.spin{transform-origin:150px 150px;animation:spin var(--d) linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin .counter{transform-box:fill-box;transform-origin:center;animation:spin var(--d) linear infinite reverse}
+.world{cursor:pointer}
+.world circle.p{transition:r .3s}
+.world:hover circle.p,.world.on circle.p{r:17}
+.world.on circle.halo{opacity:.7}
+.world circle.halo{opacity:.25;transition:opacity .3s}
+.topic{padding:16px 18px;margin:0 0 12px;border-radius:8px;border:1px solid color-mix(in srgb,var(--c) 40%,transparent);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 12%,transparent),transparent 60%),rgba(10,5,18,.5);transition:box-shadow .4s,transform .4s}
+.topic.on{box-shadow:0 0 0 1px var(--c),0 0 26px color-mix(in srgb,var(--c) 35%,transparent);transform:translateX(4px)}
+.topic h3{margin:0 0 6px;font:600 25px/1.15 var(--serif);color:#fff}
+.topic p{margin:0;font-size:19px;color:var(--soft)}
+.status{display:inline-flex;align-items:center;gap:7px;margin-bottom:6px;font-size:16px;color:var(--c)}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c);animation:blink2 1.8s ease-in-out infinite}
+@keyframes blink2{50%{opacity:.25}}
+
+/* ---------- footer ---------- */
+.foot{position:relative;z-index:2;text-align:center;padding:10px 16px 40px;color:var(--mute);font-size:17px}
+.sdg{display:block;margin-bottom:6px;font:italic 600 30px/1 var(--serif);
+  background:linear-gradient(180deg,#fff8e6 10%,#f1cf83 62%,#d99b62);-webkit-background-clip:text;background-clip:text;color:transparent}
+.foot small{display:block;margin-top:4px;font-size:15px}
+
+/* ---------- phones ---------- */
+@media (max-width:720px){
+  body{font-size:19px}
+  .hero{padding-top:30px}
+  .rose{width:120px;height:120px}
+  .name{font-size:46px}
+  .tabs{top:6px;gap:2px;padding:4px;border-radius:16px}
+  .tab{flex-direction:column;gap:3px;min-height:64px;padding:6px 2px;font-size:15px;line-height:1.05;text-align:center}
+  .tab .ti{width:30px;height:30px}
+  .pane{padding:18px 16px}
+  .pane-h{font-size:28px}
+  .tulip-stage,.sky-check,.orbit-wrap{grid-template-columns:1fr}
+  .tulip-svg{max-width:200px}
+  .letters{justify-content:center}
+  .letters-hint{text-align:center}
+  .elijah,.vers,.two,.lastday{grid-template-columns:1fr}
+  .notes{padding:16px 14px 14px 40px}
+  .notes::before{left:6px}
+  .notes{background:
+    linear-gradient(90deg,transparent 28px,rgba(255,93,120,.55) 28px 29.5px,transparent 29.5px),
+    repeating-linear-gradient(180deg,transparent 0 30px,rgba(140,180,255,.11) 30px 31px),
+    rgba(14,8,26,.78)}
+  .view-card{grid-template-columns:1fr}
+  .wine{justify-self:center}
+  .say{max-width:100%}
+  .acc details>div{padding-left:6px}
+  .response{grid-template-columns:1fr}
+  .sat{width:58px;right:3vw;top:11vh}
+  .planet{width:190px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0s!important;animation-iteration-count:1!important;transition-duration:0s!important}
+  .rocket{display:none}
+  .spin,.spin .counter{animation:none}
+}
+@media print{#sky,.craft,.tabs{display:none}.panel[hidden]{display:block}}
+
+/* ---------- additions: five tabs, the second header line, Letters & Prayers, the reader ---------- */
+.tag{margin:10px auto 6px;max-width:none;font-size:25px;color:#fff}
+.tag2{margin:0 auto 16px;max-width:52ch;font-size:19px;line-height:1.4;color:var(--soft)}
+.tabs{grid-template-columns:repeat(5,1fr)}
+.tab{font-size:19.5px;gap:8px;padding:8px 6px}
+.tab .ti{width:32px;height:32px}
+
+.lt-filter{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
+.lf{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;cursor:pointer;font:18px/1.1 var(--hand);color:var(--soft);
+  background:rgba(255,255,255,.03);border:1px solid var(--line);transition:all .2s}
+.lf::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c,var(--prism));box-shadow:0 0 8px var(--c,rgba(241,207,131,.6))}
+.lf[data-f="all"]::before{background:conic-gradient(var(--ruby),var(--gold),var(--emerald),var(--azure),var(--amethyst),var(--ruby))}
+.lf[aria-pressed="true"]{color:#fff;border-color:rgba(241,207,131,.6);background:rgba(241,207,131,.1)}
+
+.lt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:14px;margin-top:6px}
+.lt-month{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin:14px 0 0;font:600 22px/1.1 var(--serif);color:var(--gold)}
+.lt-month::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(241,207,131,.5),transparent)}
+.lt-month[hidden]{display:none}
+.lt{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:150px;padding:30px 16px 14px;border-radius:6px;cursor:pointer;text-align:left;
+  color:var(--ink);font-family:var(--hand);overflow:hidden;
+  border:1px solid color-mix(in srgb,var(--c) 45%,#3d2657);
+  background:
+    linear-gradient(160deg,color-mix(in srgb,var(--c) 22%,transparent) 0 18%,transparent 18.2%) top left/50.2% 46px no-repeat,
+    linear-gradient(200deg,color-mix(in srgb,var(--c) 22%,transparent) 0 18%,transparent 18.2%) top right/50.2% 46px no-repeat,
+    linear-gradient(180deg,color-mix(in srgb,var(--c) 10%,rgba(24,12,40,.95)),rgba(14,7,24,.95));
+  box-shadow:0 8px 20px rgba(0,0,0,.35);transition:transform .3s cubic-bezier(.2,.9,.3,1.3),box-shadow .3s,border-color .3s}
+.lt:hover,.lt:focus-visible{transform:translateY(-4px) rotate(-.6deg);border-color:var(--c);box-shadow:0 14px 28px rgba(0,0,0,.45),0 0 22px color-mix(in srgb,var(--c) 30%,transparent)}
+.lt[hidden]{display:none}
+.seal{position:absolute;right:14px;top:12px;width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff 0,color-mix(in srgb,var(--c) 70%,#fff) 18%,var(--c) 52%,color-mix(in srgb,var(--c) 45%,#000));
+  box-shadow:0 0 0 2px rgba(18,10,28,.9),0 0 12px color-mix(in srgb,var(--c) 55%,transparent);transition:transform .4s}
+.seal::after{content:"";position:absolute;inset:6px;background:var(--cross) center/contain no-repeat;opacity:.85}
+.lt:hover .seal{transform:rotate(-18deg) scale(1.08)}
+.lt-day{font:700 46px/.9 var(--serif);color:#fff;text-shadow:0 0 16px color-mix(in srgb,var(--c) 55%,transparent)}
+.lt-mon{margin:7px 0 8px;font:600 15px/1 var(--serif);letter-spacing:.08em;color:var(--c)}
+.lt-title{font-size:21px;line-height:1.2;color:#fff}
+.lt-kind{margin-top:auto;padding-top:10px;font-size:15px;color:var(--mute)}
+.lt-note{margin-top:4px;font-size:13.5px;color:#d9b7c4;opacity:.85}
+
+:root{--cross:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10.3 2h3.4l-.3 5.9 6.3-.3v3.4l-6.3-.3.6 11.3h-4l.6-11.3-6.3.3V7.6l6.3.3z' fill='%23fff8e6' stroke='%23120a1c' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E")}
+
+/* the reader: a page from my notebook, opened over the sky */
+.reader{width:min(720px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:0;border-radius:6px;background:transparent;color:var(--ink);overflow:visible}
+.reader::backdrop{background:rgba(3,1,8,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.reader[open]{animation:enter .35s ease}
+.rd-paper{position:relative;display:flex;flex-direction:column;max-height:calc(100dvh - 24px);border-radius:6px;overflow:hidden;
+  border:1px solid color-mix(in srgb,var(--c,var(--gold)) 50%,#3d2657);
+  background:
+    linear-gradient(90deg,transparent 38px,rgba(255,93,120,.5) 38px 39.5px,transparent 39.5px),
+    repeating-linear-gradient(180deg,transparent 0 30px,rgba(140,180,255,.1) 30px 31px),
+    #120a20;
+  box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 40px color-mix(in srgb,var(--c,var(--gold)) 22%,transparent)}
+.rd-paper::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--prism);z-index:2}
+.rd-head{position:relative;padding:22px 56px 12px 54px;border-bottom:1px solid rgba(195,162,255,.16);background:rgba(18,10,32,.92)}
+.rd-date{display:block;font:600 15px/1 var(--serif);letter-spacing:.08em;color:var(--c,var(--gold))}
+.rd-head h3{margin:6px 0 2px;font:600 32px/1.1 var(--serif);color:#fff}
+.rd-type{font-size:16px;color:var(--mute)}
+.rd-close{position:absolute;right:12px;top:14px;width:38px;height:38px;border-radius:50%;cursor:pointer;font:28px/1 var(--serif);color:var(--ink);
+  background:rgba(255,255,255,.05);border:1px solid rgba(241,207,131,.35)}
+.rd-close:hover{background:rgba(255,255,255,.12)}
+.rd-body{flex:1;overflow:auto;padding:16px 26px 10px 54px;font-size:20px;line-height:31px;overscroll-behavior:contain}
+.rd-body p{margin:0 0 31px}
+.rd-body .rd-sub{margin:0 0 0;font:400 22px/31px var(--hand);color:var(--c,var(--gold));text-decoration:underline;text-decoration-color:var(--ruby);text-underline-offset:4px}
+.rd-list{margin:0 0 31px;padding-left:24px}
+.rd-list li{padding-left:4px}
+.rd-foot{display:flex;justify-content:space-between;gap:10px;padding:12px 18px;border-top:1px solid rgba(195,162,255,.16);background:rgba(18,10,32,.92)}
+
+@media (max-width:720px){
+  .tag{font-size:22px}
+  .tag2{font-size:17.5px}
+  .tab{font-size:13.5px;gap:3px;padding:6px 1px;min-height:62px}
+  .tab .ti{width:27px;height:27px}
+  .lt-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .lt{min-height:140px;padding:26px 12px 12px}
+  .lt-day{font-size:38px}
+  .lt-title{font-size:18.5px}
+  .rd-head{padding:20px 52px 10px 40px}
+  .rd-head h3{font-size:27px}
+  .rd-body{padding:14px 16px 8px 40px;font-size:18.5px}
+  .rd-paper{background:
+    linear-gradient(90deg,transparent 26px,rgba(255,93,120,.5) 26px 27.5px,transparent 27.5px),
+    repeating-linear-gradient(180deg,transparent 0 30px,rgba(140,180,255,.1) 30px 31px),
+    #120a20}
+}
+@media (max-width:380px){.tab span{font-size:12.5px}}
+
+</style>
 </head>
 <body>
-  <div id="stars" aria-hidden="true"></div>
+<canvas id="sky" aria-hidden="true"></canvas>
 
-  <main>
-    <section class="intro">
-      <img class="avatar" src="/avatar.jpg" alt="Photo of Sam" width="108" height="108">
-      <p class="bubble">Hi, I'm Sam, a sinner saved by Christ Jesus.</p>
-    </section>
+<svg class="craft rocket" viewBox="0 0 34 70" aria-hidden="true">
+  <path class="flame" d="M11 54c1 7 4 12 6 15 2-3 5-8 6-15z" fill="url(#rw-amber)"/>
+  <path d="M17 2c7 7 9 18 8 34l-1 18H10L9 36C8 20 10 9 17 2z" fill="#efe6fb" stroke="#120a1c" stroke-width="1.6" stroke-linejoin="round"/>
+  <circle cx="17" cy="24" r="4.6" fill="url(#rw-azure)" stroke="#120a1c" stroke-width="1.6"/>
+  <path d="M9 38L2 50l1 5 7-4zM25 38l7 12-1 5-7-4z" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M17 2c4 4 6 8 7 13H10c1-5 3-9 7-13z" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="1.4" stroke-linejoin="round"/>
+</svg>
+<svg class="craft sat" viewBox="0 0 84 60" aria-hidden="true">
+  <path d="M42 22v-9" stroke="#d8d2ec" stroke-width="1.4"/>
+  <circle class="blink" cx="42" cy="12" r="2.2" fill="#ff5d78"/>
+  <rect x="2" y="24" width="26" height="12" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="1.3"/>
+  <path d="M8.5 24v12M15 24v12M21.5 24v12" stroke="#120a1c" stroke-width="1"/>
+  <rect x="56" y="24" width="26" height="12" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="1.3"/>
+  <path d="M62.5 24v12M69 24v12M75.5 24v12" stroke="#120a1c" stroke-width="1"/>
+  <path d="M28 30h6M50 30h6" stroke="#d8d2ec" stroke-width="1.4"/>
+  <rect x="34" y="21" width="16" height="18" rx="2" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1.4"/>
+  <path d="M37 39c0 6 10 6 10 0" fill="url(#rw-ame)" stroke="#120a1c" stroke-width="1.3"/>
+</svg>
+<svg class="craft planet" viewBox="0 0 260 180" aria-hidden="true">
+  <circle cx="130" cy="110" r="62" fill="url(#rw-ame)" opacity=".55"/>
+  <circle cx="130" cy="110" r="62" fill="url(#rw-sheen)"/>
+  <ellipse cx="130" cy="112" rx="118" ry="22" fill="none" stroke="#f1cf83" stroke-opacity=".45" stroke-width="2"/>
+</svg>
 
-    <section>
-      <h2 class="section-label">Things I've made</h2>
-      <ul class="work-list">
-        <li>
-          <a class="work-card" href="/%EC%84%B1%EA%B2%BD_%EA%B5%AC%EC%A0%88_%EC%95%94%EC%86%A1_%ED%80%B4%EC%A6%88_%EB%8C%80%ED%9A%8C/">
-            <span class="work-icon" aria-hidden="true">📖</span>
-            <span class="work-text">
-              <span class="work-title" lang="ko">성경 구절 암송 퀴즈 대회</span>
-              <span class="work-sub">Bible verse memorization quiz</span>
-            </span>
-            <span class="work-arrow" aria-hidden="true">→</span>
-          </a>
-        </li>
-        <!-- To add another project, copy the <li>...</li> block above and change the link, icon and text. -->
-      </ul>
-    </section>
-  </main>
 
-  <script>
-    // Scatter some twinkling stars across the background.
-    (function () {
-      var sky = document.getElementById("stars");
-      var count = Math.round((window.innerWidth * window.innerHeight) / 9000);
-      count = Math.max(60, Math.min(count, 220));
-      for (var i = 0; i < count; i++) {
-        var s = document.createElement("span");
-        var size = Math.random() < 0.85 ? 1 + Math.random() : 2 + Math.random() * 1.2;
-        s.className = "star";
-        s.style.width = s.style.height = size + "px";
-        s.style.left = Math.random() * 100 + "%";
-        s.style.top = Math.random() * 100 + "%";
-        s.style.setProperty("--min", (0.15 + Math.random() * 0.3).toFixed(2));
-        s.style.setProperty("--max", (0.6 + Math.random() * 0.4).toFixed(2));
-        s.style.setProperty("--dur", (2.5 + Math.random() * 4).toFixed(1) + "s");
-        s.style.setProperty("--delay", (-Math.random() * 6).toFixed(1) + "s");
-        if (size > 2) s.style.boxShadow = "0 0 6px rgba(255,255,255,0.7)";
-        sky.appendChild(s);
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="rose"><div class="rays" aria-hidden="true"></div><svg class="pt-rose-svg" viewBox="0 0 260 260" role="img" aria-label="A cross of stained glass before a rose window"><defs><radialGradient id="rw-ruby" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#ffd3db"/><stop offset=".42" stop-color="#ff5d78"/><stop offset="1" stop-color="#7a1430"/></radialGradient><radialGradient id="rw-sap" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#dbe7ff"/><stop offset=".42" stop-color="#5b8cff"/><stop offset="1" stop-color="#16307e"/></radialGradient><radialGradient id="rw-emer" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#d4ffee"/><stop offset=".42" stop-color="#3fd39b"/><stop offset="1" stop-color="#0b5a3e"/></radialGradient><radialGradient id="rw-gold" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#fff6d8"/><stop offset=".42" stop-color="#f1cf83"/><stop offset="1" stop-color="#8a6222"/></radialGradient><radialGradient id="rw-ame" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#f1e3ff"/><stop offset=".42" stop-color="#b07cff"/><stop offset="1" stop-color="#46207e"/></radialGradient><radialGradient id="rw-azure" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#e0f4ff"/><stop offset=".42" stop-color="#6cc4ff"/><stop offset="1" stop-color="#1b5a86"/></radialGradient><radialGradient id="rw-amber" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#fff0d6"/><stop offset=".42" stop-color="#ffb45e"/><stop offset="1" stop-color="#8a4a10"/></radialGradient><radialGradient id="rw-rose" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#ffe3ec"/><stop offset=".42" stop-color="#ff8fb4"/><stop offset="1" stop-color="#8c2f52"/></radialGradient><linearGradient id="rw-ring" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4386"/><stop offset=".5" stop-color="#6c3a63"/><stop offset="1" stop-color="#8b3044"/></linearGradient><radialGradient id="rw-core" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffdf2"/><stop offset=".45" stop-color="#ffe7a8"/><stop offset="1" stop-color="#d9a446"/></radialGradient><radialGradient id="rw-light" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffef8"/><stop offset=".6" stop-color="#fff1c9"/><stop offset="1" stop-color="#f3cf7c"/></radialGradient><radialGradient id="rw-field" cx=".5" cy=".4" r=".6"><stop offset="0" stop-color="#2a1a4a"/><stop offset="1" stop-color="#0e0819"/></radialGradient><radialGradient id="rw-glory" cx="0.5" cy="0.4" r=".5"><stop offset="0" stop-color="#fff3cf" stop-opacity=".55"/><stop offset=".35" stop-color="#f1cf83" stop-opacity=".18"/><stop offset="1" stop-color="#f1cf83" stop-opacity="0"/></radialGradient><radialGradient id="rw-sheen" cx=".32" cy=".26" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".18"/><stop offset=".5" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><filter id="rw-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="rw-halo" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter><clipPath id="rw-cross"><path d="M108 13Q130 7 152 13Q144 34.6 144 90Q200.9 90 223 82Q229 104 223 126Q200.9 118 144 118Q144 212.3 154 249Q130 255 106 249Q116 212.3 116 118Q59.1 118 37 126Q31 104 37 82Q59.1 90 116 90Q116 34.6 108 13Z"/></clipPath><clipPath id="rw-inner"><circle cx="130" cy="130" r="88"/></clipPath></defs><circle cx="130" cy="130" r="128" fill="url(#rw-ring)" stroke="#07040a" stroke-width="3"/><g opacity=".28" stroke="#07040a" stroke-width="1.4" fill="none"><circle cx="130" cy="130" r="126"/><circle cx="130" cy="130" r="124.5"/><circle cx="130" cy="130" r="123"/></g><circle cx="130" cy="130" r="121" fill="#110918"/><circle class="g" style="animation-delay:-0.0s" cx="130" cy="26" r="12.8" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="2.4"/><circle cx="126.8" cy="22.4" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-0.9s" cx="169.8" cy="33.9" r="12.8" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="2.4"/><circle cx="166.6" cy="30.3" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-1.8s" cx="203.5" cy="56.5" r="12.8" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="2.4"/><circle cx="200.3" cy="52.9" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-2.7s" cx="226.1" cy="90.2" r="12.8" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="2.4"/><circle cx="222.9" cy="86.6" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-3.6s" cx="234" cy="130" r="12.8" fill="url(#rw-ame)" stroke="#120a1c" stroke-width="2.4"/><circle cx="230.8" cy="126.4" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-4.5s" cx="226.1" cy="169.8" r="12.8" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="2.4"/><circle cx="222.9" cy="166.2" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-5.4s" cx="203.5" cy="203.5" r="12.8" fill="url(#rw-azure)" stroke="#120a1c" stroke-width="2.4"/><circle cx="200.3" cy="199.9" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-6.3s" cx="169.8" cy="226.1" r="12.8" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="2.4"/><circle cx="166.6" cy="222.5" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-0.2s" cx="130" cy="234" r="12.8" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="2.4"/><circle cx="126.8" cy="230.4" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-1.1s" cx="90.2" cy="226.1" r="12.8" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="2.4"/><circle cx="87" cy="222.5" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-2.0s" cx="56.5" cy="203.5" r="12.8" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="2.4"/><circle cx="53.3" cy="199.9" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-2.9s" cx="33.9" cy="169.8" r="12.8" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="2.4"/><circle cx="30.7" cy="166.2" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-3.8s" cx="26" cy="130" r="12.8" fill="url(#rw-ame)" stroke="#120a1c" stroke-width="2.4"/><circle cx="22.8" cy="126.4" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-4.7s" cx="33.9" cy="90.2" r="12.8" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="2.4"/><circle cx="30.7" cy="86.6" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-5.6s" cx="56.5" cy="56.5" r="12.8" fill="url(#rw-azure)" stroke="#120a1c" stroke-width="2.4"/><circle cx="53.3" cy="52.9" r="4" fill="#fff" opacity=".22"/><circle class="g" style="animation-delay:-6.5s" cx="90.2" cy="33.9" r="12.8" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="2.4"/><circle cx="87" cy="30.3" r="4" fill="#fff" opacity=".22"/><circle cx="130" cy="130" r="89" fill="url(#rw-field)" stroke="#120a1c" stroke-width="3.2"/><circle cx="130" cy="130" r="90.6" fill="none" stroke="#e3bd72" stroke-width=".9" opacity=".55"/><circle cx="130" cy="130" r="119.2" fill="none" stroke="#e3bd72" stroke-width=".9" opacity=".5"/><g opacity=".5"><path transform="translate(130 130) rotate(0)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(30)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(60)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(90)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(120)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-ame)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(150)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-azure)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(180)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(210)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(240)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(270)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(300)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-ame)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><path transform="translate(130 130) rotate(330)" d="M-7.7 -35L-14 -56.4Q-14 -78.9 0 -86Q14 -78.9 14 -56.4L7.7 -35Z" fill="url(#rw-azure)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/><circle cx="150.4" cy="53.7" r="6.2" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="1.8"/><circle cx="185.9" cy="74.1" r="6.2" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="1.8"/><circle cx="206.3" cy="109.6" r="6.2" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="1.8"/><circle cx="206.3" cy="150.4" r="6.2" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="1.8"/><circle cx="185.9" cy="185.9" r="6.2" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="1.8"/><circle cx="150.4" cy="206.3" r="6.2" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="1.8"/><circle cx="109.6" cy="206.3" r="6.2" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="1.8"/><circle cx="74.1" cy="185.9" r="6.2" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="1.8"/><circle cx="53.7" cy="150.4" r="6.2" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="1.8"/><circle cx="53.7" cy="109.6" r="6.2" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="1.8"/><circle cx="74.1" cy="74.1" r="6.2" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="1.8"/><circle cx="109.6" cy="53.7" r="6.2" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="1.8"/><circle cx="130" cy="130" r="35" fill="#160d22" stroke="#120a1c" stroke-width="3"/></g><g class="glory" clip-path="url(#rw-inner)"><circle cx="130" cy="130" r="88" fill="url(#rw-glory)"/><path d="M130 104L142.9 -35.4L153.6 -34Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L178.6 -27.3L188.5 -23.2Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L210.9 -10.3L219.4 -3.7Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L237.7 14.6L244.3 23.1Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L257.2 45.5L261.3 55.4Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L268 80.4L269.4 91.1Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L269.4 116.9L268 127.6Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L261.3 152.6L257.2 162.5Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L244.3 184.9L237.7 193.4Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L219.4 211.7L210.9 218.3Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L188.5 231.2L178.6 235.3Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L153.6 242L142.9 243.4Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L117.1 243.4L106.4 242Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L81.4 235.3L71.5 231.2Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L49.1 218.3L40.6 211.7Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L22.3 193.4L15.7 184.9Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L2.8 162.5L-1.3 152.6Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L-8 127.6L-9.4 116.9Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L-9.4 91.1L-8 80.4Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L-1.3 55.4L2.8 45.5Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L15.7 23.1L22.3 14.6Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L40.6 -3.7L49.1 -10.3Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L71.5 -23.2L81.4 -27.3Z" fill="#fff1c9" opacity=".09"/><path d="M130 104L106.4 -34L117.1 -35.4Z" fill="#fff1c9" opacity=".09"/></g><path d="M108 13Q130 7 152 13Q144 34.6 144 90Q200.9 90 223 82Q229 104 223 126Q200.9 118 144 118Q144 212.3 154 249Q130 255 106 249Q116 212.3 116 118Q59.1 118 37 126Q31 104 37 82Q59.1 90 116 90Q116 34.6 108 13Z" fill="#ffe4a0" opacity=".9" filter="url(#rw-halo)"/><g clip-path="url(#rw-cross)" stroke="#120a1c" stroke-width="1.5" stroke-linejoin="round"><rect x="0" y="0" width="260" height="260" fill="#120a1c"/><path class="g" style="animation-delay:-1.1s" d="M108.4 3.4L115.6 13L108.4 22.6L101.2 13Z" fill="url(#rw-ame)"/><path d="M122.8 3.4L130 13L122.8 22.6L115.6 13Z" fill="url(#rw-rose)"/><path d="M137.2 3.4L144.4 13L137.2 22.6L130 13Z" fill="url(#rw-ame)"/><path class="g" style="animation-delay:-2.6s" d="M151.6 3.4L158.8 13L151.6 22.6L144.4 13Z" fill="url(#rw-rose)"/><path d="M101.2 13L108.4 22.6L101.2 32.2L94 22.6Z" fill="url(#rw-ame)"/><path d="M115.6 13L122.8 22.6L115.6 32.2L108.4 22.6Z" fill="url(#rw-ame)"/><path class="g" style="animation-delay:-3.0s" d="M130 13L137.2 22.6L130 32.2L122.8 22.6Z" fill="url(#rw-ame)"/><path d="M144.4 13L151.6 22.6L144.4 32.2L137.2 22.6Z" fill="url(#rw-ame)"/><path d="M158.8 13L166 22.6L158.8 32.2L151.6 22.6Z" fill="url(#rw-rose)"/><path class="g" style="animation-delay:-5.8s" d="M108.4 22.6L115.6 32.2L108.4 41.8L101.2 32.2Z" fill="url(#rw-ame)"/><path d="M122.8 22.6L130 32.2L122.8 41.8L115.6 32.2Z" fill="url(#rw-ame)"/><path d="M137.2 22.6L144.4 32.2L137.2 41.8L130 32.2Z" fill="url(#rw-ame)"/><path class="g" style="animation-delay:-6.6s" d="M151.6 22.6L158.8 32.2L151.6 41.8L144.4 32.2Z" fill="url(#rw-rose)"/><path d="M101.2 32.2L108.4 41.8L101.2 51.4L94 41.8Z" fill="url(#rw-ame)"/><path d="M115.6 32.2L122.8 41.8L115.6 51.4L108.4 41.8Z" fill="url(#rw-ame)"/><path class="g" style="animation-delay:-0.3s" d="M130 32.2L137.2 41.8L130 51.4L122.8 41.8Z" fill="url(#rw-rose)"/><path d="M144.4 32.2L151.6 41.8L144.4 51.4L137.2 41.8Z" fill="url(#rw-rose)"/><path d="M158.8 32.2L166 41.8L158.8 51.4L151.6 41.8Z" fill="url(#rw-ame)"/><path class="g" style="animation-delay:-0.8s" d="M108.4 41.8L115.6 51.4L108.4 61L101.2 51.4Z" fill="url(#rw-sap)"/><path d="M122.8 41.8L130 51.4L122.8 61L115.6 51.4Z" fill="url(#rw-sap)"/><path d="M137.2 41.8L144.4 51.4L137.2 61L130 51.4Z" fill="url(#rw-ame)"/><path class="g" style="animation-delay:-4.1s" d="M151.6 41.8L158.8 51.4L151.6 61L144.4 51.4Z" fill="url(#rw-ame)"/><path d="M101.2 51.4L108.4 61L101.2 70.6L94 61Z" fill="url(#rw-sap)"/><path d="M115.6 51.4L122.8 61L115.6 70.6L108.4 61Z" fill="url(#rw-sap)"/><path class="g" style="animation-delay:-0.4s" d="M130 51.4L137.2 61L130 70.6L122.8 61Z" fill="url(#rw-ame)"/><path d="M144.4 51.4L151.6 61L144.4 70.6L137.2 61Z" fill="url(#rw-ame)"/><path d="M158.8 51.4L166 61L158.8 70.6L151.6 61Z" fill="url(#rw-ame)"/><path class="g" style="animation-delay:-3.0s" d="M108.4 61L115.6 70.6L108.4 80.2L101.2 70.6Z" fill="url(#rw-sap)"/><path d="M122.8 61L130 70.6L122.8 80.2L115.6 70.6Z" fill="url(#rw-sap)"/><path d="M137.2 61L144.4 70.6L137.2 80.2L130 70.6Z" fill="url(#rw-ame)"/><path class="g" style="animation-delay:-2.1s" d="M151.6 61L158.8 70.6L151.6 80.2L144.4 70.6Z" fill="url(#rw-ame)"/><path d="M29.2 70.6L36.4 80.2L29.2 89.8L22 80.2Z" fill="url(#rw-ame)"/><path d="M43.6 70.6L50.8 80.2L43.6 89.8L36.4 80.2Z" fill="url(#rw-sap)"/><path class="g" style="animation-delay:-4.0s" d="M58 70.6L65.2 80.2L58 89.8L50.8 80.2Z" fill="url(#rw-azure)"/><path d="M72.4 70.6L79.6 80.2L72.4 89.8L65.2 80.2Z" fill="url(#rw-sap)"/><path d="M86.8 70.6L94 80.2L86.8 89.8L79.6 80.2Z" fill="url(#rw-sap)"/><path class="g" style="animation-delay:-2.0s" d="M101.2 70.6L108.4 80.2L101.2 89.8L94 80.2Z" fill="url(#rw-sap)"/><path d="M115.6 70.6L122.8 80.2L115.6 89.8L108.4 80.2Z" fill="url(#rw-amber)"/><path d="M130 70.6L137.2 80.2L130 89.8L122.8 80.2Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-5.3s" d="M144.4 70.6L151.6 80.2L144.4 89.8L137.2 80.2Z" fill="url(#rw-gold)"/><path d="M158.8 70.6L166 80.2L158.8 89.8L151.6 80.2Z" fill="url(#rw-ame)"/><path d="M173.2 70.6L180.4 80.2L173.2 89.8L166 80.2Z" fill="url(#rw-rose)"/><path class="g" style="animation-delay:-4.7s" d="M187.6 70.6L194.8 80.2L187.6 89.8L180.4 80.2Z" fill="url(#rw-rose)"/><path d="M202 70.6L209.2 80.2L202 89.8L194.8 80.2Z" fill="url(#rw-ruby)"/><path d="M216.4 70.6L223.6 80.2L216.4 89.8L209.2 80.2Z" fill="url(#rw-ruby)"/><path class="g" style="animation-delay:-2.2s" d="M230.8 70.6L238 80.2L230.8 89.8L223.6 80.2Z" fill="url(#rw-amber)"/><path d="M36.4 80.2L43.6 89.8L36.4 99.4L29.2 89.8Z" fill="url(#rw-sap)"/><path d="M50.8 80.2L58 89.8L50.8 99.4L43.6 89.8Z" fill="url(#rw-sap)"/><path class="g" style="animation-delay:-3.2s" d="M65.2 80.2L72.4 89.8L65.2 99.4L58 89.8Z" fill="url(#rw-azure)"/><path d="M79.6 80.2L86.8 89.8L79.6 99.4L72.4 89.8Z" fill="url(#rw-azure)"/><path d="M94 80.2L101.2 89.8L94 99.4L86.8 89.8Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-4.6s" d="M108.4 80.2L115.6 89.8L108.4 99.4L101.2 89.8Z" fill="url(#rw-gold)"/><path d="M122.8 80.2L130 89.8L122.8 99.4L115.6 89.8Z" fill="url(#rw-light)"/><path d="M137.2 80.2L144.4 89.8L137.2 99.4L130 89.8Z" fill="url(#rw-light)"/><path class="g" style="animation-delay:-4.9s" d="M151.6 80.2L158.8 89.8L151.6 99.4L144.4 89.8Z" fill="url(#rw-gold)"/><path d="M166 80.2L173.2 89.8L166 99.4L158.8 89.8Z" fill="url(#rw-rose)"/><path d="M180.4 80.2L187.6 89.8L180.4 99.4L173.2 89.8Z" fill="url(#rw-ruby)"/><path class="g" style="animation-delay:-2.0s" d="M194.8 80.2L202 89.8L194.8 99.4L187.6 89.8Z" fill="url(#rw-ruby)"/><path d="M209.2 80.2L216.4 89.8L209.2 99.4L202 89.8Z" fill="url(#rw-ruby)"/><path d="M223.6 80.2L230.8 89.8L223.6 99.4L216.4 89.8Z" fill="url(#rw-amber)"/><path class="g" style="animation-delay:-3.2s" d="M29.2 89.8L36.4 99.4L29.2 109L22 99.4Z" fill="url(#rw-azure)"/><path d="M43.6 89.8L50.8 99.4L43.6 109L36.4 99.4Z" fill="url(#rw-azure)"/><path d="M58 89.8L65.2 99.4L58 109L50.8 99.4Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-5.4s" d="M72.4 89.8L79.6 99.4L72.4 109L65.2 99.4Z" fill="url(#rw-emer)"/><path d="M86.8 89.8L94 99.4L86.8 109L79.6 99.4Z" fill="url(#rw-emer)"/><path d="M101.2 89.8L108.4 99.4L101.2 109L94 99.4Z" fill="url(#rw-gold)"/><path d="M115.6 89.8L122.8 99.4L115.6 109L108.4 99.4Z" fill="url(#rw-light)"/><path d="M130 89.8L137.2 99.4L130 109L122.8 99.4Z" fill="url(#rw-light)"/><path d="M144.4 89.8L151.6 99.4L144.4 109L137.2 99.4Z" fill="url(#rw-light)"/><path class="g" style="animation-delay:-6.1s" d="M158.8 89.8L166 99.4L158.8 109L151.6 99.4Z" fill="url(#rw-gold)"/><path d="M173.2 89.8L180.4 99.4L173.2 109L166 99.4Z" fill="url(#rw-rose)"/><path d="M187.6 89.8L194.8 99.4L187.6 109L180.4 99.4Z" fill="url(#rw-ruby)"/><path class="g" style="animation-delay:-6.2s" d="M202 89.8L209.2 99.4L202 109L194.8 99.4Z" fill="url(#rw-ruby)"/><path d="M216.4 89.8L223.6 99.4L216.4 109L209.2 99.4Z" fill="url(#rw-amber)"/><path d="M230.8 89.8L238 99.4L230.8 109L223.6 99.4Z" fill="url(#rw-amber)"/><path class="g" style="animation-delay:-2.9s" d="M36.4 99.4L43.6 109L36.4 118.6L29.2 109Z" fill="url(#rw-azure)"/><path d="M50.8 99.4L58 109L50.8 118.6L43.6 109Z" fill="url(#rw-azure)"/><path d="M65.2 99.4L72.4 109L65.2 118.6L58 109Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-1.1s" d="M79.6 99.4L86.8 109L79.6 118.6L72.4 109Z" fill="url(#rw-azure)"/><path d="M94 99.4L101.2 109L94 118.6L86.8 109Z" fill="url(#rw-emer)"/><path d="M108.4 99.4L115.6 109L108.4 118.6L101.2 109Z" fill="url(#rw-gold)"/><path d="M122.8 99.4L130 109L122.8 118.6L115.6 109Z" fill="url(#rw-light)"/><path d="M137.2 99.4L144.4 109L137.2 118.6L130 109Z" fill="url(#rw-light)"/><path d="M151.6 99.4L158.8 109L151.6 118.6L144.4 109Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-4.1s" d="M166 99.4L173.2 109L166 118.6L158.8 109Z" fill="url(#rw-ruby)"/><path d="M180.4 99.4L187.6 109L180.4 118.6L173.2 109Z" fill="url(#rw-ruby)"/><path d="M194.8 99.4L202 109L194.8 118.6L187.6 109Z" fill="url(#rw-ruby)"/><path class="g" style="animation-delay:-2.6s" d="M209.2 99.4L216.4 109L209.2 118.6L202 109Z" fill="url(#rw-ruby)"/><path d="M223.6 99.4L230.8 109L223.6 118.6L216.4 109Z" fill="url(#rw-amber)"/><path d="M29.2 109L36.4 118.6L29.2 128.2L22 118.6Z" fill="url(#rw-sap)"/><path class="g" style="animation-delay:-3.6s" d="M43.6 109L50.8 118.6L43.6 128.2L36.4 118.6Z" fill="url(#rw-sap)"/><path d="M58 109L65.2 118.6L58 128.2L50.8 118.6Z" fill="url(#rw-azure)"/><path d="M72.4 109L79.6 118.6L72.4 128.2L65.2 118.6Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-6.3s" d="M86.8 109L94 118.6L86.8 128.2L79.6 118.6Z" fill="url(#rw-emer)"/><path d="M101.2 109L108.4 118.6L101.2 128.2L94 118.6Z" fill="url(#rw-emer)"/><path d="M115.6 109L122.8 118.6L115.6 128.2L108.4 118.6Z" fill="url(#rw-amber)"/><path d="M130 109L137.2 118.6L130 128.2L122.8 118.6Z" fill="url(#rw-light)"/><path d="M144.4 109L151.6 118.6L144.4 128.2L137.2 118.6Z" fill="url(#rw-amber)"/><path d="M158.8 109L166 118.6L158.8 128.2L151.6 118.6Z" fill="url(#rw-ruby)"/><path class="g" style="animation-delay:-0.7s" d="M173.2 109L180.4 118.6L173.2 128.2L166 118.6Z" fill="url(#rw-ruby)"/><path d="M187.6 109L194.8 118.6L187.6 128.2L180.4 118.6Z" fill="url(#rw-ruby)"/><path d="M202 109L209.2 118.6L202 128.2L194.8 118.6Z" fill="url(#rw-ruby)"/><path class="g" style="animation-delay:-1.5s" d="M216.4 109L223.6 118.6L216.4 128.2L209.2 118.6Z" fill="url(#rw-ruby)"/><path d="M230.8 109L238 118.6L230.8 128.2L223.6 118.6Z" fill="url(#rw-amber)"/><path d="M36.4 118.6L43.6 128.2L36.4 137.8L29.2 128.2Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-0.0s" d="M50.8 118.6L58 128.2L50.8 137.8L43.6 128.2Z" fill="url(#rw-azure)"/><path d="M65.2 118.6L72.4 128.2L65.2 137.8L58 128.2Z" fill="url(#rw-emer)"/><path d="M79.6 118.6L86.8 128.2L79.6 137.8L72.4 128.2Z" fill="url(#rw-emer)"/><path class="g" style="animation-delay:-0.2s" d="M94 118.6L101.2 128.2L94 137.8L86.8 128.2Z" fill="url(#rw-emer)"/><path d="M108.4 118.6L115.6 128.2L108.4 137.8L101.2 128.2Z" fill="url(#rw-emer)"/><path d="M122.8 118.6L130 128.2L122.8 137.8L115.6 128.2Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-1.8s" d="M137.2 118.6L144.4 128.2L137.2 137.8L130 128.2Z" fill="url(#rw-gold)"/><path d="M151.6 118.6L158.8 128.2L151.6 137.8L144.4 128.2Z" fill="url(#rw-ruby)"/><path d="M166 118.6L173.2 128.2L166 137.8L158.8 128.2Z" fill="url(#rw-ruby)"/><path class="g" style="animation-delay:-5.9s" d="M180.4 118.6L187.6 128.2L180.4 137.8L173.2 128.2Z" fill="url(#rw-ruby)"/><path d="M194.8 118.6L202 128.2L194.8 137.8L187.6 128.2Z" fill="url(#rw-amber)"/><path d="M209.2 118.6L216.4 128.2L209.2 137.8L202 128.2Z" fill="url(#rw-amber)"/><path class="g" style="animation-delay:-0.6s" d="M223.6 118.6L230.8 128.2L223.6 137.8L216.4 128.2Z" fill="url(#rw-amber)"/><path d="M101.2 128.2L108.4 137.8L101.2 147.4L94 137.8Z" fill="url(#rw-gold)"/><path d="M115.6 128.2L122.8 137.8L115.6 147.4L108.4 137.8Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-5.8s" d="M130 128.2L137.2 137.8L130 147.4L122.8 137.8Z" fill="url(#rw-amber)"/><path d="M144.4 128.2L151.6 137.8L144.4 147.4L137.2 137.8Z" fill="url(#rw-ruby)"/><path d="M158.8 128.2L166 137.8L158.8 147.4L151.6 137.8Z" fill="url(#rw-ruby)"/><path class="g" style="animation-delay:-3.7s" d="M108.4 137.8L115.6 147.4L108.4 157L101.2 147.4Z" fill="url(#rw-emer)"/><path d="M122.8 137.8L130 147.4L122.8 157L115.6 147.4Z" fill="url(#rw-amber)"/><path d="M137.2 137.8L144.4 147.4L137.2 157L130 147.4Z" fill="url(#rw-amber)"/><path class="g" style="animation-delay:-3.7s" d="M151.6 137.8L158.8 147.4L151.6 157L144.4 147.4Z" fill="url(#rw-amber)"/><path d="M101.2 147.4L108.4 157L101.2 166.6L94 157Z" fill="url(#rw-emer)"/><path d="M115.6 147.4L122.8 157L115.6 166.6L108.4 157Z" fill="url(#rw-emer)"/><path class="g" style="animation-delay:-1.8s" d="M130 147.4L137.2 157L130 166.6L122.8 157Z" fill="url(#rw-gold)"/><path d="M144.4 147.4L151.6 157L144.4 166.6L137.2 157Z" fill="url(#rw-amber)"/><path d="M158.8 147.4L166 157L158.8 166.6L151.6 157Z" fill="url(#rw-amber)"/><path class="g" style="animation-delay:-3.7s" d="M108.4 157L115.6 166.6L108.4 176.2L101.2 166.6Z" fill="url(#rw-emer)"/><path d="M122.8 157L130 166.6L122.8 176.2L115.6 166.6Z" fill="url(#rw-gold)"/><path d="M137.2 157L144.4 166.6L137.2 176.2L130 166.6Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-5.7s" d="M151.6 157L158.8 166.6L151.6 176.2L144.4 166.6Z" fill="url(#rw-amber)"/><path d="M101.2 166.6L108.4 176.2L101.2 185.8L94 176.2Z" fill="url(#rw-emer)"/><path d="M115.6 166.6L122.8 176.2L115.6 185.8L108.4 176.2Z" fill="url(#rw-emer)"/><path class="g" style="animation-delay:-5.7s" d="M130 166.6L137.2 176.2L130 185.8L122.8 176.2Z" fill="url(#rw-emer)"/><path d="M144.4 166.6L151.6 176.2L144.4 185.8L137.2 176.2Z" fill="url(#rw-gold)"/><path d="M158.8 166.6L166 176.2L158.8 185.8L151.6 176.2Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-2.5s" d="M108.4 176.2L115.6 185.8L108.4 195.4L101.2 185.8Z" fill="url(#rw-emer)"/><path d="M122.8 176.2L130 185.8L122.8 195.4L115.6 185.8Z" fill="url(#rw-gold)"/><path d="M137.2 176.2L144.4 185.8L137.2 195.4L130 185.8Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-1.8s" d="M151.6 176.2L158.8 185.8L151.6 195.4L144.4 185.8Z" fill="url(#rw-gold)"/><path d="M101.2 185.8L108.4 195.4L101.2 205L94 195.4Z" fill="url(#rw-emer)"/><path d="M115.6 185.8L122.8 195.4L115.6 205L108.4 195.4Z" fill="url(#rw-emer)"/><path class="g" style="animation-delay:-6.6s" d="M130 185.8L137.2 195.4L130 205L122.8 195.4Z" fill="url(#rw-emer)"/><path d="M144.4 185.8L151.6 195.4L144.4 205L137.2 195.4Z" fill="url(#rw-emer)"/><path d="M158.8 185.8L166 195.4L158.8 205L151.6 195.4Z" fill="url(#rw-emer)"/><path class="g" style="animation-delay:-1.5s" d="M108.4 195.4L115.6 205L108.4 214.6L101.2 205Z" fill="url(#rw-emer)"/><path d="M122.8 195.4L130 205L122.8 214.6L115.6 205Z" fill="url(#rw-emer)"/><path d="M137.2 195.4L144.4 205L137.2 214.6L130 205Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-4.4s" d="M151.6 195.4L158.8 205L151.6 214.6L144.4 205Z" fill="url(#rw-gold)"/><path d="M101.2 205L108.4 214.6L101.2 224.2L94 214.6Z" fill="url(#rw-azure)"/><path d="M115.6 205L122.8 214.6L115.6 224.2L108.4 214.6Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-4.6s" d="M130 205L137.2 214.6L130 224.2L122.8 214.6Z" fill="url(#rw-emer)"/><path d="M144.4 205L151.6 214.6L144.4 224.2L137.2 214.6Z" fill="url(#rw-emer)"/><path d="M158.8 205L166 214.6L158.8 224.2L151.6 214.6Z" fill="url(#rw-gold)"/><path class="g" style="animation-delay:-6.4s" d="M108.4 214.6L115.6 224.2L108.4 233.8L101.2 224.2Z" fill="url(#rw-azure)"/><path d="M122.8 214.6L130 224.2L122.8 233.8L115.6 224.2Z" fill="url(#rw-azure)"/><path d="M137.2 214.6L144.4 224.2L137.2 233.8L130 224.2Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-1.2s" d="M151.6 214.6L158.8 224.2L151.6 233.8L144.4 224.2Z" fill="url(#rw-emer)"/><path d="M101.2 224.2L108.4 233.8L101.2 243.4L94 233.8Z" fill="url(#rw-azure)"/><path d="M115.6 224.2L122.8 233.8L115.6 243.4L108.4 233.8Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-6.8s" d="M130 224.2L137.2 233.8L130 243.4L122.8 233.8Z" fill="url(#rw-azure)"/><path d="M144.4 224.2L151.6 233.8L144.4 243.4L137.2 233.8Z" fill="url(#rw-emer)"/><path d="M158.8 224.2L166 233.8L158.8 243.4L151.6 233.8Z" fill="url(#rw-emer)"/><path class="g" style="animation-delay:-5.1s" d="M108.4 233.8L115.6 243.4L108.4 253L101.2 243.4Z" fill="url(#rw-sap)"/><path d="M122.8 233.8L130 243.4L122.8 253L115.6 243.4Z" fill="url(#rw-azure)"/><path d="M137.2 233.8L144.4 243.4L137.2 253L130 243.4Z" fill="url(#rw-emer)"/><path class="g" style="animation-delay:-6.3s" d="M151.6 233.8L158.8 243.4L151.6 253L144.4 243.4Z" fill="url(#rw-emer)"/><path d="M101.2 243.4L108.4 253L101.2 262.6L94 253Z" fill="url(#rw-sap)"/><path d="M115.6 243.4L122.8 253L115.6 262.6L108.4 253Z" fill="url(#rw-azure)"/><path class="g" style="animation-delay:-6.9s" d="M130 243.4L137.2 253L130 262.6L122.8 253Z" fill="url(#rw-azure)"/><path d="M144.4 243.4L151.6 253L144.4 262.6L137.2 253Z" fill="url(#rw-azure)"/><path d="M158.8 243.4L166 253L158.8 262.6L151.6 253Z" fill="url(#rw-azure)"/></g><circle class="g" cx="130" cy="25" r="6.6" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="2"/><circle cx="128.2" cy="22.8" r="2" fill="#fff" opacity=".55"/><circle class="g" cx="212" cy="104" r="6.6" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="2"/><circle cx="210.2" cy="101.8" r="2" fill="#fff" opacity=".55"/><circle class="g" cx="130" cy="236" r="6.6" fill="url(#rw-ame)" stroke="#120a1c" stroke-width="2"/><circle cx="128.2" cy="233.8" r="2" fill="#fff" opacity=".55"/><circle class="g" cx="48" cy="104" r="6.6" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="2"/><circle cx="46.2" cy="101.8" r="2" fill="#fff" opacity=".55"/><path d="M108 13Q130 7 152 13Q144 34.6 144 90Q200.9 90 223 82Q229 104 223 126Q200.9 118 144 118Q144 212.3 154 249Q130 255 106 249Q116 212.3 116 118Q59.1 118 37 126Q31 104 37 82Q59.1 90 116 90Q116 34.6 108 13Z" fill="none" stroke="#120a1c" stroke-width="5.2" stroke-linejoin="round"/><path d="M108 13Q130 7 152 13Q144 34.6 144 90Q200.9 90 223 82Q229 104 223 126Q200.9 118 144 118Q144 212.3 154 249Q130 255 106 249Q116 212.3 116 118Q59.1 118 37 126Q31 104 37 82Q59.1 90 116 90Q116 34.6 108 13Z" fill="none" stroke="#f3d68f" stroke-width="1.6" stroke-linejoin="round"/><circle cx="130" cy="104" r="15.5" fill="none" stroke="#efcf86" stroke-width="1" opacity=".8"/><circle cx="130" cy="104" r="12.5" fill="url(#rw-core)" stroke="#120a1c" stroke-width="2.2"/><g filter="url(#rw-glow)" fill="#fffef6"><path d="M130 95L132.6 101.4L139 104L132.6 106.6L130 113L127.4 106.6L121 104L127.4 101.4Z"/></g><circle cx="130" cy="130" r="121" fill="url(#rw-sheen)" pointer-events="none"/></svg></div>
+  <h1 class="name">Sam Bang</h1>
+  <p class="tag">Hi, I'm Sam, a sinner saved by Christ Jesus.</p>
+  <p class="tag2">I write here about what I believe and why I believe it. And sometimes I just write down whatever I'm wrestling with.</p>
+  <blockquote class="motto">“Always be prepared to give an answer to everyone who asks you to give the reason for the hope that you have. But do this with gentleness and respect.”<cite>1 Peter 3:15</cite></blockquote>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Topics">
+  <button class="tab" role="tab" id="t-tulip" aria-controls="p-tulip" aria-selected="true" data-hash="tulip" style="--c:var(--rosegl)">
+    <svg class="ti" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M24 45V27" stroke="#3fd39b" stroke-width="3" stroke-linecap="round"/>
+      <path d="M24 39c-7-.5-11-5.5-12-11.5 6.5 0 11 4.5 12 11.5z" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M12 8c3.5 5.5 6 10 12 13.5C30 18 32.5 13.5 36 8c1.5 10-1 17.5-12 19.5C13 25.5 10.5 18 12 8z" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M24 21.5c-3.5-4-5-9.5 0-17 5 7.5 3.5 13 0 17z" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+    <span>TULIP</span>
+  </button>
+  <button class="tab" role="tab" id="t-romans12" aria-controls="p-romans12" aria-selected="false" data-hash="romans12" style="--c:var(--emerald)">
+    <svg class="ti" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M24 5v4M13 9l2.6 3M35 9l-2.6 3" stroke="#f1cf83" stroke-width="2" stroke-linecap="round"/>
+      <path d="M24 18.5c-2.6-4.4-9.5-3.6-9.5 1.8 0 4.4 5.2 7.7 9.5 11 4.3-3.3 9.5-6.6 9.5-11 0-5.4-6.9-6.2-9.5-1.8z" fill="url(#rw-rose)" stroke="#120a1c" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M3 29.5c3.6-.6 6.6.9 9 3.6l5.4 5.6h6.2V44H14.5c-3.8 0-7.2-2.4-9.2-5.8z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M45 29.5c-3.6-.6-6.6.9-9 3.6l-5.4 5.6h-6.2V44h9.1c3.8 0 7.2-2.4 9.2-5.8z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+    <span>Everything to God</span>
+  </button>
+  <button class="tab" role="tab" id="t-eucharist" aria-controls="p-eucharist" aria-selected="false" data-hash="eucharist" style="--c:var(--ruby)">
+    <svg class="ti" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="33" cy="12" r="8.5" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="1.5"/>
+      <path d="M33 7.5v9M28.5 12h9" stroke="#8a4a10" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M10 16h24c0 8.5-5 13.5-12 13.5S10 24.5 10 16z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M12 18.5h20c-1 5-4.6 8-10 8s-9-3-10-8z" fill="url(#rw-ruby)"/>
+      <path d="M20 29.5h4v7.5h-4z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1.4"/>
+      <path d="M13 44c0-3.6 4-5.8 9-5.8s9 2.2 9 5.8z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+    <span>The Eucharist</span>
+  </button>
+  
+  <button class="tab" role="tab" id="t-letters" aria-controls="p-letters" aria-selected="false" data-hash="letters" style="--c:var(--gold)">
+    <svg class="ti" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M4 14.5h40v25H4z" fill="url(#rw-light)" stroke="#120a1c" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M4 39.5l15-12M44 39.5l-15-12" stroke="#b98a3c" stroke-width="1.3" fill="none"/>
+      <path d="M4 14.5l20 15.5 20-15.5" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1.6" stroke-linejoin="round"/>
+      <circle cx="24" cy="29" r="6.6" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="1.5"/>
+      <path d="M24 25.4v7.2M21.2 28.2h5.6" stroke="#ffe4a0" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M38 4.5l1.3 3.2 3.2 1.3-3.2 1.3L38 13.5l-1.3-3.2-3.2-1.3 3.2-1.3z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width=".9"/>
+    </svg>
+    <span>Letters &amp; Prayers</span>
+  </button>
+  <button class="tab" role="tab" id="t-horizon" aria-controls="p-horizon" aria-selected="false" data-hash="wip" style="--c:var(--azure)">
+    <svg class="ti" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M41 3.5l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1"/>
+      <circle cx="30" cy="4" r="1.3" fill="#fff"/><circle cx="46" cy="21" r="1.1" fill="#fff"/>
+      <g transform="rotate(-32 24 26)">
+        <rect x="9" y="21" width="24" height="9" rx="2" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="1.5"/>
+        <rect x="33" y="19.5" width="7" height="12" rx="1.6" fill="url(#rw-azure)" stroke="#120a1c" stroke-width="1.5"/>
+        <rect x="4" y="22.5" width="5" height="6" rx="1" fill="url(#rw-ame)" stroke="#120a1c" stroke-width="1.3"/>
+      </g>
+      <path d="M23 31l-8 13M23 31l8 13M23 31v13" stroke="#d8d2ec" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span>WIP</span>
+  </button>
+  
+  <i class="tab-glow" aria-hidden="true"></i>
+</nav>
+
+<!-- =========================================================
+     1. TULIP
+     ========================================================= -->
+<section class="panel" role="tabpanel" id="p-tulip" aria-labelledby="t-tulip">
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>TULIP</h2>
+    <p class="lede">TULIP is the five-point summary of Calvinism. The acronym itself showed up pretty late (early 1900s), but the doctrine goes back to the Synod of Dort in 1618–19, when the Reformed churches answered the five objections of the Remonstrants (the followers of Jacobus Arminius).</p>
+    <p>All five points boil to one thing: <span class="u-red">salvation is God's work from start to the very end.</span> He diagnoses the disease, he chooses, he pays, he calls, and he keeps. In this truly blessed participation of God's grace, my only role is to be on my knees crying out in gratitude, for I am nothing without God.</p>
+
+    <div class="tulip-stage">
+      <svg class="tulip-svg" viewBox="0 0 240 280" role="group" aria-label="A tulip with five petals, one for each letter">
+        <path d="M120 188c2 30-3 60-8 86" fill="none" stroke="#3fd39b" stroke-width="6" stroke-linecap="round"/>
+        <path d="M116 238c-26-4-46-24-52-50 30 2 50 22 52 50z" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M114 256c22-8 40-30 42-56-26 8-40 30-42 56z" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="2.2" stroke-linejoin="round" opacity=".85"/>
+        <g class="petal" data-k="t" style="--pc:#ff5d78;--lift:translate(-7.9px,-6.2px)"><path transform="translate(120 190) rotate(-52)" d="M0 0C-24-28-25-92 0-122C25-92 24-28 0 0Z" fill="url(#rw-ruby)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/></g>
+        <g class="petal" data-k="p" style="--pc:#6cc4ff;--lift:translate(7.9px,-6.2px)"><path transform="translate(120 190) rotate(52)" d="M0 0C-24-28-25-92 0-122C25-92 24-28 0 0Z" fill="url(#rw-azure)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/></g>
+        <g class="petal" data-k="u" style="--pc:#ffb45e;--lift:translate(-4.4px,-9.0px)"><path transform="translate(120 190) rotate(-26)" d="M0 0C-24-28-25-92 0-122C25-92 24-28 0 0Z" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/></g>
+        <g class="petal" data-k="i" style="--pc:#3fd39b;--lift:translate(4.4px,-9.0px)"><path transform="translate(120 190) rotate(26)" d="M0 0C-24-28-25-92 0-122C25-92 24-28 0 0Z" fill="url(#rw-emer)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/></g>
+        <g class="petal" data-k="l" style="--pc:#f1cf83;--lift:translate(0.0px,-10.0px)"><path transform="translate(120 190) rotate(0)" d="M0 0C-24-28-25-92 0-122C25-92 24-28 0 0Z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="2.4" stroke-linejoin="round"/></g>
+        <g class="petal-letters" aria-hidden="true">
+        <text data-k="t" x="61.7" y="154.4" text-anchor="middle">T</text>
+        <text data-k="u" x="87.6" y="133.5" text-anchor="middle">U</text>
+        <text data-k="l" x="120.0" y="126.0" text-anchor="middle">L</text>
+        <text data-k="i" x="152.4" y="133.5" text-anchor="middle">I</text>
+        <text data-k="p" x="178.3" y="154.4" text-anchor="middle">P</text>
+        </g>
+      </svg>
+      <div>
+        <div class="letters" role="group" aria-label="Choose a letter">
+          <button class="letter" data-k="t" aria-pressed="false" style="--c:#ff5d78" title="Total Depravity">T</button>
+          <button class="letter" data-k="u" aria-pressed="false" style="--c:#ffb45e" title="Unconditional Election">U</button>
+          <button class="letter" data-k="l" aria-pressed="false" style="--c:#f1cf83" title="Limited Atonement">L</button>
+          <button class="letter" data-k="i" aria-pressed="false" style="--c:#3fd39b" title="Irresistible Grace">I</button>
+          <button class="letter" data-k="p" aria-pressed="false" style="--c:#6cc4ff" title="Perseverance of the Saints">P</button>
+        </div>
+        <p class="letters-hint">Tap a petal (or a letter) to open it up.</p>
+      </div>
+    </div>
+
+    <article class="doc" data-k="t" style="--c:#ff5d78">
+      <div class="doc-h"><span class="big" aria-hidden="true">T</span><h3>Total Depravity</h3></div>
+      <p class="aka">also called radical corruption, or total inability</p>
+      <p class="gist">Some people hear "total" and picture everyone being as evil as they could possibly be. What it actually describes is the reach of sin. It has touched every part of us—mind, will, desires. So left to ourselves, nobody actually wants God.</p>
+      <h4>Why I believe it</h4>
+      <ol class="why">
+        <li>Scripture calls us dead. <q>As for you, you were dead in your transgressions and sins</q> <span class="ref">Eph 2:1</span>. Have you ever seen a dead man make the first move?</li>
+        <li>The problem goes all the way down to the will. <q>There is no one righteous, not even one; there is no one who understands; there is no one who seeks God</q> <span class="ref">Rom 3:10–11</span>. The mind governed by the flesh <q>does not submit to God's law, nor can it do so</q> <span class="ref">Rom 8:7</span>. Nor can it do so... read that again.</li>
+        <li>Jesus says it plainly: <q>No one can come to me unless the Father who sent me draws them</q> <span class="ref">John 6:44</span>. "Can." He's talking about ability there.</li>
+        <li>And honestly? I find this to be good news. If I can't save myself, then my salvation was resting on God the entire time. Thank God for that.</li>
+      </ol>
+      <details class="but">
+        <summary>But if we can't choose God, how is it fair to hold us responsible?</summary>
+        <div><p>Nobody is forced to sin. We do exactly what we want to do... and that's precisely the problem. <q>Light has come into the world, but people loved darkness instead of light</q> <span class="ref">John 3:19</span>. Jonathan Edwards called this a moral inability. Picture someone who could walk out of a room any time he wants... but he loves the room too much to ever want to leave. That's us. So the responsibility stays with us, every bit of it.</p></div>
+      </details>
+    </article>
+
+    <article class="doc" data-k="u" style="--c:#ffb45e">
+      <div class="doc-h"><span class="big" aria-hidden="true">U</span><h3>Unconditional Election</h3></div>
+      <p class="aka">also called sovereign election</p>
+      <p class="gist">Before the creation of the world, God chose to save particular people. He chose them on the basis of his own grace and nothing else—no foreseen merit, no foreseen faith. Purely grace.</p>
+      <h4>Why I believe it</h4>
+      <ol class="why">
+        <li><q>For he chose us in him before the creation of the world… In love he predestined us for adoption to sonship</q> <span class="ref">Eph 1:4–5</span>. Look at the motive Paul gives: <span class="u-red">in love.</span> Election is God setting his love on people before they ever existed.</li>
+        <li>Paul says Jacob was chosen <q>before the twins were born or had done anything good or bad… not by works but by him who calls</q> <span class="ref">Rom 9:11</span>. And then: <q>It does not, therefore, depend on human desire or effort, but on God's mercy</q> <span class="ref">Rom 9:16</span>.</li>
+        <li><q>All who were appointed for eternal life believed</q> <span class="ref">Acts 13:48</span>. Appointed first... then they believed.</li>
+        <li>If God picked me because he saw ahead of time that I'd believe, then the deciding factor would be me, and I'd have something to boast about. But Paul says faith itself is <q>the gift of God—not by works, so that no one can boast</q> <span class="ref">Eph 2:8–9</span>. So where would my boast even come from?</li>
+      </ol>
+      <details class="but">
+        <summary>But Romans 8:29 says "those God foreknew." Doesn't that mean he saw our faith ahead of time?</summary>
+        <div><p>In Scripture, to "know" someone often means to set your love on them. In Amos 3:2 the Hebrew literally says "known" (the KJV keeps it: <i>You only have I known of all the families of the earth</i>), and the NIV translates it <q>You only have I chosen</q>. When Jesus tells some people "I never knew you" (Matt 7:23), he obviously knew they existed. So when Romans 8:29 says God foreknew, it's talking about people he set his love on ahead of time.</p></div>
+      </details>
+      <details class="but">
+        <summary>Isn't that unfair?</summary>
+        <div><p>Paul saw this exact objection coming: <q>What then shall we say? Is God unjust? Not at all!</q> <span class="ref">Rom 9:14</span>. Nobody is owed grace. If God gave every one of us what's fair, we'd all be condemned. The real wonder is that anyone gets saved at all.</p></div>
+      </details>
+    </article>
+
+    <article class="doc" data-k="l" style="--c:#f1cf83">
+      <div class="doc-h"><span class="big" aria-hidden="true">L</span><h3>Limited Atonement</h3></div>
+      <p class="aka">better called definite atonement, or particular redemption (honestly, "limited" is the worst name of the five)</p>
+      <p class="gist">When Jesus died, he actually paid for—and secured—the salvation of his people. He went to the cross with names on his heart, and the cross accomplished every single thing it set out to do.</p>
+      <h4>Why I believe it</h4>
+      <ol class="why">
+        <li>Jesus tells us who he lays his life down for: <q>I lay down my life for the sheep</q> <span class="ref">John 10:15</span>. And to some he says, <q>you do not believe because you are not my sheep</q> <span class="ref">John 10:26</span>.</li>
+        <li><q>He will save his people from their sins</q> <span class="ref">Matt 1:21</span>. Will save. That's a promise with the outcome already settled. <q>Christ loved the church and gave himself up for her</q> <span class="ref">Eph 5:25</span>. <q>With your blood you purchased for God persons from every tribe and language and people and nation</q> <span class="ref">Rev 5:9</span>.</li>
+        <li>The double-payment problem (John Owen made this one famous): if Christ paid for every sin of every person—unbelief included—then what's left to punish anyone for? Would God collect the same debt twice?</li>
+        <li>His work as our priest is one seamless piece. He died for and prays for the same people: <q>I am not praying for the world, but for those you have given me</q> <span class="ref">John 17:9</span>.</li>
+      </ol>
+      <details class="but">
+        <summary>But what about John 3:16? Or "the sins of the whole world" in 1 John 2:2?</summary>
+        <div><p>In John's writing, "world" very often means people from every nation—Gentiles as well as Jews. John says Jesus would die <q>not only for that nation but also for the scattered children of God, to bring them together and make them one</q> <span class="ref">John 11:52</span>. And Dort itself said Christ's death is of <i>infinite worth and value, abundantly sufficient to expiate the sins of the whole world</i>. Sufficient for all, effective for the elect. That's exactly why the gospel still goes out freely—to absolutely everyone.</p></div>
+      </details>
+    </article>
+
+    <article class="doc" data-k="i" style="--c:#3fd39b">
+      <div class="doc-h"><span class="big" aria-hidden="true">I</span><h3>Irresistible Grace</h3></div>
+      <p class="aka">also called effectual calling</p>
+      <p class="gist">When God calls one of his own, the Holy Spirit goes all the way in. He gives them a new heart, and they come running—willingly, gladly.</p>
+      <h4>Why I believe it</h4>
+      <ol class="why">
+        <li>God does the heart surgery himself: <q>I will give you a new heart and put a new spirit in you; I will remove from you your heart of stone and give you a heart of flesh</q> <span class="ref">Ezek 36:26</span>.</li>
+        <li><q>All those the Father gives me will come to me</q> <span class="ref">John 6:37</span>. Will come. Jesus talks about it as a certainty.</li>
+        <li>Lydia: <q>The Lord opened her heart to respond to Paul's message</q> <span class="ref">Acts 16:14</span>. First the Lord opened... then she responded.</li>
+        <li>New birth is something that happens <i>to</i> you. We're <q>born not of natural descent, nor of human decision or a husband's will, but born of God</q> <span class="ref">John 1:13</span>. Who has ever caused their own birth?</li>
+        <li>The Westminster Confession puts it beautifully. We come <i>most freely, being made willing by his grace</i> <span class="ref">WCF 10.1</span>.</li>
+      </ol>
+      <details class="but">
+        <summary>But Stephen says "You always resist the Holy Spirit!" (Acts 7:51)</summary>
+        <div><p>Absolutely. People resist the outward call of the gospel all the time. I did—for years. "Irresistible" is about the inward call, the one where the Spirit actually changes the heart. When God sets out to give someone new life, it happens.</p></div>
+      </details>
+    </article>
+
+    <article class="doc" data-k="p" style="--c:#6cc4ff">
+      <div class="doc-h"><span class="big" aria-hidden="true">P</span><h3>Perseverance of the Saints</h3></div>
+      <p class="aka">or as I like to think of it, the preservation of the saints</p>
+      <p class="gist">Everyone God truly saves, he keeps. True believers won't finally fall away, because God himself is holding on to them... and he doesn't let go.</p>
+      <h4>Why I believe it</h4>
+      <ol class="why">
+        <li><q>I give them eternal life, and they shall never perish; no one will snatch them out of my hand</q> <span class="ref">John 10:28</span>.</li>
+        <li>The "golden chain": <q>those he predestined, he also called; those he called, he also justified; those he justified, he also glorified</q> <span class="ref">Rom 8:30</span>. Nobody drops out between the links. And notice—Paul puts "glorified" in the past tense. That's how certain it is.</li>
+        <li><q>He who began a good work in you will carry it on to completion</q> <span class="ref">Phil 1:6</span>.</li>
+        <li>If God did the saving from start to finish (T, U, L, I), it'd be strange for the keeping to suddenly fall on me.</li>
+      </ol>
+      <details class="but">
+        <summary>But people do fall away. And what about the warnings in Hebrews 6?</summary>
+        <div><p>John answers the first part: <q>They went out from us, but they did not really belong to us. For if they had belonged to us, they would have remained with us</q> <span class="ref">1 John 2:19</span>. And the warnings in Hebrews are real. God uses them as one of the very means of keeping his people going. So this doctrine gives zero licence for "once saved, always saved, so live however you want." Real saints persevere, in faith and in holiness, because the Saviour keeps working in them.</p></div>
+      </details>
+    </article>
+
+    <div class="doc-nav" aria-label="Browse the five points">
+      <button class="btn" id="doc-prev" type="button">‹ Previous</button>
+      <button class="btn" id="doc-next" type="button">Next ›</button>
+    </div>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Why this matters to me</h2>
+    <p class="mine">My own trauma, myopic worldviews, my uncertainties, anxieties, my selfish desires, and lack of care for my well-being... ultimately all boiled down to my lack of true faith in God. All of these reasons are not necessarily excuses, but rather they are the output of a lack of faith rather than a cause of it. And everything is holistic. And with the trauma that is left, what do I make of it? For me, I find peace in knowing that God had been holding on to me all along. It was never me or my choice. God saved me from death. Salvation is His work from start to the very end. Glory to God.</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     2. EVERYTHING TO GOD
+     ========================================================= -->
+<section class="panel" role="tabpanel" id="p-romans12" aria-labelledby="t-romans12" hidden>
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Everything to God</h2>
+    <p class="lede">Mental health. Faith. And Romans 12.</p>
+    <div class="verse big"><p>Therefore, I urge you, brothers and sisters, in view of God's mercy, to offer your bodies as a living sacrifice, holy and pleasing to God—this is your true and proper worship.</p><cite>Romans 12:1</cite></div>
+
+    <h3 class="sub-h">Why I care about this</h3>
+    <div class="story">
+      <p>There's a topic I feel quite passionate about, which is the connection between mental health and faith. I think there are going to be people that could benefit from what I want to say.</p>
+      <p>It's quite personal for me, because for much of my life I had many mental health struggles w/ depression and other coinciding things. It's really been these last 2–3ish years where I've felt like I could operate with the rest of society, coinciding with my return to faith after having abandoned it. <span class="hl">My depression faded away as my faith returned.</span></p>
+    </div>
+
+    <h3 class="sub-h">The main idea</h3>
+    <p>Taking care of your mental well-being—which also includes your physical well-being—is a part of being able to serve God (i.e. worshipping God). Look at what Paul actually tells us to offer: our <span class="u-red">bodies</span>. And he calls that worship. Your sleep, your meals, your mind... all of it goes on the altar.</p>
+    <p class="pull">Worship does not end at Church. Everything that consists of your life, every action that you take and do, that is all an act of worship.</p>
+    <p>Sometimes, people are going to perceive their struggles as "distance from God," or they'll hate themselves for having mental health problems. Depression, for example, makes it harder to work to the best of your ability... and then they may think it's because of their distance from God that it's this way.</p>
+    <p>Or even more simply, someone may not be getting good sleep, or eating enough, and they'll feel more negatively about everything—which doesn't necessarily mean worship and pray more (that definitely helps of course!) but to simply live in a more healthy manner.</p>
+    <div class="verse"><p>Why, my soul, are you downcast? Why so disturbed within me? Put your hope in God, for I will yet praise him, my Savior and my God.</p><cite>Psalm 42:11</cite></div>
+    <p>The psalmist wrote that while he was talking to God, right in the middle of it. Even a downcast soul can still talk to him.</p>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>My favourite example: Elijah</h2>
+    <p>Right after his biggest victory on Mount Carmel, Elijah runs for his life, sits down under a bush, and asks God to let him die: <q>I have had enough, LORD… Take my life</q> <span class="ref">1 Kings 19:4</span>. So what does God do? Watch this.</p>
+    <div class="elijah">
+      <div style="--k:var(--azure)"><b>1. Sleep</b><span><q>Then he lay down under the bush and fell asleep.</q> God lets him sleep first.</span></div>
+      <div style="--k:var(--amber)"><b>2. Food</b><span>An angel wakes him up: <q>Get up and eat, for the journey is too much for you</q> (19:7). He eats... and sleeps again.</span></div>
+      <div style="--k:var(--gold)"><b>3. Then the word</b><span>After all that, God meets him on the mountain in a gentle whisper (19:12).</span></div>
+    </div>
+    <p>Sleep. Food. Then God speaks. That order tells me a lot about how God made us... and how patient he is with us.</p>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>A living sacrifice, today</h2>
+    <p>Small, ordinary things count. Tap what you've done today and watch the sky fill in. (It resets every day, and it only saves on your own device.)</p>
+    <div class="sky-check">
+      <svg class="constellation" id="constellation" viewBox="0 0 260 300" aria-hidden="true">
+        <line class="ln" data-a="sleep" data-b="eat" x1="130" y1="30" x2="130" y2="88"/>
+        <line class="ln" data-a="eat" data-b="pray" x1="130" y1="88" x2="130" y2="138"/>
+        <line class="ln" data-a="move" data-b="pray" x1="60" y1="138" x2="130" y2="138"/>
+        <line class="ln" data-a="pray" data-b="outside" x1="130" y1="138" x2="200" y2="138"/>
+        <line class="ln" data-a="pray" data-b="people" x1="130" y1="138" x2="130" y2="204"/>
+        <line class="ln" data-a="people" data-b="rest" x1="130" y1="204" x2="130" y2="272"/>
+        <g class="st" data-k="sleep" style="--sc:#6cc4ff"><circle class="glow" cx="130" cy="30" r="13"/><circle class="core" cx="130" cy="30" r="5"/></g>
+        <g class="st" data-k="eat" style="--sc:#ffb45e"><circle class="glow" cx="130" cy="88" r="13"/><circle class="core" cx="130" cy="88" r="5"/></g>
+        <g class="st" data-k="move" style="--sc:#3fd39b"><circle class="glow" cx="60" cy="138" r="13"/><circle class="core" cx="60" cy="138" r="5"/></g>
+        <g class="st" data-k="pray" style="--sc:#f1cf83"><circle class="glow" cx="130" cy="138" r="15"/><circle class="core" cx="130" cy="138" r="6"/></g>
+        <g class="st" data-k="outside" style="--sc:#5b8cff"><circle class="glow" cx="200" cy="138" r="13"/><circle class="core" cx="200" cy="138" r="5"/></g>
+        <g class="st" data-k="people" style="--sc:#ff8fb4"><circle class="glow" cx="130" cy="204" r="13"/><circle class="core" cx="130" cy="204" r="5"/></g>
+        <g class="st" data-k="rest" style="--sc:#b07cff"><circle class="glow" cx="130" cy="272" r="13"/><circle class="core" cx="130" cy="272" r="5"/></g>
+      </svg>
+      <div>
+        <ul class="checks">
+          <li><button class="chk" type="button" data-k="sleep" aria-pressed="false" style="--sc:#6cc4ff"><span class="dot">✓</span><span>Got real sleep<small>"He grants sleep to those he loves." Psalm 127:2</small></span></button></li>
+          <li><button class="chk" type="button" data-k="eat" aria-pressed="false" style="--sc:#ffb45e"><span class="dot">✓</span><span>Ate actual meals<small>"Get up and eat." 1 Kings 19:5</small></span></button></li>
+          <li><button class="chk" type="button" data-k="move" aria-pressed="false" style="--sc:#3fd39b"><span class="dot">✓</span><span>Moved my body<small>"Therefore honor God with your bodies." 1 Cor 6:20</small></span></button></li>
+          <li><button class="chk" type="button" data-k="pray" aria-pressed="false" style="--sc:#f1cf83"><span class="dot">✓</span><span>Prayed, or opened the Word<small>"Faithful in prayer." Romans 12:12</small></span></button></li>
+          <li><button class="chk" type="button" data-k="outside" aria-pressed="false" style="--sc:#5b8cff"><span class="dot">✓</span><span>Went outside, looked up<small>"The heavens declare the glory of God." Psalm 19:1</small></span></button></li>
+          <li><button class="chk" type="button" data-k="people" aria-pressed="false" style="--sc:#ff8fb4"><span class="dot">✓</span><span>Spent time with people<small>"Mourn with those who mourn." Romans 12:15</small></span></button></li>
+          <li><button class="chk" type="button" data-k="rest" aria-pressed="false" style="--sc:#b07cff"><span class="dot">✓</span><span>Actually rested<small>"Come to me… and I will give you rest." Matt 11:28</small></span></button></li>
+        </ul>
+      </div>
+    </div>
+    <p class="sky-msg" id="sky-msg" aria-live="polite">Some days you'll only light one star. Grace covers those days too.</p>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Romans 12, piece by piece</h2>
+    <div class="acc">
+      <details open><summary><span class="vv">12:1</span><span class="tt">Your body is included in worship</span></summary>
+        <div><span class="q">“…offer your bodies as a living sacrifice…”</span>A living sacrifice... alive, every single day. God wants all of you, and that includes the body he gave you to take care of.</div></details>
+      <details><summary><span class="vv">12:2</span><span class="tt">Renewing your mind is a process</span></summary>
+        <div><span class="q">“…be transformed by the renewing of your mind.”</span>"Be transformed" is ongoing. Thought patterns take time to change, and that's normal. Give the Spirit time to work on you.</div></details>
+      <details><summary><span class="vv">12:3</span><span class="tt">See yourself accurately</span></summary>
+        <div><span class="q">“Do not think of yourself more highly than you ought, but rather think of yourself with sober judgment…”</span>Sober judgment means seeing yourself truthfully. That rules out pride... and I'd argue it rules out self-hatred too. A lot of the time, self-hatred is just self-importance in disguise.</div></details>
+      <details><summary><span class="vv">12:4–5</span><span class="tt">You were never meant to carry it alone</span></summary>
+        <div><span class="q">“…so in Christ we, though many, form one body, and each member belongs to all the others.”</span>You belong to a body. Let the other members help you. And know that you have a part to play too.</div></details>
+      <details><summary><span class="vv">12:11</span><span class="tt">Getting healthy so you can serve</span></summary>
+        <div><span class="q">“Never be lacking in zeal, but keep your spiritual fervor, serving the Lord.”</span>Read this one with grace if you're depressed. To me, it's the whole reason taking care of yourself matters at all: so you're able to serve.</div></details>
+      <details><summary><span class="vv">12:12</span><span class="tt">Patience in the hard stretch</span></summary>
+        <div><span class="q">“Be joyful in hope, patient in affliction, faithful in prayer.”</span>Recovery takes time. Patient in affliction... God is patient with you, so be patient with yourself.</div></details>
+      <details><summary><span class="vv">12:15</span><span class="tt">Let people sit with you</span></summary>
+        <div><span class="q">“Rejoice with those who rejoice; mourn with those who mourn.”</span>Church should be the one place where you can drop the act of normalcy and be honest about how you're actually doing.</div></details>
+    </div>
+  </div>
+
+  <div class="pane">
+    <div class="help">
+      <h3>If you're in the pit right now</h3>
+      <p>Hey... I've been down there. Please tell someone. A friend, your pastor, your doctor, a counsellor, whoever you can reach first. Paul had a doctor travelling with him (<q>our dear friend Luke, the doctor</q>, Col 4:14), so I'm pretty sure God is fine with you seeing one too. And if tonight is a really bad night, call or text <span class="num">988</span>. Canada or the US, any hour.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     3. HOLY COMMUNION
+     ========================================================= -->
+<section class="panel" role="tabpanel" id="p-eucharist" aria-labelledby="t-eucharist" hidden>
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Holy Communion</h2>
+    <p class="lede">My notes on the Lord's Supper. Christ is spiritually present when a Christian takes the wine and bread. But the bread is not literally Christ's body. This is my line of reasoning.</p>
+  </div>
+
+  <div class="notes" style="--c:var(--ruby)">
+    <h3><span class="u-red">First: it's NOT "just symbolic"</span></h3>
+    <span class="margin">(to my Baptist, evangelical and non-denom friends ♡)</span>
+    <ul class="stars" style="--c:var(--ruby)">
+      <li><b>John 6:55</b>, two translations side by side:
+        <div class="vers">
+          <blockquote>“For my flesh is <b class="u-red">real food</b> and my blood is <b class="u-red">real drink</b>.”<cite>NIV</cite></blockquote>
+          <blockquote>“For my flesh is <b class="u-red">true food</b> and my blood is <b class="u-red">true drink</b>.”<cite>NRSVCE</cite></blockquote>
+        </div>
+        <span class="star-note">*alēthēs</span> = "true," "truthful," "genuine," "unconcealed." Jesus means it when he calls his flesh real food.</li>
+      <li><b>"Do this in remembrance of me"</b> <span class="ref">Luke 22:19 · 1 Cor 11:24–25</span><br>
+        <span class="arrow">↳</span><span class="star-note">*anamnesis</span> = more than just recalling / "memorial." The <span class="u-ink">past</span> becomes <span class="u-ink">present</span>.</li>
+      <li><b>1 Cor 10:16</b> <q>Is not the cup of thanksgiving for which we give thanks a participation in the blood of Christ?</q><br>
+        <span class="arrow">↳</span>The word is <i>koinōnia</i>: participation, communion. How do you participate in a mere reminder?</li>
+      <li><b>1 Cor 11:27–30</b> Eating unworthily makes you <q>guilty of sinning against the body and blood of the Lord</q>... and some of the Corinthians got sick and died over it.<br>
+        <span class="arrow">↳</span>Would God really judge people that harshly over a visual aid?</li>
+    </ul>
+    <p class="star-note">*either way, not just "symbolic"</p>
+
+    <div class="vid-block">
+      <button class="vid" type="button" data-yt="fxUat-w2z1U" aria-label="Play the Jesus and Whatnot video">
+        <img src="https://i.ytimg.com/vi/fxUat-w2z1U/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <span class="play"><svg viewBox="0 0 16 16"><path d="M4 2.5v11l9.5-5.5z"/></svg></span>
+      </button>
+      <p class="vid-cap"><b>Jesus and Whatnot</b>—the Catholic position. Funny enough, one of the best takedowns of the "just symbolic" view I've seen comes from a Catholic. He goes further than I would... but his case against the memorial view is really strong. <a href="https://youtu.be/fxUat-w2z1U" target="_blank" rel="noopener">Open on YouTube</a></p>
+    </div>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>The four views</h2>
+    <p>Protestants <span class="u-red">rejected</span> transubstantiation during the Reformation... but they disagreed among themselves. Tap one.</p>
+    <div class="views" role="tablist" aria-label="Views of the Lord's Supper">
+      <button class="view" role="tab" aria-selected="false" data-v="cat" style="--c:var(--ruby)">Catholic</button>
+      <button class="view" role="tab" aria-selected="false" data-v="luth" style="--c:var(--amber)">Lutheran</button>
+      <button class="view" role="tab" aria-selected="true" data-v="ref" style="--c:var(--sapphire)">Reformed</button>
+      <button class="view" role="tab" aria-selected="false" data-v="mem" style="--c:var(--emerald)">Memorial</button>
+    </div>
+    <div class="view-card" data-v="cat" style="--c:var(--ruby)" hidden>
+      <div>
+        <h4>Transubstantiation</h4>
+        <p class="who">Roman Catholic (the Orthodox also believe in a real change, just without the Aristotelian terms)</p>
+        <p>When the priest consecrates the bread &amp; wine, their <span class="u-wavy">substance</span> becomes the actual body &amp; blood of Christ. But their <span class="u-wavy">accidents</span> stay the same.</p>
+        <p><span class="arrow">↳</span>substance = what they fundamentally are<br><span class="arrow">↳</span>accidents = appearance, taste, texture</p>
+      </div>
+      <svg class="wine" viewBox="0 0 140 170" aria-label="A wine glass: tastes and looks just like wine, but actually blood">
+        <path d="M30 10h56c2 30-6 52-28 56C36 62 28 40 30 10z" fill="rgba(255,255,255,.06)" stroke="#f4edfc" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M33 30c10 6 20-4 30 2s16-2 21-2c-1 18-9 31-26 34-17-3-25-16-25-34z" fill="url(#rw-ruby)"/>
+        <path d="M58 66v40M38 112c4-5 12-6 20-6s16 1 20 6z" fill="none" stroke="#f4edfc" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="70" y="134" text-anchor="middle">looks like wine</text>
+        <text x="70" y="154" text-anchor="middle" style="fill:#ff8fb4">BUT actually BLOOD</text>
+      </svg>
+    </div>
+    <div class="view-card" data-v="luth" style="--c:var(--amber)" hidden>
+      <div>
+        <h4>Sacramental union</h4>
+        <p class="who">Lutheran (often called "consubstantiation," though most Lutherans don't love that word)</p>
+        <p>Christ's body and blood are truly present <i>in, with, and under</i> the bread and wine. The bread stays bread—and Christ's body is really there with it, received by everyone who eats. Believer or unbeliever.</p>
+      </div>
+    </div>
+    <div class="view-card" data-v="ref" style="--c:var(--sapphire)">
+      <div>
+        <h4>Spiritual real presence <span class="land">where I land</span></h4>
+        <p class="who">Reformed / Presbyterian (Calvin, the Westminster Confession)</p>
+        <p>Christ <span class="u-ink">is</span> present, but <span class="u-red">spiritually</span> <span class="arrow">→</span> we feed on Christ by the Holy Spirit. And when I say "spiritually," I mean by the Holy Spirit himself. As real as it gets.</p>
+        <p><span class="arrow">↳</span>Christ's body stays in Heaven. The Holy Spirit unites Christians to Jesus through the act of eating in faith.<br>
+           <span class="arrow">↳</span>The minister offers a prayer of thanksgiving &amp; consecration, asking God to set apart the bread &amp; wine through the Holy Spirit for holy use.</p>
+      </div>
+    </div>
+    <div class="view-card" data-v="mem" style="--c:var(--emerald)" hidden>
+      <div>
+        <h4>Memorial</h4>
+        <p class="who">Baptists, most evangelicals, non-denominational churches (going back to Zwingli)</p>
+        <p>"Communion is a symbolic act." We do it to remember what Jesus did and to obey his command. The bread and wine point to Christ, and that's where it ends.</p>
+        <p class="star-note">↳ seems more non-denominational. It's the view I push back on up top.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Protestant vs. Catholic</h2>
+    <p>Protestant (Reformed) arguments <span class="arrow">→</span> how a Catholic would typically answer <span class="arrow">→</span> the typical response</p>
+    <div class="rounds" role="tablist" aria-label="Rounds">
+      <button class="rnd" role="tab" aria-selected="true" data-r="0"><i>1</i>Where is his body?</button>
+      <button class="rnd" role="tab" aria-selected="false" data-r="1"><i>2</i>"This is my body"</button>
+      <button class="rnd" role="tab" aria-selected="false" data-r="2"><i>3</i>Still bread?</button>
+      <button class="rnd" role="tab" aria-selected="false" data-r="3"><i>4</i>John 6</button>
+      <button class="rnd" role="tab" aria-selected="false" data-r="4"><i>5</i>The sign &amp; the senses</button>
+      <button class="rnd" role="tab" aria-selected="false" data-r="5"><i>6</i>Church history</button>
+    </div>
+
+    <article class="round">
+      <h4>Where is Christ's body?</h4>
+      <div class="say r"><p>Christ's body is a true human body—and it's in heaven. He ascended (Acts 1:9–11), and <q>Heaven must receive him until the time comes for God to restore everything</q> <span class="ref">Acts 3:21</span>. He <q>had to be made like them, fully human in every way</q> <span class="ref">Heb 2:17</span>.</p><p>A real human body has a location. If it can be whole on ten thousand altars at the same time... is it still a body like ours? And if it's something else now, is his humanity still like ours? So this turns into a Christology problem on top of a sacrament problem.</p></div>
+      <div class="say c"><p>A Catholic would agree his body is in heaven, in its natural way of existing (Council of Trent). But they'd say he's present <i>sacramentally</i>—the way a substance is present, without taking up space like an object in a place (Aquinas). He stays whole, he stays in heaven, and the bread is changed into him.</p><p>And they'd point out that the risen body has abilities ordinary bodies lack. It walked through locked doors (John 20:19).</p></div>
+      <div class="say r r2"><p>Either it has the properties of a body—size, shape, location—or it doesn't. If it doesn't, in what sense is it still a body? When Jesus proved he'd really risen, he used exactly those properties: <q>Touch me and see; a ghost does not have flesh and bones, as you see I have</q> <span class="ref">Luke 24:39</span>.</p><p>Yes, he went through doors. But he was always in one place at a time. And after the ascension, where does Stephen see him? Standing in heaven (Acts 7:55–56).</p></div>
+    </article>
+
+    <article class="round" hidden>
+      <h4>"This is my body"</h4>
+      <div class="say r"><p>He said it while his actual body was sitting right there at the table—unbroken, holding the bread. And in the same breath: <q>This cup is the new covenant in my blood, which is poured out for you</q> <span class="ref">Luke 22:20</span>. Nobody thinks the cup is literally a covenant.</p><p>Scripture names signs by what they signify all the time. Circumcision is "my covenant"... and "the sign of the covenant," back to back (Gen 17:10–11). The lamb "is the LORD's Passover" (Ex 12:11). "That rock was Christ" (1 Cor 10:4).</p></div>
+      <div class="say c"><p>"The cup" just means what's in it—like saying you'll drink a glass. Matthew gives it straight: <q>This is my blood of the covenant</q> <span class="ref">Matt 26:28</span>.</p><p>The rock and the lamb come labelled as types (Paul calls those events examples in 1 Cor 10:6). The Last Supper comes with no label like that. And Paul calls the cup a real <i>participation</i> in Christ's blood (1 Cor 10:16).</p></div>
+      <div class="say r r2"><p>Fine—grant that the cup means its contents. The contents still aren't literally a covenant. So at least one "is" in the words of institution is sign language, and grammar alone can't force the other one to be literal.</p><p>And participation can happen with zero change of substance. Same paragraph: <q>Do not those who eat the sacrifices participate in the altar?</q> <span class="ref">1 Cor 10:18</span>. Idol feasts make you a participant with demons (10:20). Does idol meat turn into demons? Of course not.</p></div>
+    </article>
+
+    <article class="round" hidden>
+      <h4>Is it still bread?</h4>
+      <div class="say r"><p>Scripture keeps calling it bread and wine after the words. Jesus calls the cup <q>this fruit of the vine</q> after blessing it <span class="ref">Matt 26:29</span>. And Paul, right in the warning passage: <q>whenever you eat this bread</q> <span class="ref">1 Cor 11:26</span>. Bread. Three times in three verses.</p></div>
+      <div class="say c"><p>Scripture names things by what they used to be, or by how they look. Aaron's staff is still called a staff after it became a snake (Ex 7:12). At Cana, John calls it <q>the water that had been turned into wine</q> <span class="ref">John 2:9</span>.</p></div>
+      <div class="say r r2"><p>Both of those actually help my side. In each case Scripture tells us <i>first</i> that a change happened—and the change was visible. A snake. Real wine. Scripture never tells us the bread changed into anything, and the senses notice no change at all.</p></div>
+    </article>
+
+    <article class="round" hidden>
+      <h4>John 6</h4>
+      <div class="say r"><p>The promise for believing and the promise for eating are the exact same promise. <q>The one who believes has eternal life</q> (6:47). <q>Whoever eats my flesh and drinks my blood has eternal life</q> (6:54). Same result... same act. Augustine: <i>believe, and you have eaten.</i></p><p>He even defines it early: <q>Whoever comes to me will never go hungry, and whoever believes in me will never be thirsty</q> <span class="ref">John 6:35</span>. And read literally, it proves too much. Every communicant would be saved. And the thief on the cross—who never took communion—would be lost.</p></div>
+      <div class="say c"><p>The sermon escalates. Jesus moves from "believe" to "eat my flesh," and from 6:54 on, John switches to <i>trōgō</i>, a graphic verb for chewing. When the crowd takes him literally, he lets it stand. He lets many of his disciples walk away (6:66).</p><p>And in 6:63 he says "<i>the</i> flesh" counts for nothing, where all along he'd been saying "<i>my</i> flesh."</p></div>
+      <div class="say r r2"><p>Leaving a literal reading uncorrected is John's pattern with figures. "Destroy this temple" (2:19). "Born again" (3:3). "Living water" (4:10). People take it physically every single time, and Jesus keeps the figure. Then he points to the spiritual meaning—which is exactly what 6:63 does: <q>The words I have spoken to you—they are full of the Spirit and life.</q></p><p>And <i>trōgō</i>? John uses it for Judas eating ordinary bread too (13:18). Even Catholic teaching says Christ's body is never literally chewed. So nobody takes that verb literally. And listen to Peter's answer at the end: <q>You have the words of eternal life</q> <span class="ref">John 6:68</span>. The words.</p></div>
+    </article>
+
+    <article class="round" hidden>
+      <h4>The sign &amp; the senses</h4>
+      <div class="say r"><p>A sacrament is a visible sign joined to an invisible grace. Take away the bread and there's no sign left. Westminster says transubstantiation <i>overthroweth the nature of a sacrament</i> <span class="ref">WCF 29.6</span>.</p><p>When Jesus turned water into wine at Cana, it tasted like wine (John 2:9–10). When he proved his body was real, he said "touch me and see." A change that's invisible on purpose? That has no parallel anywhere in Scripture.</p></div>
+      <div class="say c"><p>The sign is still there—the appearances of bread and wine <i>are</i> the sign. Aquinas says there's no deception, because the appearances really are present. It's the intellect that has to be guarded by faith.</p><p>And the Incarnation looked like an ordinary man too (Isa 53:2). It took faith to see who he was.</p></div>
+      <div class="say r r2"><p>The Incarnation actually fits the Reformed view. People saw a real man—and he <i>was</i> a real man. Their senses were right about what senses can judge. Only his divinity was beyond them. Transubstantiation says the senses are wrong about bread... which is exactly what senses are for.</p><p>The Reformed view follows the Incarnation pattern: real bread to the senses, real Christ received by faith. And if our senses can be wrong about bread, what does that do to the apostles' witness to the resurrection? It rests on what they had <q>heard… seen with our eyes… and our hands have touched</q> <span class="ref">1 John 1:1</span>.</p></div>
+    </article>
+
+    <article class="round" hidden>
+      <h4>Church history</h4>
+      <div class="say r"><p>The substance/accidents framework is Aristotle's, and transubstantiation was formally defined in 1215 (the Fourth Lateran Council). Before that, you find sign language all over the place. Tertullian explains "this is my body" as <i>the figure of my body</i>. Augustine uses John 6:53 as his textbook example of a figure (<i>On Christian Doctrine</i> 3.16). Pope Gelasius I wrote that the substance of the bread and wine <i>does not cease</i>.</p></div>
+      <div class="say c"><p>The word came late—but so did "Trinity." The belief is early. Ignatius of Antioch (c. 110) calls the Eucharist the flesh of our Saviour. Justin Martyr (c. 155) says it isn't common bread. Cyril of Jerusalem tells new believers not to judge by taste.</p></div>
+      <div class="say r r2"><p>The Fathers say Christ is truly given at the Supper. We agree! Calvin affirmed a real feeding on Christ. Ignatius was fighting Docetists who said Christ never had real flesh at all—and we confess his true flesh too.</p><p>"Change" language in the Fathers can mean a change of use and power. Cyril says consecrated oil is no longer plain oil either... and nobody thinks oil gets transubstantiated. And when Augustine says Christ "carried himself in his own hands," he adds <i>quodam modo</i>: in a certain manner.</p></div>
+    </article>
+
+    <div class="round-foot">
+      <button class="btn next-say" id="say-next" type="button">Hear the Catholic answer</button>
+      <button class="btn" id="round-next" type="button">Next round ›</button>
+    </div>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Election and the Supper</h2>
+    <p>Look how many times Jesus says the same sentence in John 6 (tap to see it):</p>
+    <div class="lastday" id="lastday">
+      <div class="ld" style="--c:var(--amber)"><b>John 6:39</b><span class="who">the given</span><p>“…that I shall lose none of all those he has given me, but <mark>raise them up at the last day</mark>.”</p></div>
+      <div class="ld" style="--c:var(--emerald)"><b>John 6:40</b><span class="who">the believers</span><p>“…everyone who looks to the Son and believes in him shall have eternal life, and I will <mark>raise them up at the last day</mark>.”</p></div>
+      <div class="ld" style="--c:var(--azure)"><b>John 6:44</b><span class="who">the drawn</span><p>“No one can come to me unless the Father who sent me draws them, and I will <mark>raise them up at the last day</mark>.”</p></div>
+      <div class="ld" style="--c:var(--ruby)"><b>John 6:54</b><span class="who">the eaters</span><p>“Whoever eats my flesh and drinks my blood has eternal life, and I will <mark>raise them up at the last day</mark>.”</p></div>
+    </div>
+    <p>He makes the same promise four times. The ones the Father <i>gives</i>. The ones who <i>believe</i>. The ones the Father <i>draws</i>. The ones who <i>eat</i>. Jesus is describing <span class="u-red">one group of people four different ways.</span> The eaters of verse 54 are the given of verse 39.</p>
+    <p>So if "eating" there meant a mouth taking a host... then every mouth that ever took one would be raised to life on the last day. Judas included. But if the eaters are the given ones, then "eating" is the name for what the elect do when they come to Christ. And the chapter closes on exactly that: <q>no one can come to me unless the Father has enabled them</q> <span class="ref">John 6:65</span>.</p>
+    <p>My stance is that our union with Christ Jesus begins before the altar. <q>God chose us in him before the creation of the world</q> <span class="ref">Eph 1:4</span>, and the Holy Spirit is the bond that joins us to him. Paul says God has already <q>seated us with him in the heavenly realms</q> <span class="ref">Eph 2:6</span>. So at the table, the Spirit lifts us <i>up</i> to him. <i>Sursum corda</i>. Lift up your hearts.</p>
+    <p class="mine">The Supper is a seal—like circumcision was <q>a seal of the righteousness that he had by faith</q> <span class="ref">Rom 4:11</span>. It's God putting his seal on people who are already his... and actually feeding them on Christ, through the Spirit. It's God saying "you're mine" with bread you can hold in your hand.</p>
+  </div>
+
+  <div class="notes">
+    <h3><span class="u-ink">1 Corinthians 11:27–34</span></h3>
+    <ul class="stars" style="--c:var(--gold)">
+      <li>Whole context here is important. Is this about the Eucharist?</li>
+      <li>Paul is explaining what happens when the Church's attitude in taking the sacrament is unfaithful and immoral—a class-divided separation, where the rich were indulging heavily within the Church while the poor went hungry and were humiliated (11:20–22).</li>
+      <li>Is the unfaithful behaviour causing harm, or the bread?<br><span class="arrow">↳</span><span class="u-ink">Attitude</span> and <span class="u-ink">conduct</span> <span class="arrow">→</span> worthy/unworthy? <span class="star-note">*either way, not just "symbolic"</span></li>
+      <li>Verse 32—Lord's discipline—not the bread directly by itself (?)</li>
+    </ul>
+    <div class="two">
+      <div style="--c:var(--sapphire)"><h5>Reformed position</h5><p>Unbelievers only receive bread and wine, but are now guilty of <span class="u-red">rejecting Christ offered to them</span>.</p></div>
+      <div style="--c:var(--ruby)"><h5>Catholic / Lutheran position</h5><p>Unbelievers literally eat Christ's body to their judgment.</p></div>
+    </div>
+    <p class="reverence"><span class="ast">※</span>It must be treated w/ reverence—judgment either way.</p>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Watch: the Reformed case</h2>
+    <div class="vid-block">
+      <button class="vid" type="button" data-yt="zP9sA65aTcI" aria-label="Play John 6 debunks transubstantiation by Redeemed Zoomer">
+        <img src="https://i.ytimg.com/vi/zP9sA65aTcI/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <span class="play"><svg viewBox="0 0 16 16"><path d="M4 2.5v11l9.5-5.5z"/></svg></span>
+      </button>
+      <p class="vid-cap"><b>Redeemed Zoomer</b>—"John 6 DEBUNKS transubstantiation!" The Reformed reading of John 6. <a href="https://youtu.be/zP9sA65aTcI" target="_blank" rel="noopener">Open on YouTube</a></p>
+    </div>
+    <div class="response" style="--c:var(--ruby)">
+      <button class="vid short" type="button" data-yt="IGYv1zQjA18" aria-label="Play the one-minute Catholic response">
+        <img src="https://i.ytimg.com/vi/IGYv1zQjA18/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+        <span class="play"><svg viewBox="0 0 16 16"><path d="M4 2.5v11l9.5-5.5z"/></svg></span>
+      </button>
+      <div>
+        <span class="tagline">and a Catholic response</span>
+        <p class="vid-cap">About a minute long. Hear the other side out too. <a href="https://youtube.com/shorts/IGYv1zQjA18" target="_blank" rel="noopener">Open on YouTube</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Where this leaves me</h2>
+    <p>Christ is really present at the table. He's really given, and really received—by faith, through the Holy Spirit. Catholics, Lutherans, Reformed... we all agree it must be treated with reverence. Judgment either way. And honestly? I think most of us take it far less seriously than we should. Myself included.</p>
+    <div class="verse"><p>And is not the bread that we break a participation in the body of Christ? Because there is one loaf, we, who are many, are one body, for we all share the one loaf.</p><cite>1 Corinthians 10:16–17</cite></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     4. LETTERS & PRAYERS
+     ========================================================= -->
+<section class="panel" role="tabpanel" id="p-letters" aria-labelledby="t-letters" hidden>
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>Letters &amp; Prayers</h2>
+    <p class="lede">These are personal. Letters, prayers, and things I wrote down when I needed to—raw, unpolished... honest. I'm sharing them in case they help someone. Tap a date to read.</p>
+    <div class="lt-filter" role="group" aria-label="Show">
+      <button class="lf" type="button" data-f="all" aria-pressed="true">All</button>
+      <button class="lf" type="button" data-f="letter" aria-pressed="false" style="--c:var(--rosegl)">Letters</button>
+      <button class="lf" type="button" data-f="prayer" aria-pressed="false" style="--c:var(--gold)">Prayers</button>
+      <button class="lf" type="button" data-f="reflection" aria-pressed="false" style="--c:var(--azure)">Reflections</button>
+    </div>
+    <div class="lt-grid" id="lt-grid"><button class="lt" type="button" data-i="0" data-type="letter" data-date="27 May 2026" style="--c:var(--rosegl)"><span class="lt-day">27</span><span class="lt-mon">May</span><span class="lt-title">Put On Your Shoes</span><span class="lt-kind">Letter</span><span class="lt-note">heads up: grief, suicide</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-0">
+<p>I have become intimately familiar with pain, and I have honed it to become mine. But pain is not "meaningful" or "holy" simply because it was permitted by God.</p>
+<p>I believe pain stems from loneliness. Pain feels easier when you have people around you who support and care for you. Even the smallest of pains feel heightened when left with the feeling that there truly is no one. Of course, the threshold for this loneliness is dependent on the person, but almost fundamentally, pain stems from isolation. That is what's apparent to me.</p>
+<p>What is painful is the whiplash you feel from helping others find connection and alleviation from pain, while you are left to feel the pain of isolation yourself. What is most painful is when the one you love is far away, with the potential to see them again based on random chance, with a future uncertain.</p>
+<p>No one gets it. I carry the whiplash of representing 800 people raised in a Stanford prison experiment running since 21 December 2012, all while I carry on my life as if it's completely normal. I continue to wake up, go to school, go to work, volunteer, complete my obligations, tasks, chores, go to Church, and keep up with my connections. I put on, to the best of my ability, an act of normalcy. I cannot explain to someone the sheer magnitude and absurdity of this 14-year lore, let alone even have faith that they'd believe me.</p>
+<p>Eight days ago, a boy I had known since I was eight put a gun to his head. Where, then, is the fucking meaning? How in the fuck do you stitch any cohesive narrative out of kidnapping, stalking, arson, murder and the grief of a funeral held over a fucking Discord channel? Leading up to his last day, that boy was alone.</p>
+<p>I choose to believe everything that happens does indeed have purpose. Humans have free will? Sure. But if God has an ultimate, grand plan, then that means what we exercise through our free will is based on a purpose of God to carry out that plan. Sometimes that really does hurt. Even as tears accumulate, all that's left for me is to grit my teeth and put on my shoes. But I will not say something so trite as saying: "Your pain is good, it's part of God's plan."</p>
+<p>Pain is not good, but neither is it "evil." It's a product of free will. So go put on your shoes. What else is there? Why sit and wallow forever?</p>
+<p>I spent several of these past days in evening Church services. I have been given the time to reflect and process this pain. Some days I was left feeling numb at Church. Other times, I was overcome with so much emotion. Honestly, I am still confused about what to make of it. I don't know whether I am oscillating between emotional detachment and cathartic release or if I'm simply overreading a normal human response to painful feelings.</p>
+<p>But I don't care. There was one overwhelming feeling that overarched everything. I still had to do... just simply had to do.</p>
+<p>I can attend worship, go to Church, and pray all I want, and that won't pay the bills. You can act and follow the rules of the Bible all you want, and that won't be enough to save you or anyone.</p>
+<p>Prayer is for reflection. Prayer is a form to get closer to God. Ultimately, it is to find clarity in a difficult decision. But where there is no decision being made because of your own cowardice to take initiative, I am genuinely left to wonder what you're even left praying for.</p>
+<p>Worship does not end at Church. Everything that consists of your life, every action that you take and do, that is all an act of worship. The focus is entirely off.</p>
+<p>What's the point of fighting? Why do we wake up every day? Why do we live and survive? Do you have an answer to that? Or do you have pointless and utterly limp-dick, secular philosophical answers for me? "For happiness." LOL please.<br>Why not just acknowledge the fact that we are to take on the world, take responsibility for our actions, and that we are to accept our guilt and feel its pain? What's the point of taking all this time to assess and feel our guilt ever deeper? Rumination isn't the same as processing. Why all this inertia when the only being I or you are responsible to is God alone. Only God will judge you and I.</p>
+<p>The buck stops here. I choose to sit with pain, but not to wallow in it. I choose to take responsibility for my actions, because my actions set the standards for the future. They set the precedent and will guide the actions of others. They are infinite in that regard. I will take responsibility for that.</p>
+<p>I choose to accept my guilt. I refuse to be detached from it. And I will carry on. I will carry on to the bitter end. For this is the fulfillment of God's greater plan. And there is no possible timing that is better than God's.</p>
+<p>I will make my free choices in which I have assessed to be the least harmful. And I will shoulder that burden because I owe it to God and to my community.</p>
+<p>And to that end, I tell you too, to wear your shoes and keep doing. Because that is the most honest act you can for yourself and before God. There is a virtue in letting go of your sanity, your dignity, and the fragments of your identity to give it all up to God. Only if you've been in the bottomless pits of hell can you understand that making yourself undignified is so much better than the void of lies you tell yourself. It's better to roll in the pile of shit that you represent than to act as if you're above the shit. Wrong. You are the shit. And you're filthy. And you're totally depraved. And by pretending to be above the shit, you will never be "the shit."</p>
+<p>I hurt. But I choose to stand. If you consider this an act of weakness, you're the weak one, since you've preserved your dignity at the cost of everything else. By preserving your dignity, you do not come in touch with your level of depravity, and therefore, your understanding of God's grace is fundamentally lower. Even if logically understood, it is less visceral, and not felt.</p>
+<p>I'm not saying you have to have dealt with trauma to understand that. In fact, I'd contend it may be easier to come to that understanding if you haven't. Because if you have, you either start to question everything or harden. Or you may try to make meaning out of that trauma by coming to God. Doesn't matter either way, trauma is trauma. Trauma lingers, and peace never feels like peace. Besides, it's easier to let go of your dignity if you are not traumatized, after all, it's easier to trust that the process won't end in disaster if you have that baseline of trust.</p>
+<p>But even if you have pain, regret, shame, and trauma, this is what I try to tell myself: the past self is not your current self. I have broken from my cowardice to becoming a king under the vastly, unspeakably superior King. I hope for you to do the same. So sacrifice your dignity, throw it out the window, and shamelessly throw yourself in the direction of Jesus. That is the purest act of surrender. And His presence will provide you with boundless grace. You wish to understand your pain? You already do. Hone it. Stop lying to yourself. You are the shit. Conquer.</p>
+<p>So I say do the best with the life that you've been given; that will bring you closer to God. If you are tested by the humbling nature of life, hone that humility. Take advantage of it. Use the scraps of your pain, whatever that's left of it. Allow it to make you acutely familiar with the humiliating feeling that reflects your total depravity. Because there's nothing else pain can be beneficially used for.<br>Put on your shoes in spite of knowing and feeling all of your pain. Roll up your sleeves and step into the mud. For this the greatest act of humility alongside the greatest act of conquering the tribulations of your life. It's better to do the ugly, morally exhausting work of keeping as many people alive as possible than to preserve your moral sanctity as everyone around you dies. I will find my peace in knowing that every painful step I take will have already been pre-authored by God.</p>
+<p>So I regret nothing, at least I try not to. That's not to say that I don't feel guilt. But regret operates a little differently than guilt because regret stems from believing that your actions were spurred out of your own free will, which amounted to nothing but outcomes of loss. Often is the case that regret is adjacent to shame. Shame turns you away from God.</p>
+<p>I hope someone could give me a wider perspective on this, but I believe that regret and shame are worthless emotions since you cannot change the actions of the past. Guilt may correct your actions, but shame will reinforce your bad acts, and regret often leads to shame.</p>
+<p>To me, the tragedy of my—and others' existence—holds together because I am not the author of my story. If I were, that would be terrifying. That means everything that happened simply did, and I didn't act within my power to stop that harm against me, which means my pain was arbitrary. And everyone else's pain, suffering, and tragedy is equally arbitrary. Knowing I am not the author puts me at a sense of ease that I am not in control of my circumstances and despite anything that happens, there is ultimately a reason for it, even if I'm brutally murdered alongside everyone I love, at least it wasn't in vain.</p>
+<p>An existence without God terrifies. From the twenty-two years of life I've been given so far, with my very limited scope of understanding, that is what I can make of my life. I simply cannot reconcile how cruel and arbitrary this world is.</p>
+</template>
+
+<button class="lt" type="button" data-i="1" data-type="reflection" data-date="28 July 2026" style="--c:var(--azure)"><span class="lt-day">28</span><span class="lt-mon">Jul</span><span class="lt-title">One Life</span><span class="lt-kind">Reflection</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-1">
+<p>Death—whether there be an afterlife or not—is functionally the same. Death is a cessation of life as we know. Death can take one up another realm, or death can be the pre-natal state, or possibly in-between, or reincarnated. Who can truly know for sure if everyone that's committed to death is not alive to tell the tale?</p>
+<p>But this gives more reason for hope. If given this one life, with one chance to truly experience the "self," and with it being nothing more than a blink against vast billions and trillions, then there's everything to lose, and nothing to lose. This is good. You have everything to lose because you have not made great utility of this miraculous opportunity. What is so important as to shield yourself from doing as much as you want to do, free from the judgement of man, as to stay a hermit to live to die.</p>
+<p>This world is inconceivably vast, and so inconceivably tiny. What if you get dealt a bad hand, or deal with humiliation? Will it truly matter in the end? The more that's lived, the more that's understood that what we call "self" is more and more of a barrier to true freedom.</p>
+<p>To have a "self" is to become interconnected in the relational network of humanity. Some seek this through fame and glory. Self inhibits our capacity to be truly alive.</p>
+<p>But to rid of "self" entirely is to rid of yourself from the human experience. Without self, there is no relationship. No capacity for love, joy, and grace. Of course we want to be free from judgment and receive assurance from our fellow man, for we were born this way, as social creatures.</p>
+<p>To truly achieve freedom is to let your "self" go. But achieving freedom is at the price of your humanity. And many that seek freedom will fail along the journey—and if achieved, will still be equalized by mortality.</p>
+<p>Even the trinitarian view ensures that one cannot truly have a "self" without another relational object. God is not without the Son and the Spirit.</p>
+<p>So perhaps the test is to stay balanced between the elimination of self and the egoistic inflation of self. One life, yet again, just one. Eliminating self is to throw it away. Inflating the self is to entrap yourself in torment. Ultimately, all will be equalized. That's why there is everything to lose—to have lived a bad, undignified, dishonorable life. And that's why there is nothing to lose—to live a good, dignified, honorable life.</p>
+<p>And what remains upon our passing is the mimetic contagion we have left. Let us be grateful for the reality we get to live in.</p>
+</template>
+
+<button class="lt" type="button" data-i="2" data-type="prayer" data-date="12 August 2026" style="--c:var(--gold)"><span class="lt-day">12</span><span class="lt-mon">Aug</span><span class="lt-title">Never Let Go</span><span class="lt-kind">Prayer</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-2">
+<p>My Lord. Thank you. Thank you for humbling me—and continue to do so. Lord, I thank you for showing me your grace. I don't know who's praying for me but I feel the weight of many in support of me today. Lord, continue to instill holiness and virtue within my life. God, you are so good. Your grace is unbounded... and I love you. And I only wish to love you even more. My Lord, please never let go of me—I will hold on to you until my last breath.</p>
+</template>
+
+<button class="lt" type="button" data-i="3" data-type="reflection" data-date="17 August 2026" style="--c:var(--azure)"><span class="lt-day">17</span><span class="lt-mon">Aug</span><span class="lt-title">On the Taboo</span><span class="lt-kind">Reflection</span><span class="lt-note">heads up: sexuality</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-3">
+<p>couple of observations about the taboo</p>
+<h4 class="rd-sub">on masturbation</h4>
+<p>i am a man of high passions (refer to 1 Corinthians 7:9) and my libido is higher than avg imo. abstinence for the first 3-4 days actually increases energy and can make you more conscientious (focused and locked in). however, by 5 or so days, the horny jitters can actually cause a loss of focus and depleted energy---a kind of a "flatline"---that usually lasts until you have a wet dream. after a nocturnal ejaculation, the dopamine baseline appears to return to normal, but the same cycle incurs again.</p>
+<p>the best way to beat the flatline is to engage in hobbies and do stuff that you find consistently enjoyable... that said, how possible is that in the 21st century? i believe with consistent practice of abstinence, one can become more holy and disciplined... that being said, it could also be a hindrance to productivity. and at times, masturbation may temporarily aid in emotional pain... but in the same way alcohol or drugs do... in that it's temporary and the "reuptake" of the pain can come back harder. in my honest opinion, NoNut is overrated, but it can be good for discipline in the same way many things are.</p>
+<p>and the best strategy isn't streaks but slow, gradual cutting away from using masturbation as a mode of lifting steam off. gradual. doing something that makes you happy when you're bored is better than jerking off. but sometimes that's not possible or you may not find that thing that makes you happy. fine. and sometimes the horny may overtake you. fair enough. we are human beings. do not shame yourself.</p>
+<h4 class="rd-sub">on sex before marriage</h4>
+<p>there is more to being against this than simple moral reasons... and if it's purely made a moral reason, it comes across ridiculous. why can't you engage in pleasure with the opposite sex if we were created in that way? what's wrong with a fling without commitment?</p>
+<p>the problem in my experience is attachment. when you are in a very intimate setting with a woman, with their pheromones completely mixing in with yours, that's a very enjoyable, but also a vulnerable moment... and that easily builds attachment to the other on both sides. but if this was just a fling and no commitment was made serious, then both parties have done something that will register in the mind for a long time and cause a lot more pain later. in that regard, there is a clear sense of "innocence" lost. so i cannot agree with the normalization of sexual experience... there is something more visceral involved in it... or perhaps that's because of the norms of society i was raised in. either or, that's the experience.</p>
+<p>example: when you later decide to have sex with someone you now want to commit to, you may end up comparing that experience to the other partners you have had sex with. because you have had that experience engrained. this can make you less committal, more susceptible to other modes of pleasure, and you may feel less inclined to please your partner. this is awful.</p>
+<p>lastly, plain and simple, you almost certainly will seek more of it. once that line gets crossed, you think, "why not more, i already lost my innocence" and you will end up finding more partners. there are obvious physical risks to this (STDs) but it's like drugs once again---temporary alleviation from something painful inside... and wanting to cover it with temporary pleasure. and these partners are usually not around for a deeper connection, alongside the fact that you've built a weird reputation of being a playboy. again, this is a territory where you tread more into a loss of emotional regulation... it's not even a rigid moral thing.</p>
+<p>one more note, having sex with the intention of this partner being the one for you is understandable. but it's also risky because you haven't made that commitment. i see marriage as the true mode of commitment. before that, you never know. that's the only reason. if it works out, i see it as having made it right.</p>
+<p>hope this makes sense. and please pray for my well-being. i am happy God has fished me out of those waters.</p>
+</template>
+
+<button class="lt" type="button" data-i="4" data-type="letter" data-date="8 September 2026" style="--c:var(--rosegl)"><span class="lt-day">8</span><span class="lt-mon">Sep</span><span class="lt-title">End of Summer</span><span class="lt-kind">Letter</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-4">
+<p>Hey @everyone,</p>
+<p>Summer is coming to an end. I just wanted to thank you all from the bottom of my heart for making it a fulfilling time.</p>
+<p>I also wanted to share some thoughts.</p>
+<p>By no means was it an easy summer. Retiring from my old online community left me with phantom limb syndrome. And I've been trying to practice having some more patience, learning to relinquish control over things I do not have to control.</p>
+<p>Relationships are difficult—friendships, intimate relationships, connections. Being hurt is scary. Vulnerability is scary. Rejection is painful. But I've been able to find little bits of wisdom from it, which have made these emotional ups/downs worth gems.</p>
+<p>I'd like to keep building more peace within me. I am intense—very well, I've accepted that part of me instead of suppressing it. But I have room to grow.</p>
+<p>But this is the most vital piece of information I've learned: the dilemma choosing between (1) trying to please other people and (2) to not concern yourself with others is a false dichotomy.</p>
+<p>Note that I am speaking about myself, rather than trying to lecture about.</p>
+<p>It is possible to state your intentions without imposing on others. It is possible to say "No" without being a dick. It is possible to stick up for yourself without stomping. But most importantly, it is also possible to let go of some things without making it something about "weakness." You do not have to defend yourself from every insult, from every slight, every grievance—doing so may hurt your relationships more than the merits of "honesty." Besides, there are ways of being intentional without being an asshole.</p>
+<p>And hey, if I mess up, it's not the end of the world either.</p>
+<p>So thank you all, once again, for another opportunity for learning. I have yet more to learn. ❤️</p>
+</template>
+
+<button class="lt" type="button" data-i="5" data-type="prayer" data-date="10 September 2026" style="--c:var(--gold)"><span class="lt-day">10</span><span class="lt-mon">Sep</span><span class="lt-title">Peace with Humility</span><span class="lt-kind">Prayer</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-5">
+<p>Lord, you know that I am best in peace, as many are. Bring me peace with humility. Perhaps peace is not granted to me to prevent my pride from devouring me. Very well, Lord. To even utter my approval of “very well” weighted against your choices exposes my pride from within.</p>
+<p>Lord, I seek peace. My God, I wish to fulfill your purpose, to carry out your will without dread. Continue to discipline me. If I am lacking, use this unease to push me ever closer to you, not stray further away from you.</p>
+<p>Aid me by your hand and let this be clear: that to live in holiness brings a life of peace.</p>
+</template>
+
+<button class="lt" type="button" data-i="6" data-type="reflection" data-date="12 September 2026" style="--c:var(--azure)"><span class="lt-day">12</span><span class="lt-mon">Sep</span><span class="lt-title">Assurance</span><span class="lt-kind">Reflection</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-6">
+<p>I will not live with anxiety about whether or not I am saved. This is God's will. As I live with this peace as I carry out God's will, I will see the fruits of my labor and the work that comes out of genuine faith and love. Thereby, I will feel closer to already living in the kingdom of God. I will already feel saved by living in the path of righteousness. For the confirmation of my salvation lies in knowing that I seek Jesus Christ in all I do.</p>
+</template>
+
+<button class="lt" type="button" data-i="7" data-type="reflection" data-date="15 September 2026" style="--c:var(--azure)"><span class="lt-day">15</span><span class="lt-mon">Sep</span><span class="lt-title">Discipline</span><span class="lt-kind">Reflection</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-7">
+<p>Discipline. Discipline is vital. Clarity. Clarity of heart and mind is vital. Perspective. Perspective is vital.</p>
+<p>Come to God and He will provide you with all such things.</p>
+<p>A man with no discipline is no man at all but a boy.</p>
+<p>Reject dopaminergic drives. Seek contentment, and you will be filled with gratitude.</p>
+<p>God doesn't owe you anything... but here you are right now.</p>
+</template>
+
+<button class="lt" type="button" data-i="8" data-type="prayer" data-date="16 September 2026" style="--c:var(--gold)"><span class="lt-day">16</span><span class="lt-mon">Sep</span><span class="lt-title">Humble Me</span><span class="lt-kind">Prayer</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-8">
+<p>My Lord. I love when I am humiliated. I shall rejoice when I am put to shame. As long as I resist the self-spite that masks self-importance brought upon by Satan, my pride is to be sent to the depths of Hell where it belongs. To know my place brings me joy. To be weak is to be strong. Because through you, weakness never succumbs me to a weak will, but only refines my strong will. Lord, put my ambition to shame. Take use of my fire you have gifted upon me. Replace my prideful ambitions with an ambition to serve. Make me pure in heart. Destroy my ego. Humble me, even if it makes me hurt. If it makes me holy, your painful discipline is worth it all. For you owe me nothing. For I am deserving of Hell. Only through that understanding, can I truly rejoice in gratitude for your grace. May I receive and be empowered by your peace, love, discipline. Amen.</p>
+</template>
+
+<button class="lt" type="button" data-i="9" data-type="reflection" data-date="18 September 2026" style="--c:var(--azure)"><span class="lt-day">18</span><span class="lt-mon">Sep</span><span class="lt-title">Whatever Comes</span><span class="lt-kind">Reflection</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-9">
+<p>This life is filled with uncertainty. Contingency. Often is the case where dread consumes me from prospects of worst-case scenarios. "Will I die from a car accident today? Will I be humiliated before man, put shame to my family? Will I be diagnosed with a terminal illness?" For me, these thoughts are put to peace knowing that in whatever outcome may ensue, it is God's will. Whatever suffering I may endure, I will try my hardest to live with gratitude, because God owes us nothing, and I owe everything before God. This instills me with peace, love, and joy, which automatically spreads and brings more believers to Christ Jesus. I surrender myself to God, and I am received with his reassurance. Amen.</p>
+</template>
+
+<button class="lt" type="button" data-i="10" data-type="reflection" data-date="20 September 2026" style="--c:var(--azure)"><span class="lt-day">20</span><span class="lt-mon">Sep</span><span class="lt-title">The Ten</span><span class="lt-kind">Reflection</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-10">
+<p>Why we don't follow the ten</p>
+<ol class="rd-list">
+<li>We make idols of God everyday. When you decide to trust anything else but God in any given situation, that's an idol. You go to drugs, maladaptive coping mechanisms, jerking off, video games, etc., instead of prayer. Immediately you have abandoned God.</li>
+<li>Your mental idea of God in your head distorts what you worship. And if you prioritize money, power, fame, or the ideas of your imagination over God, you will inevitably produce something equivalent to a graven image of God.</li>
+<li>"I swear to God"/"OMG"—every time you use these, it debases God's sacredness.</li>
+<li>Sunday = don't work. Worship.</li>
+<li>This should be in both thoughts and actions. One may say "I love my parents" and do nothing for them; one may do everything for their parents and resent them in their heart.</li>
+<li>This includes your heart. If you hate someone momentarily to the point where you wish death upon them, that is murder.</li>
+<li>Like 6, this also includes your heart. If you lust for a woman you are not married to, that is adultery.</li>
+<li>You've probably stolen something. Even if not physical, maybe you took extra credit for something that wasn't fully your contribution.</li>
+<li>If you've lied, you've broken this.</li>
+<li>If you have envy for anything in your heart, you've broken this.</li>
+</ol>
+<p>Thus we are all sinners and anyone who pretends to act as if they can follow these rules if they just try hard enough are full of pride.</p>
+</template>
+
+<button class="lt" type="button" data-i="11" data-type="reflection" data-date="22 September 2026" style="--c:var(--azure)"><span class="lt-day">22</span><span class="lt-mon">Sep</span><span class="lt-title">Without Love</span><span class="lt-kind">Reflection</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-11">
+<p>Despite my religious devotion, all of my prayers and worship, and all of my apparent piety, it means nothing if I live without love. God won't listen to my prayers if I have no repentance in my heart. Only by repentance do I acknowledge my faults and gradually strive to live more righteously every day. Why should I bow down to God if I have never bowed down to serve others?</p>
+<p>One of my deepest regrets is when I was in Vancouver with one of my friends and a struggling lady collapsed with grocery bags in her hands and started sobbing. I did not help her and continued walking. Why? Because I was worried if she was drugged, homeless, dirty... if she was dangerous. What a dumb fear. If I'm so worried about such things, I might as well quit commuting to school... or talking to anyone.</p>
+<p>But this is a bigger incident... there are so many smaller moments like this—countless I have forgotten—where I have walked past those that struggle. And then I have the audacity to judge them. Shame on me.</p>
+</template>
+
+<button class="lt" type="button" data-i="12" data-type="reflection" data-date="14 October 2026" style="--c:var(--azure)"><span class="lt-day">14</span><span class="lt-mon">Oct</span><span class="lt-title">Turn Today</span><span class="lt-kind">Reflection</span><span class="seal" aria-hidden="true"></span></button>
+<template id="lt-12">
+<p>You have no idea of the capacity of evil thoughts your brain is capable of.</p>
+<p>Turn to God, turn to Jesus before your bones fail you. Turn to Him before your body turns frail.</p>
+<p>You can begin to participate in the Kingdom of God today, not in death. But now. Today.</p>
+<p>There is nothing—no hope—left in your distance from God. There is no good path you could stray into except the acceptance of the will of God.</p>
+<p>Surrender yourself today, and God will rejuvenate you.</p>
+<p>And do not fear death, for where death is, you are not. In every sense of this phrase, this is true.</p>
+<p>God shall restore you, always.</p>
+<p>And if you are not yet made whole back in the flesh, He shall keep you safe in heaven, where you shall reside with Him before you are made whole again in the flesh.</p>
+<p>Glory to God in the highest. Blessed be to our almighty savior, forever and ever.</p>
+<p>Amen.</p>
+</template>
+</div>
+  </div>
+</section>
+
+<!-- =========================================================
+     5. WIP
+     ========================================================= -->
+<section class="panel" role="tabpanel" id="p-horizon" aria-labelledby="t-horizon" hidden>
+  <div class="pane">
+    <h2 class="pane-h"><span class="orn" aria-hidden="true"></span>WIP</h2>
+    <p class="lede">Things I'm still chewing on. Still writing. They're in orbit for now... check back later.</p>
+    <div class="orbit-wrap">
+      <svg class="orbits" viewBox="0 0 300 300" aria-hidden="true">
+        <circle class="ring" cx="150" cy="150" r="70"/>
+        <circle class="ring" cx="150" cy="150" r="112"/>
+        <circle class="ring dash" cx="150" cy="150" r="142"/>
+        <circle cx="150" cy="150" r="30" fill="url(#rw-glory)"/>
+        <path d="M150 128l5 17 17 5-17 5-5 17-5-17-17-5 17-5z" fill="url(#rw-gold)" stroke="#120a1c" stroke-width="1.4"/>
+        <g class="spin" style="--d:38s">
+          <g class="world" data-t="busy" transform="translate(150 80)">
+            <circle class="halo" r="22" fill="url(#rw-glory)"/>
+            <circle class="p" r="14" fill="url(#rw-amber)" stroke="#120a1c" stroke-width="2"/>
+          </g>
+        </g>
+        <g class="spin" style="--d:64s">
+          <g class="world" data-t="filioque" transform="translate(262 150)">
+            <circle class="halo" r="22" fill="url(#rw-glory)"/>
+            <circle class="p" r="14" fill="url(#rw-sap)" stroke="#120a1c" stroke-width="2"/>
+            <ellipse rx="22" ry="5" fill="none" stroke="#f1cf83" stroke-opacity=".8" stroke-width="1.6" transform="rotate(-18)"/>
+          </g>
+        </g>
+        <g class="spin" style="--d:110s">
+          <g transform="translate(150 8)">
+            <circle r="9" fill="none" stroke="rgba(195,162,255,.6)" stroke-dasharray="3 3"/>
+            <text y="4" text-anchor="middle" style="font:600 13px var(--serif);fill:#cdb2ff">?</text>
+          </g>
+        </g>
+      </svg>
+      <div>
+        <article class="topic" data-t="busy" style="--c:var(--amber)">
+          <span class="status">WIP</span>
+          <h3>The Volunteer Machine</h3>
+          <p>When church starts running like a business. Growth targets. Branding. Volunteers who serve until they burn out. Serving is good—really good. But there's a point where evangelical volunteer culture starts to look like a company... or a cult of busyness.</p>
+        </article>
+        <article class="topic" data-t="filioque" style="--c:var(--sapphire)">
+          <span class="status">WIP</span>
+          <h3>The Filioque</h3>
+          <p>Does the Holy Spirit proceed from the Father <i>and the Son</i>? One Latin word—<i>filioque</i>—added to the Nicene Creed in the West, and it helped split East and West in 1054. What it means, why the Orthodox object, and why the Reformed confess it (WCF 2.3).</p>
+        </article>
+        <p class="vid-cap">More to come.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<dialog class="reader" id="reader" aria-labelledby="rd-title">
+  <div class="rd-paper">
+    <div class="rd-head">
+      <span class="rd-date" id="rd-date"></span>
+      <button class="rd-close" type="button" id="rd-close" aria-label="Close">×</button>
+      <h3 id="rd-title"></h3>
+      <span class="rd-type" id="rd-type"></span>
+    </div>
+    <div class="rd-body" id="rd-body"></div>
+    <div class="rd-foot">
+      <button class="btn" type="button" id="rd-prev">‹ Earlier</button>
+      <button class="btn" type="button" id="rd-next">Later ›</button>
+    </div>
+  </div>
+</dialog>
+
+<footer class="foot">
+  <span class="sdg">Soli Deo Gloria</span>
+  sambang.pages.dev
+  <small>Scripture quotes are from the NIV (2011).</small>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var doc = document;
+  var $ = function (s, r) { return (r || doc).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || doc).querySelectorAll(s)); };
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- the sky: stars, a little parallax, shooting stars ---------- */
+  var sky = $('#sky'), ctx = sky.getContext('2d'), W = 0, H = 0, DPR = 1, stars = [], shots = [], last = 0;
+  var TINTS = ['255,255,255', '255,255,255', '255,255,255', '255,246,220', '220,232,255', '241,207,131', '108,196,255', '255,143,180', '176,124,255'];
+  function makeStars() {
+    var n = Math.min(520, Math.round(W * H / 2600));
+    stars = [];
+    for (var i = 0; i < n; i++) {
+      var d = Math.random();
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: d < .82 ? .35 + Math.random() * .7 : .9 + Math.random() * 1.1,
+        z: .015 + d * .07,
+        c: TINTS[Math.random() < .86 ? (Math.random() * 4) | 0 : 4 + ((Math.random() * 5) | 0)],
+        a: .35 + Math.random() * .6, p: Math.random() * 6.28, s: .4 + Math.random() * 1.4
+      });
+    }
+  }
+  function size() {
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = innerWidth; H = innerHeight;
+    sky.width = W * DPR; sky.height = H * DPR;
+    sky.style.width = W + 'px'; sky.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    makeStars(); aimRocket();
+    if (still) draw(0);
+  }
+  function shoot(x, y) {
+    var ang = (18 + Math.random() * 22) * Math.PI / 180, dir = Math.random() < .5 ? 1 : -1;
+    shots.push({ x: x == null ? Math.random() * W : x, y: y == null ? Math.random() * H * .45 : y,
+      vx: Math.cos(ang) * 760 * dir, vy: Math.sin(ang) * 760, life: 0, max: .9 + Math.random() * .5 });
+  }
+  var nextShot = 4 + Math.random() * 6;
+  function draw(t) {
+    var dt = Math.min(.05, (t - last) / 1000 || 0); last = t;
+    ctx.clearRect(0, 0, W, H);
+    var sy = window.scrollY || 0;
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var y = ((s.y - sy * s.z) % H + H) % H;
+      var tw = still ? 1 : .65 + .35 * Math.sin(t / 1000 * s.s + s.p);
+      ctx.globalAlpha = s.a * tw;
+      ctx.fillStyle = 'rgb(' + s.c + ')';
+      ctx.beginPath(); ctx.arc(s.x, y, s.r, 0, 6.283); ctx.fill();
+      if (s.r > 1.5) { ctx.globalAlpha = s.a * tw * .18; ctx.beginPath(); ctx.arc(s.x, y, s.r * 3.2, 0, 6.283); ctx.fill(); }
+    }
+    ctx.globalAlpha = 1;
+    if (!still) {
+      nextShot -= dt;
+      if (nextShot <= 0) { shoot(); nextShot = 6 + Math.random() * 9; }
+      for (var j = shots.length - 1; j >= 0; j--) {
+        var m = shots[j]; m.life += dt; m.x += m.vx * dt; m.y += m.vy * dt;
+        var k = m.life / m.max; if (k >= 1) { shots.splice(j, 1); continue; }
+        var fade = k < .15 ? k / .15 : 1 - (k - .15) / .85;
+        var tx = m.x - m.vx * .16, ty = m.y - m.vy * .16;
+        var g = ctx.createLinearGradient(m.x, m.y, tx, ty);
+        g.addColorStop(0, 'rgba(255,248,226,' + fade + ')'); g.addColorStop(1, 'rgba(176,124,255,0)');
+        ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(tx, ty); ctx.stroke();
       }
-    })();
-  </script>
+      requestAnimationFrame(draw);
+    }
+  }
+  /* the rocket points the way it is flying, whatever the window's shape */
+  var rocket = $('.rocket');
+  function aimRocket() {
+    if (!rocket) return;
+    var x0 = -0.1 * W, y0 = 0.78 * H, x1 = 1.08 * W, y1 = 0.06 * H;
+    var deg = Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI + 90;
+    rocket.style.setProperty('--x0', x0 + 'px'); rocket.style.setProperty('--y0', y0 + 'px');
+    rocket.style.setProperty('--x1', x1 + 'px'); rocket.style.setProperty('--y1', y1 + 'px');
+    rocket.style.setProperty('--rot', deg.toFixed(1) + 'deg');
+  }
+  addEventListener('resize', size);
+  if (still) addEventListener('scroll', function () { draw(0); }, { passive: true });
+  size();
+  if (!still) requestAnimationFrame(draw);
+  /* a click on the empty sky sends a shooting star from that spot */
+  doc.addEventListener('click', function (e) {
+    if (still || e.target.closest('.pane,.notes,.tabs,.hero,button,a,summary,.foot,dialog')) return;
+    shoot(e.clientX, e.clientY);
+  });
+
+  /* ---------- tabs ---------- */
+  var tabs = $$('.tab'), glow = $('.tab-glow'), bar = $('.tabs');
+  function placeGlow(tab) {
+    var r = tab.getBoundingClientRect(), b = bar.getBoundingClientRect();
+    glow.style.width = (r.width - 28) + 'px';
+    glow.style.transform = 'translateX(' + (r.left - b.left + 14) + 'px)';
+  }
+  function select(tab, opts) {
+    opts = opts || {};
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      $('#' + t.getAttribute('aria-controls')).hidden = !on;
+    });
+    placeGlow(tab);
+    if (opts.focus) tab.focus();
+    if (opts.hash !== false) {
+      try { history.replaceState(null, '', '#' + tab.dataset.hash); } catch (e) { location.hash = tab.dataset.hash; }
+    }
+    if (opts.scroll) {
+      var top = bar.getBoundingClientRect().top + scrollY - 10;
+      if (scrollY > top) scrollTo({ top: top, behavior: still ? 'auto' : 'smooth' });
+    }
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { select(t, { scroll: true }); });
+    t.addEventListener('keydown', function (e) {
+      var j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
+      if (j === null) return;
+      e.preventDefault();
+      select(tabs[(j + tabs.length) % tabs.length], { focus: true });
+    });
+  });
+  function fromHash() {
+    var h = (location.hash || '').slice(1), base = h.split('/')[0];
+    var t = tabs.filter(function (x) { return x.dataset.hash === base; })[0] || tabs[0];
+    select(t, { hash: !!h && h === base });
+  }
+  addEventListener('hashchange', fromHash);
+  addEventListener('resize', function () { placeGlow($('.tab[aria-selected="true"]')); });
+  fromHash();
+  if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(function () { placeGlow($('.tab[aria-selected="true"]')); });
+
+  /* ---------- 1. TULIP ---------- */
+  var ORDER = ['t', 'u', 'l', 'i', 'p'];
+  var tulip = $('.tulip-svg'), docs = $$('.doc'), letters = $$('.letter'), petals = $$('.petal');
+  var cur = 't';
+  function pick(k, scroll) {
+    cur = k;
+    tulip.classList.add('picked');
+    petals.forEach(function (p) { p.classList.toggle('on', p.dataset.k === k); });
+    $$('.petal-letters text').forEach(function (t) {
+      var on = t.dataset.k === k, p = petals.filter(function (x) { return x.dataset.k === t.dataset.k; })[0];
+      t.classList.toggle('on', on);
+      t.style.transform = on ? p.style.getPropertyValue('--lift') : '';
+    });
+    letters.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.k === k ? 'true' : 'false'); });
+    docs.forEach(function (d) {
+      var on = d.dataset.k === k;
+      d.hidden = !on;
+      d.classList.remove('show');
+      if (on) { void d.offsetWidth; d.classList.add('show'); }
+    });
+    var i = ORDER.indexOf(k);
+    $('#doc-prev').disabled = i === 0;
+    $('#doc-next').disabled = i === ORDER.length - 1;
+    if (scroll) {
+      var d = docs.filter(function (x) { return x.dataset.k === k; })[0];
+      var r = d.getBoundingClientRect();
+      if (r.top < 90 || r.top > innerHeight * .75) scrollTo({ top: r.top + scrollY - 100, behavior: still ? 'auto' : 'smooth' });
+    }
+  }
+  petals.forEach(function (p) { p.addEventListener('click', function () { pick(p.dataset.k, true); }); });
+  letters.forEach(function (b) { b.addEventListener('click', function () { pick(b.dataset.k, true); }); });
+  $('#doc-prev').addEventListener('click', function () { var i = ORDER.indexOf(cur); if (i > 0) pick(ORDER[i - 1], true); });
+  $('#doc-next').addEventListener('click', function () { var i = ORDER.indexOf(cur); if (i < 4) pick(ORDER[i + 1], true); });
+  pick('t');
+
+  /* ---------- 2. a living sacrifice, today (kept on this device, one day at a time) ---------- */
+  var KEY = 'sb-living-sacrifice';
+  var today = (function () { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); })();
+  var done = {};
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && saved.day === today) done = saved.done || {}; } catch (e) {}
+  var chks = $$('.chk'), cons = $('#constellation'), msg = $('#sky-msg');
+  var MSGS = ['Some days you’ll only light one star. Grace covers those days too.', 'One star. That counts.',
+    'Two. Keep going—gently.', 'Three. You’re taking care of the body God gave you.', 'Four. Halfway across the sky.',
+    'Five. That’s a good day.', 'Six. Almost the whole cross.',
+    'Every star lit. “Offer your bodies as a living sacrifice… this is your true and proper worship.” Romans 12:1'];
+  function paint() {
+    var n = 0;
+    chks.forEach(function (b) { var on = !!done[b.dataset.k]; if (on) n++; b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    $$('.st', cons).forEach(function (s) { s.classList.toggle('on', !!done[s.dataset.k]); });
+    $$('.ln', cons).forEach(function (l) { l.classList.toggle('on', !!(done[l.dataset.a] && done[l.dataset.b])); });
+    cons.classList.toggle('all', n === 7);
+    msg.textContent = MSGS[n];
+    msg.classList.toggle('done', n === 7);
+  }
+  chks.forEach(function (b) {
+    b.addEventListener('click', function () {
+      done[b.dataset.k] = !done[b.dataset.k];
+      try { localStorage.setItem(KEY, JSON.stringify({ day: today, done: done })); } catch (e) {}
+      paint();
+    });
+  });
+  paint();
+
+  /* ---------- 3. the four views ---------- */
+  var views = $$('.view'), cards = $$('.view-card');
+  views.forEach(function (v) {
+    v.addEventListener('click', function () {
+      views.forEach(function (x) { x.setAttribute('aria-selected', x === v ? 'true' : 'false'); });
+      cards.forEach(function (c) { c.hidden = c.dataset.v !== v.dataset.v; });
+    });
+  });
+
+  /* ---------- 3. Reformed vs. Catholic: rounds, revealed one voice at a time ---------- */
+  var rnds = $$('.rnd'), rounds = $$('.round'), sayNext = $('#say-next'), roundNext = $('#round-next');
+  var shown = rounds.map(function () { return 1; }), r = 0;
+  var LABELS = ['Hear the Catholic answer', 'See the Reformed reply', 'Read it again from the top'];
+  function showRound(i) {
+    r = i;
+    rnds.forEach(function (b, j) { b.setAttribute('aria-selected', j === i ? 'true' : 'false'); });
+    rounds.forEach(function (a, j) { a.hidden = j !== i; });
+    var says = $$('.say', rounds[i]);
+    says.forEach(function (s, j) { s.hidden = j >= shown[i]; });
+    sayNext.textContent = LABELS[shown[i] - 1];
+    roundNext.textContent = i === rounds.length - 1 ? '‹ Back to round 1' : 'Next round ›';
+  }
+  sayNext.addEventListener('click', function () {
+    var says = $$('.say', rounds[r]);
+    if (shown[r] >= says.length) {
+      shown[r] = 1; showRound(r);
+      var top = rounds[r].getBoundingClientRect().top + scrollY - 110;
+      scrollTo({ top: top, behavior: still ? 'auto' : 'smooth' });
+      return;
+    }
+    var s = says[shown[r]]; shown[r]++;
+    showRound(r);
+    s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop');
+  });
+  roundNext.addEventListener('click', function () { showRound((r + 1) % rounds.length); });
+  rnds.forEach(function (b, j) { b.addEventListener('click', function () { showRound(j); }); });
+  showRound(0);
+
+  /* the promise repeated four times lights up together when tapped */
+  var ld = $('#lastday');
+  if (ld) ld.addEventListener('click', function () { ld.classList.toggle('lit'); });
+
+  /* ---------- videos: only load the player when asked ---------- */
+  $$('.vid').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var id = b.dataset.yt, f = doc.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+      f.title = b.getAttribute('aria-label').replace(/^Play /, '');
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      var box = doc.createElement('div');
+      box.className = b.className;
+      box.appendChild(f);
+      b.replaceWith(box);
+    });
+  });
+
+  /* ---------- 4. on the horizon ---------- */
+  var worlds = $$('.world'), topics = $$('.topic');
+  function focusTopic(t) {
+    worlds.forEach(function (w) { w.classList.toggle('on', w.dataset.t === t); });
+    topics.forEach(function (x) { x.classList.toggle('on', x.dataset.t === t); });
+  }
+  worlds.forEach(function (w) { w.addEventListener('click', function () { focusTopic(w.dataset.t); }); });
+  topics.forEach(function (x) { x.addEventListener('mouseenter', function () { focusTopic(x.dataset.t); }); x.addEventListener('click', function () { focusTopic(x.dataset.t); }); });
+})();
+
+/* ---------- Letters & Prayers: dated envelopes that open in a reader ---------- */
+(function () {
+  'use strict';
+  var doc = document;
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || doc).querySelectorAll(s)); };
+  var cards = $$('.lt'), months = $$('.lt-month'), filters = $$('.lf');
+  var dlg = doc.getElementById('reader');
+  var body = doc.getElementById('rd-body'), title = doc.getElementById('rd-title'),
+      date = doc.getElementById('rd-date'), kind = doc.getElementById('rd-type'),
+      prev = doc.getElementById('rd-prev'), next = doc.getElementById('rd-next');
+  var cur = 0, opener = null;
+
+  function visible() { return cards.filter(function (c) { return !c.hidden; }); }
+  function show(card) {
+    cur = +card.dataset.i;
+    var tpl = doc.getElementById('lt-' + cur);
+    body.innerHTML = '';
+    body.appendChild(tpl.content.cloneNode(true));
+    body.scrollTop = 0;
+    title.textContent = card.querySelector('.lt-title').textContent;
+    date.textContent = card.dataset.date;
+    kind.textContent = card.querySelector('.lt-kind').textContent;
+    dlg.style.setProperty('--c', card.style.getPropertyValue('--c'));
+    var list = visible(), i = list.indexOf(card);
+    prev.disabled = i <= 0; next.disabled = i >= list.length - 1;
+  }
+  function open(card) {
+    opener = card;
+    show(card);
+    if (typeof dlg.showModal === 'function') { if (!dlg.open) dlg.showModal(); }
+    else dlg.setAttribute('open', '');
+    try { history.replaceState(null, '', '#letters/' + cur); } catch (e) {}
+  }
+  function close() {
+    if (dlg.close) dlg.close(); else dlg.removeAttribute('open');
+  }
+  dlg.addEventListener('close', function () {
+    try { history.replaceState(null, '', '#letters'); } catch (e) {}
+    if (opener) opener.focus();
+  });
+  cards.forEach(function (c) { c.addEventListener('click', function () { open(c); }); });
+  doc.getElementById('rd-close').addEventListener('click', close);
+  /* a click on the dim backdrop (outside the page) closes it */
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });
+  function step(d) {
+    var list = visible(), i = list.indexOf(cards[cur]) + d;
+    if (i >= 0 && i < list.length) { show(list[i]); try { history.replaceState(null, '', '#letters/' + cur); } catch (e) {} }
+  }
+  prev.addEventListener('click', function () { step(-1); });
+  next.addEventListener('click', function () { step(1); });
+  dlg.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+
+  /* show only one kind */
+  filters.forEach(function (f) {
+    f.addEventListener('click', function () {
+      filters.forEach(function (x) { x.setAttribute('aria-pressed', x === f ? 'true' : 'false'); });
+      var k = f.dataset.f;
+      cards.forEach(function (c) { c.hidden = k !== 'all' && c.dataset.type !== k; });
+      months.forEach(function (m) {
+        var n = m.nextElementSibling, any = false;
+        while (n && !n.classList.contains('lt-month')) { if (n.classList.contains('lt') && !n.hidden) any = true; n = n.nextElementSibling; }
+        m.hidden = !any;
+      });
+    });
+  });
+
+  /* a link straight to one letter: #letters/3 */
+  var m = /^#letters\/(\d+)$/.exec(location.hash);
+  if (m && cards[+m[1]]) {
+    var t = doc.getElementById('t-letters');
+    if (t) t.click();
+    open(cards[+m[1]]);
+  }
+})();
+
+</script>
 </body>
 </html>
