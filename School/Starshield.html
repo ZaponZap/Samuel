@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Starshield Study</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="A structured study guide to the October 2026 Starshield cap: the law by layer and by document, the cases with maps, both sides' arguments, the professor's hypothetical, the courts, presentation notes and Q&A.">
@@ -9,7 +10,7 @@
 /* Layout concept: a cathedral at night. Near-black nave, light falling through stained glass: jewel colours mark meaning (layers, sides, law), never decoration for its own sake. Sections read top to bottom like a study guide. Single dark look by design. */
 :root{
   --bg:#07070a; --panel:#0f0f14; --panel-2:#14141b; --panel-3:#1a1a23;
-  --line:rgba(255,248,235,.09); --line-2:rgba(255,248,235,.16); --lead:#030304;
+  --line:rgba(var(--tint),.09); --line-2:rgba(var(--tint),.16); --lead:#030304;
   --ink:#f2ede3; --ink-2:#c8c1b3; --ink-3:#8e877a;
   --ruby:#e5485f; --amber:#f0a43a; --gold:#ecc65d; --emerald:#33c48b; --teal:#2fb9b4; --sapphire:#5b8dff; --amethyst:#a073f0; --rose:#e2649f;
   --l1:var(--amber); --l2:var(--sapphire); --l3:var(--amethyst);
@@ -19,8 +20,25 @@
   --body:"Proxima Nova","proxima-nova","Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
   --hand:"Kalam","Bradley Hand","Segoe Print",cursive;
   --r:12px; --r-lg:16px;
+  --tint:255,248,235; --on:#120f08; --hdr:rgba(7,7,10,.86); --shadow:rgba(0,0,0,.6);
+  --map-sea:#0a0b12; --map-land:#17171f; --map-border:#2b2b36; --map-grat:rgba(255,248,235,.05); --map-neutral:#24242e; --map-neutral2:#3a3a48; --map-ocean:#5c6a8a; --map-halo:#07070a; --hi-op:.32;
   color-scheme:dark;
 }
+/* Light mode: the same cathedral by daylight. Parchment ground, deeper jewel tones so every colour still reads as text. */
+:root[data-theme="light"]{
+  --bg:#f4f0e6; --panel:#fffdf8; --panel-2:#fbf8f1; --panel-3:#f3eee3;
+  --line:rgba(70,52,20,.12); --line-2:rgba(70,52,20,.22); --lead:#2b2620;
+  --ink:#1c1915; --ink-2:#4b453b; --ink-3:#7b7367;
+  --ruby:#c22a43; --amber:#b25d0b; --gold:#8c6606; --emerald:#127f56; --teal:#0e7a77; --sapphire:#2d58cc; --amethyst:#6f3fc2; --rose:#b02d6a;
+  --tint:70,52,20; --on:#ffffff; --hdr:rgba(244,240,230,.92); --shadow:rgba(60,45,20,.16);
+  --map-sea:#e9ecee; --map-land:#ddd6c8; --map-border:#bdb4a2; --map-grat:rgba(70,52,20,.07); --map-neutral:#d2cabb; --map-neutral2:#9a9282; --map-ocean:#7d8aa6; --map-halo:#fbf9f4; --hi-op:.27;
+  color-scheme:light;
+}
+:root[data-theme="light"] #sky{display:none}
+:root[data-theme="light"] .glow-bg{background:radial-gradient(700px 420px at 85% 4%, rgba(111,63,194,.06), transparent 70%), radial-gradient(600px 400px at 8% 40%, rgba(45,88,204,.05), transparent 70%), radial-gradient(700px 500px at 70% 100%, rgba(194,42,67,.04), transparent 70%)}
+:root[data-theme="light"] .notebook{box-shadow:0 10px 30px rgba(60,45,20,.16), inset 0 0 60px rgba(160,130,80,.14); border:1px solid rgba(70,52,20,.12)}
+:root[data-theme="light"] .rose svg{filter:drop-shadow(0 6px 24px rgba(60,45,20,.22))}
+:root[data-theme="light"] .card,:root[data-theme="light"] .doc,:root[data-theme="light"] .tierc,:root[data-theme="light"] .mrow:not(.head),:root[data-theme="light"] details.qa{box-shadow:0 1px 2px rgba(60,45,20,.05)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth; scroll-padding-top:76px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important; transition:none!important}}
@@ -52,14 +70,14 @@ mark.y{background:#ffd95e} mark.p{background:#ff9ec4} mark.b{background:#8fd3ff}
 .glass-strip{height:6px; border-radius:3px; background:linear-gradient(90deg, var(--ruby) 0 12.5%, var(--lead) 12.5% 13%, var(--amber) 13% 25%, var(--lead) 25% 25.5%, var(--gold) 25.5% 37.5%, var(--lead) 37.5% 38%, var(--emerald) 38% 50%, var(--lead) 50% 50.5%, var(--teal) 50.5% 62.5%, var(--lead) 62.5% 63%, var(--sapphire) 63% 75%, var(--lead) 75% 75.5%, var(--amethyst) 75.5% 87.5%, var(--lead) 87.5% 88%, var(--rose) 88% 100%); opacity:.85}
 
 /* ---------- header ---------- */
-.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:50; background:rgba(7,7,10,.86); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
+.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:50; background:var(--hdr); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
 .top .wrap{display:flex; align-items:center; gap:14px; padding-block:9px}
 .logo{display:flex; align-items:center; gap:9px; text-decoration:none; color:var(--ink); font-family:var(--caps); font-weight:700; font-size:.9rem; letter-spacing:.18em; white-space:nowrap}
 .logo .ico{color:var(--gold)}
 .nav{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; flex:1; min-width:0}
 .nav::-webkit-scrollbar{display:none}
 .nav a{font-size:.84rem; color:var(--ink-2); text-decoration:none; padding:6px 10px; border-radius:8px; white-space:nowrap}
-.nav a:hover,.nav a.on{color:var(--ink); background:rgba(255,248,235,.06)}
+.nav a:hover,.nav a.on{color:var(--ink); background:rgba(var(--tint),.06)}
 .iconbtn{width:34px; height:34px; display:grid; place-items:center; border-radius:9px; border:1px solid var(--line-2); background:transparent; cursor:pointer; color:var(--ink-2); flex:none}
 .iconbtn:hover{color:var(--gold); border-color:var(--gold)}
 @media (max-width:640px){.logo span{display:none}}
@@ -87,9 +105,9 @@ h3.sub .k{font-family:var(--caps); font-size:.72rem; letter-spacing:.18em; color
 .chip{font-size:.84rem; font-weight:600; border:1px solid var(--line-2); background:transparent; color:var(--ink-2); padding:6px 12px; border-radius:999px; cursor:pointer; display:inline-flex; gap:7px; align-items:center}
 .chip:hover{color:var(--ink)}
 .chip .dot{width:8px; height:8px; border-radius:50%; background:var(--c,var(--ink-3))}
-.chip[aria-pressed="true"],.chip[aria-selected="true"]{color:#120f08; background:var(--c,var(--ink)); border-color:transparent}
-.chip[aria-pressed="true"] .dot,.chip[aria-selected="true"] .dot{background:#120f08}
-.lawref{color:var(--law); font-weight:600; text-decoration:underline; text-decoration-color:rgba(236,198,93,.45); text-underline-offset:3px; cursor:pointer; white-space:normal}
+.chip[aria-pressed="true"],.chip[aria-selected="true"]{color:var(--on); background:var(--c,var(--ink)); border-color:transparent}
+.chip[aria-pressed="true"] .dot,.chip[aria-selected="true"] .dot{background:var(--on)}
+.lawref{color:var(--law); font-weight:600; text-decoration:underline; text-decoration-color:color-mix(in srgb, var(--law) 45%, transparent); text-underline-offset:3px; cursor:pointer; white-space:normal}
 .lawref:hover{text-decoration-color:var(--law)}
 .badge{font-size:.7rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:2px 8px; border-radius:999px; border:1px solid color-mix(in srgb, var(--c) 60%, transparent); color:var(--c); white-space:nowrap; display:inline-flex; gap:5px; align-items:center}
 .badge::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--c)}
@@ -138,10 +156,10 @@ h3.sub .k{font-family:var(--caps); font-size:.72rem; letter-spacing:.18em; color
 .tiers{display:grid; gap:10px}
 .tierc{display:grid; grid-template-columns:44px 1fr; gap:14px; padding:14px 16px; border-radius:var(--r-lg); background:var(--panel); border:1px solid var(--line); scroll-margin-top:90px}
 .tierc.on{border-color:var(--c); box-shadow:0 0 0 1px var(--c) inset}
-.tierc .lv{width:44px; height:44px; border-radius:10px; display:grid; place-items:center; font-family:var(--caps); font-weight:700; color:#120f08; background:var(--c)}
+.tierc .lv{width:44px; height:44px; border-radius:10px; display:grid; place-items:center; font-family:var(--caps); font-weight:700; color:var(--on); background:var(--c)}
 .tierc h4{font-family:var(--serif); font-size:1.2rem; font-weight:600}
 .tierc .basis{font-size:.8rem; color:var(--ink-3); margin:1px 0 6px}
-.tierc .ours{margin-top:8px; padding:8px 10px; border-radius:8px; background:rgba(255,248,235,.035); font-size:.9rem}
+.tierc .ours{margin-top:8px; padding:8px 10px; border-radius:8px; background:rgba(var(--tint),.035); font-size:.9rem}
 .tierc .ours b{font-family:var(--caps); font-size:.68rem; letter-spacing:.14em; color:var(--c); display:block; margin-bottom:2px}
 
 /* ---------- library ---------- */
@@ -156,7 +174,7 @@ details.art{border-top:1px solid var(--line)}
 details.art:first-of-type{border-top:0}
 details.art summary{list-style:none; cursor:pointer; padding:12px 18px; display:grid; grid-template-columns:150px 1fr auto; gap:14px; align-items:start}
 details.art summary::-webkit-details-marker{display:none}
-details.art summary:hover{background:rgba(255,248,235,.025)}
+details.art summary:hover{background:rgba(var(--tint),.025)}
 .art .an{font-weight:700; color:var(--law); font-size:.9rem}
 .art .an .star{color:var(--gold); margin-left:4px}
 .art .ttl b{display:block; font-weight:600}
@@ -166,7 +184,7 @@ details.art summary:hover{background:rgba(255,248,235,.025)}
 details.art[open] .chev{transform:rotate(180deg)}
 .art .body{padding:2px 18px 16px 182px; display:grid; gap:10px}
 .art .row b{font-family:var(--caps); font-size:.66rem; letter-spacing:.16em; color:var(--ink-3); display:block; margin-bottom:2px}
-.art .exact{font-family:var(--serif); font-style:italic; font-size:1.06rem; color:#f6efdf; padding:10px 14px; border-left:2px solid var(--gold); background:rgba(236,198,93,.06); border-radius:0 8px 8px 0}
+.art .exact{font-family:var(--serif); font-style:italic; font-size:1.06rem; color:var(--ink); padding:10px 14px; border-left:2px solid var(--gold); background:rgba(236,198,93,.06); border-radius:0 8px 8px 0}
 @media (max-width:760px){details.art summary{grid-template-columns:1fr auto}.art .an{grid-column:1/-1}.art .tags{justify-content:flex-start; grid-column:1; max-width:none}.art .chev{grid-row:1; grid-column:2}.art .body{padding:2px 14px 14px}}
 .art.hide{display:none}
 .doc.hide{display:none}
@@ -175,7 +193,7 @@ details.art[open] .chev{transform:rotate(180deg)}
 .mem{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
 @media (max-width:760px){.mem{grid-template-columns:1fr}}
 .memc{display:grid; grid-template-columns:34px 1fr; gap:12px; padding:14px 16px; border-radius:var(--r-lg); background:var(--panel); border:1px solid var(--line)}
-.memc .o{width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-family:var(--caps); font-weight:700; font-size:.85rem; color:#120f08; background:var(--c)}
+.memc .o{width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-family:var(--caps); font-weight:700; font-size:.85rem; color:var(--on); background:var(--c)}
 .memc b{font-weight:700; color:var(--law)}
 .memc .hk{font-family:var(--serif); font-style:italic; font-size:1.08rem; color:var(--ink); margin-top:2px}
 .memc .mu{font-size:.86rem; color:var(--ink-2); margin-top:4px}
@@ -188,19 +206,19 @@ details.art[open] .chev{transform:rotate(180deg)}
 /* ---------- quiz ---------- */
 .quiz{padding:18px 20px}
 .q-top{display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px}
-.q-prog{flex:1; min-width:120px; height:5px; border-radius:99px; background:rgba(255,248,235,.08); overflow:hidden}
+.q-prog{flex:1; min-width:120px; height:5px; border-radius:99px; background:rgba(var(--tint),.08); overflow:hidden}
 .q-prog i{display:block; height:100%; background:linear-gradient(90deg, var(--ruby), var(--amber), var(--gold), var(--emerald), var(--sapphire), var(--amethyst)); transition:width .3s}
 .q-stats{font-size:.8rem; color:var(--ink-3); display:flex; gap:12px}
 .q-stats b{color:var(--gold)}
 .q-text{font-family:var(--serif); font-weight:600; font-size:1.3rem; line-height:1.35; margin:6px 0 12px}
 .opts{display:grid; gap:7px}
-.opt{display:grid; grid-template-columns:30px 1fr; gap:12px; align-items:center; text-align:left; padding:10px 12px; border-radius:11px; border:1px solid var(--line-2); background:rgba(255,248,235,.02); cursor:pointer; transition:background .15s, border-color .15s; font-size:.95rem}
+.opt{display:grid; grid-template-columns:30px 1fr; gap:12px; align-items:center; text-align:left; padding:10px 12px; border-radius:11px; border:1px solid var(--line-2); background:rgba(var(--tint),.02); cursor:pointer; transition:background .15s, border-color .15s; font-size:.95rem}
 .opt:hover:not([disabled]){border-color:var(--gold); background:rgba(236,198,93,.05)}
 .opt .k{width:30px; height:30px; border-radius:8px; display:grid; place-items:center; font-family:var(--caps); font-weight:700; font-size:.82rem; border:1px solid var(--line-2); color:var(--ink-2)}
 .opt.right{border-color:var(--emerald); background:rgba(51,196,139,.1)}
-.opt.right .k{background:var(--emerald); color:#08130e; border-color:transparent}
+.opt.right .k{background:var(--emerald); color:var(--on); border-color:transparent}
 .opt.wrong{border-color:var(--ruby); background:rgba(229,72,95,.1); animation:shake .3s}
-.opt.wrong .k{background:var(--ruby); color:#160709; border-color:transparent}
+.opt.wrong .k{background:var(--ruby); color:var(--on); border-color:transparent}
 .opt[disabled]{cursor:default}
 @keyframes shake{0%,100%{transform:translateX(0)}30%{transform:translateX(-5px)}70%{transform:translateX(5px)}}
 .fb{margin-top:12px; padding:12px 14px; border-radius:11px; display:none; font-size:.93rem}
@@ -210,12 +228,12 @@ details.art[open] .chev{transform:rotate(180deg)}
 .q-actions{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
 .endcard{text-align:center}
 .endcard .big{font-family:var(--caps); font-weight:700; font-size:2.6rem; color:var(--gold)}
-.toast{position:fixed; left:50%; top:84px; transform:translate(-50%,-8px); z-index:90; font-family:var(--caps); font-weight:700; letter-spacing:.12em; padding:10px 18px; border-radius:999px; background:#16130a; border:1px solid var(--gold); color:var(--gold); opacity:0; pointer-events:none; transition:opacity .25s, transform .25s}
+.toast{position:fixed; left:50%; top:84px; transform:translate(-50%,-8px); z-index:90; font-family:var(--caps); font-weight:700; letter-spacing:.12em; padding:10px 18px; border-radius:999px; background:var(--panel); border:1px solid var(--gold); color:var(--gold); box-shadow:0 6px 20px var(--shadow); opacity:0; pointer-events:none; transition:opacity .25s, transform .25s}
 .toast.on{opacity:1; transform:translate(-50%,0)}
 .match{padding:18px 20px}
 .match-cols{display:grid; grid-template-columns:1fr 1fr; gap:8px}
 .mcol{display:grid; gap:7px; align-content:start}
-.mt{text-align:left; padding:10px 12px; border-radius:10px; border:1px solid var(--line-2); background:rgba(255,248,235,.02); cursor:pointer; font-size:.88rem; line-height:1.35}
+.mt{text-align:left; padding:10px 12px; border-radius:10px; border:1px solid var(--line-2); background:rgba(var(--tint),.02); cursor:pointer; font-size:.88rem; line-height:1.35}
 .mt.l{color:var(--law); font-weight:600}
 .mt.sel{border-color:var(--gold); background:rgba(236,198,93,.08)}
 .mt.done{border-color:var(--emerald); color:var(--emerald); opacity:.4; pointer-events:none}
@@ -230,7 +248,7 @@ details.art[open] .chev{transform:rotate(180deg)}
 @media (max-width:560px){.fcard .inner{min-height:260px}}
 
 /* ---------- cases ---------- */
-.map{position:relative; border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--line); background:#0a0a0f}
+.map{position:relative; border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--line); background:var(--map-sea)}
 .map svg{display:block; width:100%; height:auto}
 .swipe{display:none; font-size:.78rem; color:var(--ink-3); margin-top:6px}
 @media (max-width:760px){.map{overflow-x:auto; overscroll-behavior-x:contain}.map.wide svg{width:900px; max-width:none}.map.mid svg{width:620px; max-width:none}.swipe{display:block}}
@@ -238,7 +256,7 @@ details.art[open] .chev{transform:rotate(180deg)}
 @media (max-width:760px){.steps.two{grid-template-columns:1fr}}
 .map .pin{cursor:pointer}
 .map .pin:hover .pd,.map .pin.on .pd{r:8}
-.map text{font-family:var(--body); font-weight:600; paint-order:stroke; stroke:#07070a; stroke-width:4px; stroke-linejoin:round}
+.map text{font-family:var(--body); font-weight:600; paint-order:stroke; stroke:var(--map-halo); stroke-width:4px; stroke-linejoin:round}
 .flow{transition:opacity .25s}
 .map.focus .flow{opacity:.12}
 .map.focus .flow.on{opacity:1}
@@ -248,7 +266,7 @@ details.art[open] .chev{transform:rotate(180deg)}
 .legend i.dash{background:repeating-linear-gradient(90deg, var(--c) 0 5px, transparent 5px 9px)}
 .steps{display:grid; gap:8px; margin-top:14px}
 .step{display:grid; grid-template-columns:30px 1fr; gap:12px; text-align:left; padding:11px 14px; border-radius:12px; border:1px solid var(--line); background:var(--panel); cursor:pointer}
-.step .sn{width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-family:var(--caps); font-weight:700; font-size:.82rem; color:#120f08; background:var(--c)}
+.step .sn{width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-family:var(--caps); font-weight:700; font-size:.82rem; color:var(--on); background:var(--c)}
 .step b{display:block; font-weight:600}
 .step .sd{display:none; margin-top:4px; color:var(--ink-2); font-size:.92rem}
 .step[aria-expanded="true"]{border-color:var(--c); background:color-mix(in srgb, var(--c) 7%, var(--panel))}
@@ -258,13 +276,13 @@ details.art[open] .chev{transform:rotate(180deg)}
 .tl{display:grid; gap:0; position:relative; padding-left:4px}
 .tl::before{content:""; position:absolute; left:11px; top:8px; bottom:8px; width:2px; background:linear-gradient(var(--ruby), var(--amber), var(--gold), var(--emerald), var(--sapphire), var(--amethyst))}
 .ev{display:grid; grid-template-columns:24px 92px 1fr; gap:10px; padding:7px 0; text-align:left; background:none; border:0; cursor:pointer; align-items:start}
-.ev .d{width:12px; height:12px; border-radius:50%; margin:6px 0 0 2px; background:var(--c); position:relative; z-index:1; box-shadow:0 0 0 3px var(--bg)}
+.ev .d{width:12px; height:12px; border-radius:50%; margin:6px 0 0 2px; background:var(--c); position:relative; z-index:1; box-shadow:0 0 0 3px var(--panel)}
 .ev .dt{font-size:.8rem; font-weight:700; color:var(--c); padding-top:2px}
 .ev .hd{font-weight:600}
 .ev .bd{display:none; color:var(--ink-2); font-size:.9rem; margin-top:3px}
 .ev[aria-expanded="true"] .bd{display:block}
 .ev.future .d{background:transparent; border:2px dashed var(--c)}
-.ev.today .hd::after{content:"today"; margin-left:8px; font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:1px 6px; border-radius:5px; background:var(--gold); color:#120f08}
+.ev.today .hd::after{content:"today"; margin-left:8px; font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:1px 6px; border-radius:5px; background:var(--gold); color:var(--on)}
 @media (max-width:560px){.ev{grid-template-columns:24px 1fr}.ev .dt{grid-column:2}.ev .hd,.ev .bd{grid-column:2}}
 .counts{display:grid; grid-template-columns:repeat(5,1fr); gap:8px}
 @media (max-width:640px){.counts{grid-template-columns:repeat(3,1fr)}}
@@ -314,7 +332,7 @@ details.art[open] .chev{transform:rotate(180deg)}
 .rb b{font-family:var(--caps); font-size:.68rem; letter-spacing:.14em; color:var(--c); display:block; margin-bottom:3px}
 .edge{margin-top:12px; display:grid; grid-template-columns:auto 1fr; gap:6px 16px; align-items:center; padding:12px 16px; border-radius:12px; background:var(--panel); border:1px solid var(--line)}
 .ebar{position:relative; height:8px; border-radius:99px; background:linear-gradient(90deg, var(--ruby), var(--amber) 50%, var(--emerald))}
-.ebar i{position:absolute; top:50%; width:16px; height:16px; border-radius:50%; background:var(--ink); border:3px solid var(--bg); transform:translate(-50%,-50%); transition:left .35s}
+.ebar i{position:absolute; top:50%; width:16px; height:16px; border-radius:50%; background:var(--ink); border:3px solid var(--panel); transform:translate(-50%,-50%); transition:left .35s}
 .elab{grid-column:2; display:flex; justify-content:space-between; font-size:.72rem; color:var(--ink-3)}
 .edge .why{grid-column:1/-1; font-size:.9rem; color:var(--ink-2)}
 @media (max-width:560px){.edge{grid-template-columns:1fr}.elab{grid-column:1}}
@@ -408,7 +426,7 @@ details.qa .ans{padding:0 16px 14px; color:var(--ink-2); font-size:.94rem}
 .drawer{position:fixed; left:0; right:0; bottom:0; z-index:80; transform:translateY(110%); visibility:hidden; transition:transform .28s ease, visibility 0s linear .28s; padding-bottom:env(safe-area-inset-bottom,0px)}
 .drawer.on{transform:none; visibility:visible; transition:transform .28s ease}
 .drawer .wrap{padding-block:0 12px}
-.drawer .box{max-width:720px; margin:0 auto; padding:16px 18px; border-radius:16px 16px 12px 12px; background:#121218; border:1px solid rgba(236,198,93,.5); box-shadow:0 -12px 40px rgba(0,0,0,.6); display:grid; gap:6px}
+.drawer .box{max-width:720px; margin:0 auto; padding:16px 18px; border-radius:16px 16px 12px 12px; background:var(--panel-2); border:1px solid color-mix(in srgb, var(--gold) 50%, transparent); box-shadow:0 -12px 40px var(--shadow); display:grid; gap:6px}
 .drawer .hd{display:flex; justify-content:space-between; gap:10px}
 .drawer .cite{color:var(--law); font-weight:700; font-size:.85rem}
 .drawer h4{font-family:var(--serif); font-size:1.3rem; font-weight:600}
@@ -420,6 +438,7 @@ footer{margin-top:70px; border-top:1px solid var(--line); padding-block:24px 48p
 .srcs a{color:var(--ink-2)}
 .srcs a:hover{color:var(--gold)}
 </style>
+<script>try{var t=localStorage.getItem("sst-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-sat" viewBox="0 0 24 24"><rect x="9" y="9" width="6" height="6" rx="1" transform="rotate(45 12 12)"/><path d="M8 8L4 4M16 16l4 4"/><rect x="1" y="3" width="6" height="3.5" rx=".6" transform="rotate(45 4 4.75)"/><rect x="17" y="17.5" width="6" height="3.5" rx=".6" transform="rotate(45 20 19.25)"/><path d="M15 7a3 3 0 0 1 2 2M16 4a6 6 0 0 1 4 4"/></symbol>
@@ -434,6 +453,8 @@ footer{margin-top:70px; border-top:1px solid var(--line); padding-block:24px 48p
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
   <symbol id="i-redo" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v5h5"/></symbol>
   <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
   <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6"/></symbol>
   <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
   <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
@@ -469,6 +490,7 @@ footer{margin-top:70px; border-top:1px solid var(--line); padding-block:24px 48p
       <a href="#notes">VI · Notes</a>
       <a href="#qa">VII · Q&amp;A</a>
     </nav>
+    <button class="iconbtn" type="button" id="themeBtn" aria-label="Switch to light mode" title="Light / dark"><svg class="ico"><use href="#i-sun"/></svg></button>
     <button class="iconbtn" type="button" id="soundBtn" aria-label="Sound on"><svg class="ico"><use href="#i-sound"/></svg></button>
   </div>
 </header>
@@ -705,7 +727,7 @@ footer{margin-top:70px; border-top:1px solid var(--line); padding-block:24px 48p
   <div class="card pad drill">
     <div>
       <div class="chips" id="drillPick" role="tablist" aria-label="Drill topic"></div>
-      <div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" stroke="rgba(255,248,235,.08)" stroke-width="7" fill="none"/><circle id="arc" cx="60" cy="60" r="52" stroke="#ecc65d" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg><div class="tv" id="tv">60</div></div>
+      <div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" stroke="rgba(255,248,235,.08)" style="stroke:rgba(var(--tint),.1)" stroke-width="7" fill="none"/><circle id="arc" cx="60" cy="60" r="52" stroke="#ecc65d" style="stroke:var(--gold)" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg><div class="tv" id="tv">60</div></div>
       <p class="q-text" id="drillPrompt" style="text-align:center;font-size:1.1rem"></p>
       <div class="q-actions" style="justify-content:center"><button class="btn" type="button" id="drillGo"><svg class="ico"><use href="#i-play"/></svg>Start</button><button class="btn ghost" type="button" id="drillReset"><svg class="ico"><use href="#i-redo"/></svg>Reset</button></div>
     </div>
@@ -768,7 +790,7 @@ footer{margin-top:70px; border-top:1px solid var(--line); padding-block:24px 48p
   </div>
   <div class="court2">
     <div class="bld" style="--c:var(--sapphire)">
-      <svg viewBox="0 0 200 110" aria-hidden="true"><g fill="none" stroke="#5b8dff" stroke-width="1.6"><path d="M15 102h170M24 102V52h152v50M24 52l76-34 76 34"/><path d="M42 102V62M62 102V62M82 102V62M118 102V62M138 102V62M158 102V62"/><rect x="90" y="74" width="20" height="28"/><path d="M164 52V26h12v26M170 26V14"/></g><circle cx="100" cy="38" r="6" fill="#5b8dff" opacity=".7"/></svg>
+      <svg viewBox="0 0 200 110" aria-hidden="true"><g fill="none" stroke="#5b8dff" style="stroke:var(--sapphire)" stroke-width="1.6"><path d="M15 102h170M24 102V52h152v50M24 52l76-34 76 34"/><path d="M42 102V62M62 102V62M82 102V62M118 102V62M138 102V62M158 102V62"/><rect x="90" y="74" width="20" height="28"/><path d="M164 52V26h12v26M170 26V14"/></g><circle cx="100" cy="38" r="6" fill="#5b8dff" style="fill:var(--sapphire)" opacity=".7"/></svg>
       <h4>INTERNATIONAL COURT OF JUSTICE</h4>
       <p class="aka">the “World Court” · Peace Palace · since 1945</p>
       <dl>
@@ -781,7 +803,7 @@ footer{margin-top:70px; border-top:1px solid var(--line); padding-block:24px 48p
       </dl>
     </div>
     <div class="bld" style="--c:var(--rose)">
-      <svg viewBox="0 0 200 110" aria-hidden="true"><g fill="none" stroke="#e2649f" stroke-width="1.6"><path d="M15 102h170"/><rect x="32" y="40" width="42" height="62"/><rect x="79" y="20" width="42" height="82"/><rect x="126" y="48" width="42" height="54"/><path d="M40 52h26M40 64h26M40 76h26M87 32h26M87 46h26M87 60h26M134 60h26M134 72h26"/></g></svg>
+      <svg viewBox="0 0 200 110" aria-hidden="true"><g fill="none" stroke="#e2649f" style="stroke:var(--rose)" stroke-width="1.6"><path d="M15 102h170"/><rect x="32" y="40" width="42" height="62"/><rect x="79" y="20" width="42" height="82"/><rect x="126" y="48" width="42" height="54"/><path d="M40 52h26M40 64h26M40 76h26M87 32h26M87 46h26M87 60h26M134 60h26M134 72h26"/></g></svg>
       <h4>INTERNATIONAL CRIMINAL COURT</h4>
       <p class="aka">The Hague · since 2002 · the Rome Statute</p>
       <dl>
@@ -1007,7 +1029,11 @@ function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localSto
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 var NS = "http://www.w3.org/2000/svg";
-function el(tag, at, par){ var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (par) par.appendChild(e); return e; }
+var HEXVAR = {"#e5485f":"--ruby","#f0a43a":"--amber","#ecc65d":"--gold","#33c48b":"--emerald","#2fb9b4":"--teal","#5b8dff":"--sapphire","#a073f0":"--amethyst","#e2649f":"--rose","#f2ede3":"--ink","#8e877a":"--ink-3","#0a0b12":"--map-sea","#17171f":"--map-land","#2b2b36":"--map-border","#24242e":"--map-neutral","#3a3a48":"--map-neutral2","#5c6a8a":"--map-ocean","#07070a":"--map-halo"};
+function el(tag, at, par){ var e = document.createElementNS(NS, tag), st = "", fixed = par && par.closest && par.closest("#rose");
+  for (var k in at){ var v = at[k]; e.setAttribute(k, v); if (!fixed && (k === "fill" || k === "stroke") && typeof v === "string" && HEXVAR[v.toLowerCase()]) st += k + ":var(" + HEXVAR[v.toLowerCase()] + ");"; }
+  if (st) e.setAttribute("style", (at.style ? at.style + ";" : "") + st);
+  if (par) par.appendChild(e); return e; }
 
 /* ===== sound: soft bells ===== */
 var muted = store("sst-muted") === "1", AC = null;
@@ -1029,6 +1055,11 @@ var sb = $("#soundBtn");
 function paintSound(){ sb.innerHTML = '<svg class="ico"><use href="#' + (muted ? "i-mute" : "i-sound") + '"/></svg>'; sb.setAttribute("aria-label", muted ? "Sound off" : "Sound on"); }
 sb.addEventListener("click", function(){ muted = !muted; store("sst-muted", muted ? "1" : "0"); paintSound(); if (!muted) sfx.good(); });
 paintSound();
+var tb = $("#themeBtn");
+function isLight(){ return document.documentElement.getAttribute("data-theme") === "light"; }
+function paintTheme(){ var l = isLight(); tb.innerHTML = '<svg class="ico"><use href="#' + (l ? "i-moon" : "i-sun") + '"/></svg>'; tb.setAttribute("aria-label", l ? "Switch to dark mode" : "Switch to light mode"); }
+tb.addEventListener("click", function(){ var l = !isLight(); document.documentElement.setAttribute("data-theme", l ? "light" : "dark"); store("sst-theme", l ? "light" : "dark"); paintTheme(); sfx.click(); if (!l && reduce) draw(0); });
+paintTheme();
 document.addEventListener("click", function(e){ if (e.target.closest && e.target.closest(".chip,.step,.find,.door,.ev,details summary")) sfx.click(); });
 var toastEl = $("#toast"), tT;
 function toast(t){ toastEl.textContent = t; toastEl.classList.add("on"); clearTimeout(tT); tT = setTimeout(function(){ toastEl.classList.remove("on"); }, 1300); }
@@ -1418,9 +1449,9 @@ function drawMap(host, M, cfg){
   var defs = el("defs", {}, svg);
   Object.keys(JEWEL).forEach(function(k){ var mk = el("marker", {id:cfg.id + "-ar-" + k, viewBox:"0 0 10 10", refX:8, refY:5, markerWidth:7, markerHeight:7, orient:"auto-start-reverse"}, defs); el("path", {d:"M0 0 L10 5 L0 10 z", fill:JEWEL[k]}, mk); });
   el("rect", {x:0, y:0, width:M.W, height:M.H, fill:"#0a0b12"}, svg);
-  el("path", {d:M.grat, fill:"none", stroke:"rgba(255,248,235,.05)", "stroke-width":.8}, svg);
+  el("path", {d:M.grat, fill:"none", style:"stroke:var(--map-grat)", "stroke-width":.8}, svg);
   el("path", {d:M.base, fill:"#17171f", stroke:"#2b2b36", "stroke-width":.6}, svg);
-  Object.keys(M.hi).forEach(function(k){ var c = (cfg.hi && cfg.hi[k]) || "#24242e"; el("path", {d:M.hi[k], fill:c, "fill-opacity":cfg.hi && cfg.hi[k] ? .32 : 1, stroke:cfg.hi && cfg.hi[k] ? c : "#2b2b36", "stroke-width":cfg.hi && cfg.hi[k] ? 1.1 : .6}, svg); });
+  Object.keys(M.hi).forEach(function(k){ var c = (cfg.hi && cfg.hi[k]) || "#24242e"; el("path", {d:M.hi[k], fill:c, "fill-opacity":cfg.hi && cfg.hi[k] ? .32 : 1, style:cfg.hi && cfg.hi[k] ? "fill-opacity:var(--hi-op)" : "", stroke:cfg.hi && cfg.hi[k] ? c : "#2b2b36", "stroke-width":cfg.hi && cfg.hi[k] ? 1.1 : .6}, svg); });
   (cfg.areaLabels || []).forEach(function(a){ var t = el("text", {x:a[0], y:a[1], fill:a[3] || "#8e877a", "font-size":a[4] || 13, "text-anchor":"middle", "font-style":"italic", "letter-spacing":".06em"}, svg); t.textContent = a[2]; });
   var flowsG = el("g", {}, svg), pinsG = el("g", {}, svg);
   function pt(k){ return typeof k === "string" ? M.pins[k] : k; }
@@ -1673,7 +1704,7 @@ var ARG = [
    rep:"If proven, pressuring a state in a war of survival is different from a trade dispute.", close:"Then it's a powerful political argument for Congress, not a breach a court could find.", e:70, why:"Our side, unless evidence of coercive purpose emerges."}
 ];
 var iss = $("#issues"), duel = $("#duel");
-iss.innerHTML = ARG.map(function(a, i){ return '<button class="chip" type="button" role="tab" data-ai="' + i + '" aria-selected="' + (i === 0) + '" style="--c:var(--ivory,#f2ede3)">' + (i + 1) + '. ' + esc(a.t) + '</button>'; }).join("");
+iss.innerHTML = ARG.map(function(a, i){ return '<button class="chip" type="button" role="tab" data-ai="' + i + '" aria-selected="' + (i === 0) + '" style="--c:var(--ink)">' + (i + 1) + '. ' + esc(a.t) + '</button>'; }).join("");
 function showArg(i){ var a = ARG[i];
   $$("#issues .chip").forEach(function(b, j){ b.setAttribute("aria-selected", String(i === j)); });
   function side(s, c, who){ return '<div class="side" style="--c:' + c + '"><span class="who">' + who + '</span><h4>' + esc(s.h) + '</h4><ol>' + s.p.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ol><p class="lw">Laws: ' + s.laws.map(function(l){ return lawLink(l); }).join(", ") + '</p></div>'; }
@@ -1715,7 +1746,7 @@ var DRILL = [
 ];
 var dI = 0, dT = null, left = 60, arc = $("#arc");
 $("#drillPick").innerHTML = DRILL.map(function(d, i){ return '<button class="chip" type="button" role="tab" data-di="' + i + '" aria-selected="' + (i === 0) + '" style="--c:var(--gold)">' + esc(d.t) + '</button>'; }).join("");
-function paintRing(){ $("#tv").textContent = left; arc.setAttribute("stroke-dashoffset", String(326.7 * (1 - left / 60))); arc.setAttribute("stroke", left <= 10 ? "#e5485f" : "#ecc65d"); }
+function paintRing(){ $("#tv").textContent = left; arc.setAttribute("stroke-dashoffset", String(326.7 * (1 - left / 60))); arc.style.stroke = left <= 10 ? "var(--ruby)" : "var(--gold)"; }
 function resetDrill(){ clearInterval(dT); dT = null; left = 60; paintRing(); $("#drillGo").innerHTML = '<svg class="ico"><use href="#i-play"/></svg>Start'; }
 function pickDrill(i){ dI = i; $$("#drillPick .chip").forEach(function(b, j){ b.setAttribute("aria-selected", String(i === j)); }); resetDrill(); $("#drillPrompt").textContent = DRILL[i].p;
   $("#drillChecks").innerHTML = DRILL[i].c.map(function(c, j){ return '<label><input type="checkbox" id="dk-' + i + '-' + j + '"><span>' + esc(c) + '</span></label>'; }).join(""); $$("#drillChecks input").forEach(function(x){ x.addEventListener("change", score); }); score(); }
@@ -1848,6 +1879,7 @@ var cv = $("#sky"), cx2 = cv.getContext("2d"), W = 0, H = 0, stars = [], sats = 
 function rs(){ var d = Math.min(window.devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx2.setTransform(d, 0, 0, d, 0, 0); stars = []; var n = Math.round(W * H / 6500); for (var i = 0; i < n; i++) stars.push({x:Math.random() * W, y:Math.random() * H, z:Math.random(), p:Math.random() * 6.28}); if (reduce) draw(0); }
 function mkSat(init){ var d = Math.random() < .5 ? 1 : -1; return {x:init ? Math.random() * W : (d > 0 ? -40 : W + 40), y:Math.random() * H * .8 + 20, vx:d * (6 + Math.random() * 6), vy:(Math.random() - .5) * 2, r:Math.random() * 6.28}; }
 function draw(ts){ var t = ts / 1000, dt = tp ? Math.min(.05, t - tp) : 0; tp = t; cx2.clearRect(0, 0, W, H);
+  if (document.documentElement.getAttribute("data-theme") === "light"){ if (!reduce) requestAnimationFrame(draw); return; }
   for (var i = 0; i < stars.length; i++){ var s = stars[i]; cx2.globalAlpha = (.18 + .5 * s.z) * (.7 + .3 * Math.sin(t * 1.2 + s.p)); cx2.fillStyle = s.z > .9 ? "#fff3d6" : "#d8dcff"; var r = .5 + s.z; cx2.fillRect(s.x, s.y, r, r); }
   if (!reduce){ while (sats.length < 2) sats.push(mkSat(!tp)); }
   for (var j = sats.length - 1; j >= 0; j--){ var q = sats[j]; q.x += q.vx * dt; q.y += q.vy * dt; q.r += .004;
@@ -1857,3 +1889,5 @@ function draw(ts){ var t = ts / 1000, dt = tp ? Math.min(.05, t - tp) : 0; tp = 
 addEventListener("resize", rs); rs(); if (reduce){ sats.push(mkSat(true)); draw(0); } else requestAnimationFrame(draw);
 })();
 </script>
+
+</body></html>
