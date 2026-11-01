@@ -475,6 +475,11 @@ img.px{image-rendering:pixelated;image-rendering:crisp-edges}
 .nzboard .figbox{width:100%;max-width:560px;margin:0 auto}
 .nzboard .figcap{text-align:center}
 
+.card.resume{display:flex;gap:12px;align-items:center;padding:12px 16px;margin-bottom:12px;border-color:color-mix(in srgb,var(--pur) 55%,var(--line));background:linear-gradient(135deg,color-mix(in srgb,var(--pur) 14%,var(--card)),var(--card))}
+.card.resume>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.card.resume .mi{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--pur);color:#fff}
+@media (max-width:560px){.card.resume{flex-wrap:wrap}.card.resume>div{flex-basis:calc(100% - 60px)}}
+
 /* ---------- figure system (theme-aware) ---------- */
 :root{
  --fg-brain:#efe8ff; --fg-brain2:#e2d8ff; --fg-ink:#3a2c6e; --fg-sulc:#b4a3e6; --fg-text:#2a1d50; --fg-soft:#fbf8ff; --fg-line:#9b88d6; --fg-mute:#7b6ca8;
@@ -2565,31 +2570,30 @@ function poolFor(opts) {
  const mods = opts.mods ? new Set(opts.mods) : null, objs = opts.objs ? new Set(opts.objs) : null;
  const keep = o => (!mods || mods.has(+o.split(".")[0])) && (!objs || objs.has(o));
  qs = qs.filter(i => keep(Q[i].o)); sas = sas.filter(i => keep(SAQ[i].o));
+ if (opts.review) { qs = qs.filter(i => tier(Q[i].id) === "mas"); sas = sas.filter(i => tier(SAQ[i].id) === "mas"); }
+ else { qs = qs.filter(i => tier(Q[i].id) !== "mas"); sas = sas.filter(i => tier(SAQ[i].id) !== "mas"); }
  if (opts.figOnly) qs = qs.filter(i => Q[i].h || Q[i].f || Q[i].r);
  if (opts.focus) { qs = qs.filter(i => modOf(Q[i].o).focus || Math.random() < .25); sas = sas.filter(i => modOf(SAQ[i].o).focus); }
  if (opts.missed) { qs = qs.filter(i => tier(Q[i].id) === "miss"); sas = sas.filter(i => tier(SAQ[i].id) === "miss"); }
  return { qs, sas };
 }
-function prio(id, w) { const t = tier(id); const base = { miss: 0, new: 1, got: 2, mas: 3.4 }[t]; return base + Math.random() * 1.6 - (w - 1) * 0.8; }
+function prio(id, w) { const t = tier(id); const base = { miss: 0, new: 1, got: 1.4, mas: 3.4 }[t]; return base + Math.random() * 2.2 - (w - 1) * 0.8; }
+/* shuffle, then avoid two items from the same learning objective back to back where possible */
+function mixOrder(items) {
+ const a = shuffle(items.slice()), ob = it => (it.k === "q" ? Q : SAQ)[it.i].o;
+ for (let i = 1; i < a.length; i++) if (ob(a[i]) === ob(a[i - 1])) { for (let j = i + 1; j < a.length; j++) if (ob(a[j]) !== ob(a[i - 1])) { [a[i], a[j]] = [a[j], a[i]]; break; } }
+ return a;
+}
 function buildQueue(opts) {
  const { qs, sas } = poolFor(opts); const n = opts.n || S.len;
- const items = [];
- if (!n) { // "Whole section": every item, straight through in learning-objective order
-  const ok = o => o.split(".").map(Number), cmp = (a, b) => { const x = ok(a), y = ok(b); return x[0] - y[0] || (x[1] || 0) - (y[1] || 0); };
-  const all = (opts.saOnly ? [] : qs.map(i => ({ k: "q", i, o: Q[i].o }))).concat(opts.saOnly || opts.withSA ? sas.map(i => ({ k: "s", i, o: SAQ[i].o })) : []);
-  all.sort((a, b) => cmp(a.o, b.o) || (a.k === b.k ? a.i - b.i : a.k === "q" ? -1 : 1));
-  return all.map(({ k, i }) => ({ k, i }));
- }
+ if (!n) return mixOrder((opts.saOnly ? [] : qs.map(i => ({ k: "q", i }))).concat(opts.saOnly || opts.withSA ? sas.map(i => ({ k: "s", i })) : []));
  const qs2 = qs.map(i => [prio(Q[i].id, modOf(Q[i].o).w) - (Q[i].k ? .25 : 0), i]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
  const sas2 = sas.map(i => [prio(SAQ[i].id, modOf(SAQ[i].o).w), i]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
- if (opts.saOnly) { sas2.slice(0, n).forEach(i => items.push({ k: "s", i })); return items; }
- let qi = 0, si = 0;
- for (let k = 0; k < n; k++) {
-  if (opts.withSA && sas2[si] != null && k % 6 === 5) items.push({ k: "s", i: sas2[si++] });
-  else if (qs2[qi] != null) items.push({ k: "q", i: qs2[qi++] });
-  else if (sas2[si] != null) items.push({ k: "s", i: sas2[si++] });
- }
- return items;
+ if (opts.saOnly) return mixOrder(sas2.slice(0, n).map(i => ({ k: "s", i })));
+ const nSA = opts.withSA ? Math.min(sas2.length, Math.floor(n / 6)) : 0;
+ const items = qs2.slice(0, n - nSA).map(i => ({ k: "q", i })).concat(sas2.slice(0, nSA).map(i => ({ k: "s", i })));
+ if (items.length < n) sas2.slice(nSA, nSA + n - items.length).forEach(i => items.push({ k: "s", i }));
+ return mixOrder(items);
 }
 function startSession(mode, opts = {}) {
  SND.init();
@@ -2602,11 +2606,38 @@ function startSession(mode, opts = {}) {
   SAQ.forEach((s, i) => { if (s.src === "pe") items.push({ k: "s", i }); });
  } else if (mode === "mock") items = buildMock();
  else items = buildQueue(opts);
- if (!items.length) { toast("Nothing to practise here yet — great job!", "check"); return; }
- SESS = { mode, opts, items, pos: 0, answered: 0, correct: 0, first: 0, xp: 0, missed: [], exam: mode === "mock", answers: [], streak: 0, retried: new Set(), marks: 0, maxMarks: 0, t0: Date.now() };
+ if (!items.length) { toast(opts.review ? "Nothing mastered yet. Master questions first, then review them here." : "Everything here is mastered! Revisit it in “Review mastered”.", "check"); return; }
+ SESS = { mode, opts, items, pos: 0, answered: 0, correct: 0, first: 0, xp: 0, missed: [], exam: mode === "mock", answers: [], streak: 0, retried: new Set(), ret: {}, marks: 0, maxMarks: 0, t0: Date.now() };
  show("quiz"); $("timer").hidden = mode !== "mock";
  if (mode === "mock") startTimer(50 * 60);
- $("quitBtn").innerHTML = icon("back") + (mode === "mock" ? "Leave exam" : "Home");
+ $("quitBtn").innerHTML = icon("back") + (mode === "mock" ? "Pause exam" : "Home");
+ renderItem();
+}
+/* ---- saved, resumable session ---- */
+function saveCur() {
+ if (!SESS || SESS.mode === "basics" || SESS.mode === "t" || SESS.finished) return;
+ const c = {}; ["mode", "opts", "items", "pos", "answered", "correct", "xp", "missed", "exam", "answers", "streak", "ret", "marks", "maxMarks", "t0", "gp"].forEach(k => c[k] = SESS[k]);
+ c.retried = [...(SESS.retried || [])]; c.qn = Q.length; c.sn = SAQ.length;
+ if (SESS.mode === "mock" && timerEnd) c.left = Math.max(30, Math.round((timerEnd - Date.now()) / 1000));
+ S.cur = c; save();
+}
+function curOK() { const c = S.cur; return c && c.qn === Q.length && c.sn === SAQ.length && Array.isArray(c.items) && c.items.every(it => (it.k === "q" ? Q : SAQ)[it.i]); }
+function curLabel(c) {
+ const M = { sprint: "Midterm sprint", pe: "Dr. Dosso’s practice exam", mock: "Mock midterm", fig: "Diagram quiz", sa: "Short-answer builder", missed: "Review missed", review: "Review mastered" };
+ if (M[c.mode]) return M[c.mode];
+ if (c.opts && c.opts.objs) return "Objective " + c.opts.objs.join(", ");
+ if (c.opts && c.opts.mods) return c.opts.mods.map(m => MOD[m] ? MOD[m].short : m).join(" + ") + ({ modfig: " · diagrams", modsa: " · short answers" }[c.mode] || "");
+ return "Mission";
+}
+function resumeSession() {
+ if (!curOK()) { S.cur = null; save(); return; }
+ const c = S.cur; SND.init();
+ SESS = Object.assign({}, c, { retried: new Set(c.retried || []), ret: c.ret || {}, answers: c.answers || [], missed: c.missed || [] });
+ if (SESS.gp === SESS.pos) SESS.pos++;
+ show("quiz"); $("timer").hidden = SESS.mode !== "mock";
+ if (SESS.mode === "mock") startTimer(c.left || 50 * 60);
+ $("quitBtn").innerHTML = icon("back") + (SESS.mode === "mock" ? "Pause exam" : "Home");
+ if (SESS.pos >= SESS.items.length) return finish();
  renderItem();
 }
 function buildMock() {
@@ -2638,6 +2669,8 @@ function renderItem() {
  renderTally();
  const it = SESS.items[SESS.pos];
  if (it.k === "q") renderQ(Q[it.i]); else if (it.k === "b") renderQ(BQ[it.i]); else renderSA(SAQ[it.i]);
+ if (it.retry) { const m = document.querySelector("#qcard .meta"); if (m) m.insertAdjacentHTML("beforeend", `<span class="pill lv1">${icon("loop")}${it.why === "w" ? "Second chance" : "Back for mastery"}</span>`); }
+ saveCur();
  toTop($("quiz"));
 }
 /* ---------------- multiple choice + hotspot ---------------- */
@@ -2684,13 +2717,22 @@ function chooseHot(p, el) {
  grade(q, right, pick, el, p);
 }
 function showNextOnly() {
+ SESS.gp = SESS.pos; saveCur();
  $("fbslot").innerHTML = `<div class="nextrow"><button class="btn pri" id="nextBtn">${SESS.pos + 1 >= SESS.items.length ? "Finish exam" : "Next"} ${icon("play")}</button></div>`;
  $("nextBtn").addEventListener("click", next); $("nextBtn").focus({ preventScroll: true });
 }
+/* an item comes back later in the same mission until it's mastered (max 3 returns per item) */
+function queueReturn(it, id, gap, why) {
+ if (!SESS || SESS.exam || SESS.mode === "pe") return null;
+ SESS.ret = SESS.ret || {}; if ((SESS.ret[id] || 0) >= 3) return null;
+ SESS.ret[id] = (SESS.ret[id] || 0) + 1; if (SESS.retried) SESS.retried.add(id);
+ SESS.items.splice(Math.min(SESS.items.length, SESS.pos + gap), 0, { k: it.k, i: it.i, retry: 1, why });
+ return why;
+}
 function grade(q, right, pick, el, pickPart) {
  const st = stOf(q.id); S.turn++;
- const firstTry = !SESS.retried.has(q.id);
- SESS.answered++; let xp = 0, mastered = false;
+ const curIt = SESS.items[SESS.pos]; SESS.gp = SESS.pos;
+ SESS.answered++; let xp = 0, mastered = false, back = null;
  if (right) {
   SESS.correct++; SESS.streak++;
   if (CUR && CUR.hint) { if (st.lv < 1) { st.lv = 1; st.t = S.turn; } xp = 5; }
@@ -2698,12 +2740,12 @@ function grade(q, right, pick, el, pickPart) {
   else if (st.lv < 2) { st.lv = 1; st.t = S.turn; xp = 10; } else xp = 4;
   st.wl = 0;
   if (SESS.streak % 5 === 0) { xp += 5; }
+  if (!mastered && st.lv < 2) back = queueReturn(curIt, q.id, 4 + rand(4), "m");
  } else {
-  const curIt = SESS.items[SESS.pos];
   SESS.streak = 0; st.lv = 0; st.wl = 1; st.t = S.turn; xp = 1; SESS.missed.push({ k: curIt.k, i: curIt.i });
-  if (!SESS.retried.has(q.id) && SESS.mode !== "pe") { SESS.retried.add(q.id); SESS.items.splice(Math.min(SESS.items.length, SESS.pos + 4), 0, { k: curIt.k, i: curIt.i, retry: 1 }); }
+  back = queueReturn(curIt, q.id, 3 + rand(3), "w");
  }
- st.seen = 1; gainXP(xp); save();
+ st.seen = 1; gainXP(xp); save(); SESS._back = back; SESS._mastered = mastered;
  if (right) { SND.play(mastered ? "master" : "ok"); burst(el); if (SESS.streak % 5 === 0 && SESS.streak) { SND.play("streak"); zipShip("c"); if (SESS.streak % 10 === 0 && typeof nzCameo === "function") nzCameo(true); else toast(`${SESS.streak} in a row! +5 bonus`, "fire"); } else if (mastered && Math.random() < .12 && typeof nzCameo === "function") nzCameo(); else zipShip("w"); if (mastered) toast("Mastered! ⭐", "star"); }
  else SND.play("no");
  renderTally();
@@ -2711,6 +2753,10 @@ function grade(q, right, pick, el, pickPart) {
  const F = q.h ? FIGS[q.h.t] : null;
  let h = `<div class="fb"><div class="verdict ${right ? "ok" : "no"}"><span class="vi">${icon(right ? "check" : "x")}</span>${right ? (mastered ? "Mastered!" : ["Correct!", "Nailed it!", "Yes — exactly.", "Spot on!"][rand(4)]) : "Not quite."}<span class="xp">+${xp} XP</span></div>`;
  if (right && CUR.hint) h += `<div class="note" style="margin:-4px 0 6px">${icon("puzzle")} You peeked at a basic — totally fine! This counts as “got it”; answer it again later without peeking to master it.</div>`;
+ if (SESS._mastered) h += `<div class="note" style="margin:-4px 0 6px">${icon("star")} Mastered: this one leaves your practice pool. It only comes back in <b>Review mastered</b>.</div>`;
+ else if (SESS._back === "m") h += `<div class="note" style="margin:-4px 0 6px">${icon("loop")} Got it! It comes back in a few questions. Get it right again to master it.</div>`;
+ else if (SESS._back === "w") h += `<div class="note" style="margin:-4px 0 6px">${icon("loop")} It’ll come back in a few questions for another try.</div>`;
+ else if (!right && SESS.mode === "review") h += `<div class="note" style="margin:-4px 0 6px">${icon("loop")} Back into your practice pool until you master it again.</div>`;
  if (!right) h += `<div class="fbrow wrong"><span class="fi">${icon("x")}</span><div><b class="lab">Why your pick is wrong</b><b>${esc(pick)}</b><br>${q.h ? (F.desc[pickPart] ? hl(F.desc[pickPart]) : "") : whyWrong(q, pick)}</div></div>`;
  h += `<div class="fbrow why"><span class="fi">${icon("check")}</span><div><b class="lab">Correct answer</b><b>${esc(q.a)}</b><div class="soft">${hl(q.e)}</div></div></div>`;
  const hook = q.m || HOOKS[q.o];
@@ -2866,11 +2912,11 @@ function finishSA() {
  const got = Math.round(frac * s.marks * 2) / 2;
  SESS.marks += got; SESS.maxMarks += s.marks;
  if (SESS.exam) { SESS.answers[SESS.pos] = { k: "s", i: SAQ.indexOf(s), frac, got }; next(); return; }
- const st = stOf(s.id); S.turn++; SESS.answered++;
- const right = frac >= .8;
- if (right) { SESS.correct++; SESS.streak++; if (st.lv === 1 && S.turn - st.t >= 3) st.lv = 2; else if (st.lv < 2) { st.lv = 1; st.t = S.turn; } st.wl = 0; }
- else { SESS.streak = 0; st.lv = 0; st.wl = 1; SESS.missed.push({ k: "s", i: SAQ.indexOf(s) }); }
- st.seen = 1; const xp = Math.max(2, Math.round(frac * s.marks * 5)); gainXP(xp); save();
+ const st = stOf(s.id); S.turn++; SESS.answered++; SESS.gp = SESS.pos;
+ const right = frac >= .8, curIt = SESS.items[SESS.pos]; let back = null, masteredSA = false;
+ if (right) { SESS.correct++; SESS.streak++; if (st.lv === 1 && S.turn - st.t >= 3) { st.lv = 2; masteredSA = true; } else if (st.lv < 2) { st.lv = 1; st.t = S.turn; } st.wl = 0; if (!masteredSA && st.lv < 2) back = queueReturn(curIt, s.id, 5 + rand(4), "m"); }
+ else { SESS.streak = 0; st.lv = 0; st.wl = 1; st.t = S.turn; SESS.missed.push({ k: "s", i: SAQ.indexOf(s) }); back = queueReturn(curIt, s.id, 3 + rand(3), "w"); }
+ st.seen = 1; const xp = Math.max(2, Math.round(frac * s.marks * 5)); gainXP(xp); save(); saveCur();
  SND.play(right ? "master" : "no"); if (right) { burst($("qcard")); zipShip("c"); }
  renderTally();
  // assemble the answer card from correct key points
@@ -2881,6 +2927,7 @@ function finishSA() {
   else st2.o.forEach((o, k) => pts.push([o[1], `<b>${k + 1}.</b> ${esc(o[0])}`, 1]));
  });
  let h = `<div class="fb"><div class="verdict ${right ? "ok" : "no"}"><span class="vi">${icon(right ? "trophy" : "spark")}</span>${right ? "Strong answer!" : "Good effort — here’s the full-mark version."}<span class="xp">+${xp} XP</span></div>`;
+ if (masteredSA) h += `<div class="note" style="margin:-4px 0 6px">${icon("star")} Mastered: it only comes back in <b>Review mastered</b>.</div>`; else if (back) h += `<div class="note" style="margin:-4px 0 6px">${icon("loop")} ${back === "m" ? "It comes back later in this mission. Nail it again to master it." : "It’ll come back in a few questions for another try."}</div>`;
  h += `<div class="answercard"><div><span class="marks">${got} / ${s.marks}</span> <span class="note">estimated marks</span></div><b>Your full-mark answer, key point by key point:</b><ul>${pts.map(p => `<li>${iconTile(p[0])}<span>${p[2] ? p[1] : esc(p[1])}</span></li>`).join("")}</ul>
  <details class="allopts"><summary>Model answer as a paragraph</summary><p class="soft">${hl(s.model)}</p></details></div>`;
  if (HOOKS[s.o]) h += `<div class="fbrow hook"><span class="fi">${icon("brain")}</span><div><b class="lab">Memory hook</b>${esc(HOOKS[s.o])}</div></div>`;
@@ -2893,7 +2940,7 @@ function finishSA() {
 
 /* ---------------- finish ---------------- */
 function finish() {
- clearInterval(timerI);
+ clearInterval(timerI); if (SESS && SESS.mode !== "basics") { SESS.finished = true; S.cur = null; save(); }
  const box = $("donebox"); show("done");
  if (SESS.mode === "mock") return mockResults();
  const acc = SESS.answered ? Math.round(SESS.correct / SESS.answered * 100) : 0;
@@ -2937,7 +2984,10 @@ function renderHome() {
  const allIds = Q.map(q => q.id).concat(SAQ.map(s => s.id));
  const mas = allIds.filter(id => tier(id) === "mas").length, got = allIds.filter(id => tier(id) === "got").length, miss = allIds.filter(id => tier(id) === "miss").length;
  const objsDone = Object.keys(OBJ).filter(o => objStats(o).p >= .8).length;
- let h = `<div class="card hero"><div class="fleet"><div class="ship s1">${shipMother()}</div><div class="ship s2">${shipCruiser()}</div><div class="ship s3">${shipScout()}</div></div>
+ let h = "";
+ if (S.cur && curOK()) { const c = S.cur, done = Math.min(c.items.length, c.gp === c.pos ? c.pos + 1 : c.pos), acc = c.answered ? Math.round(c.correct / c.answered * 100) : 0;
+  h += `<div class="card resume"><span class="mi">${icon("play")}</span><div><b>Resume: ${esc(curLabel(c))}</b><span class="note">${done} / ${c.items.length} done${c.answered ? ` · ${acc}% correct` : ""}${c.mode === "mock" && c.left ? ` · ${Math.floor(c.left / 60)} min left` : ""}</span><div class="sbar"><i style="width:${done / c.items.length * 100}%"></i></div></div><button class="btn pri" id="resumeBtn">${icon("play")} Resume</button><button class="btn sm ghost" id="discardBtn">Discard</button></div>`; }
+ h += `<div class="card hero"><div class="fleet"><div class="ship s1">${shipMother()}</div><div class="ship s2">${shipCruiser()}</div><div class="ship s3">${shipScout()}</div></div>
  <h2>Launch your Midterm 2 mission</h2><p>${Q.length} multiple-choice & diagram questions, ${SAQ.length} short-answer builders, ${Object.keys(FIGS).length} diagrams, ${TERMS.length} key terms, ${BC.length} basics explained and ${SIMS.length} hands-on simulators — every learning objective, the practice exam, and the cumulative links from Midterm 1.</p>
  <div class="heroStats"><div class="stat"><b>${r.name}</b><span>${r.next ? `${r.need} XP to ${r.next}` : "Top rank!"}</span><div class="rankbar"><i style="width:${Math.round(r.pct * 100)}%"></i></div></div>
  <div class="stat"><b>${mas}</b><span>mastered</span></div><div class="stat"><b>${got}</b><span>got it once</span></div><div class="stat"><b>${miss}</b><span>to review</span></div>
@@ -2952,6 +3002,7 @@ function renderHome() {
  ${modeBtn("fig", "target", "#0ea5e9", "Diagram quiz", "Only questions with drawings and tap-the-diagram targets.")}
  ${modeBtn("sa", "puzzle", "#14b8a6", "Short-answer builder", "Build full-mark answers by picking, matching and ordering key points.")}
  ${modeBtn("missed", "loop", "#f97316", "Review missed", miss ? `${miss} item${miss === 1 ? "" : "s"} waiting.` : "Nothing missed yet.")}
+ ${modeBtn("review", "star", "#eab308", "Review mastered", mas ? `${mas} mastered item${mas === 1 ? "" : "s"}. Mastered questions only come back here.` : "Mastered questions leave your practice pool and come back only here.")}
  ${modeBtn("terms", "cards", "#22c55e", "Essential terms", "Glossary, flip cards and a match game.")}
  ${modeBtn("lab", "lab", "#a78bfa", "Diagram lab", "Explore and label every diagram; toggle Parkinson’s / Huntington’s.")}
  </div>`;
@@ -2959,10 +3010,11 @@ function renderHome() {
  h += `<div class="h3">${icon("map")} Topics & learning objectives <small>tap a topic to see every objective</small></div><div class="seg" style="margin-bottom:10px" id="lenSeg">${[10, 15, 25, 0].map(n => `<button aria-pressed="${S.len === n}" data-n="${n}">${n ? n + " per mission" : "Whole section"}</button>`).join("")}</div><div class="mods">`;
  MODS.forEach(m => {
   const objs = Object.keys(OBJ).filter(o => +o.split(".")[0] === m.id);
-  const ps = objs.map(o => objStats(o)); const tot = ps.reduce((a, b) => a + b.n, 0); const p = tot ? ps.reduce((a, b) => a + b.p * b.n, 0) / tot : 0;
+  const ps = objs.map(o => objStats(o)); const tot = ps.reduce((a, b) => a + b.n, 0);
+  const rem = Q.filter(q => +q.o.split(".")[0] === m.id && tier(q.id) !== "mas").length + SAQ.filter(x => +x.o.split(".")[0] === m.id && tier(x.id) !== "mas").length; const p = tot ? ps.reduce((a, b) => a + b.p * b.n, 0) / tot : 0;
   h += `<div class="mod"><button class="modhead" data-m="${m.id}" aria-expanded="false"><span class="mi" style="background:${m.col}">${icon(m.icon)}</span><span><b>${esc(m.name)}</b><small>${objs.length} objectives · ${tot} items${m.focus ? "" : " · lower priority for M2"}</small></span>${ring(p, m.col)}</button>
   <ul class="objs" id="objs${m.id}" hidden>${objs.map(o => { const s2 = objStats(o); return `<li><span class="oid">${o}</span><span class="ob">${esc(OBJ[o])}</span><span class="bar"><i style="width:${Math.round(s2.p * 100)}%;background:${m.col}"></i></span><button data-o="${o}">Go</button></li>`; }).join("")}</ul>
-  <div class="modbtns"><button class="btn sm pri" data-mod="${m.id}">${icon("play")} ${S.len ? "Practise" : `Learn all ${tot}`}</button><button class="btn sm" data-modfig="${m.id}">${icon("target")} Diagrams</button>${SAQ.some(s => +s.o.split(".")[0] === m.id) ? `<button class="btn sm" data-modsa="${m.id}">${icon("puzzle")} Short answers</button>` : ""}</div></div>`;
+  <div class="modbtns"><button class="btn sm pri" data-mod="${m.id}">${icon("play")} ${S.len ? "Practise" : rem ? `Learn all ${rem}${rem < tot ? ` (${tot - rem} mastered)` : ""}` : "All mastered ✓"}</button><button class="btn sm" data-modfig="${m.id}">${icon("target")} Diagrams</button>${SAQ.some(s => +s.o.split(".")[0] === m.id) ? `<button class="btn sm" data-modsa="${m.id}">${icon("puzzle")} Short answers</button>` : ""}</div></div>`;
  });
  h += `</div><div class="nextrow" style="justify-content:center;margin-top:18px"><button class="btn sm ghost" id="resetBtn">${icon("reset")} Reset all progress</button></div>`;
  $("home").innerHTML = h;
@@ -2974,6 +3026,7 @@ function renderHome() {
   else if (k === "fig") startSession("fig", { figOnly: 1, focus: 1 });
   else if (k === "sa") startSession("sa", { saOnly: 1, focus: 1, n: S.len ? 6 : 0 });
   else if (k === "missed") startSession("missed", { missed: 1, withSA: 1 });
+  else if (k === "review") startSession("review", { review: 1, withSA: 1 });
   else if (k === "terms") openTerms();
   else if (k === "lab") openLab();
   else if (k === "basics") openBasics(); else if (k === "sims") openSims(); else if (k === "ninzard") openNinzard();
@@ -2984,6 +3037,7 @@ function renderHome() {
  $("home").querySelectorAll("[data-modfig]").forEach(b => b.addEventListener("click", () => startSession("modfig", { mods: [+b.dataset.modfig], figOnly: 1 })));
  $("home").querySelectorAll("[data-modsa]").forEach(b => b.addEventListener("click", () => startSession("modsa", { mods: [+b.dataset.modsa], saOnly: 1, n: S.len ? 6 : 0 })));
  $("lenSeg").querySelectorAll("button").forEach(b => b.addEventListener("click", () => { S.len = +b.dataset.n; save(); renderHome(); }));
+ if ($("resumeBtn")) { $("resumeBtn").addEventListener("click", () => { SND.play("click"); resumeSession(); }); let darm = 0; $("discardBtn").addEventListener("click", () => { if (!darm) { darm = 1; $("discardBtn").textContent = "Tap again to discard"; setTimeout(() => { darm = 0; const d = $("discardBtn"); if (d) d.textContent = "Discard"; }, 3000); return; } S.cur = null; SESS = null; save(); renderHome(); }); }
  let armed = 0;
  $("resetBtn").addEventListener("click", () => { if (!armed) { armed = 1; $("resetBtn").innerHTML = icon("alert") + " Tap again to erase everything"; setTimeout(() => { armed = 0; const b = $("resetBtn"); if (b) b.innerHTML = icon("reset") + " Reset all progress"; }, 3500); return; } const keep = { theme: S.theme, sound: S.sound, hl: S.hl }; Object.assign(S, { st: {}, xp: 0, turn: 0, days: {}, best: {}, mock: [] }, keep); save(); renderXP(); renderHome(); toast("Progress reset", "reset"); });
  const nzb = document.querySelector('[data-mode="ninzard"] .mi'); if (nzb && typeof NZSPR !== "undefined") nzb.innerHTML = `<img class="px" src="${NZSPR.spinzle.n}" alt="Spinzle">`;
@@ -3104,7 +3158,7 @@ drawStars(); applyTheme(); applyToggles(); renderXP();
 $("themeBtn").addEventListener("click", () => { const cur = document.documentElement.getAttribute("data-theme"); S.theme = cur === "dark" ? "light" : "dark"; save(); applyTheme(); SND.play("flip"); });
 $("sndBtn").addEventListener("click", () => { S.sound = !S.sound; save(); applyToggles(); if (S.sound) { SND.init(); SND.play("ok"); } });
 $("hlBtn").addEventListener("click", () => { S.hl = !S.hl; save(); applyToggles(); SND.play("tap"); });
-$("quitBtn").addEventListener("click", () => { if (SESS && SESS.exam && SESS.pos < SESS.items.length) { if (!confirmLeave()) return; } if (SESS && SESS.mode === "basics") { openBasics(); return; } goHome(); });
+$("quitBtn").addEventListener("click", () => { if (SESS && SESS.mode === "basics") { openBasics(); return; } saveCur(); if (SESS && SESS.mode !== "basics" && !SESS.finished) toast("Saved. Pick up where you left off from Home.", "check"); goHome(); });
 let leaveArmed = 0;
 function confirmLeave() { if (leaveArmed) return true; leaveArmed = 1; toast("Tap ‘Leave exam’ again to abandon this mock", "alert"); setTimeout(() => leaveArmed = 0, 3000); return false; }
 renderHome();
