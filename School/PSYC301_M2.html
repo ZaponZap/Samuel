@@ -2574,6 +2574,12 @@ function prio(id, w) { const t = tier(id); const base = { miss: 0, new: 1, got: 
 function buildQueue(opts) {
  const { qs, sas } = poolFor(opts); const n = opts.n || S.len;
  const items = [];
+ if (!n) { // "Whole section": every item, straight through in learning-objective order
+  const ok = o => o.split(".").map(Number), cmp = (a, b) => { const x = ok(a), y = ok(b); return x[0] - y[0] || (x[1] || 0) - (y[1] || 0); };
+  const all = (opts.saOnly ? [] : qs.map(i => ({ k: "q", i, o: Q[i].o }))).concat(opts.saOnly || opts.withSA ? sas.map(i => ({ k: "s", i, o: SAQ[i].o })) : []);
+  all.sort((a, b) => cmp(a.o, b.o) || (a.k === b.k ? a.i - b.i : a.k === "q" ? -1 : 1));
+  return all.map(({ k, i }) => ({ k, i }));
+ }
  const qs2 = qs.map(i => [prio(Q[i].id, modOf(Q[i].o).w) - (Q[i].k ? .25 : 0), i]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
  const sas2 = sas.map(i => [prio(SAQ[i].id, modOf(SAQ[i].o).w), i]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
  if (opts.saOnly) { sas2.slice(0, n).forEach(i => items.push({ k: "s", i })); return items; }
@@ -2950,13 +2956,13 @@ function renderHome() {
  ${modeBtn("lab", "lab", "#a78bfa", "Diagram lab", "Explore and label every diagram; toggle Parkinson’s / Huntington’s.")}
  </div>`;
  h += `<div class="h3">${icon("hl")} Keyword colours <small>train your eye for what the exam is really asking</small></div><div class="card" style="padding:12px 14px">${legendHTML()}<p class="note" style="margin:8px 0 0">Wavy red = trap words (NOT, EXCEPT, FALSE, BEST, BOTH…). Toggle colours with the highlighter button at the top.</p></div>`;
- h += `<div class="h3">${icon("map")} Topics & learning objectives <small>tap a topic to see every objective</small></div><div class="seg" style="margin-bottom:10px" id="lenSeg">${[10, 15, 25].map(n => `<button aria-pressed="${S.len === n}" data-n="${n}">${n} per mission</button>`).join("")}</div><div class="mods">`;
+ h += `<div class="h3">${icon("map")} Topics & learning objectives <small>tap a topic to see every objective</small></div><div class="seg" style="margin-bottom:10px" id="lenSeg">${[10, 15, 25, 0].map(n => `<button aria-pressed="${S.len === n}" data-n="${n}">${n ? n + " per mission" : "Whole section"}</button>`).join("")}</div><div class="mods">`;
  MODS.forEach(m => {
   const objs = Object.keys(OBJ).filter(o => +o.split(".")[0] === m.id);
   const ps = objs.map(o => objStats(o)); const tot = ps.reduce((a, b) => a + b.n, 0); const p = tot ? ps.reduce((a, b) => a + b.p * b.n, 0) / tot : 0;
   h += `<div class="mod"><button class="modhead" data-m="${m.id}" aria-expanded="false"><span class="mi" style="background:${m.col}">${icon(m.icon)}</span><span><b>${esc(m.name)}</b><small>${objs.length} objectives · ${tot} items${m.focus ? "" : " · lower priority for M2"}</small></span>${ring(p, m.col)}</button>
   <ul class="objs" id="objs${m.id}" hidden>${objs.map(o => { const s2 = objStats(o); return `<li><span class="oid">${o}</span><span class="ob">${esc(OBJ[o])}</span><span class="bar"><i style="width:${Math.round(s2.p * 100)}%;background:${m.col}"></i></span><button data-o="${o}">Go</button></li>`; }).join("")}</ul>
-  <div class="modbtns"><button class="btn sm pri" data-mod="${m.id}">${icon("play")} Practise</button><button class="btn sm" data-modfig="${m.id}">${icon("target")} Diagrams</button>${SAQ.some(s => +s.o.split(".")[0] === m.id) ? `<button class="btn sm" data-modsa="${m.id}">${icon("puzzle")} Short answers</button>` : ""}</div></div>`;
+  <div class="modbtns"><button class="btn sm pri" data-mod="${m.id}">${icon("play")} ${S.len ? "Practise" : `Learn all ${tot}`}</button><button class="btn sm" data-modfig="${m.id}">${icon("target")} Diagrams</button>${SAQ.some(s => +s.o.split(".")[0] === m.id) ? `<button class="btn sm" data-modsa="${m.id}">${icon("puzzle")} Short answers</button>` : ""}</div></div>`;
  });
  h += `</div><div class="nextrow" style="justify-content:center;margin-top:18px"><button class="btn sm ghost" id="resetBtn">${icon("reset")} Reset all progress</button></div>`;
  $("home").innerHTML = h;
@@ -2966,17 +2972,17 @@ function renderHome() {
   else if (k === "pe") startSession("pe");
   else if (k === "mock") startSession("mock");
   else if (k === "fig") startSession("fig", { figOnly: 1, focus: 1 });
-  else if (k === "sa") startSession("sa", { saOnly: 1, focus: 1, n: 6 });
+  else if (k === "sa") startSession("sa", { saOnly: 1, focus: 1, n: S.len ? 6 : 0 });
   else if (k === "missed") startSession("missed", { missed: 1, withSA: 1 });
   else if (k === "terms") openTerms();
   else if (k === "lab") openLab();
   else if (k === "basics") openBasics(); else if (k === "sims") openSims(); else if (k === "ninzard") openNinzard();
  }));
  $("home").querySelectorAll(".modhead").forEach(b => b.addEventListener("click", () => { const ul = $("objs" + b.dataset.m); ul.hidden = !ul.hidden; b.setAttribute("aria-expanded", String(!ul.hidden)); SND.play("tap"); }));
- $("home").querySelectorAll("[data-o]").forEach(b => b.addEventListener("click", () => startSession("obj", { objs: [b.dataset.o], withSA: 1, n: 10 })));
+ $("home").querySelectorAll("[data-o]").forEach(b => b.addEventListener("click", () => startSession("obj", { objs: [b.dataset.o], withSA: 1, n: S.len ? 10 : 0 })));
  $("home").querySelectorAll("[data-mod]").forEach(b => b.addEventListener("click", () => startSession("mod", { mods: [+b.dataset.mod], withSA: 1 })));
  $("home").querySelectorAll("[data-modfig]").forEach(b => b.addEventListener("click", () => startSession("modfig", { mods: [+b.dataset.modfig], figOnly: 1 })));
- $("home").querySelectorAll("[data-modsa]").forEach(b => b.addEventListener("click", () => startSession("modsa", { mods: [+b.dataset.modsa], saOnly: 1, n: 6 })));
+ $("home").querySelectorAll("[data-modsa]").forEach(b => b.addEventListener("click", () => startSession("modsa", { mods: [+b.dataset.modsa], saOnly: 1, n: S.len ? 6 : 0 })));
  $("lenSeg").querySelectorAll("button").forEach(b => b.addEventListener("click", () => { S.len = +b.dataset.n; save(); renderHome(); }));
  let armed = 0;
  $("resetBtn").addEventListener("click", () => { if (!armed) { armed = 1; $("resetBtn").innerHTML = icon("alert") + " Tap again to erase everything"; setTimeout(() => { armed = 0; const b = $("resetBtn"); if (b) b.innerHTML = icon("reset") + " Reset all progress"; }, 3500); return; } const keep = { theme: S.theme, sound: S.sound, hl: S.hl }; Object.assign(S, { st: {}, xp: 0, turn: 0, days: {}, best: {}, mock: [] }, keep); save(); renderXP(); renderHome(); toast("Progress reset", "reset"); });
