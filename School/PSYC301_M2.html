@@ -524,6 +524,7 @@ mark.kr{background:color-mix(in srgb,var(--bad) 22%,transparent);box-shadow:inse
 .qsbar .le{background:var(--yel)}
 .qsbar .ma{background:var(--ok)}
 @media (max-width:520px){.qstats .qsl{flex-basis:100%;margin-right:0}}
+.qstats .qsof{font-size:11.5px;color:var(--mute);margin-left:2px}
 
 /* ---------- figure system (theme-aware) ---------- */
 :root{
@@ -2713,10 +2714,18 @@ function scopeName() {
  const o = SESS.opts || {};
  if (SESS.mode === "basics") return "Basics quiz";
  if (SESS.mode === "pe") return "Dr. Dosso’s practice exam";
- if (o.objs) return "Objective " + o.objs.join(", ");
- if (o.mods) return o.mods.map(m => MOD[m] ? MOD[m].short : m).join(" + ");
- if (o.focus) return "Midterm 2 topics";
- return "All topics";
+ const kind = o.figOnly ? " · diagram questions" : o.saOnly ? " · short answers" : "";
+ if (o.objs) return "Objective " + o.objs.join(", ") + kind;
+ if (o.mods) return o.mods.map(m => MOD[m] ? MOD[m].short : m).join(" + ") + kind;
+ if (o.focus) return "Midterm 2 topics" + kind;
+ return "All topics" + kind;
+}
+/* everything in the topic, questions + short answers — the same count the section bars use */
+function scopeAll() {
+ const o = SESS.opts || {};
+ const mods = o.mods ? new Set(o.mods.map(Number)) : o.focus ? new Set(MODS.filter(m => m.focus).map(m => m.id)) : null, objs = o.objs ? new Set(o.objs) : null;
+ const keep = x => (!mods || mods.has(+x.o.split(".")[0])) && (!objs || objs.has(x.o));
+ return Q.filter(keep).length + SAQ.filter(keep).length;
 }
 /* every question this mission is drawn from (not just the ones queued) */
 function scopeItems() {
@@ -2738,7 +2747,7 @@ function renderTally() {
  xs.forEach(x => { const s = S.st[x.id]; if (!s || !s.seen) return; seen++; if (s.lv >= 1) got++; if (s.lv === 2) mas++; });
  const N = xs.length || 1, pc = v => (v / N * 100).toFixed(1) + "%";
  qs.hidden = false;
- qs.innerHTML = `<span class="qsl">${icon("map")}${esc(scopeName())}</span><span class="qs" title="Questions in this topic"><b>${xs.length}</b>total</span><span class="qs se" title="Answered at least once"><i></i><b>${seen}</b>seen</span><span class="qs le" title="Answered correctly at least once"><i></i><b>${got}</b>learned</span><span class="qs ma" title="Right twice, a few questions apart"><i></i><b>${mas}</b>mastered</span><div class="qsbar" aria-hidden="true"><i class="se" style="width:${pc(seen)}"></i><i class="le" style="width:${pc(got)}"></i><i class="ma" style="width:${pc(mas)}"></i></div>`;
+ qs.innerHTML = `<span class="qsl">${icon("map")}${esc(scopeName())}</span><span class="qs" title="Questions this mission can ask"><b>${xs.length}</b>total${(() => { if (SESS.mode === "basics" || SESS.mode === "pe") return ""; const all = scopeAll(); if (all !== xs.length) return `<small class="qsof">of ${all} in ${(SESS.opts || {}).mods || (SESS.opts || {}).objs ? "section" : "the bank"}</small>`; const ns = xs.filter(x => x.steps).length; return ns && ns < xs.length ? `<small class="qsof">(${xs.length - ns} questions + ${ns} short answers)</small>` : ""; })()}</span><span class="qs se" title="Answered at least once"><i></i><b>${seen}</b>seen</span><span class="qs le" title="Answered correctly at least once"><i></i><b>${got}</b>learned</span><span class="qs ma" title="Right twice, a few questions apart"><i></i><b>${mas}</b>mastered</span><div class="qsbar" aria-hidden="true"><i class="se" style="width:${pc(seen)}"></i><i class="le" style="width:${pc(got)}"></i><i class="ma" style="width:${pc(mas)}"></i></div>`;
 }
 function metaHTML(o, id, src, kind) {
  const m = modOf(o); const t = tier(id);
