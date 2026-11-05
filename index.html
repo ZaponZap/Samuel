@@ -22,6 +22,7 @@
   --gold:#f1cf83; --gold-deep:#b98a3c;
   --ruby:#ff5d78; --sapphire:#5b8cff; --emerald:#3fd39b; --amethyst:#b07cff;
   --azure:#6cc4ff; --amber:#ffb45e; --rosegl:#ff8fb4;
+  --onyx:#050307; --ash:#b3abbf;
   --lead:#120a1c; --space:#04020b;
   --ink:#f4edfc; --soft:#ddd2ec; --mute:#a99dc0;
   --line:rgba(195,162,255,.2);
@@ -463,6 +464,17 @@ details.but>div{padding:0 16px 12px 46px;color:var(--soft)}
 .lt-title{font-size:21px;line-height:1.2;color:#fff}
 .lt-kind{margin-top:auto;padding-top:10px;font-size:15px;color:var(--mute)}
 .lt-note{margin-top:4px;font-size:13.5px;color:#d9b7c4;opacity:.85}
+/* Wilderness: black envelopes with an onyx seal */
+.lt[data-type="wilderness"]{border-color:#302b38;
+  background:
+    linear-gradient(160deg,rgba(255,255,255,.07) 0 18%,transparent 18.2%) top left/50.2% 46px no-repeat,
+    linear-gradient(200deg,rgba(255,255,255,.07) 0 18%,transparent 18.2%) top right/50.2% 46px no-repeat,
+    linear-gradient(180deg,#0d0b11,var(--onyx))}
+.lt[data-type="wilderness"]:hover,.lt[data-type="wilderness"]:focus-visible{border-color:#6f6879;box-shadow:0 14px 28px rgba(0,0,0,.6),0 0 22px rgba(179,171,191,.12)}
+.lt[data-type="wilderness"] .seal{background:radial-gradient(circle at 35% 30%,#e6e1ec 0,#5d5766 16%,#16131a 50%,#000 100%);
+  box-shadow:0 0 0 2px rgba(18,10,28,.9),0 0 0 3px rgba(179,171,191,.22)}
+.lt[data-type="wilderness"] .lt-day{text-shadow:0 0 14px rgba(179,171,191,.25)}
+.lf[data-f="wilderness"]::before{background:radial-gradient(circle at 35% 30%,#d8d3e0 0,#2a2630 45%,#000);box-shadow:0 0 0 1px rgba(179,171,191,.55)}
 
 :root{--cross:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10.3 2h3.4l-.3 5.9 6.3-.3v3.4l-6.3-.3.6 11.3h-4l.6-11.3-6.3.3V7.6l6.3.3z' fill='%23fff8e6' stroke='%23120a1c' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E")}
 
@@ -1088,7 +1100,7 @@ details.but>div{padding:0 16px 12px 46px;color:var(--soft)}
       <button class="lf" type="button" data-f="prayer" aria-pressed="false" style="--c:var(--gold)">Prayers</button>
       <button class="lf" type="button" data-f="reflection" aria-pressed="false" style="--c:var(--azure)">Reflections</button>
       <button class="lf" type="button" data-f="address" aria-pressed="false" style="--c:var(--amethyst)">Addresses</button>
-      <button class="lf" type="button" data-f="wilderness" aria-pressed="false" style="--c:var(--amber)">Wilderness</button>
+      <button class="lf" type="button" data-f="wilderness" aria-pressed="false" style="--c:var(--ash)">Wilderness</button>
     </div>
     <div class="lt-grid" id="lt-grid">
 <h3 class="lt-year" data-year="2026">2026</h3>
@@ -1340,7 +1352,7 @@ details.but>div{padding:0 16px 12px 46px;color:var(--soft)}
 <p>And I thank you all for listening. Thank you very much.</p>
 </template>
 <h3 class="lt-year" data-year="2024">2024</h3>
-<button class="lt" type="button" data-id="2024-07-09" data-type="wilderness" data-year="2024" data-date="9 July 2024" style="--c:var(--amber)"><span class="lt-day">9</span><span class="lt-mon">Jul 2024</span><span class="lt-title">Not Good Enough</span><span class="lt-kind">Wilderness</span><span class="lt-note">heads up: self-harm, suicide</span><span class="seal" aria-hidden="true"></span></button>
+<button class="lt" type="button" data-id="2024-07-09" data-type="wilderness" data-year="2024" data-date="9 July 2024" style="--c:var(--ash)"><span class="lt-day">9</span><span class="lt-mon">Jul 2024</span><span class="lt-title">Not Good Enough</span><span class="lt-kind">Wilderness</span><span class="lt-note">heads up: self-harm, suicide</span><span class="seal" aria-hidden="true"></span></button>
 <template id="lt-2024-07-09">
 <p>“Not Good Enough” — that was the motto that permeated throughout my life. I wasn’t introverted, but I had a hard time making any friends, so I secluded myself into the online world, where I found my own kindred. And among them was someone particularly close to me.</p>
 <p>But one day they were gone.</p>
@@ -1391,7 +1403,7 @@ details.but>div{padding:0 16px 12px 46px;color:var(--soft)}
 <p>HAHAHAHA I AM A MONSTER…</p>
 <p>FUCK YOU! FUCK YOU! AND FUCK THAT!</p>
 </template>
-<button class="lt" type="button" data-id="2024-04-09" data-type="wilderness" data-year="2024" data-date="9 April 2024" style="--c:var(--amber)"><span class="lt-day">9</span><span class="lt-mon">Apr 2024</span><span class="lt-title">Too Dependent</span><span class="lt-kind">Wilderness</span><span class="seal" aria-hidden="true"></span></button>
+<button class="lt" type="button" data-id="2024-04-09" data-type="wilderness" data-year="2024" data-date="9 April 2024" style="--c:var(--ash)"><span class="lt-day">9</span><span class="lt-mon">Apr 2024</span><span class="lt-title">Too Dependent</span><span class="lt-kind">Wilderness</span><span class="seal" aria-hidden="true"></span></button>
 <template id="lt-2024-04-09">
 <p>She said “you’re too dependent on me”<br>It’s bullshit. She just wants you to go away. She makes this about YOU.<br>Fucking pathetic.<br>Break up.</p>
 <p>You opened your vulnerabilities and emotions to her and she doesn’t want to deal with it. She thinks you’re too mentally ill. Too stupid. Too dependent.<br>Break up.</p>
@@ -1400,7 +1412,7 @@ details.but>div{padding:0 16px 12px 46px;color:var(--soft)}
 <p>Mental health has suddenly become an issue now… SHE DOESN’T LIKE YOU ANYMORE<br>BREAK UP.</p>
 </template>
 <h3 class="lt-year" data-year="2023">2023</h3>
-<button class="lt" type="button" data-id="2023-10-30" data-type="wilderness" data-year="2023" data-date="30 October 2023" style="--c:var(--amber)"><span class="lt-day">30</span><span class="lt-mon">Oct 2023</span><span class="lt-title">I'm Sam Bang</span><span class="lt-kind">Wilderness</span><span class="seal" aria-hidden="true"></span></button>
+<button class="lt" type="button" data-id="2023-10-30" data-type="wilderness" data-year="2023" data-date="30 October 2023" style="--c:var(--ash)"><span class="lt-day">30</span><span class="lt-mon">Oct 2023</span><span class="lt-title">I'm Sam Bang</span><span class="lt-kind">Wilderness</span><span class="seal" aria-hidden="true"></span></button>
 <template id="lt-2023-10-30">
 <p>"I'm Sam Bang." When one declares their name, I believe it should be spoken articulately with utmost pride. But people speak their name with utter indifference. When you introduce yourself, I firmly believe you have to feel something. If you don't feel anything when you present your name, I believe you are living life incorrectly. How exactly do you conduct yourself in your day to day life? Do you have no shame or pride? The most disgusting rebuttal against my belief would be the "humble yourself" angle. Essentially, don't make yourself stand out because it is rude. You should be humble. However, I believe this is a guise. It's fear justified under the shield of self-righteousness. People don't like when other people stand out because it makes them feel insecure about themselves. When others stand out strong, it makes people question their own sense of worth and belonging. Of course, there are also those that this doesn't apply to, but they have no guise of self-righteousness to begin with. Conduct yourself with pride and power, fuel strength into your name so that you feel energy when you declare your name. That is my life philosophy. It is a firm one.</p>
 <p>But for me, I have an odd cycle. What does the proclamation of Sam Bang mean to myself? How do I feel? It's a strange feeling. Nevertheless, I outwardly conduct myself as one with pride, power, endless seems of vitality. Yet, inside, I feel shaky and shameful to say my own name. These are my deepest insecurities that I keep hidden from many. "I'm Sam Bang!" I declare to the world. The reactions are a reflection of exactly how I presented my character. A mere caricature of Sam Bang. In fact, the shaky nature of the mere act of stating my name reflects some of the darkest depths within my psyche. Why do I feel this way? What's wrong with my name? Objectively, I love my name. It oozes superhero/supervillain energy. Somebody who is important. But exactly, I feel as if I do not live up to my name. In fact, I separate myself from the name itself, because I feel too worthless to even call myself my own name. "I don't live up to it. I'm a failure." This is the distance I feel towards myself and what I wished to be. "Sam Bang" is for someone else, not me. I don't know me. Who am I? How can I be so miserable that I feel unworthy of even holding my given name. The psychologist would probably tell you that this feeling reflects my own unattainable standards for myself. The expectations I set myself. I feel so distant from my ideal self that the current state of me is an embarrassment in comparison. That is how I feel. So to make up for it, I reach for the oldest age sin of mankind—lies.</p>
@@ -1410,7 +1422,7 @@ details.but>div{padding:0 16px 12px 46px;color:var(--soft)}
 <p>"You do not fear the lord enough" he says. But no, I wonder. If the all-righteous lord assists those in pain in suffering, could he simply erase the pain and suffering of the entire world? Of course, he hasn't. Do either he is not all good or he does not have the power to end all suffering or who wants to test us. Maybe there are more intricate reasons but why should I be so obsessed about background work? Yet I deeply fear the lord. I deeply fear the punishment I will be inflicted because there lies the thought that maybe the lord, not being "all-good,” seeks to punish and ruin me. "I do not fear the lord enough" he says. But how badly does this invalidate the perpetual anxiety I feel around the lord. Does the lord really believe I should become entrapped by chaos? Is this the ultimate test? How many more tests is needed for the lord to be satisfied? But one aspect that always defined myself, deep down from the bottom, was that I never allowed myself to completely become the victim of external suffering. I could never allow myself to become a helpless victim. Never have I let myself become stabbed over and over again. I always fought back somehow. And so I challenged chaos to a fight, I used her against her. Chaos became my friend, my weapon. To counteract the chaos of the world, I would respond with an even colorful and powerful display of chaos that was unrivaled. Nobody could read or predict me, I scared people. I was what people feared. People love stability and peace. But that was never given to me, so why does everyone else get it but me? How unfair. How utterly unfair. So at the very least, please fall under the unrivaled power of my chaos. Submit to the chaos of Sam Bang. "Fight chaos with chaos." That was my mentality for the longest time. But eventually, not only did I realize the immorality of my actions, but also the self-destructive nature. There was no way but to the dark if I took this path. I needed to let go of past injustices of unfairness. My secret pain that no one will take seriously and everyone will dismiss. It was simply sometimes I had to live with. So, I decided to become more forgiving.</p>
 <p>So now, with the cycle of thoughts plaguing my head, the only way to go is repairing my psyche. I will trust again, love again, make sure that stability will find me and I will find peace. My inner world will one day be restored. But most importantly, glory to my name will be restored. This is my most honest act, the most honest I can be. To reveal my name in shit would be a logically unsound decision. But one day, I won't be so resentful of myself. I have already accepted myself. And eventually, I will be able to be proud of myself. Not under any guise or coping under self-righteousness. The only way for me now is up. So dear Sam Bang, you aren't him. You're me. Today, I declare myself to be Sam Bang. And once again, I will pull myself together. Me and Sam Bang will improve from the same position, achieve the same progress, and take back what was lost. Yes, I like it. My name is Sam Bang.</p>
 </template>
-<button class="lt" type="button" data-id="2023-08-27" data-type="wilderness" data-year="2023" data-date="27 August 2023" style="--c:var(--amber)"><span class="lt-day">27</span><span class="lt-mon">Aug 2023</span><span class="lt-title">Emotions</span><span class="lt-kind">Wilderness</span><span class="seal" aria-hidden="true"></span></button>
+<button class="lt" type="button" data-id="2023-08-27" data-type="wilderness" data-year="2023" data-date="27 August 2023" style="--c:var(--ash)"><span class="lt-day">27</span><span class="lt-mon">Aug 2023</span><span class="lt-title">Emotions</span><span class="lt-kind">Wilderness</span><span class="seal" aria-hidden="true"></span></button>
 <template id="lt-2023-08-27">
 <p>You know what makes me fucking angry? The war on emotions. There’s this new portrayal that the enemy of the world today is emotions. Why? Because emotions are irrational. And irrationality is always bad. Logic is always good. Emotions are always bad. Emotions must always be suppressed.</p>
 <p>“Expressing emotions is cringe” these NPC motherfuckers love to say. The expression of emotions has been stigmatized as something awful, a terrible beast that needs to be sent away. These absolute fucking losers pushed this agenda onto our society because it forces everyone to become robotic zombies for society.</p>
