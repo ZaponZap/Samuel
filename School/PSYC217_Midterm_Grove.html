@@ -526,6 +526,16 @@ td.hs-wrong, span.hs-wrong, tr.hs-wrong > * { background: var(--clay-bg) !import
 
 /* ---------- Experiment Lab ---------- */
 .sec.sec-lab { border-style: dashed; border-color: var(--moss); }
+/* ---------- Extra · variables drill ---------- */
+.sec-vars .vars-ic { font-family: var(--f-hand); color: var(--amber); font-size: 1.9rem; }
+.vguide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 720px) { .vguide { grid-template-columns: 1fr; } }
+.vg { background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--vgc); border-radius: var(--r); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.vg0 { --vgc: var(--moss); } .vg1 { --vgc: var(--clay); } .vg2 { --vgc: var(--amber); }
+.vg h3 { font-size: 1.02rem; }
+.vg-ask { margin: 0; font-family: var(--f-hand); color: var(--moss-strong); line-height: 1.4; }
+.vg-def { margin: 0; font-size: .88rem; line-height: 1.5; color: var(--ink); background: var(--tint); border-radius: 10px; padding: 8px 10px; }
+.vg-tip { margin: 0; font-size: .84rem; line-height: 1.5; color: var(--ink2); }
 /* ---------- Flags ---------- */
 .flag-q { display: inline-flex; align-items: center; gap: 5px; border: 1.5px solid var(--line-strong); background: var(--surface); color: var(--ink2); border-radius: 999px; padding: 3px 10px 3px 8px; font-size: .78rem; font-weight: 600; cursor: pointer; line-height: 1.2; }
 .flag-q:hover { border-color: var(--amber); color: var(--ink); }
@@ -5492,7 +5502,7 @@ window.FIG = (function () {
     [/comparison groups|control groups/, 'groups'], [/threats/, 'storm'], [/time series/, 'series'], [/single case/, 'single'], [/developmental/, 'cohort'],
     [/reliab|validity|true score/, 'bulls'], [/operational|variable|measur|scales/, 'ruler'], [/iv and dv|ivs and dvs|experiment|method|quasi|special/, 'flask'],
     [/science|scientific|research|types|basic vs applied/, 'scope']];
-  var SP_SEC = { 1: 'scope', 2: 'bulb', 3: 'flask', 4: 'grid', 5: 'cross', 6: 'sprout', 7: 'ruler' };
+  var SP_SEC = { 1: 'scope', 2: 'bulb', 3: 'flask', 4: 'grid', 5: 'cross', 6: 'sprout', 7: 'ruler', V: 'conf' };
   function spotName(k, s) {
     var t = String(k || '').toLowerCase();
     for (var i = 0; i < SP_RULES.length; i++) if (SP_RULES[i][0].test(t)) return SP_RULES[i][1];
@@ -6729,10 +6739,183 @@ window.LAB = function (A) {
 };
 </script>
 <script>
+/* ======================= EXTRA · CONFOUND, EXTRANEOUS OR THIRD VARIABLE? =======================
+   Separate from the grove total (ids start with "V-"). Definitions follow the textbook:
+   - extraneous variables: variables not of interest to the researcher (Ch. 5); random assignment
+     makes them "just as likely to affect one condition as they are to affect the others."
+   - confounding variable: not of interest, varies along with the IV (or is intertwined with the
+     variable of interest) and could explain the results (Ch. 5 and Ch. 10).
+   - third variable: an unmeasured variable that causes both measured variables, producing the
+     association (Ch. 5). "Third variables cause the apparent relationship between two other
+     variables, whereas confounding variables are intertwined with another variable in your study
+     so that you cannot tell which is at work." */
+window.VARS = [];
+function QV(o) { o.s = 'V'; window.VARS.push(o); }
+window.VARS_SEC = { title: 'Confound, Extraneous or Third Variable?', short: 'Variables', ch: 'Ch. 5 & 10', lo: [
+    'Extraneous variable: any variable not of interest to the researcher. Held constant, it can’t explain a difference between conditions; spread across conditions by random assignment (with enough participants), it shouldn’t.',
+    'Confounding variable: not of interest, but it changes along with the independent variable (or can’t be separated from the variable of interest), so it could also explain the results. The lecture calls it an "accidental IV".',
+    'Third variable: in a correlational study, an unmeasured variable that causes both measured variables and creates the relationship between them.',
+    'The textbook’s dividing line: a third variable causes both variables; a confound is intertwined with one, so you can’t tell which is at work.',
+    'In this drill: because "extraneous" just means "not of interest", confounds and third variables fit it loosely too. The questions ask for the most specific label.'
+  ], terms: ['extraneous variable', 'confounding variable', 'third-variable problem', 'random assignment', 'experimental control', 'matched pairs design', 'internal validity'] };
+
+/* ---------- warm-up: the three definitions ---------- */
+QV({k: `Extraneous variable`, lv: `warm`, q: `A researcher tests whether caffeine speeds up reaction time. The room temperature, how well each person slept, and the colour of the lab walls are not what she is studying. In general, what does the textbook call variables like these?`,
+c: `Extraneous variables`,
+x: [[`Confounding variables`, `They would only be confounds if one of them changed along with the caffeine condition. Nothing here says they do.`],
+[`Third variables`, `A third variable causes both variables in a correlation. This is an experiment, and none of these causes both caffeine intake and reaction time.`]],
+e: `{g:Extraneous variables} are simply variables not of interest to the researcher. Whether one becomes a problem depends on whether it ends up differing between conditions.`});
+
+QV({k: `Confound`, lv: `warm`, t: `fill`, q: `In an experiment, a variable that is not of interest to the researcher, changes along with the independent variable, and could explain the results is called a ___ variable.`,
+a: [`confounding`, `confound`],
+e: `That’s the textbook’s definition of a {g:confounding variable} (Ch. 10): not of interest, varies along with the IV, and could explain the results. The lecture’s nickname: an "accidental IV".`});
+
+QV({k: `Confound vs third variable`, q: `According to the textbook, what is the key difference between a third variable and a confounding variable?`,
+c: `A third variable causes both related variables; a confound is tangled up with one of them`,
+x: [[`A third variable is found only in experiments; a confound is found only in correlational studies`, `Backwards and too strict. The third-variable problem is a limitation of non-experimental methods, and confounds can show up in both kinds of study.`],
+[`They are two names for the same thing, so in psychology either label is correct`, `The textbook notes they’re sometimes used interchangeably in everyday talk, but in psychology the two are distinguished.`],
+[`A confound is always manipulated on purpose, while a third variable is always measured on purpose`, `Neither is put in on purpose. A confound sneaks in alongside the variable of interest, and a third variable is usually unmeasured.`]],
+e: `Textbook summary: "third variables {g:cause} the apparent relationship between two other variables, whereas confounding variables are {g:intertwined} with another variable in your study so that you cannot tell which is at work."`});
+
+/* ---------- experiments: confound or merely extraneous? ---------- */
+QV({k: `Confound`, q: `To test whether crowding hurts problem solving, researchers test people in a small room with either nine other people or just one other person. Both the amount of crowding and the number of people change between conditions. Which label fits group size best?`,
+c: `Confounding variable`,
+x: [[`Extraneous variable`, `It isn’t of interest, but it doesn’t stay neutral: it changes along with the IV. That makes the more specific label "confound".`],
+[`Third variable`, `This is an experiment. Group size doesn’t cause both of two measured variables; it travels along with the manipulation.`]],
+e: `This is the textbook’s crowding example (Ch. 10). The researchers want to study crowding, not the number of people, so {g:group size} is a confound: it varies with the IV and could also explain any drop in performance.`});
+
+QV({k: `Extraneous variable`, q: `In a memory experiment, a large group of participants is randomly assigned to study with music or in silence. Some people arrive far more motivated than others. Which label fits motivation best?`,
+c: `Extraneous variable`,
+x: [[`Confounding variable`, `Motivation would be a confound only if it differed systematically between the music and silence groups. Random assignment makes that unlikely.`],
+[`Third variable`, `Motivation isn’t causing both the condition and the score. Chance, not motivation, decided who studied with music.`]],
+e: `The textbook uses this case: motivation can’t be controlled by the experimenter, but {g:random assignment} should balance it roughly equally across conditions, provided there are enough participants. It stays a plain extraneous variable.`});
+
+QV({k: `Confound`, q: `Participants choose either a paid yoga class or a free no-exercise control. Wealthier people mostly pick the yoga class, and afterward the yoga group reports more happiness. Which label fits income best?`,
+c: `Confounding variable`,
+x: [[`Extraneous variable`, `Income started out as just extraneous, but letting people choose made it pile up in one condition. Now it changes along with the IV.`],
+[`Third variable`, `Income does influence which class people pick, but this study has conditions. When a participant characteristic piles up in one condition, the course calls it a confound (a selection difference). Lecture: "Confound: Participant variable – preexisting individual differences." "Third variable" is kept for two measured variables in a correlational study.`]],
+e: `Straight from the textbook: when people choose their condition, groups may differ on an extraneous variable like income. Then we can’t tell whether happiness comes from {g:exercise} or {g:money}. Random assignment would have prevented it.`});
+
+QV({k: `Confound`, q: `To test whether a 20-minute nature walk lowers stress, the walk group leaves the lab for 20 minutes while the control group keeps filling out forms at their desks. Which label fits "getting a break from the task"?`,
+c: `Confounding variable`,
+x: [[`Extraneous variable`, `The break isn’t neutral here: only one condition gets it, so it differs between conditions.`],
+[`Third variable`, `This is an experiment. The break doesn’t cause two measured variables; it comes bundled with the walk.`]],
+e: `Like the textbook’s boxercise example: the break (1) {g:differs between conditions}, (2) is not of interest, and (3) could explain the result. Maybe any break lowers stress, not nature.`});
+
+QV({k: `Extraneous variable`, q: `The researcher redesigns the nature-walk study: both groups now leave the lab for 20 minutes, one walking through a park and the other through a parking garage. Which label now fits "getting a break from the task"?`,
+c: `Extraneous variable`,
+x: [[`Confounding variable`, `Both groups now get the same break, so it no longer changes along with the IV.`],
+[`Third variable`, `Nothing here causes both of two measured variables. The break is simply the same for everyone.`]],
+e: `Holding the break {g:constant} across conditions is experimental control. It’s still a variable the researcher isn’t interested in (extraneous), but it can’t explain a difference between the groups any more.`});
+
+QV({k: `Confound`, q: `To test whether relaxing music improves test scores, the music group wears headphones playing music, and the control group wears no headphones. The headphones also block out the noise in the room. Which label fits "wearing headphones"?`,
+c: `Confounding variable`,
+x: [[`Extraneous variable`, `Only the music group wears headphones, so this changes along with the IV. That’s more than extraneous.`],
+[`Third variable`, `It’s an experiment, and the headphones come bundled with the music condition rather than causing two measured variables.`]],
+e: `This is the lecture’s example of an {g:accidental IV}: the intended IV is music vs no music, but headphones and blocked-out noise change too. Fix it by giving the control group headphones without music.`});
+
+QV({k: `Confound`, q: `In a study of whether a sugary snack boosts attention, every snack session runs at 9 a.m. and every no-snack session runs at 4 p.m. Which label fits time of day?`,
+c: `Confounding variable`,
+x: [[`Extraneous variable`, `Time of day isn’t spread across conditions. It lines up perfectly with the IV.`],
+[`Third variable`, `It’s an experiment; time of day isn’t causing both of two measured variables. It changes along with the snack condition.`]],
+e: `The textbook warns about exactly this: if conditions were {g:confounded with time of day}, you couldn’t tell whether differences came from the IV or the time. Morning alertness alone could explain better attention.`});
+
+QV({k: `Extraneous variable`, q: `The researcher fixes the snack study: sessions run at all times of day, and which condition each session gets is decided at random. Which label now fits time of day?`,
+c: `Extraneous variable`,
+x: [[`Confounding variable`, `Random assignment now makes each time of day just as likely to get either condition, so it no longer travels with the IV.`],
+[`Third variable`, `Nothing here causes both of two measured variables. Time of day is now spread roughly evenly across conditions.`]],
+e: `The textbook notes random assignment {g:prevents one condition being scheduled only in the mornings}. Time of day still varies, but it’s just as likely to affect either condition.`});
+
+QV({k: `Extraneous variable`, lv: `hard`, q: `In a randomized reaction-time experiment, some keyboards lag slightly. The laggy keyboards were spread across both conditions by chance, so they make scores noisier without favouring either condition. Which label fits keyboard lag?`,
+c: `Extraneous variable`,
+x: [[`Confounding variable`, `A confound has to change along with the IV. Here the lag is spread across both conditions, so it can’t explain a difference between them.`],
+[`Third variable`, `Keyboard lag doesn’t cause both the condition and the score. Chance decided where the laggy keyboards ended up.`]],
+e: `A variable can {g:affect the DV} and still not be a confound. It has to {g:vary with the IV} as well. Lecture rule: a confound must (1) covary with the IV and (2) cause change in the DV.`});
+
+QV({k: `Confound`, lv: `hard`, q: `A school tries a new reading program only in classes taught by its three most experienced teachers; all other classes keep the old program. The new-program classes improve more. Which label fits teacher experience?`,
+c: `Confounding variable`,
+x: [[`Extraneous variable`, `Experience isn’t spread across the programs. It lines up with the new program.`],
+[`Third variable`, `When one condition goes to a particular group, the variable that lines up with it is a confound. Ch. 12: "selection differences are pre-existing differences between these groups that are confounded with the independent variable." "Third variable" is for two measured variables in a correlational study.`]],
+e: `Teacher experience {g:varies along with the program} and could explain the better reading on its own. Randomly assigning classes (and teachers) to programs would break the link.`});
+
+/* ---------- correlational studies: third variable or confound? ---------- */
+QV({k: `Third variable`, q: `A survey finds that teens who eat dinner with their family more often get better grades. A researcher suggests that parents with more time and money can both organize regular family dinners and pay for tutoring. Which label fits parents’ time and money?`,
+c: `Third variable`,
+x: [[`Confounding variable`, `A confound is intertwined with one variable so you can’t separate them. Here the variable is proposed to cause both dinners and grades. That’s the textbook’s dividing line.`],
+[`Extraneous variable`, `True in the broad sense, but too vague. This variable could create the whole correlation, which is what "third variable" names.`]],
+e: `A {g:third variable} causes both measured variables, so dinners and grades could be related without either one causing the other. That’s the third-variable problem.`});
+
+QV({k: `Third variable`, q: `People who gamble more online also report more credit card debt. A researcher proposes impulsivity: impulsive people both gamble more and overspend. Which label fits impulsivity?`,
+c: `Third variable`,
+x: [[`Confounding variable`, `Impulsivity is proposed to cause both gambling and debt, not just to come bundled with one of them.`],
+[`Extraneous variable`, `Too broad. Impulsivity is offered as the cause of the whole relationship.`]],
+e: `Like the textbook’s "poor decision-making" causing both drinking and low grades: one unmeasured variable {g:causes both}, which makes the two look related.`});
+
+QV({k: `Third variable`, q: `Cities with more police officers also have more crimes reported. Bigger cities hire more officers, and bigger cities also have more crime. Which label fits city population?`,
+c: `Third variable`,
+x: [[`Confounding variable`, `Population causes both counts. That’s a third variable, not a variable intertwined with just one of them.`],
+[`Extraneous variable`, `Too broad. Population could produce the entire correlation.`]],
+e: `Population {g:causes both} the number of officers and the number of crimes, so the correlation doesn’t show that police cause crime (or the reverse).`});
+
+QV({k: `Third variable`, lv: `hard`, q: `A survey finds that students who sleep more get better grades. Someone points out that students with long part-time job hours both sleep less and have less time to study. Which label fits job hours?`,
+c: `Third variable`,
+x: [[`Confounding variable`, `Job hours are proposed to cause both less sleep and lower grades. Causing both variables is what makes it a third variable.`],
+[`Extraneous variable`, `Too broad. Job hours could explain the whole sleep–grades link.`]],
+e: `Watch the directions: more job hours means {g:less} sleep and {g:lower} grades, and that alone would make sleep and grades rise and fall together.`});
+
+QV({k: `Confound`, lv: `hard`, q: `A survey finds that students who use their phones more in class get lower exam marks. The heaviest phone users also tend to sit in the back rows, so in the data phone use and seat location go together and can’t be pulled apart. Sitting at the back doesn’t make anyone use their phone, but it could make lectures harder to follow. Which label fits seat location?`,
+c: `Confounding variable`,
+x: [[`Third variable`, `A third variable must cause both variables. The scenario says seat location doesn’t cause phone use; it just comes bundled with it.`],
+[`Extraneous variable`, `It isn’t spread evenly. It travels with phone use and could explain the marks, which makes it a confound.`]],
+e: `Same structure as the textbook’s alcohol example: socializing goes along with drinking but {g:doesn’t cause the drinking}. Seat location is {g:intertwined} with phone use, so you can’t tell which one lowers marks. (In the textbook’s version, socializing is a confound, not a third variable.)`});
+
+QV({k: `Confound`, lv: `hard`, q: `In the textbook’s own example, a researcher measures "intelligence" as students’ academic average and finds that it predicts career success. But academic average also reflects motivation and conscientiousness, which are also related to career success. Which label fits motivation and conscientiousness?`,
+c: `Confounding variables`,
+x: [[`Third variables`, `They’re part of the single measure standing in for intelligence, "intertwined with our variable of interest". You can’t separate intelligence from them inside academic average, which makes them confounds of the operationalization, even though they also relate to career success.`],
+[`Extraneous variables`, `They don’t stay out of the way. They’re part of the operationalization and could explain the result.`]],
+e: `This is the textbook’s example: an imprecise {g:operationalization} captures more than the variable of interest. The extra parts are {g:confounds}, so we can’t tell whether intelligence or something else predicts success.`});
+
+/* ---------- sorting and spotting ---------- */
+QV({k: `Confound vs third variable`, t: `sort`, lv: `hard`, q: `Sort each variable by the label that fits it best.`,
+b: [`Confounding variable`, `Extraneous variable`, `Third variable`],
+i: [[`Only the treatment group gets extra attention from the staff`, 0],
+[`Classes on the new curriculum also have the school’s most experienced teachers`, 0],
+[`Room noise, kept identical for every participant`, 1],
+[`Participants’ mood on arrival, balanced by random assignment`, 1],
+[`Hot weather, which drives up both ice-cream sales and swimming accidents`, 2],
+[`Stress, which makes people both sleep less and snack more`, 2]],
+e: `Changes {g:with the IV} or can’t be separated from it → {g:confound}. Held constant or randomized → {g:extraneous} only. Causes {g:both} measured variables → {g:third variable}.`});
+
+QV({k: `Confound`, t: `pick`, q: `Select every sign that a variable is a confound, not just an extraneous variable.`,
+i: [[`It changes along with the independent variable across conditions`, 1],
+[`It could explain the difference between conditions on the dependent variable`, 1],
+[`It can’t be separated from the variable of interest`, 1],
+[`It is not the variable the researcher is studying`, 0, `True of every extraneous variable, so it doesn’t single out a confound.`],
+[`Random assignment balanced it across the conditions`, 0, `That’s what keeps a variable merely extraneous.`],
+[`It causes both of two measured variables in a correlational study`, 0, `That describes a third variable.`]],
+e: `Lecture rules: a confound must {g:covary with the IV} and {g:cause change in the DV}. Textbook: it’s intertwined with the variable of interest and could explain the results.`});
+
+/* ---------- fixing it ---------- */
+QV({k: `Controlling variables`, q: `In a two-condition experiment, a researcher worries that participants’ prior knowledge of the topic could end up as a confound. Which step keeps it a merely extraneous variable?`,
+c: `Randomly assign participants, or match pairs on prior knowledge and randomly assign within each pair`,
+x: [[`Let participants pick whichever condition they feel most comfortable with, to keep them relaxed`, `Self-selection is how extraneous variables turn into confounds: people who know more might all pick the same condition.`],
+[`Put the most knowledgeable volunteers in the experimental condition so the effect is easier to see`, `That builds the confound in on purpose. Knowledge would now change along with the IV.`],
+[`Measure prior knowledge only after the study has finished, so it can’t influence anyone`, `Measuring it late doesn’t stop it from differing between groups. Assignment is what keeps the groups equivalent.`]],
+e: `{g:Random assignment} makes extraneous variables just as likely to affect each condition. A {g:matched pairs design} goes further for a known variable: match on it, then randomly assign within each pair.`});
+
+QV({k: `Third variable`, lv: `hard`, q: `Why can a true experiment rule out third variables when a correlational study can’t?`,
+c: `Chance, not the person, decides each level of the IV, so no outside variable can cause both the IV and the DV`,
+x: [[`Experiments always measure every possible third variable and then statistically subtract each one out`, `No study measures everything. Random assignment controls variables nobody measured.`],
+[`Experiments use much larger samples, and third variables cancel out once a sample is large enough`, `Sample size alone doesn’t remove a third variable from a correlational study. Manipulation plus random assignment does.`],
+[`Third variables affect only self-report measures, and experiments use behavioural measures`, `Third variables have nothing to do with the type of measure.`]],
+e: `When {g:chance decides} each person’s condition, nothing about the person (income, impulsivity, stress) can decide which level they get, so the third-variable problem is ruled out. When people choose, as in the yoga example, that protection is lost and the participant variable becomes a confound. Confounds can also sneak in through the procedure, which is why control matters too.`});
+</script>
+<script>
 (function () {
   'use strict';
   var BANK = window.BANK, SECTIONS = window.SECTIONS, FIG = window.FIG;
   var BONUS = window.BONUS || [], BONUS_SEC = window.BONUS_SEC || { title: 'Bonus', short: 'Bonus', ch: 'Bonus', lo: [] };
+  var VARS = window.VARS || [], VARS_SEC = window.VARS_SEC || { title: 'Variables', short: 'Variables', ch: 'Extra', lo: [] };
   var app = document.getElementById('app');
 
   /* ---------------- utilities ---------------- */
@@ -6783,12 +6966,19 @@ window.LAB = function (A) {
     var key = q.t + '|' + q.q + '|' + JSON.stringify(q.fig || '') + '|' + (q.c || '') + '|' + JSON.stringify(q.a || q.i || q.p || q.txt || '');
     q.id = 'B-' + hash(key);
   });
-  var BY_ID = {}; BANK.concat(BONUS).forEach(function (q) { BY_ID[q.id] = q; });
+  /* the variables drill gets "V-" ids: separate from the grove, reset along with the Extra section */
+  VARS.forEach(function (q) {
+    q.t = q.t || 'mc';
+    var key = q.t + '|' + q.q + '|' + JSON.stringify(q.fig || '') + '|' + (q.c || '') + '|' + JSON.stringify(q.a || q.i || q.p || q.txt || '');
+    q.id = 'V-' + hash(key);
+  });
+  var BY_ID = {}; BANK.concat(BONUS, VARS).forEach(function (q) { BY_ID[q.id] = q; });
   function sectionQs(s) { return BANK.filter(function (q) { return q.s === s; }); }
-  function isBonusId(id) { return String(id).charAt(0) === 'B'; }
-  function secMeta(s) { return s === 'B' ? BONUS_SEC : SECTIONS[s - 1]; }
-  function sKey(v) { return v === 'B' || v === 'F' ? v : +v; }
-  function poolFor(scope) { return scope === 'all' ? BANK.slice() : scope === 'B' ? BONUS.slice() : scope === 'F' ? flaggedList() : sectionQs(+scope); }
+  function isBonusId(id) { var c = String(id).charAt(0); return c === 'B' || c === 'V'; }
+  function isExtra(s) { return s === 'B' || s === 'V'; }
+  function secMeta(s) { return s === 'B' ? BONUS_SEC : s === 'V' ? VARS_SEC : SECTIONS[s - 1]; }
+  function sKey(v) { return v === 'B' || v === 'F' || v === 'V' ? v : +v; }
+  function poolFor(scope) { return scope === 'all' ? BANK.slice() : scope === 'B' ? BONUS.slice() : scope === 'V' ? VARS.slice() : scope === 'F' ? flaggedList() : sectionQs(+scope); }
 
   /* ---------------- state ---------------- */
   var KEY = 'midterm-grove-v1', PKEY = 'midterm-grove-prefs';
@@ -7069,6 +7259,8 @@ window.LAB = function (A) {
     h += '<section aria-labelledby="extra-h"><h2 id="extra-h" class="eyebrow-h">Extra</h2><div class="sections">' +
       (bl.length ? '<button class="sec sec-bonus" data-act="section" data-s="B"><span class="sec-n" aria-hidden="true">✦</span><span class="sec-b"><span class="sec-t">' + esc(BONUS_SEC.title) + '</span><span class="bonus-flag">Separate from your grove</span><span class="sec-m">The hardest concepts, in fresh settings · ' + bl.length + ' questions</span>' + bar(bl) +
       '<span class="sec-c">' + bc[3] + ' mastered · ' + bc[2] + ' once · ' + bc[1] + ' need work</span></span><span class="sec-go" aria-hidden="true">›</span></button>' : '') +
+      (VARS.length ? (function () { var vc = counts(VARS); return '<button class="sec sec-bonus sec-vars" data-act="section" data-s="V"><span class="sec-n vars-ic" aria-hidden="true">?</span><span class="sec-b"><span class="sec-t">' + esc(VARS_SEC.title) + '</span><span class="bonus-flag">Separate from your grove</span><span class="sec-m">Tell confounding, extraneous and third variables apart · ' + VARS.length + ' questions</span>' + bar(VARS) +
+      '<span class="sec-c">' + vc[3] + ' mastered · ' + vc[2] + ' once · ' + vc[1] + ' need work</span></span><span class="sec-go" aria-hidden="true">›</span></button>'; })() : '') +
       (LABV ? '<button class="sec sec-lab" data-act="lab"><span class="sec-n lab-sec-ic" aria-hidden="true">' + (g ? '<img class="px" alt="" src="' + g.o + '"><img class="px blk" alt="" src="' + g.b + '">' : '') + '</span><span class="sec-b"><span class="sec-t">Experiment Lab</span><span class="bonus-flag">Not graded</span><span class="sec-m">Run a mini study with random participants, then answer questions about the data you just made</span>' +
       '<span class="sec-c">' + (runs ? runs + (runs === 1 ? ' experiment' : ' experiments') + ' run so far' : 'Different every time') + '</span></span><span class="sec-go" aria-hidden="true">›</span></button>' : '') + '</div></section>';
     h += '<section aria-labelledby="exam-h"><h2 id="exam-h" class="eyebrow-h">Exam</h2><div class="sections"><a class="sec sec-exam" href="PSYC217_Exam_Simulation.html"><span class="sec-n exam-sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17.5" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/><path d="M15 17.5l1.5 1.5 3-3.5"/></svg></span><span class="sec-b"><span class="sec-t">Exam Simulation</span><span class="bonus-flag">Add-on · separate page</span><span class="sec-m">A timed mock midterm in the real format (16 multiple choice, 6 fill-in-the-blank, 3 short answers), plus clinics for the look-alike concepts</span></span><span class="sec-go" aria-hidden="true">›</span></a></div></section>';
@@ -7092,21 +7284,23 @@ window.LAB = function (A) {
   function footer() {
     return '<footer class="foot">' +
       '<div class="foot-row reset">' + (confirmReset ?
-        '<span class="warn">This clears every tree in all seven sections. Extra Practice trees stay.</span><div class="segs"><button class="seg" data-act="reset-no">Keep my grove</button><button class="seg danger" data-act="reset-yes">Reset everything</button></div>' :
+        '<span class="warn">This clears every tree in all seven sections. Trees in the Extra section stay.</span><div class="segs"><button class="seg" data-act="reset-no">Keep my grove</button><button class="seg danger" data-act="reset-yes">Reset everything</button></div>' :
         '<span class="foot-l">Start over</span><button class="seg" data-act="reset">Reset all progress</button>') + '</div>' +
       '<p class="note" id="sync-note"></p><p class="note">Answer a question and a seed sprouts. Get it right twice and it grows into a tree. Leave a round any time; it picks up where you left off.</p></footer>';
   }
 
   function renderSection(s) {
-    var isB = s === 'B', sec = secMeta(s), list = poolFor(isB ? 'B' : s), c = counts(list), left = list.length - c[3];
+    var isB = s === 'B', isV = s === 'V', sec = secMeta(s), list = poolFor(isB || isV ? s : s), c = counts(list), left = list.length - c[3];
     var h = '<nav class="top top-tools"><button class="back" data-act="home">‹ Grove</button><span class="top-sp"></span>' + tools() + '</nav>' +
-      '<header class="sec-head"><p class="eyebrow">' + (isB ? 'Extra · not counted in your grove' : 'Section ' + s + ' · ' + esc(sec.ch)) + '</p><h1>' + esc(sec.title) + '</h1>' +
+      '<header class="sec-head"><p class="eyebrow">' + (isB || isV ? 'Extra · not counted in your grove' : 'Section ' + s + ' · ' + esc(sec.ch)) + '</p><h1>' + esc(sec.title) + '</h1>' +
+      (isV ? '<p class="bonus-note">All three are variables you aren’t studying. The label depends on what the variable is doing. ' + VARS.length + ' scenarios from Ch. 5 and Ch. 10 and the lectures. Progress here never changes your grove.</p>' : '') +
       (isB ? '<p class="bonus-note">The hardest midterm ideas, practised in fresh settings: a middle-school mystery and a big online gaming community with its own elections. Each question explains its own story. Progress here is kept on its own and never changes your grove.</p>' : '') + '</header>' +
+      (isV ? varsGuide() : '') +
       '<section class="card">' + bar(list, true) + legend(list) + forest(list) +
       '<div class="actions">' + roundBtns(String(s), left, c[3], 'Start a round') + (isB && list.length && !left ? '<button class="btn summon-btn" data-act="summon" data-k="B">Summon the tree</button>' : '') + '</div>' +
       sizeRow() +
       (isB ? '<div class="foot-row size">' + (confirmResetB ?
-        '<span class="warn">This clears every Extra Practice tree. Your grove stays.</span><div class="segs"><button class="seg" data-act="reset-b-no">Keep them</button><button class="seg danger" data-act="reset-b-yes">Reset Extra Practice</button></div>' :
+        '<span class="warn">This clears every tree in the Extra section (Extra Practice and the variables drill). Your grove stays.</span><div class="segs"><button class="seg" data-act="reset-b-no">Keep them</button><button class="seg danger" data-act="reset-b-yes">Reset Extra Practice</button></div>' :
         '<span class="foot-l">Start Extra Practice over</span><button class="seg" data-act="reset-b">Reset Extra progress</button>') + '</div>' : '') + '</section>' +
       '<details class="card los"><summary>What this section covers</summary><ul>' + sec.lo.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' +
       (sec.terms ? '<p class="terms-h">Study terms</p><ul class="terms">' + sec.terms.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') + '</details>';
@@ -7116,7 +7310,7 @@ window.LAB = function (A) {
   function renderFlagged() {
     var list = flaggedList(), c = counts(list), sr = savedRound('F', 'flag');
     var h = '<nav class="top top-tools"><button class="back" data-act="home">‹ Grove</button><span class="top-sp"></span>' + tools() + '</nav>' +
-      '<header class="sec-head"><p class="eyebrow">Your list · from any section</p><h1>Flagged questions</h1><p class="bonus-note">Every question you flag, from the seven sections and Extra Practice, collects here. Review only these, as often as you like. Answers here still grow your trees.</p></header>';
+      '<header class="sec-head"><p class="eyebrow">Your list · from any section</p><h1>Flagged questions</h1><p class="bonus-note">Every question you flag, from the seven sections and the Extra section, collects here. Review only these, as often as you like. Answers here still grow your trees.</p></header>';
     h += '<section class="card">';
     if (list.length) {
       h += bar(list, true) + legend(list) + '<div class="actions">' +
@@ -7127,12 +7321,21 @@ window.LAB = function (A) {
     if (list.length) {
       h += '<section class="card" aria-labelledby="fl-list-h"><h2 id="fl-list-h" class="fl-h">' + list.length + (list.length === 1 ? ' flagged question' : ' flagged questions') + '</h2><ul class="fl-list">' + list.map(function (q) {
         var sec = secMeta(q.s);
-        return '<li><span class="tag-tree" title="' + TIER_NAME[tier(q.id)] + '">' + tree(tier(q.id)) + '</span><span class="fl-b"><span class="fl-m">' + (q.s === 'B' ? 'Extra Practice' : 'S' + q.s + ' · ' + esc(sec.short)) + (q.k ? ' · ' + esc(q.k) : '') + '</span><span class="fl-q">' + esc(shorten2(q.q)) + '</span></span><button class="seg fl-un" data-act="unflag" data-id="' + esc(q.id) + '">Unflag</button></li>';
+        return '<li><span class="tag-tree" title="' + TIER_NAME[tier(q.id)] + '">' + tree(tier(q.id)) + '</span><span class="fl-b"><span class="fl-m">' + (q.s === 'B' ? 'Extra Practice' : q.s === 'V' ? 'Extra · Variables' : 'S' + q.s + ' · ' + esc(sec.short)) + (q.k ? ' · ' + esc(q.k) : '') + '</span><span class="fl-q">' + esc(shorten2(q.q)) + '</span></span><button class="seg fl-un" data-act="unflag" data-id="' + esc(q.id) + '">Unflag</button></li>';
       }).join('') + '</ul></section>';
     }
     app.innerHTML = h;
   }
   function shorten2(s) { s = String(s).replace(/\{[kgrb]:([^}]+)\}/g, '$1').replace(/___/g, '____'); return s.length > 150 ? s.slice(0, 148) + '…' : s; }
+
+  function varsGuide() {
+    var cards = [
+      ['Extraneous variable', 'Is it just something you aren’t studying, kept the same or spread evenly?', 'Variables not of interest to the researcher. Random assignment makes them "just as likely to affect one condition as they are to affect the others."', 'Held constant → it can’t explain a difference between conditions. Randomized (with enough participants) → it shouldn’t.'],
+      ['Confounding variable', 'Does it change along with the IV, so you can’t tell which one did it?', 'Not of interest, "varies (i.e., changes) along with the independent variable, and could provide an explanation for the results observed."', 'Lecture: an "accidental IV". It must covary with the IV and affect the DV.'],
+      ['Third variable', 'Does it cause both of the variables you measured?', 'In a correlational study, an unmeasured variable that causes both, creating the relationship between them (the third-variable problem).', 'Textbook: third variables cause the relationship; confounds are intertwined with one variable.']
+    ];
+    return '<section class="vguide" aria-label="The three labels">' + cards.map(function (c, i) { return '<article class="vg vg' + i + '"><h3>' + esc(c[0]) + '</h3><p class="vg-ask">' + esc(c[1]) + '</p><p class="vg-def">' + esc(c[2]) + '</p><p class="vg-tip">' + esc(c[3]) + '</p></article>'; }).join('') + '</section>';
+  }
 
   /* ---------------- rounds ---------------- */
   function roundKey(scope, mode, size) { return String(scope) + '_' + mode + '_' + (size || 0); }
@@ -7216,7 +7419,7 @@ window.LAB = function (A) {
   var TYPE = { mc: 'Choose one', fill: 'Fill the blank', match: 'Match', sort: 'Sort', order: 'Put in order', cloze: 'Build the explanation', pick: 'Select all that apply', hot: 'Click the diagram' };
   function renderQuiz() {
     var total = round.size, pos = Math.max(1, Math.min(round.pos, total));
-    var h = '<nav class="top quiz-top"><button class="back" data-act="exit" aria-label="Leave this round">‹ ' + (round.scope === 'all' ? 'Grove' : round.scope === 'B' ? 'Extra' : round.scope === 'F' ? 'Flagged' : 'Section ' + round.scope) + '</button>' +
+    var h = '<nav class="top quiz-top"><button class="back" data-act="exit" aria-label="Leave this round">‹ ' + (round.scope === 'all' ? 'Grove' : round.scope === 'B' ? 'Extra' : round.scope === 'V' ? 'Variables' : round.scope === 'F' ? 'Flagged' : 'Section ' + round.scope) + '</button>' +
       '<div class="qbar">' + roundBar() + '<span class="qcount" aria-hidden="true">' + pos + ' / ' + total + '</span></div>' +
       '<div class="tools">' + themeBtn() + soundBtn() + '</div></nav>';
     h += '<article class="card qcard" id="qcard">' + questionHTML() + '</article>';
@@ -7228,7 +7431,7 @@ window.LAB = function (A) {
   }
   function questionHTML() {
     var q = cur.q, sec = secMeta(q.s), done = cur.done;
-    var h = '<div class="chips-top">' + (q.s === 'B' ? '<span class="tag tag-bonus">Extra Practice</span>' : '<span class="tag tag-sec">S' + q.s + ' · ' + esc(sec.short) + '</span>') + (q.k ? '<span class="tag">' + esc(q.k) + '</span>' : '') +
+    var h = '<div class="chips-top">' + (q.s === 'B' ? '<span class="tag tag-bonus">Extra Practice</span>' : q.s === 'V' ? '<span class="tag tag-bonus">Extra · Variables</span>' : '<span class="tag tag-sec">S' + q.s + ' · ' + esc(sec.short) + '</span>') + (q.k ? '<span class="tag">' + esc(q.k) + '</span>' : '') +
       '<span class="tag tag-' + (q.lv || 'core') + '">' + LV[q.lv || 'core'] + '</span>' + (q.tr ? '<span class="tag tag-tr">Trivia review</span>' : '') + (q.rq ? '<span class="tag tag-rq">Ch. ' + esc(q.rq.split('.')[0]) + ' review Q' + esc(q.rq.split('.')[1]) + '</span>' : '') +
       '<span class="tag tag-type">' + TYPE[q.t] + '</span><span class="tag-tree" title="' + TIER_NAME[tier(q.id)] + '">' + tree(tier(q.id)) + '</span>' + flagBtn(q.id) + '</div>';
     var stem = q.q, stemH;
@@ -7357,9 +7560,9 @@ window.LAB = function (A) {
       case 'hot': var ans = [].concat(q.a); ok = ans.indexOf(cur.sel) >= 0; cur.yourWhy = ok ? '' : ((q.why && q.why[cur.sel]) || ''); break;
     }
     cur.ok = ok; cur.done = true;
-    var setList = isBonusId(q.id) ? BONUS : BANK, wasAll = allMastered(setList);
+    var setList = q.s === 'V' ? null : isBonusId(q.id) ? BONUS : BANK, wasAll = setList ? allMastered(setList) : true;
     var r = record(q.id, ok); cur.prev = r.prev; cur.next = r.next;
-    if (!wasAll && allMastered(setList)) setTimeout(function () { summon(isBonusId(q.id) ? 'B' : 'main'); }, 1500);
+    if (setList && !wasAll && allMastered(setList)) setTimeout(function () { summon(isBonusId(q.id) ? 'B' : 'main'); }, 1500);
     round.seen.push(q.id);
     if (ok) { round.right++; if (r.next > r.prev) round.grown++; if (r.next === 3 && r.prev !== 3) round.mastered++; }
     else round.wrong++;
@@ -7442,7 +7645,7 @@ window.LAB = function (A) {
       '<p class="end-l">This round’s trees</p><div class="forest big">' + ids.map(function (id, i) { return tree(tier(id)).replace('<svg ', '<svg style="animation-delay:' + (0.15 + i * 0.06).toFixed(2) + 's" '); }).join('') + '</div>';
     var scope = round.scope, left = poolFor(scope).filter(function (q) { return fitsMode(q, round.mode); }).length;
     h += '<div class="actions">' + (left ? '<button class="btn primary" data-act="start" data-s="' + scope + '" data-m="' + round.mode + '"' + (round.mode === 'flag' ? ' data-fresh="1"' : '') + '>' + (round.mode === 'flag' ? 'Review flagged again' : 'Another round') + '</button>' : '') +
-      (scope === 'all' ? '' : '<button class="btn" data-act="section" data-s="' + scope + '">' + (scope === 'B' ? 'Extra Practice overview' : scope === 'F' ? 'Flagged questions' : 'Section overview') + '</button>') + '<button class="btn" data-act="home">Back to the grove</button></div></section>';
+      (scope === 'all' ? '' : '<button class="btn" data-act="section" data-s="' + scope + '">' + (scope === 'B' ? 'Extra Practice overview' : scope === 'V' ? 'Variables overview' : scope === 'F' ? 'Flagged questions' : 'Section overview') + '</button>') + '<button class="btn" data-act="home">Back to the grove</button></div></section>';
     app.innerHTML = h;
   }
 
