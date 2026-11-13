@@ -523,6 +523,23 @@ td.hs-wrong, span.hs-wrong, tr.hs-wrong > * { background: var(--clay-bg) !import
 
 /* ---------- Experiment Lab ---------- */
 .sec.sec-lab { border-style: dashed; border-color: var(--moss); }
+/* ---------- Flags ---------- */
+.flag-q { display: inline-flex; align-items: center; gap: 5px; border: 1.5px solid var(--line-strong); background: var(--surface); color: var(--ink2); border-radius: 999px; padding: 3px 10px 3px 8px; font-size: .78rem; font-weight: 600; cursor: pointer; line-height: 1.2; }
+.flag-q:hover { border-color: var(--amber); color: var(--ink); }
+.flag-q.on { border-color: var(--amber); background: var(--amber); color: var(--surface); }
+.fl-ic { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.flag-q.on .fl-f { fill: currentColor; }
+.sec.sec-flag { border-style: dashed; border-color: var(--amber); }
+.flag-sec-ic .fl-ic { width: 28px; height: 28px; display: block; margin: 0 auto; color: var(--amber); }
+.flag-sec-ic .fl-f { fill: var(--amber); }
+.fl-h { font-family: var(--f-hand); font-weight: 400; font-size: 1.4rem; color: var(--ink); }
+.fl-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.fl-list li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; }
+.fl-list .tag-tree { margin: 0; }
+.fl-b { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fl-m { font-size: .74rem; color: var(--muted); font-weight: 600; }
+.fl-q { font-size: .9rem; color: var(--ink); line-height: 1.4; overflow-wrap: anywhere; }
+.fl-un { font-size: .8rem; padding: 4px 11px; }
 /* ---------- Exam Simulation link ---------- */
 a.sec { color: inherit; text-decoration: none; }
 .sec.sec-exam { border: 1.5px solid var(--moss); background: var(--surface); }
@@ -782,7 +799,7 @@ mark.hl-r { background: var(--clay-bg); color: var(--clay-ink); border-radius: 4
 .mk-box.yours { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
 .mk-box.model { background: var(--leaf-bg); color: var(--leaf-ink); }
 .mk-box .lab { margin-bottom: 2px; }
-.mk-box .blank { font-style: italic; color: var(--muted); }
+.mk-box .mk-blank { font-style: italic; color: var(--muted); }
 .rub { display: flex; gap: 10px; align-items: flex-start; background: var(--tint); border-radius: 12px; padding: 10px 12px; cursor: pointer; line-height: 1.45; font-size: .92rem; }
 .rub input { width: 20px; height: 20px; flex: none; margin-top: 2px; accent-color: var(--moss); }
 .rub.on { background: var(--leaf-bg); color: var(--leaf-ink); }
@@ -812,6 +829,19 @@ mark.hl-r { background: var(--clay-bg); color: var(--clay-ink); border-radius: 4
 .exam-link-card { display: grid; grid-template-columns: 52px 1fr 18px; gap: 12px; align-items: center; }
 @media (prefers-reduced-motion: reduce) { .blk, .stamp, .confetti i, .streak.hot .flame, .dots i.now { animation: none !important; } .confetti { display: none; } }
 .cardh { font-family: var(--f-hand); font-weight: 400; font-size: 1.5rem; line-height: 1.15; color: var(--ink); }
+/* flags */
+.rv-fl { display: flex; justify-content: flex-end; }
+.miss li .rv-fl { float: right; margin: 0 0 4px 8px; }
+.fl-card .cardh { display: inline-flex; align-items: center; gap: 8px; }
+.fl-h-ic .fl-ic { width: 22px; height: 22px; color: var(--amber); display: block; }
+.fl-h-ic .fl-f { fill: var(--amber); }
+.fl-card { border: 1.5px dashed var(--amber); }
+.fl-det summary { cursor: pointer; font-weight: 600; color: var(--ink2); font-size: .92rem; padding: 4px 0; }
+.fl-det .fl-list { margin-top: 8px; }
+.fl-list li { grid-template-columns: minmax(0, 1fr) auto; }
+.game-top .flag-q { margin-left: auto; }
+.q-head .flag-q { flex: none; }
+.rub span { flex: 1; }
 </style>
 </head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -1443,6 +1473,25 @@ window.EXAM = (function () {
   var KEY = 'midterm-exam-sim-v1', S = load(KEY) || {};
   if (!S.cl) S.cl = {}; if (!S.hist) S.hist = []; if (S.att === undefined) S.att = null; if (S.timed === undefined) S.timed = true;
   function persist() { save(KEY, S); }
+  if (!S.fl || typeof S.fl !== 'object') S.fl = {};
+
+  /* ---------- flags: every question can be flagged, then reviewed on its own ---------- */
+  function resolve(k) {
+    var m = /^(mc|fib):(\d+)$/.exec(k), c, q;
+    if (m) { q = D[m[1]][+m[2]]; return q ? { kind: m[1], q: q, src: 'Mock midterm · ' + (m[1] === 'mc' ? 'multiple choice' : 'fill in the blank') + ' · Ch. ' + q.ch } : null; }
+    m = /^sa:([ABC])(\d+)$/.exec(k);
+    if (m) { q = D.sa[m[1]] && D.sa[m[1]][+m[2]]; return q ? { kind: 'sa', q: q, src: 'Mock midterm · short answer · ' + q.pts + ' points' } : null; }
+    m = /^cl:([a-z]+):(\d+)$/.exec(k);
+    if (m) { c = clinicById(m[1]); q = c && c.items[+m[2]]; return q ? { kind: 'cl', c: c, q: q, src: 'Clinic scenario · ' + c.title } : null; }
+    return null;
+  }
+  function flaggedKeys() { return Object.keys(S.fl).filter(function (k) { return !!resolve(k); }).sort(function (a, b) { return S.fl[a] - S.fl[b]; }); }
+  function itKey(it) { return it.kind === 'sa' ? 'sa:' + it.r.k + it.r.i : it.kind + ':' + it.r.i; }
+  function isFl(k) { return !!S.fl[k]; }
+  function setFl(k, on) { if (on) S.fl[k] = Date.now(); else delete S.fl[k]; persist(); }
+  var FLAG_IC = '<svg class="fl-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4"/><path class="fl-f" d="M6 4.5h11.5l-2.6 4.2 2.6 4.3H6z"/></svg>';
+  function flagBtn(k) { var on = isFl(k); return '<button class="flag-q' + (on ? ' on' : '') + '" data-act="fl" data-k="' + esc(k) + '" aria-pressed="' + on + '" title="' + (on ? 'Remove from your flagged questions' : 'Flag this question to review it later') + '">' + FLAG_IC + '<span>' + (on ? 'Flagged' : 'Flag') + '</span></button>'; }
+  function flText(info) { return info.kind === 'fib' ? info.q.d : info.kind === 'sa' ? info.q.title + ': ' + info.q.stem : info.q.q; }
 
   /* ---------- sound (soft, short) ---------- */
   var AC = null;
@@ -1516,7 +1565,7 @@ window.EXAM = (function () {
   var view = { name: 'home' }, game = null, confirmSubmit = false, timerId = null, warned = {};
   function go(v, keepScroll) {
     view = v;
-    var h = v.name === 'clinic' ? 'c-' + v.id : v.name === 'exam' || v.name === 'mark' || v.name === 'results' ? 'mock' : '';
+    var h = v.name === 'clinic' ? 'c-' + v.id : v.name === 'exam' || v.name === 'mark' || v.name === 'results' ? 'mock' : v.name === 'flagged' ? 'flagged' : '';
     try { if (location.hash.slice(1) !== h) history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); } catch (e) { }
     render(); if (!keepScroll) window.scrollTo(0, 0);
   }
@@ -1527,6 +1576,7 @@ window.EXAM = (function () {
     else if (view.name === 'exam') renderExam();
     else if (view.name === 'mark') renderMark();
     else if (view.name === 'results') renderResults();
+    else if (view.name === 'flagged') renderFlagged();
   }
   function clinicById(id) { for (var i = 0; i < D.clinics.length; i++) if (D.clinics[i].id === id) return D.clinics[i]; return null; }
 
@@ -1552,6 +1602,7 @@ window.EXAM = (function () {
     if (S.hist.length) h += '<ul class="hist" aria-label="Past attempts">' + S.hist.slice(-5).reverse().map(function (x) { var d = new Date(x.t); return '<li><span>' + d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) + '</span><span>MC ' + x.a + '/16 · Fill ' + x.b + '/6 · SA ' + x.c + '/10</span><b>' + x.total + ' / 32</b></li>'; }).join('') + '</ul>';
     h += '<p class="note">Each attempt draws a new mix from the question pool, so retakes aren’t identical.</p></section>';
     /* clinics */
+    h += flaggedSection();
     h += '<section aria-labelledby="cl-h"><h2 id="cl-h" class="eyebrow-h">Tell them apart</h2><p class="note" style="margin:4px 0 10px">The hardest look-alike concepts: a field guide in the textbook’s words, then quick scenarios to sort.</p><div class="cl-grid">';
     D.clinics.forEach(function (c) {
       var st = S.cl[c.id], best = st ? st.best : 0, n = c.items.length, filled = Math.round(best / n * 5);
@@ -1594,7 +1645,7 @@ window.EXAM = (function () {
     if (game.pos >= n) return endHTML(c);
     var it = c.items[game.order[game.pos]], done = game.sel != null;
     var h = '<div class="game-top"><span class="ex-pos">' + (game.pos + 1) + ' / ' + n + '</span><div class="dots" aria-hidden="true">' + range(n).map(function (i) { return '<i class="' + (i < game.res.length ? (game.res[i] ? 'ok' : 'no') : i === game.pos ? 'now' : '') + '"></i>'; }).join('') + '</div>' +
-      '<span class="streak' + (game.streak >= 3 ? ' hot' : '') + '" aria-label="Streak ' + game.streak + '"><i class="flame"></i>' + game.streak + '</span></div>';
+      '<span class="streak' + (game.streak >= 3 ? ' hot' : '') + '" aria-label="Streak ' + game.streak + '"><i class="flame"></i>' + game.streak + '</span>' + flagBtn('cl:' + c.id + ':' + game.order[game.pos]) + '</div>';
     h += '<p class="scen">' + esc(it.q) + '</p>';
     h += '<div class="tgts' + (c.fix ? ' fixopts' : '') + '" role="group" aria-label="Choices">' + game.opts.map(function (o, i) {
       var cls = 'tgt-b';
@@ -1611,10 +1662,10 @@ window.EXAM = (function () {
   function pickOne(a) { return a[rnd(a.length)]; }
   function endHTML(c) {
     var n = c.items.length, right = game.res.filter(Boolean).length, missed = [];
-    game.res.forEach(function (ok, i) { if (!ok) missed.push(c.items[game.order[i]]); });
+    game.res.forEach(function (ok, i) { if (!ok) missed.push(game.order[i]); });
     var msg = right === n ? 'Perfect sort. You can tell them apart.' : right >= n * 0.8 ? 'Strong. Check the few you missed.' : right >= n * 0.5 ? 'Getting there. Reread the field guide for the ones you missed.' : 'Worth another pass through the field guide.';
     var h = '<div class="grove-top"><h2 class="cardh">Round done</h2></div><p class="end-big">' + right + ' / ' + n + '</p><p class="small-note">' + msg + ' Longest streak: ' + game.best + '.</p>';
-    if (missed.length) h += '<p class="terms-h">The ones to look at again</p><ul class="miss">' + missed.map(function (it) { return '<li>' + esc(it.q) + '<br><b>' + esc(c.fix ? it.o[0] : it.a) + '</b>: ' + md(it.e) + '</li>'; }).join('') + '</ul>';
+    if (missed.length) h += '<p class="terms-h">The ones to look at again</p><ul class="miss">' + missed.map(function (ix) { var it = c.items[ix]; return '<li><div class="rv-fl">' + flagBtn('cl:' + c.id + ':' + ix) + '</div>' + esc(it.q) + '<br><b>' + esc(c.fix ? it.o[0] : it.a) + '</b>: ' + md(it.e) + '</li>'; }).join('') + '</ul>';
     h += '<div class="actions"><button class="btn primary" data-act="play">Sort again (new order)</button><button class="btn" data-act="home">Back to the exam room</button></div>';
     return h;
   }
@@ -1650,6 +1701,102 @@ window.EXAM = (function () {
     document.body.appendChild(d); setTimeout(function () { if (d.parentNode) d.parentNode.removeChild(d); }, 4500);
   }
 
+  /* ---------- flagged: the section and its review mode ---------- */
+  var RV = null;
+  var KIND = { mc: 'Multiple choice', fib: 'Fill in the blank', sa: 'Short answer', cl: 'Clinic scenario' };
+  function flaggedSection() {
+    var ks = flaggedKeys(), n = { mc: 0, fib: 0, sa: 0, cl: 0 }, h = '<section class="card fl-card" aria-labelledby="flg-h"><div class="grove-top"><h2 id="flg-h" class="cardh"><span class="fl-h-ic">' + FLAG_IC + '</span>Flagged questions</h2>' + (ks.length ? '<p class="pct"><b>' + ks.length + '</b> flagged</p>' : '') + '</div>';
+    if (!ks.length) return h + '<p class="small-note">Nothing flagged yet. Tap <b>Flag</b> on any question (in the mock midterm, its results, or a clinic scenario) and it lands here, so you can review only those.</p></section>';
+    ks.forEach(function (k) { n[resolve(k).kind]++; });
+    h += '<p class="small-note">' + [['mc', 'multiple choice'], ['fib', 'fill-in'], ['sa', 'short answer'], ['cl', 'clinic scenario']].filter(function (x) { return n[x[0]]; }).map(function (x) { return n[x[0]] + ' ' + x[1] + (n[x[0]] > 1 && x[0] !== 'mc' ? 's' : ''); }).join(' · ') + '. Review only these, with answers checked as you go.</p>';
+    h += '<div class="actions"><button class="btn primary" data-act="rv-start">Review flagged (' + ks.length + ')</button></div>';
+    h += '<details class="fl-det"><summary>See the list</summary><ul class="fl-list">' + ks.map(function (k) {
+      var info = resolve(k), t = flText(info);
+      return '<li><span class="fl-b"><span class="fl-m">' + esc(info.src) + '</span><span class="fl-q">' + esc(t.length > 150 ? t.slice(0, 148) + '…' : t) + '</span></span><button class="seg fl-un" data-act="unflag" data-k="' + esc(k) + '">Unflag</button></li>';
+    }).join('') + '</ul></details></section>';
+    return h;
+  }
+  function rvState(k, info) {
+    if (!RV.st[k]) {
+      var st = {};
+      if (info.kind === 'mc') st.ord = shuffle(range(info.q.o.length));
+      if (info.kind === 'cl') st.opts = info.c.fix ? shuffle(info.q.o.map(function (t, i) { return { t: t, ok: i === 0 }; })) : info.c.t.map(function (t) { return { t: t, ok: t === info.q.a }; });
+      if (info.kind === 'sa') st.ans = info.q.parts.map(function () { return ''; });
+      if (info.kind === 'fib') st.val = '';
+      RV.st[k] = st;
+    }
+    return RV.st[k];
+  }
+  function rvGo(n) {
+    RV.pos = Math.max(0, Math.min(RV.keys.length, n));
+    var c = document.getElementById('rvcard');
+    if (!c) { render(); return; }
+    c.innerHTML = rvCardHTML();
+    var top = c.getBoundingClientRect().top; if (top < 0) window.scrollBy({ top: top - 12, behavior: reduce() ? 'auto' : 'smooth' });
+    var f = c.querySelector('#rv-in'); if (f) f.focus({ preventScroll: true });
+  }
+  function rvAnswer(kind, i) {
+    var k = RV.keys[RV.pos], info = resolve(k), st = rvState(k, info);
+    if (st.done) return;
+    if (kind === 'mc') { st.sel = i; st.ok = i === info.q.a; }
+    else if (kind === 'cl') { st.sel = i; st.ok = st.opts[i].ok; }
+    else if (kind === 'fib') { var inp = document.getElementById('rv-in'); st.val = inp ? inp.value : st.val; if (!norm(st.val)) { if (inp) inp.focus(); return; } st.ok = termOk(st.val, info.q.a); }
+    st.done = true;
+    play(kind === 'sa' ? 'tap' : st.ok ? 'right' : 'wrong');
+    var c = document.getElementById('rvcard'); if (c) c.innerHTML = rvCardHTML();
+    var nx = document.getElementById('rv-nx'); if (nx) { nx.focus({ preventScroll: true }); if (nx.scrollIntoView) nx.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'nearest' }); }
+  }
+  function rvCardHTML() {
+    var N = RV.keys.length;
+    if (RV.pos >= N) {
+      var auto = 0, right = 0;
+      RV.keys.forEach(function (k) { var st = RV.st[k]; if (st && st.done && st.ok !== undefined) { auto++; if (st.ok) right++; } });
+      var left = flaggedKeys().length;
+      return '<div class="grove-top"><h2 class="cardh">Review done</h2></div>' + (auto ? '<p class="end-big">' + right + ' / ' + auto + '</p><p class="small-note">right, of the ones checked automatically' + (auto < N ? ' (short answers are compared with the model answer instead)' : '') + '.</p>' : '<p class="small-note">You went through all ' + N + '.</p>') +
+        '<p class="small-note">' + (left ? left + ' still flagged. Unflag the ones you’ve got, and the list gets shorter each time.' : 'Nothing is flagged any more. Nice.') + '</p>' +
+        '<div class="actions">' + (left ? '<button class="btn primary" data-act="rv-start">Review flagged again (' + left + ')</button>' : '') + '<button class="btn" data-act="home">Back to the exam room</button></div>';
+    }
+    var k = RV.keys[RV.pos], info = resolve(k), st = rvState(k, info), q = info.q, done = !!st.done, h = '';
+    h += '<div class="game-top"><span class="ex-pos">' + (RV.pos + 1) + ' / ' + N + '</span><div class="dots" aria-hidden="true">' + RV.keys.map(function (kk, i) { var s2 = RV.st[kk]; return '<i class="' + (s2 && s2.done ? (s2.ok === false ? 'no' : 'ok') : i === RV.pos ? 'now' : '') + '"></i>'; }).join('') + '</div>' + flagBtn(k) + '</div>';
+    h += '<p class="q-part">' + esc(info.src) + '</p>';
+    if (info.kind === 'mc') {
+      h += '<h2 class="stem">' + esc(q.q) + '</h2><div class="opts" role="group" aria-label="Answer choices">' + st.ord.map(function (oi, j) {
+        var cls = 'opt'; if (done) { if (oi === q.a) cls += ' right'; else if (oi === st.sel) cls += ' wrong'; }
+        return '<button class="' + cls + '" data-act="rv-mc" data-o="' + oi + '"' + (done ? ' disabled' : '') + '><span class="key">' + 'ABCD'[j] + '</span><span class="ot">' + esc(q.o[oi]) + '</span></button>';
+      }).join('') + '</div>';
+      if (done) h += '<div class="fb ' + (st.ok ? 'ok' : 'no') + '" role="status"><p class="verdict">' + (st.ok ? 'Right.' : 'Not quite.') + '</p>' + (st.ok ? '' : '<p class="fb-p"><b>Correct:</b> ' + esc(q.o[q.a]) + '</p>') + '<p class="fb-p"><span class="lab lab-g">Why</span>' + md(q.e) + '</p></div>';
+    } else if (info.kind === 'fib') {
+      h += '<p class="small-note">Write the term that matches this definition.</p><p class="defq">' + esc(q.d) + '</p>';
+      if (!done) h += '<div class="term-in"><label class="sr" for="rv-in">Term</label><input id="rv-in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="60" placeholder="The term" value="' + esc(st.val) + '"></div><div class="actions"><button class="btn primary" data-act="rv-fib">Check</button></div>';
+      else h += '<div class="fb ' + (st.ok ? 'ok' : 'no') + '" role="status"><p class="verdict">' + (st.ok ? 'Right.' : 'Not quite.') + '</p><p class="fb-p"><b>You wrote:</b> ' + esc(st.val) + '</p><p class="fb-p"><b>Term:</b> ' + esc(q.a[0]) + ' (Ch. ' + q.ch + ')</p></div>';
+    } else if (info.kind === 'sa') {
+      h += '<h2 class="stem">' + esc(q.title) + '</h2><p class="scen" style="font-weight:400">' + esc(q.stem) + '</p>';
+      if (q.table) h += '<div class="tbl-wrap"><table class="sa-tbl"><thead><tr><th></th>' + q.table.c.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' + q.table.r.map(function (rr, i) { return '<tr><th>' + esc(rr) + '</th>' + q.table.m[i].map(function (v) { return '<td>' + v + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+      h += q.parts.map(function (p, j) {
+        var x = '<div class="sa-part"><label for="rv-sa-' + j + '"><span class="pl">(' + 'abcd'[j] + ')</span><span>' + esc(p.q) + '</span><span class="pt">1 pt</span></label>';
+        if (!done) return x + '<textarea id="rv-sa-' + j + '" data-rk="' + j + '" rows="3" placeholder="Optional: write your answer first">' + esc(st.ans[j]) + '</textarea></div>';
+        return x + '<div class="mk-grid"><div class="mk-box yours"><span class="lab">Your answer</span>' + (st.ans[j].trim() ? esc(st.ans[j]) : '<span class="mk-blank">(left blank)</span>') + '</div><div class="mk-box model"><span class="lab lab-g">Model answer</span>' + esc(p.m) + '</div></div><p class="rub on"><span><b>The point goes to:</b> ' + esc(p.r) + '</span></p></div>';
+      }).join('');
+      if (!done) h += '<div class="actions"><button class="btn primary" data-act="rv-show">Show model answers</button></div>';
+    } else {
+      var c = info.c;
+      h += '<p class="scen">' + esc(q.q) + '</p><div class="tgts' + (c.fix ? ' fixopts' : '') + '" role="group" aria-label="Choices">' + st.opts.map(function (o, i) {
+        var cls = 'tgt-b'; if (done) { if (o.ok) cls += ' right'; else if (st.sel === i) cls += ' wrong'; else cls += ' dim'; }
+        return '<button class="' + cls + '" data-act="rv-cl" data-i="' + i + '"' + (done ? ' disabled' : '') + '><span class="k">' + (i + 1) + '</span><span>' + esc(o.t) + '</span></button>';
+      }).join('') + '</div>';
+      if (done) h += '<div class="fb ' + (st.ok ? 'ok' : 'no') + '" role="status"><p class="verdict">' + (st.ok ? 'Right.' : 'Not quite. It’s ' + esc(c.fix ? 'the highlighted fix' : q.a) + '.') + '</p><p class="fb-p"><span class="lab lab-g">Why</span>' + md(q.e) + '</p></div>';
+    }
+    h += '<div class="ex-nav"><button class="btn" data-act="rv-prev"' + (RV.pos === 0 ? ' disabled' : '') + '>‹ Previous</button><span class="sp"></span><button class="btn primary" id="rv-nx" data-act="rv-next">' + (RV.pos + 1 < N ? 'Next ›' : 'Finish') + '</button></div>';
+    return h;
+  }
+  function renderFlagged() {
+    if (!RV) { var ks = flaggedKeys(); if (!ks.length) { go({ name: 'home' }); return; } RV = { keys: ks, pos: 0, st: {} }; }
+    var h = navTop() + '<header class="sec-head"><p class="eyebrow">Your list · review only these</p><h1>Flagged questions</h1><p class="bonus-note">Everything you flagged in the mock midterm and the clinics. Answers are checked as you go. Unflag a question once you’ve got it.</p></header>';
+    h += '<section class="card" id="rvcard">' + rvCardHTML() + '</section>';
+    app.innerHTML = h;
+    var f = document.querySelector('#rvcard #rv-in'); if (f) f.focus({ preventScroll: true });
+  }
+
   /* ---------- the mock midterm ---------- */
   function buildAttempt() {
     var chs = {}, picked = [], rest = [];
@@ -1673,7 +1820,7 @@ window.EXAM = (function () {
   function remaining() { var a = S.att; return a && a.timed ? a.dur - (Date.now() - a.start) : null; }
 
   function navGrid(att) {
-    var g = function (from, to, l) { var h = '<span class="grp"><span class="gl">' + l + '</span>'; for (var n = from; n < to; n++) { var it = item(att, n); h += '<button class="nq' + (isAnswered(it) ? ' done' : '') + (it.r.flag ? ' flag' : '') + (att.cur === n ? ' cur' : '') + '" data-act="jump" data-n="' + n + '" aria-label="Question ' + label(n) + (isAnswered(it) ? ', answered' : '') + (it.r.flag ? ', flagged' : '') + '">' + (n < 16 ? n + 1 : n < 22 ? n - 15 : n - 21) + '</button>'; } return h + '</span>'; };
+    var g = function (from, to, l) { var h = '<span class="grp"><span class="gl">' + l + '</span>'; for (var n = from; n < to; n++) { var it = item(att, n); h += '<button class="nq' + (isAnswered(it) ? ' done' : '') + (isFl(itKey(it)) ? ' flag' : '') + (att.cur === n ? ' cur' : '') + '" data-act="jump" data-n="' + n + '" aria-label="Question ' + label(n) + (isAnswered(it) ? ', answered' : '') + (isFl(itKey(it)) ? ', flagged' : '') + '">' + (n < 16 ? n + 1 : n < 22 ? n - 15 : n - 21) + '</button>'; } return h + '</span>'; };
     return '<div class="nav-grid" aria-label="Questions">' + g(0, 16, 'A') + g(16, 22, 'B') + g(22, 25, 'C') + '</div>';
   }
   function timerHTML() {
@@ -1691,13 +1838,13 @@ window.EXAM = (function () {
     startTimer();
   }
   function submitPanel(att) {
-    var un = 25 - countAnswered(att), fl = 0; for (var n = 0; n < 25; n++) if (item(att, n).r.flag) fl++;
+    var un = 25 - countAnswered(att), fl = 0; for (var n = 0; n < 25; n++) if (isFl(itKey(item(att, n)))) fl++;
     return '<div class="panel" role="alertdialog" aria-label="Submit the exam?"><h3>Hand it in?</h3><p class="small-note">' + (un ? '<b>' + un + '</b> question' + (un === 1 ? ' is' : 's are') + ' unanswered. ' : 'Every question has an answer. ') + (fl ? fl + ' flagged for review. ' : '') + 'Multiple choice and fill-ins are marked automatically; then you’ll mark your short answers with the rubric.</p><div class="actions"><button class="btn primary" data-act="submit-yes">Submit for marking</button><button class="btn" data-act="submit-no">Keep working</button></div></div>';
   }
   function questionHTML(att) {
     var it = item(att, att.cur), r = it.r, h = '';
     var part = it.kind === 'mc' ? 'Part A · Multiple choice · 1 point' : it.kind === 'fib' ? 'Part B · Fill in the blank · 1 point' : 'Part C · Short answer · ' + D.sa[r.k][r.i].pts + ' points';
-    h += '<div class="q-head"><span class="q-num">' + label(att.cur) + '</span><p class="q-part">' + part + '</p><span class="sp"></span><button class="flag-b" data-act="flag" aria-pressed="' + r.flag + '">' + (r.flag ? 'Flagged' : 'Flag for review') + '</button></div>';
+    h += '<div class="q-head"><span class="q-num">' + label(att.cur) + '</span><p class="q-part">' + part + '</p><span class="sp"></span>' + flagBtn(itKey(it)) + '</div>';
     if (it.kind === 'mc') {
       var q = D.mc[r.i];
       h += '<h2 class="stem">' + esc(q.q) + '</h2><div class="opts" role="radiogroup" aria-label="Answer choices">' + r.ord.map(function (oi, k) {
@@ -1762,10 +1909,10 @@ window.EXAM = (function () {
     var h = navTop() + '<header class="sec-head"><p class="eyebrow">Mock midterm · marking</p><h1>Mark your short answers</h1><p class="bonus-note">Parts A and B are marked: <b>' + sc.a + ' / 16</b> multiple choice and <b>' + sc.b + ' / 6</b> fill-ins. Now compare each short answer with the model answer and give yourself the point only if your answer has the idea in the rubric. Be as strict as Andrew would be.</p></header>';
     att.sa.forEach(function (r, si) {
       var s = D.sa[r.k][r.i];
-      h += '<section class="card"><div class="q-head"><span class="q-num">C' + (si + 1) + '</span><p class="q-part">' + esc(s.title) + ' · ' + s.pts + ' points</p></div><p class="small-note">' + esc(s.stem) + '</p>';
+      h += '<section class="card"><div class="q-head"><span class="q-num">C' + (si + 1) + '</span><p class="q-part">' + esc(s.title) + ' · ' + s.pts + ' points</p><span class="sp"></span>' + flagBtn('sa:' + r.k + r.i) + '</div><p class="small-note">' + esc(s.stem) + '</p>';
       if (s.table) h += '<div class="tbl-wrap"><table class="sa-tbl"><thead><tr><th></th>' + s.table.c.map(function (x) { return '<th>' + esc(x) + '</th>'; }).join('') + '</tr></thead><tbody>' + s.table.r.map(function (rr, i) { return '<tr><th>' + esc(rr) + '</th>' + s.table.m[i].map(function (v) { return '<td>' + v + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
       s.parts.forEach(function (p, k) {
-        h += '<div class="mk"><p class="mk-q">(' + 'abcd'[k] + ') ' + esc(p.q) + '</p><div class="mk-grid"><div class="mk-box yours"><span class="lab">Your answer</span>' + (r.ans[k].trim() ? esc(r.ans[k]) : '<span class="blank">(left blank)</span>') + '</div><div class="mk-box model"><span class="lab lab-g">Model answer</span>' + esc(p.m) + '</div></div>' +
+        h += '<div class="mk"><p class="mk-q">(' + 'abcd'[k] + ') ' + esc(p.q) + '</p><div class="mk-grid"><div class="mk-box yours"><span class="lab">Your answer</span>' + (r.ans[k].trim() ? esc(r.ans[k]) : '<span class="mk-blank">(left blank)</span>') + '</div><div class="mk-box model"><span class="lab lab-g">Model answer</span>' + esc(p.m) + '</div></div>' +
           '<label class="rub' + (r.marks[k] ? ' on' : '') + '"><input type="checkbox" data-act="mark" data-s="' + si + '" data-k="' + k + '"' + (r.marks[k] ? ' checked' : '') + '><span><b>Give yourself the point if:</b> ' + esc(p.r) + '</span></label></div>';
       });
       h += '</section>';
@@ -1798,16 +1945,16 @@ window.EXAM = (function () {
     h += '<section class="card"><h2 class="cardh">Review every question</h2>';
     att.mc.forEach(function (r, n) {
       var q = D.mc[r.i], ok = r.sel === q.a;
-      h += '<details class="rv"' + (ok ? '' : ' open') + '><summary><span class="mk-ic ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</span>A' + (n + 1) + ' · ' + esc(q.q.length > 90 ? q.q.slice(0, 88) + '…' : q.q) + '</summary><div class="rv-b"><p>' + esc(q.q) + '</p>' +
+      h += '<details class="rv"' + (ok ? '' : ' open') + '><summary><span class="mk-ic ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</span>A' + (n + 1) + ' · ' + esc(q.q.length > 90 ? q.q.slice(0, 88) + '…' : q.q) + '</summary><div class="rv-b"><div class="rv-fl">' + flagBtn('mc:' + r.i) + '</div><p>' + esc(q.q) + '</p>' +
         (ok ? '' : '<p><b>Your answer:</b> ' + (r.sel == null ? '<i>none</i>' : esc(q.o[r.sel])) + '</p>') + '<p><b>Correct:</b> ' + esc(q.o[q.a]) + '</p><p class="fb-p"><span class="lab lab-g">Why</span>' + md(q.e) + '</p></div></details>';
     });
     att.fib.forEach(function (r, n) {
       var q = D.fib[r.i], ok = termOk(r.val, q.a);
-      h += '<details class="rv"' + (ok ? '' : ' open') + '><summary><span class="mk-ic ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</span>B' + (n + 1) + ' · ' + esc(q.a[0]) + '</summary><div class="rv-b"><p>' + esc(q.d) + '</p><p><b>You wrote:</b> ' + (r.val.trim() ? esc(r.val) : '<i>nothing</i>') + '</p><p><b>Term:</b> ' + esc(q.a[0]) + ' (Ch. ' + q.ch + ')</p></div></details>';
+      h += '<details class="rv"' + (ok ? '' : ' open') + '><summary><span class="mk-ic ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</span>B' + (n + 1) + ' · ' + esc(q.a[0]) + '</summary><div class="rv-b"><div class="rv-fl">' + flagBtn('fib:' + r.i) + '</div><p>' + esc(q.d) + '</p><p><b>You wrote:</b> ' + (r.val.trim() ? esc(r.val) : '<i>nothing</i>') + '</p><p><b>Term:</b> ' + esc(q.a[0]) + ' (Ch. ' + q.ch + ')</p></div></details>';
     });
     att.sa.forEach(function (r, n) {
       var s = D.sa[r.k][r.i], got = r.marks.filter(Boolean).length;
-      h += '<details class="rv"><summary><span class="mk-ic ' + (got === s.pts ? 'ok' : got ? 'part' : 'no') + '">' + got + '</span>C' + (n + 1) + ' · ' + esc(s.title) + ' (' + got + ' / ' + s.pts + ')</summary><div class="rv-b">' + s.parts.map(function (p, k) { return '<p><b>(' + 'abcd'[k] + ') ' + esc(p.q) + '</b><br>' + esc(p.m) + '</p>'; }).join('') + '</div></details>';
+      h += '<details class="rv"><summary><span class="mk-ic ' + (got === s.pts ? 'ok' : got ? 'part' : 'no') + '">' + got + '</span>C' + (n + 1) + ' · ' + esc(s.title) + ' (' + got + ' / ' + s.pts + ')</summary><div class="rv-b"><div class="rv-fl">' + flagBtn('sa:' + r.k + r.i) + '</div>' + s.parts.map(function (p, k) { return '<p><b>(' + 'abcd'[k] + ') ' + esc(p.q) + '</b><br>' + esc(p.m) + '</p>'; }).join('') + '</div></details>';
     });
     h += '</section>';
     app.innerHTML = h;
@@ -1838,7 +1985,21 @@ window.EXAM = (function () {
       case 'jump': play('tap'); confirmSubmit = false; var p = document.querySelector('.panel'); if (p) p.remove(); showQ(+el.getAttribute('data-n')); break;
       case 'prev': play('tap'); showQ(att.cur - 1); break;
       case 'nextq': play('tap'); showQ(att.cur + 1); break;
-      case 'flag': { var r = item(att, att.cur).r; r.flag = !r.flag; persist(); el.setAttribute('aria-pressed', r.flag); el.textContent = r.flag ? 'Flagged' : 'Flag for review'; refreshExamBar(); play('tap'); break; }
+      case 'fl': {
+        var fk = el.getAttribute('data-k'), fon = !isFl(fk); setFl(fk, fon); play(fon ? 'right' : 'tap');
+        document.querySelectorAll('[data-act="fl"]').forEach(function (b) { if (b.getAttribute('data-k') === fk) b.outerHTML = flagBtn(fk); });
+        var nb = document.querySelector('[data-act="fl"][data-k="' + fk + '"]'); if (nb) nb.focus({ preventScroll: true });
+        if (view.name === 'exam') refreshExamBar();
+        break;
+      }
+      case 'unflag': play('tap'); setFl(el.getAttribute('data-k'), false); render(); break;
+      case 'rv-start': play('tap'); RV = null; go({ name: 'flagged' }); break;
+      case 'rv-mc': rvAnswer('mc', +el.getAttribute('data-o')); break;
+      case 'rv-cl': rvAnswer('cl', +el.getAttribute('data-i')); break;
+      case 'rv-fib': rvAnswer('fib'); break;
+      case 'rv-show': rvAnswer('sa'); break;
+      case 'rv-prev': play('tap'); rvGo(RV.pos - 1); break;
+      case 'rv-next': play('tap'); rvGo(RV.pos + 1); break;
       case 'mc': { var r2 = item(att, att.cur).r; r2.sel = +el.getAttribute('data-o'); persist(); play('tap'); document.querySelectorAll('#qcard .opt').forEach(function (o) { var on = +o.getAttribute('data-o') === r2.sel; o.classList.toggle('sel', on); o.setAttribute('aria-checked', on); }); refreshExamBar(); break; }
       case 'submit': play('tap'); confirmSubmit = true; renderExam(); window.scrollTo({ top: 0, behavior: reduce() ? 'auto' : 'smooth' }); var y = document.querySelector('[data-act="submit-yes"]'); if (y) y.focus({ preventScroll: true }); break;
       case 'submit-no': play('tap'); confirmSubmit = false; renderExam(); break;
@@ -1859,7 +2020,14 @@ window.EXAM = (function () {
     }
   });
   app.addEventListener('input', function (e) {
-    var t = e.target, att = S.att; if (!att || att.phase !== 'taking') return;
+    var t = e.target, att = S.att;
+    if (view.name === 'flagged' && RV && RV.pos < RV.keys.length) {
+      var rk = RV.keys[RV.pos], rst = RV.st[rk];
+      if (rst && t.id === 'rv-in') rst.val = t.value;
+      else if (rst && t.hasAttribute && t.hasAttribute('data-rk')) rst.ans[+t.getAttribute('data-rk')] = t.value;
+      return;
+    }
+    if (!att || att.phase !== 'taking') return;
     if (t.id === 'fib-in') { item(att, att.cur).r.val = t.value; saveSoon(); refreshExamBar(); }
     else if (t.tagName === 'TEXTAREA' && t.hasAttribute('data-k')) { item(att, att.cur).r.ans[+t.getAttribute('data-k')] = t.value; saveSoon(); refreshExamBar(); }
   });
@@ -1884,7 +2052,14 @@ window.EXAM = (function () {
     var tag = e.target && e.target.tagName;
     if (view.name === 'clinic' && game && game.opts && tag !== 'INPUT' && tag !== 'TEXTAREA') {
       if (game.sel == null) { var k = parseInt(e.key, 10); if (k >= 1 && k <= game.opts.length) { e.preventDefault(); choose(k - 1); } }
-      else if (e.key === 'Enter' && !(e.target.getAttribute && e.target.getAttribute('data-act') === 'next')) { e.preventDefault(); play('tap'); nextScenario(); }
+      else if (e.key === 'Enter' && !(e.target.getAttribute && (e.target.getAttribute('data-act') === 'next' || e.target.getAttribute('data-act') === 'fl'))) { e.preventDefault(); play('tap'); nextScenario(); }
+    } else if (view.name === 'flagged' && RV && RV.pos < RV.keys.length && tag !== 'TEXTAREA') {
+      var rk2 = RV.keys[RV.pos], inf = resolve(rk2), rs = RV.st[rk2] || {};
+      if (e.key === 'Enter' && tag === 'INPUT') { e.preventDefault(); if (!rs.done) rvAnswer('fib'); return; }
+      if (tag === 'INPUT' || (e.target.getAttribute && e.target.getAttribute('data-act'))) return;
+      if (!rs.done && inf.kind === 'mc') { var ix = 'abcd'.indexOf(e.key.toLowerCase()); if (ix >= 0) { var ob = document.querySelectorAll('#rvcard .opt')[ix]; if (ob) { e.preventDefault(); ob.click(); } } }
+      else if (!rs.done && inf.kind === 'cl') { var kk = parseInt(e.key, 10); if (kk >= 1 && kk <= rs.opts.length) { e.preventDefault(); rvAnswer('cl', kk - 1); } }
+      else if (rs.done && e.key === 'Enter') { e.preventDefault(); play('tap'); rvGo(RV.pos + 1); }
     } else if (view.name === 'exam' && S.att && tag !== 'TEXTAREA') {
       if (tag !== 'INPUT') { var it = item(S.att, S.att.cur); if (it.kind === 'mc') { var idx = 'abcd'.indexOf(e.key.toLowerCase()); if (idx >= 0) { var b = document.querySelectorAll('#qcard .opt')[idx]; if (b) { e.preventDefault(); b.click(); } } } }
       if (e.key === 'Enter' && tag === 'INPUT') { e.preventDefault(); if (S.att.cur < 24) showQ(S.att.cur + 1); }
@@ -1899,11 +2074,12 @@ window.EXAM = (function () {
   function routeFromHash() {
     var h = (location.hash || '').slice(1);
     if (h.indexOf('c-') === 0 && clinicById(h.slice(2))) { game = null; view = { name: 'clinic', id: h.slice(2) }; }
+    else if (h === 'flagged' && flaggedKeys().length) { RV = null; view = { name: 'flagged' }; }
     else if (h === 'mock' && S.att) view = { name: S.att.phase === 'taking' ? 'exam' : S.att.phase === 'marking' ? 'mark' : 'results' };
     else view = { name: 'home' };
     render();
   }
-  window.__examState = function () { return { S: S, view: view, game: game }; };
+  window.__examState = function () { return { S: S, view: view, game: game, RV: RV }; };
   routeFromHash();
 })();
 
