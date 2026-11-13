@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Midterm Grove</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233B7A4E'/%3E%3Crect x='29.5' y='33' width='5' height='19' rx='2.5' fill='%23E9F3E6'/%3E%3Ccircle cx='32' cy='25' r='14' fill='%23E9F3E6'/%3E%3Ccircle cx='22.5' cy='33' r='8' fill='%23E9F3E6'/%3E%3Ccircle cx='41.5' cy='33' r='8' fill='%23E9F3E6'/%3E%3C/svg%3E">
@@ -526,6 +526,10 @@ td.hs-wrong, span.hs-wrong, tr.hs-wrong > * { background: var(--clay-bg) !import
 
 /* ---------- Experiment Lab ---------- */
 .sec.sec-lab { border-style: dashed; border-color: var(--moss); }
+/* ---------- Exam Simulation link ---------- */
+a.sec { color: inherit; text-decoration: none; }
+.sec.sec-exam { border: 1.5px solid var(--moss); background: var(--surface); }
+.exam-sec-ic svg { width: 30px; height: 30px; fill: none; stroke: var(--moss); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; display: block; margin: 0 auto; }
 .lab-sec-ic { position: relative; display: block; width: 38px; height: 48px; margin: 0 auto; }
 .lab-sec-ic img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .lab-hero .lab-rq { margin: 6px 0 0; font-weight: 600; font-size: 1.05rem; color: var(--ink); max-width: 60ch; }
@@ -7030,6 +7034,7 @@ window.LAB = function (A) {
       '<span class="sec-c">' + bc[3] + ' mastered · ' + bc[2] + ' once · ' + bc[1] + ' need work</span></span><span class="sec-go" aria-hidden="true">›</span></button>' : '') +
       (LABV ? '<button class="sec sec-lab" data-act="lab"><span class="sec-n lab-sec-ic" aria-hidden="true">' + (g ? '<img class="px" alt="" src="' + g.o + '"><img class="px blk" alt="" src="' + g.b + '">' : '') + '</span><span class="sec-b"><span class="sec-t">Experiment Lab</span><span class="bonus-flag">Not graded</span><span class="sec-m">Run a mini study with random participants, then answer questions about the data you just made</span>' +
       '<span class="sec-c">' + (runs ? runs + (runs === 1 ? ' experiment' : ' experiments') + ' run so far' : 'Different every time') + '</span></span><span class="sec-go" aria-hidden="true">›</span></button>' : '') + '</div></section>';
+    h += '<section aria-labelledby="exam-h"><h2 id="exam-h" class="eyebrow-h">Exam</h2><div class="sections"><a class="sec sec-exam" href="PSYC217_Exam_Simulation.html"><span class="sec-n exam-sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17.5" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/><path d="M15 17.5l1.5 1.5 3-3.5"/></svg></span><span class="sec-b"><span class="sec-t">Exam Simulation</span><span class="bonus-flag">Add-on · separate page</span><span class="sec-m">A timed mock midterm in the real format (16 multiple choice, 6 fill-in-the-blank, 3 short answers), plus clinics for the look-alike concepts</span></span><span class="sec-go" aria-hidden="true">›</span></a></div></section>';
     h += footer();
     app.innerHTML = h; paintSync();
   }
@@ -7515,5 +7520,4 @@ window.LAB = function (A) {
 })();
 
 </script>
-
 </body></html>
