@@ -6911,6 +6911,53 @@ x: [[`Experiments always measure every possible third variable and then statisti
 e: `When {g:chance decides} each person’s condition, nothing about the person (income, impulsivity, stress) can decide which level they get, so the third-variable problem is ruled out. When people choose, as in the yoga example, that protection is lost and the participant variable becomes a confound. Confounds can also sneak in through the procedure, which is why control matters too.`});
 </script>
 <script>
+/* ======================= ADDED DRAWINGS =======================
+   Extra figures for questions that had none (sections 3–7 and the variables drill).
+   They are attached by question id AFTER ids are computed, so adding a drawing never
+   changes a question's id (progress, saved rounds and flags all stay put). */
+window.ADDFIG = {
+  /* ---- Section 3 · Experimental design & conducting experiments ---- */
+  '3-1fai815': { k: 'conds', c: [['Caffeine group', [['Races 1–2: no pill'], ['Races 3–4: 100 mg caffeine pill'], ['Timed on every race']]], ['Control group', [['Races 1–2: no pill'], ['Races 3–4: nothing'], ['Timed on every race']]]] },
+  '3-1008a7g': { k: 'conds', c: [['The only group: 50 children', [['1. Reading test'], ['2. Three weeks of SuperSmarty'], ['3. Retest: 10 points higher']]]] },
+  '3-1cvodc4': { k: 'conds', c: [['Crowded condition', [['Small room'], ['Ten people in the room'], ['Same test']]], ['Uncrowded condition', [['Same small room'], ['Two people in the room'], ['Same test']]]] },
+  '3-n2ag05': { k: 'latin', rows: [['A', 'B', 'D', 'C'], ['B', 'C', 'A', 'D'], ['C', 'D', 'B', 'A'], ['D', 'A', 'C', 'B']], cap: 'A Latin square for four conditions (A–D). Each row is one order.' },
+  '3-mhcrn9': { k: 'tbl', rl: 'Participant', r: ['P1', 'P2', 'P3'], c: ['Listen', 'Read silently'], m: [[54, 58], [68, 71], [75, 82]] },
+  '3-6eeu3': { k: 'conds', c: [['"Bright" rats', [['Same strain'], ['Label picked at random'], ['Trained by students told they’re bright']]], ['"Dull" rats', [['Same strain'], ['Label picked at random'], ['Trained by students told they’re dull']]]] },
+
+  /* ---- Section 4 · Complex experiments ---- */
+  '4-rk4b0w': { k: 'ix', x: ['None', 'Low', 'Moderate', 'High', 'Very high'], m: [[2, 5, 8, 5.5, 3]], max: 10, y: 'Attitude change', xl: 'Amount of fear in the message', cap: 'Illustrative shape' },
+  '4-1vhtq2k': { k: 'ix', bar: true, x: ['Sad story', 'Happy story'], m: [[4, 7]], max: 10, y: 'Story recall', cap: 'Illustrative data' },
+  '4-12u2v4x': { k: 'conds', c: [['VR nature scene', [['Stressed first'], ['Wears a VR headset'], ['Realistic scene']]], ['VR city', [['Stressed first'], ['Wears a VR headset'], ['Realistic scene']]], ['VR geometric shapes', [['Stressed first'], ['Wears a VR headset'], ['No realistic scene']]]] },
+  '4-d438c4': { k: 'tbl', rl: 'Exam?', cl: 'Favourite actor?', r: ['No exam', 'Exam'], c: ['Actor in it', 'Actor not in it'], m: [['Go to the movie', 'Stay home'], ['Stay home', 'Stay home']] },
+  '4-1oqeesi': { k: 'conds', c: [['New therapy', [['Meets a therapist weekly'], ['Real therapy techniques']]], ['Sham therapy', [['Meets a therapist weekly'], ['No real techniques']]], ['No treatment', [['No therapist contact'], ['No techniques']]]] },
+
+  /* ---- Section 5 · Complex experiments, continued ---- */
+  '5-xd8gyj': { k: 'ix', x: ['Alcohol', 'Marijuana'], l: ['Age 20', 'Age 50'], m: [[1, 9], [9, 1]], max: 10, y: 'Months of sentence', xl: 'Type of offence (A)' },
+  '5-tqdjcd': { k: 'ix', x: ['Less time', 'More time'], l: ['High motivation', 'Low motivation'], m: [[7.6, 3], [8.4, 8.4]], max: 10, y: 'Racial bias', xl: 'Time to respond', cap: 'Illustrative pattern' },
+
+  /* ---- Section 6 · Special experiments ---- */
+  '6-s51umv': { k: 'conds', c: [['Treatment group', [['Smokers who volunteered'], ['Relaxation training'], ['Smoking measured']]], ['Control group', [['Smokers who didn’t sign up'], ['No training'], ['Smoking measured']]]] },
+  '6-kw9wuh': { k: 'tbl', rl: 'State', r: ['1', '2', '3', '4'], c: ['T1', 'T2', 'T3', 'T4'], cap: 'A = before the bill, B = after. T = time period.', m: [['A', 'B', 'B', 'B'], ['A', 'A', 'B', 'B'], ['A', 'A', 'A', 'B'], ['A', 'A', 'A', 'A']] },
+  '6-spcesr': { k: 'ix', x: ['20-year-olds', '60-year-olds'], m: [[3, 7]], max: 10, y: 'Conservative attitudes', xl: 'Age group, all tested in the same year', cap: 'Illustrative data' },
+  '6-acsu64': { k: 'ts', ph: [['A', [3, 3.4, 2.8, 3.2]], ['B', [6.4, 7, 7.3, 7.1]], ['A', [3.6, 3.1, 3.3, 3.4]], ['B', [6.8, 7.2, 7, 7.3]]], brk: true, y: 'Target behaviour', x: 'Sessions', cap: 'Illustrative ABAB data. A = baseline, B = treatment.' },
+  '6-1nz8fhv': { k: 'mb', rows: [{ t: 'Games room', s: 4 }, { t: 'Laundry room', s: 7 }, { t: 'Another location', s: 10 }], n: 14, x: 'Sessions', cap: 'Illustrative data: training starts in each location at a different time.' },
+
+  /* ---- Section 7 · Measuring variables ---- */
+  '7-gp5q67': { k: 'bars1', labels: ['All 4 right', '2 right, 2 wrong', 'All 4 wrong'], vals: [115, 100, 85], max: 130, y: 'Observed IQ score', cap: 'The same person, with a true IQ of 100 every time' },
+  '7-1flycig': { k: 'bars1', labels: ['2 days', '4 weeks', '79 years'], vals: [0.97, 0.87, 0.54], max: 1, y: 'Test-retest r', xl: 'Time between the two tests' },
+  '7-yn9t19': { k: 'conds', c: [['Psychopathy, the construct', [['Callousness'], ['Unemotionality'], ['Impulsivity'], ['Rule-breaking']]], ['What the measure asks about', [['Callousness'], ['Unemotionality']]]] },
+  '7-16ulrct': { k: 'tbl', rl: 'Scale', r: ['Celsius', 'Fahrenheit', 'Kelvin'], c: ['Cool day', 'Warm day'], m: [['10 °C', '20 °C'], ['50 °F', '68 °F'], ['283.15 K', '293.15 K']] },
+
+  /* ---- Extra · Confound, extraneous or third variable? ---- */
+  'V-1ca7b4n': { k: 'conds', c: [['Walk group', [['Leaves the lab for 20 minutes'], ['Walks in nature'], ['Same stress measure']]], ['Control group', [['Stays at their desk'], ['Keeps filling out forms'], ['Same stress measure']]]] },
+  'V-e61l89': { k: 'conds', c: [['Park walk', [['Leaves the lab for 20 minutes'], ['Walks through a park'], ['Same stress measure']]], ['Garage walk', [['Leaves the lab for 20 minutes'], ['Walks through a parking garage'], ['Same stress measure']]]] },
+  'V-1nt54ld': { k: 'tbl', r: ['Mon', 'Tue', 'Wed'], c: ['9 a.m.', '4 p.m.'], m: [['Snack', 'No snack'], ['Snack', 'No snack'], ['Snack', 'No snack']] },
+  'V-1pkkhfd': { k: 'tbl', r: ['Mon', 'Tue', 'Wed'], c: ['9 a.m.', 'Noon', '4 p.m.'], m: [['No snack', 'Snack', 'Snack'], ['Snack', 'No snack', 'No snack'], ['Snack', 'Snack', 'No snack']], cap: 'Each session’s condition decided at random' },
+  'V-1wje4ec': { k: 'xscat', x: 'Police officers in the city', y: 'Crimes reported', seed: 7, cap: 'Illustrative: each dot is a city' },
+  'V-16aedd7': { k: 'conds', c: [['New-program classes', [['Taught by the 3 most experienced teachers'], ['New reading program']]], ['All other classes', [['Taught by the other teachers'], ['Old reading program']]]] }
+};
+</script>
+<script>
 (function () {
   'use strict';
   var BANK = window.BANK, SECTIONS = window.SECTIONS, FIG = window.FIG;
@@ -6973,6 +7020,9 @@ e: `When {g:chance decides} each person’s condition, nothing about the person 
     q.id = 'V-' + hash(key);
   });
   var BY_ID = {}; BANK.concat(BONUS, VARS).forEach(function (q) { BY_ID[q.id] = q; });
+  /* drawings added later attach after ids are set, so no question's id (or saved progress) changes */
+  var ADDFIG = window.ADDFIG || {};
+  Object.keys(ADDFIG).forEach(function (id) { var q = BY_ID[id]; if (q && !q.fig) q.fig = ADDFIG[id]; });
   function sectionQs(s) { return BANK.filter(function (q) { return q.s === s; }); }
   function isBonusId(id) { var c = String(id).charAt(0); return c === 'B' || c === 'V'; }
   function isExtra(s) { return s === 'B' || s === 'V'; }
