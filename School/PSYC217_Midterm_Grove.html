@@ -558,6 +558,43 @@ td.hs-wrong, span.hs-wrong, tr.hs-wrong > * { background: var(--clay-bg) !import
 .pg-stem { stroke: var(--moss); stroke-width: 2; fill: none; } .pg-leaf { fill: var(--moss); } .pg-pot { fill: var(--bark); }
 .pg-tick { stroke: var(--line-strong); stroke-width: 1.2; }
 .pg-cap-line { fill: var(--ink2); }
+/* ---------- Section 5 pictures ---------- */
+.pg-gl { fill: var(--ink2); font-family: var(--f-body); font-weight: 700; }
+.pg-q { fill: var(--muted); font-family: var(--f-body); font-weight: 700; }
+.pg-font { fill: var(--ink); }
+.pg-badge { fill: var(--moss); } .pg-badget { fill: var(--on-moss); font-family: var(--f-body); font-weight: 700; }
+.pg-face { fill: var(--surface); stroke: var(--ink2); stroke-width: 1.4; }
+.pg-mouth { fill: var(--ink2); }
+.pg-drop { fill: #5E9FD0; }
+.pg-spark { fill: var(--amber); }
+.pg-bottle { fill: var(--bark); } .pg-label { fill: var(--surface); }
+.pg-hand { fill: var(--surface); stroke: var(--ink2); stroke-width: 1.3; stroke-linejoin: round; }
+.pg-tent { fill: #34463B; stroke: var(--ink2); stroke-width: 1.4; stroke-linejoin: round; }
+.pg-tentdoor { fill: #1B2620; }
+.pg-intent { opacity: .6; }
+.pg-glow { fill: var(--sun); }
+.pg-wedge { fill: var(--amber); }
+.pg-flame { fill: var(--amber); } .pg-flame2 { fill: var(--clay); }
+.pg-hill { fill: var(--sap); } .pg-mtn { fill: var(--bark); } .pg-snow { fill: var(--surface); }
+.pg-ok { fill: none; stroke: var(--leaf); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.pg-no { fill: none; stroke: var(--clay); stroke-width: 2.4; stroke-linecap: round; }
+.pg-fat { fill: var(--ink2); }
+.pg-cell { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.1; }
+.pg-hlo { fill: var(--hl); stroke: var(--moss); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.pg-dim { opacity: .28; }
+.pg-gap { stroke: var(--clay); stroke-width: 1.7; }
+.pg-avgl { stroke: var(--ink2); stroke-width: 1.4; stroke-dasharray: 3 3; }
+.pg-lvl { stroke-dasharray: 2 4; }
+.pg-board { fill: var(--moss-strong); }
+.pg-seg { fill: var(--moss); } .pg-seg0 { fill: none; stroke: var(--line-strong); stroke-width: 1.2; }
+.figduo { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px 18px; }
+.figduo > .picwrap { flex: 1 1 270px; max-width: 352px; min-width: 0; display: flex; justify-content: center; background: var(--tint); border-radius: 14px; padding: 10px 8px; }
+.figduo > .figwrap { flex: 1 1 320px; max-width: 390px; min-width: 0; }
+.figduo.duo-stack { flex-direction: column; }
+.figduo.duo-stack > .picwrap { flex: none; width: 100%; }
+.figduo.duo-stack > .figwrap { flex: none; width: 100%; max-width: none; }
+.pg-lv { fill: var(--ink2); } .pg-lv0 { fill: none; stroke: var(--line-strong); stroke-width: 1.1; }
+.pg-cmp { stroke: var(--moss-strong); }
 /* ---------- Extra · variables drill ---------- */
 .sec-vars .vars-ic { font-family: var(--f-hand); color: var(--amber); font-size: 1.9rem; }
 .vguide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -7227,6 +7264,362 @@ e: `When {g:chance decides} each person’s condition, nothing about the person 
     return svg(338, 158, g);
   };
 
+  /* ---- Section 5: reading results (wordless study pictures) ---- */
+  function tx(x, y, s, t, cls, fam) { return '<text class="' + (cls || 'pg-gl') + '" x="' + f(x) + '" y="' + f(y) + '" font-size="' + s + '" text-anchor="middle" dominant-baseline="central"' + (fam ? ' style="font-family:' + fam + '"' : '') + '>' + t + '</text>'; }
+  function lg(x, y, i, w) { /* the graph's own line style: 0 = solid with dots, 1 = dashed with squares */
+    w = w || 24; var g = '<line class="f-l' + (i + 1) + '" x1="' + f(x - w / 2) + '" y1="' + f(y) + '" x2="' + f(x + w / 2) + '" y2="' + f(y) + '"' + (i ? ' stroke-dasharray="5 4"' : '') + '/>';
+    return g + (i ? '<rect class="f-m1" x="' + f(x - 4) + '" y="' + f(y - 4) + '" width="8" height="8"/>' : '<circle class="f-m0" cx="' + f(x) + '" cy="' + f(y) + '" r="4.3"/>');
+  }
+  function dmd(x, y, r, cls) { return '<path class="' + (cls || 'pg-sc') + '" d="M' + f(x) + ' ' + f(y - r * 1.25) + 'L' + f(x + r * 1.1) + ' ' + f(y) + 'L' + f(x) + ' ' + f(y + r * 1.25) + 'L' + f(x - r * 1.1) + ' ' + f(y) + 'z"/>'; }
+  function lvl(x, y, n, s, of) { /* n of 3 (or 'of') rising bars filled: a level of a factor */
+    s = s || 1; of = of || 3; var g = '', bw = 4.6 * s, gap = 2.4 * s, w = of * bw + (of - 1) * gap;
+    for (var i = 0; i < of; i++) { var h = (6 + i * 5) * s, bx = x - w / 2 + i * (bw + gap); g += '<rect class="' + (i < n ? 'pg-lv' : 'pg-lv0') + '" x="' + f(bx) + '" y="' + f(y + 8 * s - h) + '" width="' + f(bw) + '" height="' + f(h) + '" rx="1.2"/>'; }
+    return g; }
+  function pips(x, y, n, s) { s = s || 1; var d = 9 * s, g = '<rect class="pg-ic" x="' + f(x - d) + '" y="' + f(y - d) + '" width="' + f(2 * d) + '" height="' + f(2 * d) + '" rx="' + f(3 * s) + '"/>', P = { 1: [[0, 0]], 2: [[-3.5, -3.5], [3.5, 3.5]], 3: [[-4.2, -4.2], [0, 0], [4.2, 4.2]] }[n];
+    P.forEach(function (p) { g += '<circle class="pg-icf" cx="' + f(x + p[0] * s) + '" cy="' + f(y + p[1] * s) + '" r="' + f(1.7 * s) + '"/>'; }); return g; }
+  function cell(x, y, w, h, cls) { return '<rect class="' + (cls || 'pg-cell') + '" x="' + f(x) + '" y="' + f(y) + '" width="' + f(w) + '" height="' + f(h) + '" rx="7"/>'; }
+  function face(x, y, r, mood, o) {
+    o = o || {}; var g = '<circle class="pg-face" cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(r) + '"/>', er = Math.max(1, r * 0.11), ex = r * 0.36, ey = y - r * 0.16;
+    if (o.away) g += '<circle class="pg-icf" cx="' + f(x + ex + r * 0.12) + '" cy="' + f(ey) + '" r="' + f(er) + '"/><circle class="pg-icf" cx="' + f(x + r * 0.52 + ex * 0.5) + '" cy="' + f(ey) + '" r="' + f(er) + '"/>';
+    else g += '<circle class="pg-icf" cx="' + f(x - ex) + '" cy="' + f(ey) + '" r="' + f(er) + '"/><circle class="pg-icf" cx="' + f(x + ex) + '" cy="' + f(ey) + '" r="' + f(er) + '"/>';
+    var m = '';
+    if (mood === 'happy') m = '<path class="pg-ln pg-thin" d="M' + f(x - r * 0.42) + ' ' + f(y + r * 0.2) + 'q' + f(r * 0.42) + ' ' + f(r * 0.42) + ' ' + f(r * 0.84) + ' 0"/>';
+    else if (mood === 'laugh') m = '<path class="pg-mouth" d="M' + f(x - r * 0.48) + ' ' + f(y + r * 0.12) + 'h' + f(r * 0.96) + 'a' + f(r * 0.48) + ' ' + f(r * 0.48) + ' 0 0 1 ' + f(-r * 0.96) + ' 0z"/>';
+    else if (mood === 'sad') m = '<path class="pg-ln pg-thin" d="M' + f(x - r * 0.4) + ' ' + f(y + r * 0.5) + 'q' + f(r * 0.4) + ' ' + f(-r * 0.38) + ' ' + f(r * 0.8) + ' 0"/>';
+    else if (mood === 'worry') m = '<path class="pg-ln pg-thin" d="M' + f(x - r * 0.42) + ' ' + f(y + r * 0.42) + 'q' + f(r * 0.14) + ' ' + f(-r * 0.16) + ' ' + f(r * 0.28) + ' 0t' + f(r * 0.28) + ' 0t' + f(r * 0.28) + ' 0"/>';
+    else if (mood === 'angry') m = '<path class="pg-ln pg-thin" d="M' + f(x - r * 0.38) + ' ' + f(y + r * 0.48) + 'q' + f(r * 0.38) + ' ' + f(-r * 0.3) + ' ' + f(r * 0.76) + ' 0M' + f(x - r * 0.62) + ' ' + f(y - r * 0.56) + 'l' + f(r * 0.42) + ' ' + f(r * 0.24) + 'M' + f(x + r * 0.62) + ' ' + f(y - r * 0.56) + 'l' + f(-r * 0.42) + ' ' + f(r * 0.24) + '"/>';
+    else m = '<path class="pg-ln pg-thin" d="M' + f(x - r * 0.36) + ' ' + f(y + r * 0.38) + 'h' + f(r * 0.72) + '"/>';
+    g += m;
+    for (var i = 0; i < (o.sweat || 0); i++) g += drop(x + r * 0.95 + (i % 2) * r * 0.42, y - r * 0.55 + i * r * 0.55, r / 11);
+    if (o.spark) g += spark(x - r * 1.25, y - r * 0.85, r * 0.42) + spark(x + r * 1.3, y - r * 0.4, r * 0.32) + spark(x + r * 0.9, y + r * 1.05, r * 0.26);
+    return g;
+  }
+  function drop(x, y, s) { return '<path class="pg-drop" d="M' + f(x) + ' ' + f(y - 4.5 * s) + 'q' + f(3.4 * s) + ' ' + f(4.2 * s) + ' 0 ' + f(6.6 * s) + 'q' + f(-3.4 * s) + ' ' + f(-2.4 * s) + ' 0 ' + f(-6.6 * s) + 'z"/>'; }
+  function spark(x, y, r) { return '<path class="pg-spark" d="M' + f(x) + ' ' + f(y - r) + 'Q' + f(x) + ' ' + f(y) + ' ' + f(x + r) + ' ' + f(y) + 'Q' + f(x) + ' ' + f(y) + ' ' + f(x) + ' ' + f(y + r) + 'Q' + f(x) + ' ' + f(y) + ' ' + f(x - r) + ' ' + f(y) + 'Q' + f(x) + ' ' + f(y) + ' ' + f(x) + ' ' + f(y - r) + 'z"/>'; }
+  function tv(x, y, mood, s) { s = s || 1; return '<g><rect class="pg-ic" x="' + f(x - 16 * s) + '" y="' + f(y - 12 * s) + '" width="' + f(32 * s) + '" height="' + f(24 * s) + '" rx="' + f(3 * s) + '"/><path class="pg-ln pg-thin" d="M' + f(x) + ' ' + f(y + 12 * s) + 'v' + f(4 * s) + 'M' + f(x - 7 * s) + ' ' + f(y + 16 * s) + 'h' + f(14 * s) + '"/>' + face(x, y, 7.5 * s, mood) + '</g>'; }
+  function ad(x, y, mood, s) { s = s || 1; return '<g><path class="pg-ic" d="M' + f(x - 11 * s) + ' ' + f(y - 14 * s) + 'h' + f(16 * s) + 'l' + f(6 * s) + ' ' + f(6 * s) + 'v' + f(22 * s) + 'h' + f(-22 * s) + 'z"/><path class="pg-ln pg-thin" d="M' + f(x + 5 * s) + ' ' + f(y - 14 * s) + 'v' + f(6 * s) + 'h' + f(6 * s) + 'M' + f(x - 6 * s) + ' ' + f(y + 9 * s) + 'h' + f(12 * s) + '"/>' + face(x, y - 2 * s, 6.5 * s, mood) + '</g>'; }
+  function bottle(x, y, s) { s = s || 1; return '<g><path class="pg-bottle" d="M' + f(x - 2.6 * s) + ' ' + f(y - 30 * s) + 'h' + f(5.2 * s) + 'v' + f(9 * s) + 'c0 ' + f(3 * s) + ' ' + f(4.4 * s) + ' ' + f(3.6 * s) + ' ' + f(4.4 * s) + ' ' + f(8.5 * s) + 'v' + f(11 * s) + 'q0 ' + f(1.5 * s) + ' ' + f(-1.5 * s) + ' ' + f(1.5 * s) + 'h' + f(-11.8 * s) + 'q' + f(-1.5 * s) + ' 0 ' + f(-1.5 * s) + ' ' + f(-1.5 * s) + 'v' + f(-11 * s) + 'c0 ' + f(-4.9 * s) + ' ' + f(4.4 * s) + ' ' + f(-5.5 * s) + ' ' + f(4.4 * s) + ' ' + f(-8.5 * s) + 'z"/><rect class="pg-label" x="' + f(x - 4.4 * s) + '" y="' + f(y - 12 * s) + '" width="' + f(8.8 * s) + '" height="' + f(6 * s) + '" rx="1"/></g>'; }
+  function weed(x, y, s) { /* a seven-leaflet leaf */
+    s = s || 1; var g = '<path class="pg-stem" d="M' + f(x) + ' ' + f(y) + 'v' + f(-7 * s) + '"/>', L = [[-90, 17], [-58, 14], [-122, 14], [-28, 10], [-152, 10], [-8, 6], [-172, 6]];
+    L.forEach(function (l) { var a = l[0] * Math.PI / 180, len = l[1] * s, cx = x + Math.cos(a) * len / 2, cy = y - 6 * s + Math.sin(a) * len / 2; g += '<ellipse class="pg-leaf" cx="' + f(cx) + '" cy="' + f(cy) + '" rx="' + f(len / 2) + '" ry="' + f(2.1 * s) + '" transform="rotate(' + l[0] + ' ' + f(cx) + ' ' + f(cy) + ')"/>'; });
+    return '<g>' + g + '</g>';
+  }
+  function gavel(x, y, s) { s = s || 1; return '<g><g transform="rotate(-32 ' + f(x) + ' ' + f(y) + ')"><rect class="pg-ic" x="' + f(x - 11 * s) + '" y="' + f(y - 5 * s) + '" width="' + f(22 * s) + '" height="' + f(10 * s) + '" rx="' + f(2.5 * s) + '"/><rect class="pg-icf" x="' + f(x - 1.6 * s) + '" y="' + f(y + 5 * s) + '" width="' + f(3.2 * s) + '" height="' + f(16 * s) + '" rx="1.4"/></g><rect class="pg-icf" x="' + f(x - 2 * s) + '" y="' + f(y + 17 * s) + '" width="' + f(22 * s) + '" height="' + f(5 * s) + '" rx="1.6"/></g>'; }
+  function bowl(x, y, w, n) { var g = '', C = ['pg-sa', 'pg-sc', 'pg-sb', 'pk4', 'pk3']; for (var i = 0; i < (n || 0); i++) g += '<circle class="' + C[i % 5] + '" cx="' + f(x - w * 0.32 + (i % 4) * w * 0.21) + '" cy="' + f(y - 2 - Math.floor(i / 4) * 4.2) + '" r="2.6"/>'; return g + '<path class="pg-ic" d="M' + f(x - w / 2) + ' ' + f(y) + 'h' + f(w) + 'a' + f(w / 2) + ' ' + f(w * 0.36) + ' 0 0 1 ' + f(-w) + ' 0z"/>'; }
+  function candy(x, y, n, s) { s = s || 1; var g = '', C = ['pg-sa', 'pg-sc', 'pg-sb', 'pk4', 'pk3'], per = [1, 2, 3, 3, 4]; var k = 0, rowN = 0;
+    var rows = n <= 2 ? [n] : n <= 5 ? [3, n - 3] : [4, 3, n - 7 > 0 ? n - 7 : 0];
+    rows.forEach(function (m, r) { for (var i = 0; i < m; i++) { g += '<circle class="' + C[k % 5] + '" cx="' + f(x + (i - (m - 1) / 2) * 5.6 * s) + '" cy="' + f(y - r * 4.8 * s) + '" r="' + f(2.7 * s) + '"/>'; k++; } }); return g; }
+  function hand(x, y, s, which) { /* a fist with one finger up; which = 'idx' (beside the thumb) or 'mid' */
+    s = s || 1; var g = '', slot = which === 'mid' ? 1 : 0;
+    g += '<rect class="pg-hand" x="' + f(x - 9 * s) + '" y="' + f(y - 13 * s) + '" width="' + f(18 * s) + '" height="' + f(13 * s) + '" rx="' + f(4 * s) + '"/>';
+    g += '<path class="pg-hand" d="M' + f(x - 9 * s) + ' ' + f(y - 9 * s) + 'q' + f(-6 * s) + ' ' + f(-1 * s) + ' ' + f(-6 * s) + ' ' + f(3 * s) + 'q0 ' + f(3.5 * s) + ' ' + f(6 * s) + ' ' + f(4 * s) + 'z"/>';
+    for (var i = 0; i < 4; i++) { var fx = x - 6.6 * s + i * 4.4 * s; if (i === slot) g += '<rect class="pg-hand" x="' + f(fx - 2.1 * s) + '" y="' + f(y - 27 * s) + '" width="' + f(4.2 * s) + '" height="' + f(16 * s) + '" rx="' + f(2.1 * s) + '"/>'; else g += '<path class="pg-hand" d="M' + f(fx - 2.1 * s) + ' ' + f(y - 12 * s) + 'a' + f(2.1 * s) + ' ' + f(2.4 * s) + ' 0 0 1 ' + f(4.2 * s) + ' 0z"/>'; }
+    return '<g>' + g + '</g>';
+  }
+  function tent(x, y, s, who) { s = s || 1; return '<g><path class="pg-tent" d="M' + f(x - 22 * s) + ' ' + f(y) + 'L' + f(x) + ' ' + f(y - 28 * s) + 'L' + f(x + 22 * s) + ' ' + f(y) + 'z"/><path class="pg-tentdoor" d="M' + f(x - 8 * s) + ' ' + f(y) + 'L' + f(x) + ' ' + f(y - 14 * s) + 'L' + f(x + 8 * s) + ' ' + f(y) + 'z"/>' + (who || '') + '</g>'; }
+  function litroom(x, y, w, h, who) { /* x,y = top-left */ return '<g><rect class="pg-ic" x="' + f(x) + '" y="' + f(y) + '" width="' + f(w) + '" height="' + f(h) + '" rx="3"/><circle class="pg-glow" cx="' + f(x + w / 2) + '" cy="' + f(y + 9) + '" r="8"/><path class="pg-ln pg-thin" d="M' + f(x + w / 2) + ' ' + f(y) + 'v4"/><circle class="pg-bulb" cx="' + f(x + w / 2) + '" cy="' + f(y + 7) + '" r="3"/>' + (who || '') + '</g>'; }
+  function think(x, y, s) { s = s || 1; return bubble(x, y, 26 * s, 17 * s, '<circle class="pg-icf" cx="' + f(x - 6 * s) + '" cy="' + f(y) + '" r="' + f(1.6 * s) + '"/><circle class="pg-icf" cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(1.6 * s) + '"/><circle class="pg-icf" cx="' + f(x + 6 * s) + '" cy="' + f(y) + '" r="' + f(1.6 * s) + '"/>'); }
+  function watch(x, y, r, fr) { var a = -Math.PI / 2 + fr * 2 * Math.PI, ex = x + (r - 2.5) * Math.cos(a), ey = y + (r - 2.5) * Math.sin(a);
+    return '<g><rect class="pg-icf" x="' + f(x - 2.5) + '" y="' + f(y - r - 4) + '" width="5" height="4" rx="1"/><circle class="pg-ic" cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(r) + '"/><path class="pg-wedge" d="M' + f(x) + ' ' + f(y) + 'V' + f(y - r + 2.5) + 'A' + f(r - 2.5) + ' ' + f(r - 2.5) + ' 0 ' + (fr > 0.5 ? 1 : 0) + ' 1 ' + f(ex) + ' ' + f(ey) + 'z"/></g>'; }
+  function flame(x, y, s) { s = s || 1; return '<g><path class="pg-flame" d="M' + f(x) + ' ' + f(y - 16 * s) + 'C' + f(x + 9 * s) + ' ' + f(y - 7 * s) + ' ' + f(x + 8 * s) + ' ' + f(y) + ' ' + f(x) + ' ' + f(y) + 'C' + f(x - 8 * s) + ' ' + f(y) + ' ' + f(x - 9 * s) + ' ' + f(y - 7 * s) + ' ' + f(x) + ' ' + f(y - 16 * s) + 'z"/><path class="pg-flame2" d="M' + f(x) + ' ' + f(y - 8 * s) + 'C' + f(x + 4 * s) + ' ' + f(y - 4 * s) + ' ' + f(x + 4 * s) + ' ' + f(y) + ' ' + f(x) + ' ' + f(y) + 'C' + f(x - 4 * s) + ' ' + f(y) + ' ' + f(x - 4 * s) + ' ' + f(y - 4 * s) + ' ' + f(x) + ' ' + f(y - 8 * s) + 'z"/></g>'; }
+  function balance(x, y, s, tilt) { s = s || 1; var g = '<path class="pg-ln" d="M' + f(x) + ' ' + f(y) + 'v' + f(-30 * s) + 'M' + f(x - 9 * s) + ' ' + f(y) + 'h' + f(18 * s) + '"/>', dx = 20 * s * Math.cos(tilt), dy = 20 * s * Math.sin(tilt);
+    var L = [x - dx, y - 30 * s - dy], R = [x + dx, y - 30 * s + dy];
+    g += '<line class="pg-ln" x1="' + f(L[0]) + '" y1="' + f(L[1]) + '" x2="' + f(R[0]) + '" y2="' + f(R[1]) + '"/><circle class="pg-icf" cx="' + f(x) + '" cy="' + f(y - 30 * s) + '" r="2.4"/>';
+    [L, R].forEach(function (p) { g += '<path class="pg-ln pg-thin" d="M' + f(p[0]) + ' ' + f(p[1]) + 'l' + f(-6 * s) + ' ' + f(10 * s) + 'M' + f(p[0]) + ' ' + f(p[1]) + 'l' + f(6 * s) + ' ' + f(10 * s) + '"/><path class="pg-ic" d="M' + f(p[0] - 8 * s) + ' ' + f(p[1] + 10 * s) + 'h' + f(16 * s) + 'a' + f(8 * s) + ' ' + f(5 * s) + ' 0 0 1 ' + f(-16 * s) + ' 0z"/>'; });
+    return '<g>' + g + '</g>'; }
+  function hill(x, y, s, hard) { s = s || 1; if (!hard) return '<path class="pg-hill" d="M' + f(x - 17 * s) + ' ' + f(y) + 'Q' + f(x) + ' ' + f(y - 22 * s) + ' ' + f(x + 17 * s) + ' ' + f(y) + 'z"/>';
+    return '<g><path class="pg-mtn" d="M' + f(x - 17 * s) + ' ' + f(y) + 'L' + f(x - 6 * s) + ' ' + f(y - 22 * s) + 'L' + f(x - 1 * s) + ' ' + f(y - 15 * s) + 'L' + f(x + 5 * s) + ' ' + f(y - 30 * s) + 'L' + f(x + 17 * s) + ' ' + f(y) + 'z"/><path class="pg-snow" d="M' + f(x + 5 * s) + ' ' + f(y - 30 * s) + 'L' + f(x + 8.6 * s) + ' ' + f(y - 21 * s) + 'L' + f(x + 5 * s) + ' ' + f(y - 23 * s) + 'L' + f(x + 1.6 * s) + ' ' + f(y - 21 * s) + 'z"/></g>'; }
+  function page(x, y, s, inner) { s = s || 1; return '<g><rect class="pg-ic" x="' + f(x - 11 * s) + '" y="' + f(y - 14 * s) + '" width="' + f(22 * s) + '" height="' + f(28 * s) + '" rx="2"/>' + (inner || '<path class="pg-ln pg-thin" d="M' + f(x - 6 * s) + ' ' + f(y - 7 * s) + 'h' + f(12 * s) + 'M' + f(x - 6 * s) + ' ' + f(y - 2 * s) + 'h' + f(12 * s) + 'M' + f(x - 6 * s) + ' ' + f(y + 3 * s) + 'h' + f(12 * s) + 'M' + f(x - 6 * s) + ' ' + f(y + 8 * s) + 'h' + f(7 * s) + '"/>') + '</g>'; }
+  function say(x, y, ok, s) { s = s || 1; var g = '<path class="pg-bub" d="M' + f(x - 13 * s) + ' ' + f(y - 10 * s) + 'h' + f(26 * s) + 'q' + f(3 * s) + ' 0 ' + f(3 * s) + ' ' + f(3 * s) + 'v' + f(12 * s) + 'q0 ' + f(3 * s) + ' ' + f(-3 * s) + ' ' + f(3 * s) + 'h' + f(-15 * s) + 'l' + f(-6 * s) + ' ' + f(5 * s) + 'v' + f(-5 * s) + 'h' + f(-5 * s) + 'q' + f(-3 * s) + ' 0 ' + f(-3 * s) + ' ' + f(-3 * s) + 'v' + f(-12 * s) + 'q0 ' + f(-3 * s) + ' ' + f(3 * s) + ' ' + f(-3 * s) + 'z"/>';
+    return g + (ok ? '<path class="pg-ok" d="M' + f(x - 6 * s) + ' ' + f(y - 1 * s) + 'l' + f(4 * s) + ' ' + f(4 * s) + 'l' + f(8 * s) + ' ' + f(-8 * s) + '"/>' : '<path class="pg-no" d="M' + f(x - 5 * s) + ' ' + f(y - 6 * s) + 'l' + f(10 * s) + ' ' + f(10 * s) + 'M' + f(x + 5 * s) + ' ' + f(y - 6 * s) + 'l' + f(-10 * s) + ' ' + f(10 * s) + '"/>'); }
+  function shake(x, y, s) { s = s || 1; return '<g><circle class="pg-face" cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(8 * s) + '"/><path class="pg-ln pg-thin" d="M' + f(x - 12 * s) + ' ' + f(y - 6 * s) + 'q' + f(-4 * s) + ' ' + f(6 * s) + ' 0 ' + f(12 * s) + 'M' + f(x - 16 * s) + ' ' + f(y - 8 * s) + 'q' + f(-5 * s) + ' ' + f(8 * s) + ' 0 ' + f(16 * s) + 'M' + f(x + 12 * s) + ' ' + f(y - 6 * s) + 'q' + f(4 * s) + ' ' + f(6 * s) + ' 0 ' + f(12 * s) + 'M' + f(x + 16 * s) + ' ' + f(y - 8 * s) + 'q' + f(5 * s) + ' ' + f(8 * s) + ' 0 ' + f(16 * s) + '"/><circle class="pg-icf" cx="' + f(x - 3 * s) + '" cy="' + f(y - 1.5 * s) + '" r="' + f(1.1 * s) + '"/><circle class="pg-icf" cx="' + f(x + 3 * s) + '" cy="' + f(y - 1.5 * s) + '" r="' + f(1.1 * s) + '"/></g>'; }
+  function tally(x, y) { return '<path class="pg-ln" d="M' + f(x - 9) + ' ' + f(y - 8) + 'v16M' + f(x - 4) + ' ' + f(y - 8) + 'v16M' + f(x + 1) + ' ' + f(y - 8) + 'v16M' + f(x + 6) + ' ' + f(y - 8) + 'v16M' + f(x - 12) + ' ' + f(y + 5) + 'L' + f(x + 9) + ' ' + f(y - 5) + '"/>'; }
+  function jail(x, y, w, h) { var g = '<path class="pg-ln" d="M' + f(x) + ' ' + f(y) + 'h' + f(w) + 'M' + f(x) + ' ' + f(y + h) + 'h' + f(w); for (var i = 0; i <= Math.round(w / 9); i++) g += 'M' + f(x + i * w / Math.round(w / 9)) + ' ' + f(y) + 'v' + f(h); return g + '"/>'; }
+  function cup(x, y) { return '<path class="pg-ln" d="M' + f(x - 8) + ' ' + f(y) + 'a8 8 0 0 1 16 0"/><rect class="pg-icf" x="' + f(x - 10) + '" y="' + f(y - 1) + '" width="4" height="7" rx="1.5"/><rect class="pg-icf" x="' + f(x + 6) + '" y="' + f(y - 1) + '" width="4" height="7" rx="1.5"/>'; }
+  function notes(x, y) { return '<g><path class="pg-ln pg-thin" d="M' + f(x + 3) + ' ' + f(y) + 'v-11l8 -3v11"/><ellipse class="pg-icf" cx="' + f(x + 1) + '" cy="' + f(y) + '" rx="2.6" ry="2"/><ellipse class="pg-icf" cx="' + f(x + 9) + '" cy="' + f(y - 3) + '" rx="2.6" ry="2"/></g>'; }
+  function personW(x, y, s, k, wf, dress) { /* wider body (wf) or a dress-shaped body */
+    var r = 4.6 * s, bw = 12 * s * (wf || 1), bh = 12 * s, cy = y - bh - r - s, g = '<g class="' + k + '">';
+    if (dress) g += '<path d="M' + f(x - 3 * s) + ' ' + f(y - bh) + 'h' + f(6 * s) + 'l' + f(5 * s) + ' ' + f(bh) + 'h' + f(-16 * s) + 'z"/>';
+    else g += '<path d="M' + f(x - bw / 2) + ' ' + f(y) + 'v' + f(-bh * 0.55) + 'a' + f(bw / 2) + ' ' + f(bh * 0.45) + ' 0 0 1 ' + f(bw) + ' 0v' + f(bh * 0.55) + 'z"/>';
+    return g + '<circle cx="' + f(x) + '" cy="' + f(cy) + '" r="' + f(r) + '"/></g>'; }
+  function trio(cx, by, ks, s) { s = s || 0.8; var gap = 11 * s / 0.8; return ks.map(function (k, i) { return person(cx + (i - 1) * gap, by, s, K[k]); }).join(''); }
+  function mg(x, y, w, h, ser, o) { /* mini 2-line graph; values 0..1 */
+    o = o || {}; var n = ser[0].length, g = '<path class="f-ax" fill="none" d="M' + f(x) + ' ' + f(y) + 'V' + f(y + h) + 'H' + f(x + w) + '"/>';
+    var px = function (i) { return x + w * 0.22 + i * (w * 0.56) / Math.max(1, n - 1); }, py = function (v) { return y + h - 6 - v * (h - 14); };
+    ser.forEach(function (s, li) { g += '<polyline class="f-l' + (li + 1) + '" fill="none" points="' + s.map(function (v, i) { return f(px(i)) + ',' + f(py(v)); }).join(' ') + '"' + (li ? ' stroke-dasharray="5 4"' : '') + '/>'; });
+    ser.forEach(function (s, li) { s.forEach(function (v, i) { g += li ? '<rect class="f-m1" x="' + f(px(i) - 3.5) + '" y="' + f(py(v) - 3.5) + '" width="7" height="7"/>' : '<circle class="f-m0" cx="' + f(px(i)) + '" cy="' + f(py(v)) + '" r="3.8"/>'; }); });
+    return o.ret ? { g: g, px: px, py: py } : g;
+  }
+  function harr(x1, x2, y, cls) { return '<line class="' + (cls || 'f-arr') + '" x1="' + f(x1) + '" y1="' + f(y) + '" x2="' + f(x2) + '" y2="' + f(y) + '" marker-start="url(#ah)" marker-end="url(#ah)"/>'; }
+  function varr(x, y1, y2, cls) { return '<line class="' + (cls || 'f-arr') + '" x1="' + f(x) + '" y1="' + f(y1) + '" x2="' + f(x) + '" y2="' + f(y2) + '" marker-start="url(#ah)" marker-end="url(#ah)"/>'; }
+  function fat(x1, x2, y, w) { return '<path class="pg-fat" d="M' + f(x1) + ' ' + f(y - w / 2) + 'H' + f(x2 - 8 - w) + 'V' + f(y - w / 2 - 4) + 'L' + f(x2) + ' ' + f(y) + 'L' + f(x2 - 8 - w) + ' ' + f(y + w / 2 + 4) + 'V' + f(y + w / 2) + 'H' + f(x1) + 'z"/>'; }
+  function badge(x, y, n) { return '<circle class="pg-badge" cx="' + f(x) + '" cy="' + f(y) + '" r="8.5"/>' + tx(x, y + 0.5, 10.5, n, 'pg-badget'); }
+  function knob(x, y, r, v) { return gauge(x, y, r, v); }
+
+  /* a 2-factor grid: columns = the x-axis variable, rows = the lines; heads drawn by callbacks */
+  function fgrid(o) {
+    var g = '';
+    o.cols.forEach(function (c, i) { g += c(o.x0 + i * o.cw + o.cw / 2, o.hy); });
+    o.rows.forEach(function (r, j) { var cy = o.y0 + j * o.ch + o.ch / 2; g += r(o.rx, cy); if (o.lines) g += lg(o.lx, cy, j, 20); });
+    o.rows.forEach(function (r, j) { o.cols.forEach(function (c, i) { var x = o.x0 + i * o.cw, y = o.y0 + j * o.ch; g += cell(x + 2, y + 2, o.cw - 4, o.ch - 4, o.cls) + (o.cell ? o.cell(i, j, x + o.cw / 2, y + o.ch / 2) : ''); }); });
+    return g;
+  }
+
+  /* ---------- scenes: the studies (they sit beside the question's graph) ---------- */
+  S.sent = function () {
+    var g = fgrid({ x0: 92, cw: 74, y0: 40, ch: 58, hy: 22, rx: 24, lx: 62, lines: true,
+      cols: [function (x, y) { return bottle(x, y + 13, 0.85); }, function (x, y) { return weed(x, y + 12, 0.85); }],
+      rows: [function (x, y) { return person(x, y + 17, 1.25, 'pk0'); }, function (x, y) { return person(x, y + 17, 1.25, 'pk3', { cane: true }); }],
+      cell: function (i, j, cx, cy) { return person(cx - 12, cy + 17, 1, j ? 'pk3' : 'pk0', j ? { cane: true } : {}) + (i ? weed(cx + 14, cy + 16, 0.62) : bottle(cx + 14, cy + 16, 0.62)); } });
+    g += arr(244, 98, 262, 98) + gavel(286, 78, 1) + cal(292, 122) + cal(304, 128);
+    return svg(326, 160, g);
+  };
+  S.ads = function () {
+    var g = fgrid({ x0: 92, cw: 74, y0: 40, ch: 58, hy: 20, rx: 26, lx: 62, lines: true,
+      cols: [function (x, y) { return tv(x, y, 'happy'); }, function (x, y) { return tv(x, y, 'sad'); }],
+      rows: [function (x, y) { return ad(x, y, 'laugh'); }, function (x, y) { return ad(x, y, 'flat'); }],
+      cell: function (i, j, cx, cy) { return tv(cx - 13, cy - 4, i ? 'sad' : 'happy', 0.62) + ad(cx + 17, cy + 4, j ? 'flat' : 'laugh', 0.66); } });
+    g += arr(244, 98, 258, 98) + person(282, 140, 1.5, 'pk0') + bubble(296, 66, 52, 38, ad(284, 66, 'laugh', 0.55) + ad(308, 66, 'flat', 0.55));
+    return svg(330, 160, g);
+  };
+  S.mm = function () {
+    var g = fgrid({ x0: 92, cw: 74, y0: 44, ch: 56, hy: 22, rx: 30,
+      cols: [function (x, y) { return face(x - 6, y, 10, 'happy') + '<path class="pg-bub" d="M' + (x + 6) + ' ' + (y - 14) + 'h18a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10l-6 4v-4h-2a4 4 0 0 1 -4 -4v-6a4 4 0 0 1 4 -4z"/>'; }, function (x, y) { return face(x, y, 10, 'flat', { away: true }); }],
+      rows: [function (x, y) { return candy(x, y + 4, 2, 1.5); }, function (x, y) { return candy(x, y + 12, 9, 1.35); }],
+      cell: function (i, j, cx, cy) { return face(cx - 14, cy - 2, 9, i ? 'flat' : 'happy', i ? { away: true } : {}) + candy(cx + 15, cy + (j ? 10 : 4), j ? 9 : 2, 1); } });
+    g += arr(244, 100, 258, 100) + person(278, 142, 1.45, 'pk0', { eyes: true }) + bowl(306, 132, 30, 7);
+    return svg(330, 162, g);
+  };
+  S.anx = function () {
+    var cols = [0, 1, 3].map(function (n) { return function (x, y) { return face(x - 3, y, 10, n ? (n > 2 ? 'worry' : 'flat') : 'happy', { sweat: n }); }; });
+    var g = fgrid({ x0: 92, cw: 62, y0: 40, ch: 56, hy: 20, rx: 26, lx: 64, lines: true, cols: cols,
+      rows: [function (x, y) { return hill(x, y + 12, 1); }, function (x, y) { return hill(x, y + 14, 1, true); }],
+      cell: function (i, j, cx, cy) { return hill(cx - 11, cy + 14, 0.62, !!j) + face(cx + 13, cy - 4, 7, ['happy', 'flat', 'worry'][i], { sweat: [0, 1, 3][i] }); } });
+    g += arr(282, 96, 296, 96) + clip(312, 96, 1.2);
+    return svg(326, 156, g);
+  };
+  S.wait = function () {
+    var g = fgrid({ x0: 92, cw: 74, y0: 42, ch: 58, hy: 20, rx: 26, lx: 62, lines: true,
+      cols: [function (x, y) { return think(x, y, 1); }, function (x, y) { return phone(x, y + 2); }],
+      rows: [function (x, y) { return litroom(x - 19, y - 22, 38, 44, person(x, y + 19, 0.85, 'pk0')); }, function (x, y) { return tent(x, y + 16, 0.95, ''); }],
+      cell: function (i, j, cx, cy) {
+        var who = person(cx - 4, cy + 18, 0.85, 'pk0') + (i ? phone(cx + 12, cy + 4) : think(cx + 15, cy - 13, 0.62));
+        return j ? tent(cx - 4, cy + 20, 0.95, '') + '<g class="pg-intent">' + person(cx - 4, cy + 19, 0.62, 'pk0') + '</g>' + (i ? phone(cx + 22, cy + 6) : think(cx + 18, cy - 14, 0.62)) : litroom(cx - 30, cy - 22, 44, 44, '') + who;
+      } });
+    g += arr(244, 100, 260, 100) + face(286, 100, 15, 'happy') + '<path class="pg-ln pg-thin" d="M270 128h32"/>' + [270, 278, 286, 294, 302].map(function (x) { return '<circle class="pg-icf" cx="' + x + '" cy="128" r="1.8"/>'; }).join('');
+    return svg(320, 162, g);
+  };
+  S.bias = function () {
+    var g = fgrid({ x0: 92, cw: 74, y0: 42, ch: 58, hy: 22, rx: 26, lx: 62, lines: true,
+      cols: [function (x, y) { return watch(x, y, 11, 0.2); }, function (x, y) { return watch(x, y, 11, 0.6); }],
+      rows: [function (x, y) { return flame(x, y + 12, 1.35); }, function (x, y) { return flame(x, y + 8, 0.7); }],
+      cell: function (i, j, cx, cy) { return '<rect class="pg-ic" x="' + f(cx - 30) + '" y="' + f(cy - 18) + '" width="36" height="26" rx="3"/>' + face(cx - 21, cy - 5, 5.5, 'flat') + '<path class="pg-ln pg-thin" d="M' + f(cx - 13) + ' ' + f(cy - 5) + 'h4"/><rect class="pg-icf" x="' + f(cx - 6) + '" y="' + f(cy - 9) + '" width="8" height="8" rx="2"/>' + watch(cx + 16, cy - 8, 7, i ? 0.6 : 0.2) + flame(cx + 16, cy + 22, j ? 0.55 : 0.95); } });
+    g += arr(244, 100, 258, 100) + balance(288, 120, 1.05, 0.38);
+    return svg(318, 162, g);
+  };
+  S.music = function () {
+    var g = '';
+    [[42, 1], [118, 0]].forEach(function (r) {
+      var y = r[0];
+      g += person(28, y + 24, 1.45, 'pk0') + (r[1] ? cup(28, y - 8) + notes(42, y - 8) + notes(52, y + 4) : '<circle class="pg-tn" cx="52" cy="' + (y - 2) + '" r="10"/>');
+      g += arr(72, y, 88, y) + face(108, y, 13, r[1] ? 'happy' : 'worry', { sweat: r[1] ? 0 : 3 }) + arr(130, y, 146, y) + page(166, y, 1.05) + arr(184, y, 198, y);
+      g += '<line class="f-ax" x1="206" y1="' + (y + 18) + '" x2="250" y2="' + (y + 18) + '"/>' + bars(220, y + 18, [r[1] ? 34 : 14], 16, 0, 'pg-bar');
+    });
+    return svg(256, 158, g + div(10, 80, 250, 80));
+  };
+  S.gest = function () {
+    var g = crowd(28, 104, 6, 1.0, 0) + arr(56, 82, 68, 82) + die(81, 82, 1.1) + elbow(93, 82, 110, 42) + elbow(93, 82, 110, 124);
+    [[42, 'a', 'mid'], [124, 'b', 'idx']].forEach(function (r) {
+      var y = r[0];
+      g += tile(r[1], 114, y - 32, 56, 64, person(128, y + 26, 1.1, 'pk0') + hand(153, y + 20, 1.0, r[2]));
+      g += arr(172, y, 182, y) + page(196, y, 1, person(196, y + 10, 0.9, 'pk3') + tx(204, y - 8, 9, '?', 'pg-gl'));
+      g += arr(210, y, 222, y);
+      [[y - 12, 'angry', 0], [y + 14, 'flat', 1]].forEach(function (s) { g += face(234, s[0], 7, s[1]) + '<path class="pg-ln pg-thin" d="M246 ' + s[0] + 'h40"/>' + [246, 256, 266, 276, 286].map(function (x) { return '<circle class="pg-icf" cx="' + x + '" cy="' + s[0] + '" r="2"/>'; }).join('') + lg(310, s[0], s[2], 18); });
+    });
+    return svg(326, 162, g);
+  };
+  S.psych = function () {
+    var g = crowd(30, 112, 6, 0.95, 0) + jail(4, 56, 54, 60) + arr(62, 86, 74, 86) + clip(87, 86, 1.1) + elbow(98, 86, 112, 44) + elbow(98, 86, 112, 128);
+    [[70, 'pk0', 0], [154, 'pk1', 1]].forEach(function (r) {
+      var y = r[0], k = r[1];
+      g += '<g class="pg-house ' + k + '"><path d="M116 ' + (y - 34) + 'L143 ' + (y - 52) + 'L170 ' + (y - 34) + '"/><rect x="120" y="' + (y - 34) + '" width="46" height="34" rx="3"/></g>';
+      g += person(132, y - 3, 0.75, k) + person(143, y - 3, 0.75, k) + person(154, y - 3, 0.75, k);
+      g += arr(172, y - 22, 184, y - 22) + say(204, y - 28, true, 0.9) + say(236, y - 16, false, 0.9) + arr(256, y - 22, 268, y - 22) + shake(292, y - 22, 0.95) + tally(326, y - 22);
+    });
+    return svg(338, 162, g);
+  };
+  S.psychparts = function () {
+    var g = panel(4, 4, 330, 92);
+    g += crowd(36, 82, 6, 0.9, 0) + jail(10, 32, 54, 56) + clip(98, 58, 1.3) + say(148, 52, true, 1.1) + say(196, 52, false, 1.1) + shake(256, 54, 1.1) + tally(310, 54);
+    return svg(338, 100, g);
+  };
+  S.ivpv = function () {
+    var g = '';
+    [[58, 'pk0'], [182, 'pk1']].forEach(function (r) {
+      var y = r[0], k = r[1];
+      g += '<g class="pg-house ' + k + '"><path d="M6 ' + (y - 8) + 'L35 ' + (y - 28) + 'L64 ' + (y - 8) + '"/><rect x="10" y="' + (y - 8) + '" width="50" height="40" rx="3"/></g>' + person(23, y + 28, 0.85, k) + person(35, y + 28, 0.85, k) + person(47, y + 28, 0.85, k);
+      g += arr(68, y + 12, 82, y + 12) + die(96, y + 12, 1.05) + elbow(108, y + 12, 124, y - 10) + elbow(108, y + 12, 124, y + 34);
+      [['a', y - 10], ['b', y + 34]].forEach(function (t) { g += tile(t[0], 128, t[1] - 20, 78, 40, sym(t[0], 138, t[1] - 10, 4.2) + person(158, t[1] + 15, 0.85, k) + person(172, t[1] + 15, 0.85, k)) + arr(210, t[1], 222, t[1]) + clip(236, t[1], 1.05); });
+    });
+    return svg(250, 240, g + div(8, 120, 244, 120));
+  };
+  S.cells10 = function () {
+    var g = fgrid({ x0: 64, cw: 76, y0: 30, ch: 58, hy: 14, rx: 36,
+      cols: [function (x, y) { return sym('a', x, y, 6); }, function (x, y) { return sym('b', x, y, 6); }],
+      rows: [function (x, y) { return sym('c', x, y, 6); }, function (x, y) { return sym('t', x, y, 6.5); }],
+      cell: function (i, j, cx, cy) { var h = ''; for (var k = 0; k < 10; k++) h += clipDot(cx - 24 + (k % 5) * 12, cy - 9 + Math.floor(k / 5) * 18); return h; } });
+    function clipDot(x, y) { return '<rect class="pg-ic" x="' + f(x - 4) + '" y="' + f(y - 5.5) + '" width="8" height="11" rx="1.5"/><path class="pg-ln pg-thin" d="M' + f(x - 2) + ' ' + f(y - 1.5) + 'h4M' + f(x - 2) + ' ' + f(y + 1.5) + 'h4"/>'; }
+    return svg(222, 150, g);
+  };
+  function g33(mode) {
+    var T = { b: [[0, 1, 2], [3, 4, 0], [1, 2, 3], [4, 0, 1], [2, 3, 4], [0, 2, 4], [1, 3, 0], [2, 4, 1], [3, 0, 2]], w: [[0, 1, 2]], m: [[0, 1, 2], [3, 4, 0], [2, 3, 4]] }[mode];
+    return svg(250, 186, fgrid({ x0: 52, cw: 64, y0: 28, ch: 52, hy: 13, rx: 24,
+      cols: ['a', 'b', 'c'].map(function (t) { return function (x, y) { return sym(t, x, y, 6); }; }),
+      rows: [1, 2, 3].map(function (n) { return function (x, y) { return lvl(x, y, n, 1.1); }; }),
+      cell: function (i, j, cx, cy) { var t = mode === 'b' ? T[j * 3 + i] : mode === 'w' ? T[0] : T[j]; return trio(cx, cy + 15, t, 0.85); } }));
+  }
+  S.g33b = function () { return g33('b'); };
+  S.g33w = function () { return g33('w'); };
+  S.g33m = function () { return g33('m'); };
+
+  /* ---------- scenes: reading graphs ---------- */
+  S.spot4 = function () {
+    var sets = [[[0.15, 0.55], [0.45, 0.85]], [[0.12, 0.88], [0.88, 0.12]], [[0.3, 0.75], [0.3, 0.75]], [[0.18, 0.22], [0.34, 0.92]]], g = '';
+    sets.forEach(function (s, i) { var ox = 4 + (i % 2) * 168, oy = 4 + Math.floor(i / 2) * 98; g += panel(ox, oy, 162, 92) + mg(ox + 24, oy + 12, 120, 68, s); });
+    return svg(338, 200, g);
+  };
+  S.linebar = function () {
+    var g = panel(4, 4, 162, 150) + panel(172, 4, 162, 150);
+    g += '<path class="f-ax" fill="none" d="M22 16V112H154"/><polyline class="f-l1" fill="none" points="48,94 88,62 128,40"/>' + [[48, 94], [88, 62], [128, 40]].map(function (p) { return '<circle class="f-m0" cx="' + p[0] + '" cy="' + p[1] + '" r="4.4"/>'; }).join('');
+    g += gauge(48, 138, 13, 0.12) + gauge(88, 138, 13, 0.5) + gauge(128, 138, 13, 0.88);
+    g += '<path class="f-ax" fill="none" d="M190 16V112H322"/>' + bars(204, 112, [44, 70, 30], 26, 14, 'pg-bar');
+    g += sym('a', 217, 132, 7) + sym('b', 257, 133, 7) + sym('c', 297, 132, 7);
+    return svg(338, 158, g);
+  };
+  S.modknob = function () {
+    var g = '';
+    [[44, 0.12, 2], [120, 0.9, 9]].forEach(function (r) {
+      var y = r[0];
+      g += sym('a', 28, y, 9) + fat(44, 236, y, r[2]) + knob(140, y - 16, 16, r[1]) + '<line class="pg-mut" x1="140" y1="' + (y - 16) + '" x2="140" y2="' + (y - r[2] / 2 - 2) + '"/>' + clip(258, y, 1.3);
+    });
+    return svg(276, 150, g + div(10, 82, 270, 82));
+  };
+  function mini22(ox, oy, o) { /* small 2x2 grid with column ● ▲ and row line styles; o.vals = bar heights per cell */
+    o = o || {}; var cw = o.cw || 44, ch = o.ch || 34, g = '';
+    g += sym('a', ox + 38 + cw / 2, oy + 8, 5) + sym('b', ox + 38 + cw * 1.5, oy + 8, 5);
+    for (var j = 0; j < 2; j++) { var cy = oy + 18 + j * ch + ch / 2; g += lg(ox + 18, cy, j, 18);
+      for (var i = 0; i < 2; i++) { var x = ox + 38 + i * cw, y = oy + 18 + j * ch, dim = o.dim && o.dim(i, j);
+        g += '<g' + (dim ? ' class="pg-dim"' : '') + '>' + cell(x + 2, y + 2, cw - 4, ch - 4) + (o.vals ? '<rect class="' + (j ? 'f-b1' : 'f-b0') + '" x="' + f(x + cw / 2 - 6) + '" y="' + f(y + ch - 6 - o.vals[j][i]) + '" width="12" height="' + f(o.vals[j][i]) + '" rx="2"/>' : (j ? '<rect class="f-m1" x="' + f(x + cw / 2 - 4) + '" y="' + f(y + ch / 2 - 4) + '" width="8" height="8"/>' : '<circle class="f-m0" cx="' + f(x + cw / 2) + '" cy="' + f(y + ch / 2) + '" r="4.4"/>')) + '</g>'; } }
+    return g;
+  }
+  S.sme = function () {
+    var g = panel(4, 4, 162, 150) + panel(172, 4, 162, 150);
+    g += mini22(12, 12, {});
+    [72, 116].forEach(function (cx) { g += '<rect class="pg-hlo" x="' + (cx - 23) + '" y="28" width="46" height="72" rx="9"/>' + arr(cx, 102, cx, 116) + dmd(cx, 128, 6); });
+    g += harr(82, 106, 128, 'f-arr f-arr-faint');
+    g += mini22(180, 12, { dim: function (i, j) { return j === 1; } });
+    g += '<rect class="pg-hlo" x="216" y="28" width="92" height="38" rx="9"/>' + harr(248, 276, 47);
+    return svg(338, 158, g);
+  };
+  S.smeboth = function () {
+    var V = [[8, 22], [18, 6]], g = panel(4, 4, 162, 112) + panel(172, 4, 162, 112);
+    g += mini22(12, 14, { vals: V }) + mini22(180, 14, { vals: V });
+    [32, 66].forEach(function (y) { g += '<rect class="pg-hlo" x="48" y="' + y + '" width="92" height="34" rx="8"/>' + harr(80, 108, y + 9, 'f-arr pg-cmp'); });
+    [240, 284].forEach(function (x) { g += '<rect class="pg-hlo" x="' + (x - 23) + '" y="32" width="46" height="68" rx="8"/>' + varr(x + 14, 46, 86, 'f-arr pg-cmp'); });
+    return svg(338, 120, g);
+  };
+  function ibeam(x, y1, y2) { return '<path class="pg-gap" fill="none" d="M' + f(x) + ' ' + f(y1) + 'V' + f(y2) + 'M' + f(x - 4) + ' ' + f(y1) + 'h8M' + f(x - 4) + ' ' + f(y2) + 'h8"/>'; }
+  S.read3 = function () {
+    var D = [[0.08, 0.34], [0.3, 0.95]], g = '';
+    [4, 116, 228].forEach(function (ox, k) {
+      g += panel(ox, 4, 108, 148) + badge(ox + 16, 20, String(k + 1));
+      var m = mg(ox + 14, 34, 80, 106, D, { ret: true }); g += m.g;
+      if (k === 0) [0, 1].forEach(function (i) { var x = m.px(i) + (i ? 9 : -9); g += ibeam(x, m.py(D[0][i]) - 2, m.py(D[1][i]) + 2); });
+      if (k === 1) { var mids = [0, 1].map(function (i) { return [m.px(i), (m.py(D[0][i]) + m.py(D[1][i])) / 2]; });
+        [0, 1].forEach(function (i) { g += '<line class="pg-mut" x1="' + f(m.px(i)) + '" y1="' + f(m.py(D[0][i])) + '" x2="' + f(m.px(i)) + '" y2="' + f(m.py(D[1][i])) + '"/>'; });
+        g += '<line class="pg-avgl" x1="' + f(mids[0][0]) + '" y1="' + f(mids[0][1]) + '" x2="' + f(mids[1][0]) + '" y2="' + f(mids[1][1]) + '"/>' + mids.map(function (p) { return dmd(p[0], p[1], 5.5, 'pg-icf'); }).join(''); }
+      if (k === 2) [0, 1].forEach(function (li) { var y = (m.py(D[li][0]) + m.py(D[li][1])) / 2; g += '<line class="f-l' + (li + 1) + ' pg-lvl" x1="' + f(ox + 18) + '" y1="' + f(y) + '" x2="' + f(ox + 98) + '" y2="' + f(y) + '"/>' + dmd(ox + 101, y, 5, 'f-m' + li); });
+    });
+    return svg(340, 156, g);
+  };
+
+  /* ---------- scenes: bigger designs and counting ---------- */
+  function two22(withGraphs) {
+    var g = '', H = withGraphs ? 236 : 150;
+    [4, 172].forEach(function (ox, k) {
+      g += panel(ox, 4, 162, H - 8) + lvl(ox + 81, 18, k + 1, 1.5, 2);
+      g += sym('a', ox + 76, 46, 5.5) + sym('b', ox + 124, 46, 5.5) + sym('c', ox + 30, 76, 5.5) + sym('t', ox + 30, 118, 6);
+      for (var j = 0; j < 2; j++) for (var i = 0; i < 2; i++) g += cell(ox + 54 + i * 48, 56 + j * 42, 44, 38);
+      if (withGraphs) g += '<path class="f-ax" fill="none" d="M' + (ox + 34) + ' 156V214H' + (ox + 142) + '"/>' + tx(ox + 88, 184, 22, '?', 'pg-q');
+    });
+    return svg(338, H, g);
+  }
+  S.two22 = function () { return two22(false); };
+  S.two22g = function () { return two22(true); };
+  S.class3 = function () {
+    var g = '', rows = [32, 96, 160];
+    rows.forEach(function (y) { g += panel(6, y - 28, 210, 56) + '<line class="pg-mut" x1="111" y1="' + (y - 20) + '" x2="111" y2="' + (y + 20) + '"/>'; });
+    g += '<rect class="pg-ic" x="38" y="14" width="40" height="27" rx="3"/><path class="pg-ic" d="M32 41h52l-4 5h-44z"/>' + person(58, 37, 0.95, 'pk3') + person(98, 52, 0.95, 'pk0');
+    g += '<rect class="pg-board" x="134" y="12" width="34" height="20" rx="2"/>' + person(184, 52, 0.95, 'pk3') + person(144, 54, 0.7, 'pk0') + person(158, 54, 0.7, 'pk2');
+    g += row(44, 112, 3, 0.9, 0, 15);
+    for (var i = 0; i < 12; i++) g += person(128 + (i % 6) * 13, 100 + Math.floor(i / 6) * 18, 0.62, K[i % 5]);
+    function yr(x, n) { var h = ''; for (var k = 0; k < 4; k++) h += '<rect class="' + (k < n ? 'pg-seg' : 'pg-seg0') + '" x="' + (x + k * 18) + '" y="153" width="15" height="14" rx="3"/>'; return h; }
+    g += yr(22, 1) + yr(128, 4);
+    g += '<path class="pg-mut" fill="none" d="M222 32H232V160H222M232 96H238"/>' + arr(238, 96, 252, 96) + clip(268, 96, 1.3);
+    return svg(286, 196, g);
+  };
+  S.fonts = function () {
+    var g = panel(6, 6, 118, 64) + panel(6, 80, 170, 64), SER = 'Georgia, \'Times New Roman\', serif', SAN = 'Arial, Helvetica, sans-serif', CAL = 'Calibri, Carlito, \'Segoe UI\', Candara, sans-serif';
+    g += cell(14, 14, 48, 48) + tx(38, 39, 13, 'Aa', 'pg-font', SAN) + cell(68, 14, 48, 48) + tx(92, 39, 22, 'Aa', 'pg-font', SAN);
+    g += cell(14, 88, 48, 48) + tx(38, 113, 18, 'Aa', 'pg-font', CAL) + cell(68, 88, 48, 48) + tx(92, 113, 18, 'Aa', 'pg-font', SER) + cell(122, 88, 48, 48) + tx(146, 113, 18, 'Aa', 'pg-font', SAN);
+    g += '<path class="pg-mut" fill="none" d="M182 38H190V112H182M190 76H196"/>' + arr(196, 76, 210, 76) + page(226, 76, 1.2) + arr(244, 76, 258, 76) + clip(274, 76, 1.3);
+    return svg(292, 150, g);
+  };
+  S.jurors = function () {
+    var g = '', rows = [34, 98, 162];
+    rows.forEach(function (y) { g += panel(6, y - 30, 136, 60) + '<line class="pg-mut" x1="74" y1="' + (y - 22) + '" x2="74" y2="' + (y + 22) + '"/>'; });
+    g += personW(40, 58, 1.6, 'pk2', 1, true) + personW(108, 58, 1.6, 'pk2');
+    g += face(40, 98, 13, 'happy', { spark: true }) + face(108, 98, 13, 'flat');
+    g += personW(40, 186, 1.6, 'pk2', 1) + personW(108, 186, 1.6, 'pk2', 1.7);
+    g += '<path class="pg-mut" fill="none" d="M148 34H156V162H148M156 98H162"/>' + arr(162, 98, 176, 98) + page(192, 98, 1.2) + arr(210, 98, 224, 98);
+    g += row(236, 114, 3, 1.1, 1, 16) + '<rect class="pg-ic" x="226" y="114" width="54" height="10" rx="3"/>' + arr(286, 98, 298, 98) + gavel(318, 90, 0.9);
+    return svg(340, 200, g);
+  };
+  S.levels = function () {
+    var g = crowd(30, 104, 6, 1.0, 0) + arr(60, 82, 72, 82) + die(86, 82, 1.1) + arr(98, 82, 110, 82);
+    g += fgrid({ x0: 136, cw: 46, y0: 30, ch: 44, hy: 16, rx: 124,
+      cols: [1, 2, 3].map(function (n) { return function (x, y) { return lvl(x, y, n, 1); }; }),
+      rows: [function (x, y) { return sym('a', x, y, 5.5); }, function (x, y) { return sym('b', x, y, 5.5); }] });
+    g += arr(278, 82, 290, 82) + clip(304, 82, 1.3);
+    return svg(320, 128, g);
+  };
+  S.gestparts = function () {
+    var g = panel(4, 4, 330, 100);
+    g += hand(38, 78, 1.3, 'mid') + hand(80, 78, 1.3, 'idx') + '<line class="pg-mut" x1="59" y1="34" x2="59" y2="84"/>';
+    g += page(146, 56, 1.5, person(146, 72, 1.25, 'pk3') + tx(156, 42, 12, '?', 'pg-gl'));
+    [[220, 'angry'], [282, 'flat']].forEach(function (s) { var x = s[0]; g += face(x, 38, 11, s[1]) + '<path class="pg-ln pg-thin" d="M' + (x - 22) + ' 72h44"/>' + [-22, -11, 0, 11, 22].map(function (d) { return '<circle class="pg-icf" cx="' + (x + d) + '" cy="72" r="2.4"/>'; }).join(''); });
+    return svg(338, 108, g);
+  };
+  S.roles4 = function () {
+    var g = '', P = [[4, 4], [172, 4], [4, 102], [172, 102]];
+    P.forEach(function (p) { g += panel(p[0], p[1], 162, 92); });
+    /* chain */ g += sym('a', 26, 72, 7) + arr(36, 64, 66, 38) + dmd(81, 30, 7) + arr(96, 38, 124, 64) + clip(140, 72, 1.15);
+    /* knob on the arrow */ g += sym('a', 194, 70, 7) + arr(204, 70, 290, 70) + clip(308, 70, 1.15) + dmd(250, 28, 7) + arr(250, 38, 250, 64);
+    /* common cause */ g += dmd(85, 124, 7) + arr(76, 132, 40, 162) + arr(94, 132, 130, 162) + sym('a', 30, 172, 7) + sym('b', 140, 172, 7) + '<line class="f-arr f-arr-faint" x1="42" y1="174" x2="126" y2="174" stroke-dasharray="4 4"/>';
+    /* passenger */ g += tile('a', 184, 112, 58, 34, sym('a', 200, 129, 5.5) + dmd(224, 129, 5.5)) + tile('b', 184, 152, 58, 34, sym('b', 200, 169, 5.5)) + elbow(246, 129, 284, 148) + elbow(246, 169, 284, 148) + clip(302, 148, 1.15);
+    return svg(338, 198, g);
+  };
+  S.terms4 = function () {
+    var g = '', P = [[4, 4], [172, 4], [4, 112], [172, 112]];
+    P.forEach(function (p) { g += panel(p[0], p[1], 162, 102); });
+    g += mini22(14, 14, { dim: function (i, j) { return j === 1; } }) + '<rect class="pg-hlo" x="55" y="30" width="92" height="38" rx="8"/>' + harr(84, 108, 49);
+    g += sym('a', 194, 76, 7) + fat(206, 292, 76, 5) + knob(248, 54, 15, 0.8) + '<line class="pg-mut" x1="248" y1="54" x2="248" y2="71"/>' + clip(310, 76, 1.1);
+    [[142, 'pk0'], [186, 'pk1']].forEach(function (r) { var y = r[0], k = r[1]; g += '<g class="pg-house ' + k + '"><path d="M14 ' + (y - 6) + 'L33 ' + (y - 19) + 'L52 ' + (y - 6) + '"/><rect x="17" y="' + (y - 6) + '" width="32" height="22" rx="2"/></g>' + person(27, y + 14, 0.55, k) + person(39, y + 14, 0.55, k) + arr(56, y + 4, 66, y + 4) + die(78, y + 4, 0.75) + elbow(87, y + 4, 98, y - 6) + elbow(87, y + 4, 98, y + 14) + tile('a', 100, y - 16, 40, 20, sym('a', 108, y - 6, 3.6) + person(126, y + 2, 0.55, k)) + tile('b', 100, y + 6, 40, 20, sym('b', 108, y + 16, 3.6) + person(126, y + 24, 0.55, k)); });
+    g += sym('a', 260, 124, 5) + sym('b', 306, 124, 5);
+    [[0, 1, 2], [3, 4, 0]].forEach(function (t, j) { var y = 132 + j * 34; g += lvl(204, y + 14, j + 1, 0.9, 2); [260, 306].forEach(function (cx) { g += cell(cx - 22, y, 44, 30) + trio(cx, y + 26, t, 0.62); }); });
+    return svg(338, 218, g);
+  };
+
   window.FIG.add('pic', function (o) { return (S[o.ty] || function () { return ''; })(o); });
   window.PIC_TYPES = Object.keys(S);
 })();
@@ -7308,7 +7701,59 @@ window.ADDFIG = {
   '6-df8pwv': { k: 'pic', ty: 'its' },
   '6-17zzbxl': { k: 'pic', ty: 'crosslong' },
   '6-38mozx': { k: 'pic', ty: 'devs' },
-  '6-10nrezf': { k: 'pic', ty: 'mbase' }
+  '6-10nrezf': { k: 'pic', ty: 'mbase' },
+  /* ---- wordless picture diagrams (Section 5: reading results) ---- */
+  '5-1ffimez': { k: 'pic', ty: 'spot4' },
+  '5-1i0gecd': { k: 'pic', ty: 'linebar' },
+  '5-6ik01y': { k: 'pic', ty: 'sme' },
+  '5-3z1xc8': { k: 'pic', ty: 'smeboth' },
+  '5-jz3x6v': { k: 'pic', ty: 'psychparts' },
+  '5-a306eu': { k: 'pic', ty: 'ivpv' },
+  '5-1rkj7f3': { k: 'pic', ty: 'g33b' },
+  '5-1ifyvob': { k: 'pic', ty: 'g33w' },
+  '5-78bdgn': { k: 'pic', ty: 'g33m' },
+  '5-u5j6hg': { k: 'pic', ty: 'class3' },
+  '5-nrjoso': { k: 'pic', ty: 'two22' },
+  '5-vc5ivc': { k: 'pic', ty: 'two22g' },
+  '5-fpefi7': { k: 'pic', ty: 'fonts' },
+  '5-49h38x': { k: 'pic', ty: 'jurors' },
+  '5-1p0sx4i': { k: 'pic', ty: 'levels' },
+  '5-m4p4rg': { k: 'pic', ty: 'gestparts' },
+  '5-fo25nm': { k: 'pic', ty: 'roles4' },
+  '5-1l920tu': { k: 'pic', ty: 'read3' },
+  '5-pp4sgf': { k: 'pic', ty: 'psych' },
+  '5-1x5bnh1': { k: 'pic', ty: 'terms4' },
+  '5-vvyo50': { k: 'pic', ty: 'read3' },
+  '5-1b5ysgd': { k: 'pic', ty: 'sme' },
+  '5-1pqs6k9': { k: 'pic', ty: 'psych' },
+  '5-1xj8kxv': { k: 'pic', ty: 'levels' }
+};
+/* Section 5: a study picture shown beside questions that already have a graph, table or diagram */
+window.ADDPIC = {
+  '5-70x7tw': { k: 'pic', ty: 'sent' },
+  '5-n0ghe9': { k: 'pic', ty: 'sent' },
+  '5-zborgx': { k: 'pic', ty: 'sent' },
+  '5-7cair4': { k: 'pic', ty: 'sent' },
+  '5-xd8gyj': { k: 'pic', ty: 'sent' },
+  '5-1upqr8f': { k: 'pic', ty: 'ads' },
+  '5-13ld2qc': { k: 'pic', ty: 'ads' },
+  '5-4b5yo': { k: 'pic', ty: 'ads' },
+  '5-sulz11': { k: 'pic', ty: 'ads' },
+  '5-q1fxxp': { k: 'pic', ty: 'ads' },
+  '5-j2mnnm': { k: 'pic', ty: 'modknob' },
+  '5-d7fnn': { k: 'pic', ty: 'modknob' },
+  '5-9q9f96': { k: 'pic', ty: 'mm' },
+  '5-noaw13': { k: 'pic', ty: 'psych' },
+  '5-125d793': { k: 'pic', ty: 'cells10' },
+  '5-1ii0o25': { k: 'pic', ty: 'anx' },
+  '5-i1ekwi': { k: 'pic', ty: 'anx' },
+  '5-1iqg5we': { k: 'pic', ty: 'anx' },
+  '5-1cjkkyd': { k: 'pic', ty: 'gest' },
+  '5-10hphy7': { k: 'pic', ty: 'wait' },
+  '5-1eoy4ty': { k: 'pic', ty: 'bias' },
+  '5-tqdjcd': { k: 'pic', ty: 'bias' },
+  '5-142ii8y': { k: 'pic', ty: 'music' },
+  '5-ggx7bd': { k: 'pic', ty: 'read3' }
 };
 </script>
 <script>
@@ -7377,6 +7822,8 @@ window.ADDFIG = {
   /* drawings added later attach after ids are set, so no question's id (or saved progress) changes */
   var ADDFIG = window.ADDFIG || {};
   Object.keys(ADDFIG).forEach(function (id) { var q = BY_ID[id]; if (q && !q.fig) q.fig = ADDFIG[id]; });
+  var ADDPIC = window.ADDPIC || {};
+  Object.keys(ADDPIC).forEach(function (id) { var q = BY_ID[id]; if (!q) return; if (!q.fig) q.fig = ADDPIC[id]; else if (!q.pic) q.pic = ADDPIC[id]; });
   function sectionQs(s) { return BANK.filter(function (q) { return q.s === s; }); }
   function isBonusId(id) { var c = String(id).charAt(0); return c === 'B' || c === 'V'; }
   function isExtra(s) { return s === 'B' || s === 'V'; }
@@ -7667,7 +8114,7 @@ window.ADDFIG = {
       '<span class="sec-c">' + vc[3] + ' mastered · ' + vc[2] + ' once · ' + vc[1] + ' need work</span></span><span class="sec-go" aria-hidden="true">›</span></button>'; })() : '') +
       (LABV ? '<button class="sec sec-lab" data-act="lab"><span class="sec-n lab-sec-ic" aria-hidden="true">' + (g ? '<img class="px" alt="" src="' + g.o + '"><img class="px blk" alt="" src="' + g.b + '">' : '') + '</span><span class="sec-b"><span class="sec-t">Experiment Lab</span><span class="bonus-flag">Not graded</span><span class="sec-m">Run a mini study with random participants, then answer questions about the data you just made</span>' +
       '<span class="sec-c">' + (runs ? runs + (runs === 1 ? ' experiment' : ' experiments') + ' run so far' : 'Different every time') + '</span></span><span class="sec-go" aria-hidden="true">›</span></button>' : '') + '</div></section>';
-    h += '<section aria-labelledby="exam-h"><h2 id="exam-h" class="eyebrow-h">Exam</h2><div class="sections"><a class="sec sec-exam" href="PSYC217_Exam_Simulation.html"><span class="sec-n exam-sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17.5" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/><path d="M15 17.5l1.5 1.5 3-3.5"/></svg></span><span class="sec-b"><span class="sec-t">Exam Simulation</span><span class="bonus-flag">Add-on · separate page</span><span class="sec-m">A timed mock midterm in the real format (16 multiple choice, 6 fill-in-the-blank, 3 short answers), plus clinics for the look-alike concepts</span></span><span class="sec-go" aria-hidden="true">›</span></a></div></section>';
+    h += '<section aria-labelledby="exam-h"><h2 id="exam-h" class="eyebrow-h">Exam</h2><div class="sections"><a class="sec sec-exam" href="exam.html"><span class="sec-n exam-sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17.5" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/><path d="M15 17.5l1.5 1.5 3-3.5"/></svg></span><span class="sec-b"><span class="sec-t">Exam Simulation</span><span class="bonus-flag">Add-on · separate page</span><span class="sec-m">A timed mock midterm in the real format (16 multiple choice, 6 fill-in-the-blank, 3 short answers), plus clinics for the look-alike concepts</span></span><span class="sec-go" aria-hidden="true">›</span></a></div></section>';
     h += footer();
     app.innerHTML = h; paintSync();
   }
@@ -7844,7 +8291,8 @@ window.ADDFIG = {
       stemH = '<h2 class="stem">' + md(stem, done).replace('___', shown) + '</h2>';
     } else stemH = '<h2 class="stem">' + md(stem, done) + '</h2>';
     h += q.fig ? stemH : '<div class="stem-row">' + stemH + '<div class="spot">' + (q.who && FIG.sprSpot ? FIG.sprSpot(q.who) : FIG.spot(q.k, q.s)) + '</div></div>';
-    if (q.fig) h += '<div class="figwrap' + (q.t === 'hot' && !done ? ' hot-on' : '') + '">' + FIG.render(q.fig, md) + '</div>';
+    if (q.fig) { var figH = '<div class="figwrap' + (q.t === 'hot' && !done ? ' hot-on' : '') + '">' + FIG.render(q.fig, md) + '</div>';
+      h += q.pic ? '<div class="figduo' + (/^(tbl|cells)$/.test(q.fig.k) ? ' duo-stack' : '') + '"><div class="picwrap">' + FIG.render(q.pic, md) + '</div>' + figH + '</div>' : figH; }
     h += '<div class="interact">' + interactHTML() + '</div>';
     if (done) h += feedbackHTML();
     else h += '<div class="check-row"><button class="btn primary" data-act="check" id="check-btn"' + (canCheck() ? '' : ' disabled') + '>Check</button>' + (q.t === 'fill' ? '<button class="btn ghost" data-act="hint"' + (cur.hint ? ' disabled' : '') + '>Hint</button>' : '') + '<span class="kbd-hint">' + kbdHint() + '</span></div>';
