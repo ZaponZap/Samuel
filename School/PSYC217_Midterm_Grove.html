@@ -595,6 +595,15 @@ td.hs-wrong, span.hs-wrong, tr.hs-wrong > * { background: var(--clay-bg) !import
 .figduo.duo-stack > .figwrap { flex: none; width: 100%; max-width: none; }
 .pg-lv { fill: var(--ink2); } .pg-lv0 { fill: none; stroke: var(--line-strong); stroke-width: 1.1; }
 .pg-cmp { stroke: var(--moss-strong); }
+/* ---------- Section 6 · more study pictures ---------- */
+.pg-wave { fill: #5E9FD0; } .pg-wave2 { fill: none; stroke: #5E9FD0; stroke-width: 1.6; stroke-linecap: round; }
+.pg-house.pg-hn > * { stroke: var(--ink2); }
+.pg-faint { opacity: .5; }
+.pg-cig { fill: var(--surface); stroke: var(--ink2); stroke-width: .7; } .pg-ember { fill: var(--clay); }
+.pg-scarf { fill: var(--clay); } .pg-apple { fill: var(--clay); }
+.pg-mint { fill: var(--leaf-bg); stroke: var(--moss); stroke-width: 1.3; stroke-linejoin: round; }
+.pg-qr { fill: var(--clay); font-family: var(--f-body); font-weight: 700; }
+.f-l1.pg-thinl { stroke-width: 1.7; } .pg-mut.pg-thinl { stroke-width: 1; }
 /* ---------- Extra · variables drill ---------- */
 .sec-vars .vars-ic { font-family: var(--f-hand); color: var(--amber); font-size: 1.9rem; }
 .vguide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -7620,6 +7629,347 @@ e: `When {g:chance decides} each person’s condition, nothing about the person 
     return svg(338, 218, g);
   };
 
+  /* ---- Section 6 · more study pictures (added for 27 questions that had no figure) ----
+     Same symbols as the other pictures: little people, rooms (● ▲, star = treatment, dashed = nothing),
+     die = random assignment, clipboard = a measurement, cloud = an outside event.
+     Only numbers or letters that appear in the question itself are written. */
+  function book(x, y, s) { s = s || 1; return '<g><path class="pg-ic" d="M' + f(x) + ' ' + f(y) + 'L' + f(x - 12 * s) + ' ' + f(y - 3 * s) + 'V' + f(y - 15 * s) + 'L' + f(x) + ' ' + f(y - 12 * s) + 'L' + f(x + 12 * s) + ' ' + f(y - 15 * s) + 'V' + f(y - 3 * s) + 'z"/><path class="pg-ln pg-thin" d="M' + f(x) + ' ' + f(y) + 'V' + f(y - 12 * s) + 'M' + f(x - 9 * s) + ' ' + f(y - 10 * s) + 'l' + f(6 * s) + ' ' + f(1.4 * s) + 'M' + f(x - 9 * s) + ' ' + f(y - 6.5 * s) + 'l' + f(6 * s) + ' ' + f(1.4 * s) + 'M' + f(x + 3 * s) + ' ' + f(y - 8.6 * s) + 'l' + f(6 * s) + ' ' + f(-1.4 * s) + 'M' + f(x + 3 * s) + ' ' + f(y - 5.1 * s) + 'l' + f(6 * s) + ' ' + f(-1.4 * s) + '"/></g>'; }
+  function wave(x, y, s) { /* a curling wave; x,y = bottom centre */
+    s = s || 1;
+    return '<g><path class="pg-wave" d="M' + f(x - 22 * s) + ' ' + f(y) + 'C' + f(x - 16 * s) + ' ' + f(y - 4 * s) + ' ' + f(x - 12 * s) + ' ' + f(y - 22 * s) + ' ' + f(x + 2 * s) + ' ' + f(y - 24 * s) + 'C' + f(x + 13 * s) + ' ' + f(y - 25 * s) + ' ' + f(x + 19 * s) + ' ' + f(y - 17 * s) + ' ' + f(x + 15 * s) + ' ' + f(y - 11 * s) + 'C' + f(x + 12 * s) + ' ' + f(y - 15 * s) + ' ' + f(x + 5 * s) + ' ' + f(y - 15 * s) + ' ' + f(x + 3 * s) + ' ' + f(y - 9 * s) + 'C' + f(x + 2 * s) + ' ' + f(y - 5 * s) + ' ' + f(x + 10 * s) + ' ' + f(y - 2 * s) + ' ' + f(x + 22 * s) + ' ' + f(y) + 'z"/>' +
+      '<path class="pg-wave2" d="M' + f(x - 24 * s) + ' ' + f(y + 4 * s) + 'q' + f(6 * s) + ' ' + f(-4 * s) + ' ' + f(12 * s) + ' 0t' + f(12 * s) + ' 0t' + f(12 * s) + ' 0t' + f(12 * s) + ' 0"/></g>';
+  }
+  function school(x, y, s, k) { /* x,y = bottom centre */
+    s = s || 1;
+    return '<g class="pg-house ' + (k || 'pg-hn') + '"><path d="M' + f(x - 15 * s) + ' ' + f(y - 18 * s) + 'L' + f(x) + ' ' + f(y - 28 * s) + 'L' + f(x + 15 * s) + ' ' + f(y - 18 * s) + '"/><rect x="' + f(x - 12 * s) + '" y="' + f(y - 18 * s) + '" width="' + f(24 * s) + '" height="' + f(18 * s) + '" rx="2"/></g>' +
+      '<path class="pg-ln pg-thin" d="M' + f(x) + ' ' + f(y - 28 * s) + 'v' + f(-8 * s) + '"/><path class="pg-sb" d="M' + f(x) + ' ' + f(y - 36 * s) + 'h' + f(6 * s) + 'l' + f(-2 * s) + ' ' + f(2 * s) + 'l' + f(2 * s) + ' ' + f(2 * s) + 'h' + f(-6 * s) + 'z"/>' +
+      '<rect class="pg-icf" x="' + f(x - 3 * s) + '" y="' + f(y - 8 * s) + '" width="' + f(6 * s) + '" height="' + f(8 * s) + '" rx="1"/>';
+  }
+  function apple(x, y, s) { s = s || 1; return '<g><circle class="pg-apple" cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(5.5 * s) + '"/><path class="pg-ln pg-thin" d="M' + f(x) + ' ' + f(y - 5 * s) + 'q' + f(1 * s) + ' ' + f(-3 * s) + ' ' + f(3 * s) + ' ' + f(-4 * s) + '"/><ellipse class="pg-leaf" cx="' + f(x - 3 * s) + '" cy="' + f(y - 7 * s) + '" rx="' + f(3 * s) + '" ry="' + f(1.5 * s) + '" transform="rotate(-25 ' + f(x - 3 * s) + ' ' + f(y - 7 * s) + ')"/></g>'; }
+  function car(x, y, s) { /* x,y = bottom centre (wheels on y) */
+    s = s || 1;
+    return '<g><path class="pg-ic" d="M' + f(x - 16 * s) + ' ' + f(y - 4 * s) + 'v' + f(-7 * s) + 'q0 ' + f(-2 * s) + ' ' + f(2 * s) + ' ' + f(-2 * s) + 'h' + f(4 * s) + 'l' + f(4 * s) + ' ' + f(-6 * s) + 'h' + f(11 * s) + 'l' + f(5 * s) + ' ' + f(6 * s) + 'h' + f(4 * s) + 'q' + f(2 * s) + ' 0 ' + f(2 * s) + ' ' + f(2 * s) + 'v' + f(7 * s) + 'z"/>' +
+      '<circle class="pg-icf" cx="' + f(x - 9 * s) + '" cy="' + f(y - 3 * s) + '" r="' + f(3.2 * s) + '"/><circle class="pg-icf" cx="' + f(x + 9 * s) + '" cy="' + f(y - 3 * s) + '" r="' + f(3.2 * s) + '"/></g>';
+  }
+  function mint(x, y, s, no) { /* a wrapped menthol cough drop; no = crossed out */
+    s = s || 1;
+    var g = '<g><path class="pg-mint" d="M' + f(x - 7 * s) + ' ' + f(y) + 'l' + f(-6 * s) + ' ' + f(-5 * s) + 'v' + f(10 * s) + 'z"/><path class="pg-mint" d="M' + f(x + 7 * s) + ' ' + f(y) + 'l' + f(6 * s) + ' ' + f(-5 * s) + 'v' + f(10 * s) + 'z"/><ellipse class="pg-mint" cx="' + f(x) + '" cy="' + f(y) + '" rx="' + f(8 * s) + '" ry="' + f(6 * s) + '"/><ellipse class="pg-sa" cx="' + f(x) + '" cy="' + f(y) + '" rx="' + f(4 * s) + '" ry="' + f(2.6 * s) + '"/></g>';
+    if (no) g += '<path class="pg-no" d="M' + f(x - 11 * s) + ' ' + f(y - 9 * s) + 'l' + f(22 * s) + ' ' + f(18 * s) + 'M' + f(x + 11 * s) + ' ' + f(y - 9 * s) + 'l' + f(-22 * s) + ' ' + f(18 * s) + '"/>';
+    return g;
+  }
+  function tube(x, y, s) { /* a toothpaste tube lying down, cap on the right */
+    s = s || 1;
+    return '<g><path class="pg-mint" d="M' + f(x - 14 * s) + ' ' + f(y - 6 * s) + 'h' + f(4 * s) + 'l' + f(18 * s) + ' ' + f(2 * s) + 'v' + f(8 * s) + 'l' + f(-18 * s) + ' ' + f(2 * s) + 'h' + f(-4 * s) + 'z"/><rect class="pg-icf" x="' + f(x + 8 * s) + '" y="' + f(y - 3 * s) + '" width="' + f(6 * s) + '" height="' + f(6 * s) + '" rx="1.2"/><path class="pg-ln pg-thin" d="M' + f(x - 13 * s) + ' ' + f(y - 6 * s) + 'v' + f(12 * s) + '"/><ellipse class="pg-sa" cx="' + f(x - 2 * s) + '" cy="' + f(y) + '" rx="' + f(4 * s) + '" ry="' + f(2.2 * s) + '"/></g>';
+  }
+  function cig(x, y, s) { s = s || 1; return '<g><rect class="pg-cig" x="' + f(x) + '" y="' + f(y - 1.1 * s) + '" width="' + f(8 * s) + '" height="' + f(2.2 * s) + '" rx=".6"/><rect class="pg-ember" x="' + f(x + 8 * s) + '" y="' + f(y - 1.1 * s) + '" width="' + f(1.8 * s) + '" height="' + f(2.2 * s) + '"/><circle class="pg-smoke" cx="' + f(x + 11 * s) + '" cy="' + f(y - 5 * s) + '" r="' + f(2.2 * s) + '"/><circle class="pg-smoke" cx="' + f(x + 13 * s) + '" cy="' + f(y - 10 * s) + '" r="' + f(1.6 * s) + '"/></g>'; }
+  function armUp(x, y, s, k) { /* a raised arm for person(x, y, s, k) */
+    var sx = x + 6 * s - 1, sy = y - 9.5 * s;
+    return '<g class="' + k + '"><rect x="' + f(sx - 1.6 * s) + '" y="' + f(sy - 12 * s) + '" width="' + f(3.2 * s) + '" height="' + f(13 * s) + '" rx="' + f(1.6 * s) + '" transform="rotate(14 ' + f(sx) + ' ' + f(sy) + ')"/><circle cx="' + f(sx + 3.2 * s) + '" cy="' + f(sy - 13.2 * s) + '" r="' + f(2.4 * s) + '"/></g>';
+  }
+  function gear(x, y, r) { var p = ''; for (var i = 0; i < 16; i++) { var a = i * Math.PI / 8, rr = i % 2 ? r * 0.72 : r; p += (i ? 'L' : 'M') + f(x + rr * Math.cos(a)) + ' ' + f(y + rr * Math.sin(a)); } return '<path class="pg-icf" d="' + p + 'z"/><circle class="pg-label" cx="' + f(x) + '" cy="' + f(y) + '" r="' + f(r * 0.32) + '"/>'; }
+  function chartic(x, y, s) { s = s || 1; return '<g><rect class="pg-icf" x="' + f(x - 7 * s) + '" y="' + f(y - 4 * s) + '" width="' + f(3.6 * s) + '" height="' + f(4 * s) + '"/><rect class="pg-icf" x="' + f(x - 1.8 * s) + '" y="' + f(y - 7 * s) + '" width="' + f(3.6 * s) + '" height="' + f(7 * s) + '"/><rect class="pg-icf" x="' + f(x + 3.4 * s) + '" y="' + f(y - 10 * s) + '" width="' + f(3.6 * s) + '" height="' + f(10 * s) + '"/></g>'; }
+  function mag(x, y, s) { /* a magazine cover with an athlete and a star */
+    s = s || 1;
+    return '<g><rect class="pg-ic" x="' + f(x - 12 * s) + '" y="' + f(y - 16 * s) + '" width="' + f(24 * s) + '" height="' + f(32 * s) + '" rx="2"/><rect class="pg-icf" x="' + f(x - 9 * s) + '" y="' + f(y - 13 * s) + '" width="' + f(18 * s) + '" height="' + f(4 * s) + '" rx="1"/>' + person(x, y + 13 * s, 0.85 * s, 'pk1') + sym('t', x + 6 * s, y - 2 * s, 3 * s) + '</g>';
+  }
+  function dayp(x, y, n) { /* a tear-off day page with its number */
+    return '<g><rect class="pg-ic" x="' + f(x - 12) + '" y="' + f(y - 12) + '" width="24" height="24" rx="3"/><path class="pg-icf" d="M' + f(x - 12) + ' ' + f(y - 9) + 'a3 3 0 0 1 3 -3h18a3 3 0 0 1 3 3v3h-24z"/>' + tx(x, y + 4, 11, n) + '</g>';
+  }
+  function scarf(x, y, s) { /* a scarf on person(x, y, s) */ return '<path class="pg-scarf" d="M' + f(x - 5 * s) + ' ' + f(y - 12.5 * s) + 'h' + f(10 * s) + 'v' + f(2.6 * s) + 'h' + f(-3 * s) + 'v' + f(6 * s) + 'h' + f(-3 * s) + 'v' + f(-6 * s) + 'h' + f(-4 * s) + 'z"/>'; }
+  function feet(x, y, s) { s = s || 1; function one(cx, cy) { return '<ellipse class="pg-icf" cx="' + f(cx) + '" cy="' + f(cy) + '" rx="' + f(2.2 * s) + '" ry="' + f(3.6 * s) + '"/><circle class="pg-icf" cx="' + f(cx) + '" cy="' + f(cy - 5.2 * s) + '" r="' + f(1.1 * s) + '"/>'; } return one(x - 2.6 * s, y + 2 * s) + one(x + 2.6 * s, y - 2 * s); }
+  function kidQ(x, y, s, k) { /* a child holding a book, with a question mark: a struggling reader */
+    return person(x, y, s, k) + book(x + 9 * s, y - 2 * s, 0.45 * s) + tx(x + 1, y - 30 * s, 11 * s, '?', 'pg-qr');
+  }
+  function home(x, y, s) { return sc(x, y, s, house(x, y, 'pg-hn')); }
+  function lap(x, y) { return '<g><rect class="pg-ic" x="' + f(x - 15) + '" y="' + f(y - 22) + '" width="30" height="20" rx="2"/><path class="pg-icf" d="M' + f(x - 15) + ' ' + f(y - 19) + 'a2 2 0 0 1 2 -2h26a2 2 0 0 1 2 2v1h-30z"/><path class="pg-ln pg-thin" d="M' + f(x - 10) + ' ' + f(y - 12) + 'h14M' + f(x - 10) + ' ' + f(y - 8) + 'h20"/><path class="pg-ic" d="M' + f(x - 20) + ' ' + f(y) + 'h40l-3 4h-34z"/></g>'; }
+  function lbl(x, y, t, s) { return tx(x, y, s || 10.5, t); }
+
+  /* participants pick their own room: each thinks of the room they want, then walks in (no die) */
+  S.selfpick = function () {
+    var ch = ['a', 'b', 'a', 'a', 'b', 'b'], g = '', A = [], B = [];
+    ch.forEach(function (c, i) {
+      var x = 16 + i * 19, k = K[i % 5];
+      g += person(x, 98, 1.1, k) + bubble(x + 6, 56, 16, 13, sym(c, x + 6, 56, 3.6));
+      (c === 'a' ? A : B).push([k]);
+    });
+    g += elbow(124, 78, 150, 34) + elbow(124, 78, 150, 118);
+    g += tileP('a', 154, 8, 100, 52, A) + arr(258, 34, 272, 34) + clip(286, 34, 1.1);
+    g += tileP('b', 154, 92, 100, 52, B) + arr(258, 118, 272, 118) + clip(286, 118, 1.1);
+    return svg(304, 150, g);
+  };
+  /* the ideal outcome evaluation: random assignment to the program or to no program */
+  S.progrand = function () {
+    var g = crowd(32, 94, 6, 1.05, 0) + arr(66, 70, 80, 70) + die(94, 70, 1.1) + elbow(107, 70, 124, 34) + elbow(107, 70, 124, 106);
+    g += tileP('t', 128, 8, 100, 52, G1) + arr(232, 34, 246, 34) + clip(260, 34, 1.1);
+    g += tileP('n', 128, 80, 100, 52, G2) + arr(232, 106, 246, 106) + clip(260, 106, 1.1);
+    return svg(276, 138, g);
+  };
+  /* 4- and 5-year-olds → reading program → reading test → "they learned to read!" */
+  S.kidsread = function () {
+    var kids = [['pk0', 0.72], ['pk1', 0.72], ['pk2', 0.72], ['pk3', 0.72], ['pk4', 0.72]];
+    var g = row(12, 112, 5, 0.75, 0, 12) + arr(68, 98, 82, 98);
+    g += tileP('t', 86, 70, 104, 54, kids) + book(172, 92, 0.8);
+    g += arr(194, 98, 208, 98) + clip(222, 98, 1.1) + book(222, 128, 0.55);
+    g += person(268, 124, 1.45, 'pk3') + say(288, 58, true, 1.15);
+    return svg(316, 132, g);
+  };
+  /* each precinct captain hand-picks two officers → measured at the first meeting → 3 months → last meeting */
+  S.police = function () {
+    var g = '', picked = [['pk0', 'pk1'], ['pk2', 'pk3'], ['pk4', 'pk0']];
+    [12, 126, 240].forEach(function (x, i) {
+      g += '<g class="pg-house pg-hn"><path d="M' + x + ' 40L' + (x + 40) + ' 14L' + (x + 80) + ' 40"/><rect x="' + (x + 5) + '" y="40" width="70" height="34" rx="3"/></g>' + '<path class="pg-icf" d="M' + (x + 35) + ' 26h10v5q0 5 -5 7q-5 -2 -5 -7z"/>';
+      for (var j = 0; j < 4; j++) { var px = x + 16 + j * 16; g += j === 1 || j === 2 ? person(px, 71, 0.8, picked[i][j - 1]) : '<g class="pg-ghost-p">' + person(px, 71, 0.8, K[(i + j + 2) % 5]) + '</g>'; }
+    });
+    g += '<path class="f-arr" d="M52 78 V 124" marker-end="url(#ah)"/><path class="f-arr" d="M166 78 Q 160 112 66 128" marker-end="url(#ah)"/><path class="f-arr" d="M280 78 Q 230 116 76 132" marker-end="url(#ah)"/>';
+    g += crowd(44, 178, 6, 1.0, 0) + arr(78, 156, 90, 156) + clip(103, 156, 1.1) + arr(115, 156, 127, 156);
+    g += tileP('t', 131, 128, 108, 56, [['pk0', 0.72], ['pk1', 0.72], ['pk2', 0.72], ['pk3', 0.72], ['pk4', 0.72], ['pk0', 0.72]]);
+    g += sc(196, 140, 0.62, cal(196, 140)) + sc(212, 140, 0.62, cal(212, 140)) + sc(228, 140, 0.62, cal(228, 140));
+    g += arr(243, 156, 257, 156) + clip(271, 156, 1.1);
+    return svg(338, 190, g);
+  };
+  /* families measured → tsunami hits their home regions just after the pretest → program → posttest */
+  S.tsunami = function () {
+    var g = panel(54, 4, 116, 64) + home(70, 60, 0.8) + wave(134, 58, 1.05);
+    g += '<path class="pg-mut" d="M112 68 V 112"/>';
+    g += crowd(30, 144, 6, 1.0, 0) + arr(62, 122, 76, 122) + clip(89, 122, 1.1) + arr(101, 122, 133, 122);
+    g += tileP('t', 137, 96, 100, 52, G1) + arr(241, 122, 255, 122) + clip(268, 122, 1.1);
+    g += '<line class="f-ax" x1="286" y1="146" x2="334" y2="146"/>' + bars(294, 146, [26, 36], 14, 8) + sc(301, 156, 0.5, clip(301, 156)) + sc(323, 156, 0.5, clip(323, 156));
+    return svg(338, 164, g);
+  };
+  /* a two-hour session: the same person, four tasks, getting bored and hungry */
+  S.session = function () {
+    var g = '', fr = [0.06, 0.36, 0.66, 0.96], eff = [40, 40, 37, 13];
+    fr.forEach(function (v, i) {
+      var x = 44 + i * 82;
+      if (i) g += '<line class="pg-mut" x1="' + (x - 41) + '" y1="10" x2="' + (x - 41) + '" y2="150"/>';
+      g += watch(x, 22, 11, v);
+      g += person(x - 10, 100, 1.45, 'pk1', i < 2 ? { eyes: true } : i === 3 ? { sleepy: true } : {});
+      if (i === 3) g += zz(x - 30, 62) + bubble(x + 20, 52, 26, 20, apple(x + 20, 54, 1));
+      g += clip(x + 18, 86, 0.9);
+      g += '<line class="f-ax" x1="' + (x - 26) + '" y1="146" x2="' + (x + 30) + '" y2="146"/>' + bars(x - 8, 146, [eff[i]], 18, 0);
+    });
+    return svg(338, 154, g);
+  };
+  /* the same playground, early and months later: the shoves don't change, the observer's tally does */
+  S.observer = function () {
+    var g = panel(4, 4, 162, 118) + panel(172, 4, 162, 118);
+    [4, 172].forEach(function (ox, p) {
+      g += person(ox + 20, 108, 1.0, 'pk0') + person(ox + 38, 108, 1.0, 'pk2') + spark(ox + 29, 80, 7.5);
+      g += person(ox + 64, 108, 1.0, 'pk4') + person(ox + 80, 108, 1.0, 'pk1') + '<g class="pg-faint">' + spark(ox + 72, 84, 4.2) + '</g>';
+      g += '<line class="f-ax" x1="' + (ox + 8) + '" y1="109" x2="' + (ox + 154) + '" y2="109"/>';
+      g += person(ox + 118, 108, 1.4, 'pk3', { eyes: true });
+      var n = p ? 2 : 1, cx = ox + 142, tg = '';
+      for (var i = 0; i < n; i++) tg += 'M' + (cx - 3 * (n - 1) + i * 6) + ' 54v14';
+      g += '<rect class="pg-ic" x="' + (cx - 11) + '" y="44" width="22" height="30" rx="2.5"/><rect class="pg-icf" x="' + (cx - 5) + '" y="41.5" width="10" height="5" rx="1.2"/><path class="pg-ln" d="' + tg + '"/>';
+      if (p) g += '<circle class="pg-lens" cx="' + (ox + 101) + '" cy="76" r="7"/><line class="pg-ln" x1="' + (ox + 106) + '" y1="81" x2="' + (ox + 111) + '" y2="86"/>';
+      g += p ? sc(ox + 30, 26, 0.85, cal(ox + 22, 30) + cal(ox + 30, 26) + cal(ox + 38, 22)) : sc(ox + 26, 26, 0.85, cal(ox + 26, 26));
+    });
+    return svg(338, 126, g);
+  };
+  /* an athlete's games: a peak, the magazine cover, then the next games */
+  S.cover = function () {
+    var v = [-5, 7, -2, 5, -8, 3, 42, 4, -6, 2], x0 = 66, st = 27, base = 84, pts = v.map(function (d, i) { return [x0 + i * st, base - d]; });
+    var g = person(22, 120, 1.55, 'pk1') + '<line class="f-ax" x1="50" y1="124" x2="334" y2="124"/><line class="pg-mut" x1="54" y1="' + base + '" x2="332" y2="' + base + '"/>';
+    g += '<polyline class="f-l1" fill="none" points="' + pts.map(function (p) { return p.join(','); }).join(' ') + '"/>' + pts.map(function (p, i) { return '<circle class="' + (i === 6 ? 'f-m1' : 'f-m0') + '" cx="' + p[0] + '" cy="' + p[1] + '" r="' + (i === 6 ? 5 : 3.8) + '"/>'; }).join('');
+    g += mag(pts[6][0] + 34, 30, 0.95) + '<path class="f-arr" d="M' + (pts[6][0] + 8) + ' ' + (pts[6][1] - 4) + 'Q ' + (pts[6][0] + 16) + ' 30 ' + (pts[6][0] + 20) + ' 32" marker-end="url(#ah)"/>';
+    return svg(338, 130, g);
+  };
+  /* the struggling readers' families quit before the posttest */
+  S.dropout = function () {
+    var H = [32, 10, 26, 8, 22, 30], g = '';
+    function kids(y, post) {
+      var h = clip(18, y - 18, 1.05);
+      H.forEach(function (v, i) {
+        var x = 50 + i * 30, gone = post && (i === 1 || i === 3);
+        if (gone) h += '<g class="pg-ghost-p">' + person(x, y, 1.0, K[i % 5]) + '</g>';
+        else h += person(x, y, 1.0, K[i % 5]) + '<rect class="pg-bar" x="' + (x + 8) + '" y="' + (y - v - (post ? 4 : 0)) + '" width="8" height="' + (v + (post ? 4 : 0)) + '" rx="1.5"/>';
+      });
+      return h + '<line class="f-ax" x1="38" y1="' + y + '" x2="222" y2="' + y + '"/>';
+    }
+    g += kids(64, false) + arr(18, 60, 18, 108) + kids(148, true);
+    g += '<line class="f-ax" x1="232" y1="148" x2="334" y2="148"/>' + person(242, 148, 1.0, 'pk1') + person(258, 148, 1.3, 'pk2') + person(278, 148, 1.0, 'pk3') + person(294, 148, 1.3, 'pk0') + door(308, 148);
+    g += '<path class="f-arr f-arr-faint" d="M88 70 Q 200 62 240 114" marker-end="url(#ah)"/><path class="f-arr f-arr-faint" d="M148 70 Q 250 60 276 114" marker-end="url(#ah)"/>';
+    return svg(338, 154, g);
+  };
+  /* a randomized experiment whose measure warps for every group by the posttest */
+  S.decay2 = function () {
+    var g = crowd(30, 102, 6, 1.0, 0) + arr(62, 78, 74, 78) + die(88, 78, 1.1) + elbow(101, 78, 114, 38) + elbow(101, 78, 114, 118);
+    [[38, 'a', G3], [118, 'b', G4]].forEach(function (r) { var y = r[0]; g += sc(118, y, 0.58, ruler(118, y, false)) + arr(158, y, 170, y) + tileP(r[1], 174, y - 26, 72, 52, r[2]) + arr(250, y, 262, y) + sc(266, y, 0.58, ruler(266, y, true)); });
+    return svg(310, 150, g);
+  };
+  /* a randomized experiment where an outside event reaches only one room */
+  S.histone = function () {
+    var g = crowd(32, 120, 6, 1.05, 0) + arr(66, 96, 80, 96) + die(94, 96, 1.1) + elbow(107, 96, 124, 66) + elbow(107, 96, 124, 140);
+    g += cloud(186, 22, true) + tileP('a', 128, 40, 100, 52, G1) + arr(232, 66, 246, 66) + clip(260, 66, 1.1);
+    g += tileP('b', 128, 114, 100, 52, G2) + arr(232, 140, 246, 140) + clip(260, 140, 1.1);
+    return svg(276, 172, g);
+  };
+  /* engineering division gets the training, marketing division gets nothing */
+  S.divisions = function () {
+    var g = '';
+    [[4, 74, 'pk0', 0], [4, 166, 'pk1', 3]].forEach(function (h, i) {
+      g += sc(h[0], h[1], 1.15, house(h[0], h[1], h[2]) + (i ? chartic(h[0] + 27, h[1] - 37, 0.8) : gear(h[0] + 27, h[1] - 41, 5.5)));
+      for (var j = 0; j < 3; j++) { var px = 17 + j * 15, py = h[1] - 6; g += sc(h[0], h[1], 1.15, person(px, py + 2, 0.66, K[(h[3] + j) % 5]) + cig(px + 3.5, py - 6, 0.7)); }
+    });
+    [[48, 't', [['pk0'], ['pk1'], ['pk2']]], [140, 'n', [['pk3'], ['pk4'], ['pk0']]]].forEach(function (r) { var y = r[0]; g += arr(72, y, 88, y) + (r[1] === 't' ? tileP('t', 92, y - 26, 96, 52, r[2]) : tileP('n', 92, y - 26, 96, 52, r[2])) + arr(192, y, 206, y) + clip(220, y, 1.1); });
+    return svg(238, 172, g);
+  };
+  /* parents of struggling readers ask for the program; other children end up in the comparison group */
+  S.parents = function () {
+    var g = '';
+    [0, 1, 2].forEach(function (i) { var x = 12 + i * 37, k = K[(i * 2 + 1) % 5]; g += person(x, 82, 1.25, 'pk3') + armUp(x, 82, 1.25, 'pk3') + kidQ(x + 15, 82, 0.8, k); });
+    [0, 1, 2].forEach(function (i) { g += person(22 + i * 30, 166, 0.8, K[(i * 2) % 5]); });
+    g += arr(122, 60, 134, 60) + tileP('t', 138, 34, 96, 52, [['pk1', 0.8], ['pk3', 0.8], ['pk0', 0.8]]) + arr(238, 60, 252, 60) + clip(266, 60, 1.1);
+    g += arr(122, 146, 134, 146) + tileP('n', 138, 120, 96, 52, [['pk0', 0.8], ['pk2', 0.8], ['pk4', 0.8]]) + arr(238, 146, 252, 146) + clip(266, 146, 1.1);
+    return svg(282, 176, g);
+  };
+  /* people who signed up choose whether to be active; both groups measured 18 months later */
+  S.csi = function () {
+    var ch = ['a', 'n', 'a', 'n', 'a', 'n'], g = page(16, 70, 1.1, '<path class="pg-ok" d="M10 58l3 3 6 -6M10 70l3 3 6 -6M10 82l3 3 6 -6"/>'), A = [], N = [];
+    ch.forEach(function (c, i) {
+      var x = 42 + i * 18, k = K[i % 5];
+      g += person(x, 104, 1.05, k) + bubble(x + 6, 62, 16, 13, c === 'a' ? sym('a', x + 6, 62, 3.6) : '<circle class="pg-tn" style="stroke-dasharray:2 1.6;stroke-width:1.2" cx="' + (x + 6) + '" cy="62" r="3.4"/>');
+      (c === 'a' ? A : N).push([k, 0.8]);
+    });
+    g += elbow(146, 84, 160, 36) + elbow(146, 84, 160, 128);
+    g += tileP('a', 164, 10, 86, 52, A) + tileP('n', 164, 102, 86, 52, N);
+    g += arr(254, 36, 268, 72) + arr(254, 128, 268, 96) + cal(284, 74) + lbl(284, 98, '18') + arr(298, 84, 308, 84) + clip(322, 84, 1.1);
+    return svg(338, 160, g);
+  };
+  /* Ontario: one year before the law and one year after */
+  S.twoyears = function () {
+    var g = '<line class="f-ax" x1="10" y1="104" x2="290" y2="104"/>';
+    [[62, '1996'], [238, '1997']].forEach(function (c) { var x = c[0]; g += cal(x, 26) + lbl(x, 48, c[1]) + car(x - 16, 98, 0.9) + clip(x + 22, 84, 1.05); });
+    g += '<line class="pg-mut" x1="150" y1="12" x2="150" y2="104"/>' + gavel(140, 50, 1.05);
+    return svg(300, 112, g);
+  };
+  /* a whole region's movement measured many times, interrupted by the stay-home recommendation */
+  S.covid = function () {
+    var g = crowd(30, 104, 6, 0.95, 0) + arr(62, 82, 76, 82) + '<line class="f-ax" x1="82" y1="104" x2="334" y2="104"/>';
+    for (var i = 0; i < 12; i++) { var x = 94 + i * 20 + (i >= 6 ? 12 : 0); g += feet(x, 86, 1) + '<line class="pg-tick" x1="' + x + '" y1="100" x2="' + x + '" y2="108"/>'; }
+    g += '<line class="pg-mut" x1="210" y1="34" x2="210" y2="110"/>' + '<g class="pg-house pk0"><path d="M194 24L210 10L226 24"/><rect x="197" y="24" width="26" height="20" rx="2"/></g>' + person(210, 43, 0.62, 'pk0');
+    return svg(338, 114, g);
+  };
+  /* one woman, measured before and after 18 months of therapy */
+  S.anorexia = function () {
+    var g = personW(24, 118, 1.5, 'pk2', 0, true) + arr(44, 86, 56, 86) + clip(70, 86, 1.1);
+    g += '<line class="f-ax" x1="58" y1="140" x2="112" y2="140"/>' + bars(68, 140, [40, 34], 14, 6, 'pg-bar') ;
+    g += arr(116, 86, 130, 86) + panel(134, 36, 104, 96) + personW(160, 118, 1.3, 'pk2', 0, true) + person(212, 118, 1.3, 'pk3');
+    g += bubble(186, 62, 30, 20, '<circle class="pg-icf" cx="180" cy="62" r="1.5"/><circle class="pg-icf" cx="186" cy="62" r="1.5"/><circle class="pg-icf" cx="192" cy="62" r="1.5"/>') + sc(222, 54, 0.75, cal(222, 54)) + lbl(222, 70, '18', 9.5);
+    g += arr(242, 86, 256, 86) + clip(270, 86, 1.1) + '<line class="f-ax" x1="258" y1="140" x2="312" y2="140"/>' + bars(268, 140, [10, 8], 14, 6, 'pg-bar');
+    return svg(320, 146, g);
+  };
+  /* no stars → stars (traded for candy) → no stars; correct problems counted every day */
+  S.stars = function () {
+    var g = '';
+    [0, 1, 2].forEach(function (i) {
+      var ox = 4 + i * 112, star = i === 1;
+      g += panel(ox, 4, 106, 120) + sc(ox + 20, 22, 0.8, cal(ox + 20, 22)) + clip(ox + 86, 24, 0.9);
+      g += person(ox + 24, 112, 1.35, 'pk4') + page(ox + 58, 80, 1.25, '<path class="pg-ok" d="M' + (ox + 52) + ' 72l2 2 4 -4M' + (ox + 52) + ' 82l2 2 4 -4M' + (ox + 52) + ' 92l2 2 4 -4"/>');
+      if (star) g += sym('t', ox + 65, 73, 2.6) + sym('t', ox + 65, 83, 2.6) + sym('t', ox + 65, 93, 2.6) + arr(ox + 74, 98, ox + 82, 104) + candy(ox + 90, 116, 7, 1.15);
+    });
+    return svg(338, 128, g);
+  };
+  /* Day 1 no menthol, Day 2 menthol, Day 3 no menthol; stomach pain rated every day */
+  S.menthol3 = function () {
+    var g = '';
+    [['1', true], ['2', false], ['3', true]].forEach(function (d, i) {
+      var ox = 4 + i * 112;
+      g += panel(ox, 4, 106, 120) + dayp(ox + 22, 26, d[0]) + clip(ox + 84, 26, 0.9) + person(ox + 34, 114, 1.4, 'pk0') + mint(ox + 74, 88, 1.15, d[1]);
+    });
+    return svg(338, 128, g);
+  };
+  /* two treatments: one acts at once, one builds slowly */
+  S.slowfast = function () {
+    var g = '', R = [[10, 10, 11, 9, 46, 47, 46, 48, 47, 46, 47, 48], [10, 11, 9, 10, 13, 18, 24, 30, 36, 42, 46, 47]];
+    R.forEach(function (v, r) {
+      var oy = 6 + r * 70, y1 = oy + 58, x0 = 50, st = 23.5, xs = x0 + 10 + 4 * st - st / 2;
+      g += person(20, oy + 56, 1.35, r ? 'pk2' : 'pk1') + '<line class="f-ax" x1="' + x0 + '" y1="' + y1 + '" x2="334" y2="' + y1 + '"/>';
+      var pts = v.map(function (d, i) { return [f(x0 + 10 + i * st), y1 - 4 - d]; });
+      g += '<polyline class="f-l1" fill="none" points="' + pts.slice(0, 4).join(' ') + '"/><polyline class="f-l1" fill="none" points="' + pts.slice(4).join(' ') + '"/>' + pts.map(function (p) { return '<circle class="f-m0" cx="' + p[0] + '" cy="' + p[1] + '" r="3.2"/>'; }).join('');
+      g += '<line class="pg-mut" x1="' + f(xs) + '" y1="' + (oy + 2) + '" x2="' + f(xs) + '" y2="' + (y1 + 4) + '"/>' + sym('t', xs - 9, oy + 9, 5);
+    });
+    return svg(338, 144, g);
+  };
+  /* eight children (three girls) from five schools, each with their own little graph */
+  S.eightkids = function () {
+    var per = [2, 2, 2, 1, 1], girls = { 1: 1, 4: 1, 6: 1 }, twice = { 2: 1, 6: 1 }, g = '', k = 0, x = 22;
+    per.forEach(function (n) {
+      var xs = [];
+      for (var j = 0; j < n; j++) { xs.push(x); x += 36; }
+      x += 10;
+      var cx = (xs[0] + xs[xs.length - 1]) / 2;
+      g += panel(xs[0] - 18, 2, xs[xs.length - 1] - xs[0] + 36, 142) + school(cx, 42, 0.95, 'pg-hn');
+      xs.forEach(function (kx) {
+        var c = K[k % 5];
+        g += girls[k] ? personW(kx, 96, 1.15, c, 0, true) : person(kx, 96, 1.15, c);
+        var v = twice[k] ? [0, 0, 1, 1, 0, 0, 1, 1] : [0, 0, 1, 1, 1, 1], gw = 30, n2 = v.length, top = 108, h = 28;
+        var px = function (i) { return kx - gw / 2 + 3 + i * (gw - 6) / (n2 - 1); }, py = function (u) { return top + h - 5 - u * (h - 11); };
+        g += '<path class="f-ax" fill="none" d="M' + f(kx - gw / 2) + ' ' + top + 'V' + (top + h) + 'H' + f(kx + gw / 2) + '"/>';
+        for (var b = 2; b < n2; b += 2) g += '<line class="pg-mut pg-thinl" x1="' + f((px(b - 1) + px(b)) / 2) + '" y1="' + (top + 1) + '" x2="' + f((px(b - 1) + px(b)) / 2) + '" y2="' + (top + h) + '"/>';
+        g += '<polyline class="f-l1 pg-thinl" fill="none" points="' + v.map(function (u, i) { return f(px(i)) + ',' + f(py(u)); }).join(' ') + '"/>' + v.map(function (u, i) { return '<circle class="f-m0" cx="' + f(px(i)) + '" cy="' + f(py(u)) + '" r="1.9"/>'; }).join('');
+        k++;
+      });
+    });
+    return svg(338, 148, g);
+  };
+  /* four ways to repeat the menthol test */
+  S.menthol4 = function () {
+    var g = panel(4, 4, 162, 112) + panel(172, 4, 162, 112) + panel(4, 122, 162, 112) + panel(172, 122, 162, 112);
+    [32, 84, 136].forEach(function (x, i) { g += person(x - 6, 100, 1.3, K[i * 2 % 5]) + mint(x + 12, 52, 0.8); });
+    g += person(232, 100, 1.55, 'pk0') + mint(286, 48, 0.95) + spark(244, 64, 4.5) + spark(241, 92, 4.5) + spark(220, 86, 4);
+    g += person(46, 218, 1.5, 'pk0') + scarf(46, 218, 1.5) + mint(46, 150, 0.8) + '<line class="pg-mut" x1="85" y1="134" x2="85" y2="226"/>' + person(124, 218, 1.5, 'pk0') + mint(124, 150, 0.8);
+    g += person(300, 218, 1.55, 'pk0') + mint(220, 160, 1) + tube(220, 200, 1.1) + arr(242, 162, 278, 180) + arr(242, 198, 278, 192);
+    return svg(338, 238, g);
+  };
+  /* four age groups tested on the same day, each learning the same new software */
+  S.software = function () {
+    var g = cal(169, 20) + '<line class="pg-mut" x1="20" y1="34" x2="318" y2="34"/>', s = [28, 30, 27, 13];
+    ['20', '30', '40', '50'].forEach(function (a, i) {
+      var x = 50 + i * 80;
+      g += lbl(x, 48, a) + person(x - 12, 112, 1.35, K[(i + 1) % 5]) + lap(x + 16, 112);
+      g += '<line class="f-ax" x1="' + (x - 26) + '" y1="154" x2="' + (x + 30) + '" y2="154"/>' + bars(x - 6, 154, [s[i]], 16, 0);
+    });
+    return svg(338, 158, g);
+  };
+  /* a 13-year-old (and a parent) asked today about home life at age 5 */
+  S.retro = function () {
+    var g = cal(24, 22) + person(46, 140, 1.5, 'pk0') + clip(66, 112, 0.9) + '<path class="pg-bub" d="M52 62h34q3 0 3 3v14q0 3 -3 3h-24l-6 6v-6h-4q-3 0 -3 -3v-14q0 -3 3 -3z"/>' + tx(70, 72, 13, '?', 'pg-gl');
+    g += person(150, 140, 1.6, 'pk3') + person(190, 140, 1.3, 'pk1') + lbl(190, 152, '13');
+    g += bubble(232, 52, 96, 68, home(204, 72, 0.62) + person(258, 72, 0.72, 'pk1') + lbl(268, 34, '5'));
+    return svg(290, 156, g);
+  };
+  /* a sequential study: 55- and 65-year-olds now, the same people five years later */
+  S.seq = function () {
+    var g = cal(70, 22) + cal(262, 22) + lbl(166, 18, '+5') + arr(96, 24, 236, 24);
+    [[60, 'pk1', '55', '60'], [126, 'pk0', '65', '70']].forEach(function (r, i) {
+      var y = r[0] + 30;
+      g += person(70, y, 1.25, r[1], i ? { cane: true } : {}) + lbl(98, y - 14, r[2]) + arr(118, y - 14, 226, y - 14) + person(262, y, 1.25, r[1], i ? { cane: true } : {}) + lbl(290, y - 14, r[3]);
+    });
+    g += varr(40, 66, 150, 'pg-mut');
+    return svg(320, 164, g);
+  };
+  /* the same teen measured at 13, 14 and 15, then again at 23 */
+  S.allen = function () {
+    var g = '', P = [[30, '13', 1.0], [80, '14', 1.07], [130, '15', 1.14], [292, '23', 1.4]];
+    P.forEach(function (p, i) {
+      g += cal(p[0], 22) + clip(p[0] + 18, 72, 0.8) + person(p[0], 120, p[2], 'pk4') + lbl(p[0], 134, p[1]);
+      if (i && i < 3) g += arr(P[i - 1][0] + 16, 22, p[0] - 14, 22);
+    });
+    g += '<path class="pg-mut" d="M148 22 H 270"/>' + arr(262, 22, 276, 22);
+    return svg(320, 140, g);
+  };
+  /* "At My Best": piloted in 39 schools in 2008, now in over 1,000 */
+  S.atmybest = function () {
+    var g = cal(34, 22) + lbl(34, 46, '2008') + apple(68, 22, 1.1), i;
+    for (i = 0; i < 4; i++) g += school(22 + (i % 2) * 34, 84 + Math.floor(i / 2) * 34, 0.8);
+    g += lbl(39, 132, '39');
+    g += arr(84, 82, 116, 82) + panel(122, 4, 212, 134);
+    for (i = 0; i < 24; i++) g += school(140 + (i % 8) * 25, 42 + Math.floor(i / 8) * 34, 0.62);
+    g += lbl(228, 126, '1,000+');
+    return svg(338, 142, g);
+  };
+
   window.FIG.add('pic', function (o) { return (S[o.ty] || function () { return ''; })(o); });
   window.PIC_TYPES = Object.keys(S);
 })();
@@ -7726,7 +8076,41 @@ window.ADDFIG = {
   '5-vvyo50': { k: 'pic', ty: 'read3' },
   '5-1b5ysgd': { k: 'pic', ty: 'sme' },
   '5-1pqs6k9': { k: 'pic', ty: 'psych' },
-  '5-1xj8kxv': { k: 'pic', ty: 'levels' }
+  '5-1xj8kxv': { k: 'pic', ty: 'levels' },
+  /* ---- Section 6 · more study pictures (27 questions that had none) ---- */
+  '6-188rzw7': { k: 'pic', ty: 'selfpick' },
+  '6-1yecw98': { k: 'pic', ty: 'progrand' },
+  '6-1vuegqj': { k: 'pic', ty: 'kidsread' },
+  '6-17nt9kw': { k: 'pic', ty: 'police' },
+  '6-z4icbq': { k: 'pic', ty: 'tsunami' },
+  '6-eg5vi3': { k: 'pic', ty: 'session' },
+  '6-1acdqw0': { k: 'pic', ty: 'observer' },
+  '6-1b6ohzd': { k: 'pic', ty: 'cover' },
+  '6-1li9l45': { k: 'pic', ty: 'dropout' },
+  '6-jiesr9': { k: 'pic', ty: 'decay2' },
+  '6-g0ohio': { k: 'pic', ty: 'histone' },
+  '6-1dvbz9': { k: 'pic', ty: 'divisions' },
+  '6-11waieb': { k: 'pic', ty: 'parents' },
+  '6-illh8j': { k: 'pic', ty: 'csi' },
+  '6-rmr6o0': { k: 'pic', ty: 'twoyears' },
+  '6-3wh1bf': { k: 'pic', ty: 'covid' },
+  '6-1clxb39': { k: 'pic', ty: 'anorexia' },
+  '6-gh9wh0': { k: 'pic', ty: 'stars' },
+  '6-7m95gh': { k: 'pic', ty: 'menthol3' },
+  '6-1ckr17d': { k: 'pic', ty: 'slowfast' },
+  '6-cb5rg3': { k: 'pic', ty: 'eightkids' },
+  '6-poct5l': { k: 'pic', ty: 'menthol4' },
+  '6-72vgxr': { k: 'pic', ty: 'software' },
+  '6-1iemb26': { k: 'pic', ty: 'retro' },
+  '6-wp2epe': { k: 'pic', ty: 'seq' },
+  '6-1sfgunv': { k: 'pic', ty: 'allen' },
+  '6-r7sqh6': { k: 'pic', ty: 'atmybest' }
+};
+/* Wording fixes, applied by question id AFTER ids are computed, so the id (and saved progress,
+   rounds and flags) stays the same even though the text changes. */
+window.FIXTEXT = {
+  /* menthol ABA: menthol is the suspected cause, so pain should go back DOWN to its Day 1 level when menthol stops */
+  '6-7m95gh': { c: `ABA reversal; pain dropping back to its Day 1 level when menthol stops points to menthol, not coincidence` }
 };
 /* Section 5: a study picture shown beside questions that already have a graph, table or diagram */
 window.ADDPIC = {
@@ -7824,6 +8208,8 @@ window.ADDPIC = {
   Object.keys(ADDFIG).forEach(function (id) { var q = BY_ID[id]; if (q && !q.fig) q.fig = ADDFIG[id]; });
   var ADDPIC = window.ADDPIC || {};
   Object.keys(ADDPIC).forEach(function (id) { var q = BY_ID[id]; if (!q) return; if (!q.fig) q.fig = ADDPIC[id]; else if (!q.pic) q.pic = ADDPIC[id]; });
+  var FIXTEXT = window.FIXTEXT || {};
+  Object.keys(FIXTEXT).forEach(function (id) { var q = BY_ID[id]; if (q) Object.keys(FIXTEXT[id]).forEach(function (k) { q[k] = FIXTEXT[id][k]; }); });
   function sectionQs(s) { return BANK.filter(function (q) { return q.s === s; }); }
   function isBonusId(id) { var c = String(id).charAt(0); return c === 'B' || c === 'V'; }
   function isExtra(s) { return s === 'B' || s === 'V'; }
@@ -8114,7 +8500,7 @@ window.ADDPIC = {
       '<span class="sec-c">' + vc[3] + ' mastered · ' + vc[2] + ' once · ' + vc[1] + ' need work</span></span><span class="sec-go" aria-hidden="true">›</span></button>'; })() : '') +
       (LABV ? '<button class="sec sec-lab" data-act="lab"><span class="sec-n lab-sec-ic" aria-hidden="true">' + (g ? '<img class="px" alt="" src="' + g.o + '"><img class="px blk" alt="" src="' + g.b + '">' : '') + '</span><span class="sec-b"><span class="sec-t">Experiment Lab</span><span class="bonus-flag">Not graded</span><span class="sec-m">Run a mini study with random participants, then answer questions about the data you just made</span>' +
       '<span class="sec-c">' + (runs ? runs + (runs === 1 ? ' experiment' : ' experiments') + ' run so far' : 'Different every time') + '</span></span><span class="sec-go" aria-hidden="true">›</span></button>' : '') + '</div></section>';
-    h += '<section aria-labelledby="exam-h"><h2 id="exam-h" class="eyebrow-h">Exam</h2><div class="sections"><a class="sec sec-exam" href="PSYC217_Exam_Simulation.html"><span class="sec-n exam-sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17.5" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/><path d="M15 17.5l1.5 1.5 3-3.5"/></svg></span><span class="sec-b"><span class="sec-t">Exam Simulation</span><span class="bonus-flag">Add-on · separate page</span><span class="sec-m">A timed mock midterm in the real format (16 multiple choice, 6 fill-in-the-blank, 3 short answers), plus clinics for the look-alike concepts</span></span><span class="sec-go" aria-hidden="true">›</span></a></div></section>';
+    h += '<section aria-labelledby="exam-h"><h2 id="exam-h" class="eyebrow-h">Exam</h2><div class="sections"><a class="sec sec-exam" href="exam.html"><span class="sec-n exam-sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17.5" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/><path d="M15 17.5l1.5 1.5 3-3.5"/></svg></span><span class="sec-b"><span class="sec-t">Exam Simulation</span><span class="bonus-flag">Add-on · separate page</span><span class="sec-m">A timed mock midterm in the real format (16 multiple choice, 6 fill-in-the-blank, 3 short answers), plus clinics for the look-alike concepts</span></span><span class="sec-go" aria-hidden="true">›</span></a></div></section>';
     h += footer();
     app.innerHTML = h; paintSync();
   }
