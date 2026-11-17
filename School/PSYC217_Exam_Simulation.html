@@ -523,6 +523,16 @@ td.hs-wrong, span.hs-wrong, tr.hs-wrong > * { background: var(--clay-bg) !import
 
 /* ---------- Experiment Lab ---------- */
 .sec.sec-lab { border-style: dashed; border-color: var(--moss); }
+/* ---------- Extra · variables drill ---------- */
+.sec-vars .vars-ic { font-family: var(--f-hand); color: var(--amber); font-size: 1.9rem; }
+.vguide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 720px) { .vguide { grid-template-columns: 1fr; } }
+.vg { background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--vgc); border-radius: var(--r); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.vg0 { --vgc: var(--moss); } .vg1 { --vgc: var(--clay); } .vg2 { --vgc: var(--amber); }
+.vg h3 { font-size: 1.02rem; }
+.vg-ask { margin: 0; font-family: var(--f-hand); color: var(--moss-strong); line-height: 1.4; }
+.vg-def { margin: 0; font-size: .88rem; line-height: 1.5; color: var(--ink); background: var(--tint); border-radius: 10px; padding: 8px 10px; }
+.vg-tip { margin: 0; font-size: .84rem; line-height: 1.5; color: var(--ink2); }
 /* ---------- Flags ---------- */
 .flag-q { display: inline-flex; align-items: center; gap: 5px; border: 1.5px solid var(--line-strong); background: var(--surface); color: var(--ink2); border-radius: 999px; padding: 3px 10px 3px 8px; font-size: .78rem; font-weight: 600; cursor: pointer; line-height: 1.2; }
 .flag-q:hover { border-color: var(--amber); color: var(--ink); }
@@ -867,6 +877,12 @@ mark.hl-r { background: var(--clay-bg); color: var(--clay-ink); border-radius: 4
     <p class="gate-err" id="gate-err" aria-live="polite"></p>
   </form>
 </div>
+<script>
+/* This page lives under two names: on claude.ai as exam.html (with index.html beside it), and on GitHub as
+   PSYC217_Exam_Simulation.html (with PSYC217_Midterm_Grove.html beside it). The links back to the Grove read
+   this page's own file name and pick the matching partner, so the same file works in both places unedited. */
+window.groveHref = function () { return /(^|\/)PSYC217_[^\/]*$/i.test(location.pathname) ? 'PSYC217_Midterm_Grove.html' : 'index.html'; };
+</script>
 <script>
 /* password gate: once the right password is entered on a device, it's remembered there */
 (function () {
@@ -1554,7 +1570,7 @@ window.EXAM = (function () {
     return '<div class="tools" role="group" aria-label="Display and sound"><div class="segs tight" role="group" aria-label="Theme">' + seg('light', 'Light') + seg('dark', 'Dark') + seg('auto', 'Auto') + '</div>' + soundBtn() + '</div>';
   }
   function navTop(back) {
-    return '<nav class="top top-tools">' + (back === 'grove' ? '<a class="back" href="PSYC217_Midterm_Grove.html">‹ Grove</a>' : '<button class="back" data-act="home">‹ Exam room</button>') + '<span class="top-sp"></span>' + tools(back === 'grove') + '</nav>';
+    return '<nav class="top top-tools">' + (back === 'grove' ? '<a class="back" href="' + groveHref() + '">‹ Grove</a>' : '<button class="back" data-act="home">‹ Exam room</button>') + '<span class="top-sp"></span>' + tools(back === 'grove') + '</nav>';
   }
   function daysLeft() {
     var now = new Date(), d = Math.ceil((new Date(2026, 10, 18) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
@@ -1610,7 +1626,7 @@ window.EXAM = (function () {
         '<span class="cl-s"><span class="leafs" aria-hidden="true">' + range(5).map(function (i) { return '<i class="leaf' + (i < filled ? ' on' : '') + '"></i>'; }).join('') + '</span>' + (st ? 'Best ' + best + ' / ' + n : 'Not tried yet') + '</span></span></button>';
     });
     h += '</div></section>';
-    h += '<footer class="foot"><p class="note">Definitions come from the course textbook (Cozby, Mar & Rawn, 4th Canadian ed.) and the lecture slides. Scenarios are new. Progress here is saved in this browser only.</p><p class="note"><a class="back" href="PSYC217_Midterm_Grove.html">‹ Back to the grove</a></p></footer>';
+    h += '<footer class="foot"><p class="note">Definitions come from the course textbook (Cozby, Mar & Rawn, 4th Canadian ed.) and the lecture slides. Scenarios are new. Progress here is saved in this browser only.</p><p class="note"><a class="back" href="' + groveHref() + '">‹ Back to the grove</a></p></footer>';
     app.innerHTML = h;
   }
 
