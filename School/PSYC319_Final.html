@@ -234,6 +234,10 @@ mark.hl{background:linear-gradient(180deg,transparent 62%,color-mix(in srgb,var(
 .g-conf{position:absolute;top:-20px;width:10px;height:14px;background:var(--gold2);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);z-index:7;animation:gconf 2.6s linear infinite}
 @keyframes gconf{to{transform:translateY(480px) rotate(540deg)}}
 @media (max-width:700px){.g-stage{height:440px}.g-world{left:2%}.g-cl{left:calc(2% + 136px)}.g-pop{left:calc(2% + 150px)}.g-drop{width:60%;right:3%}.g-scroll{font-size:.86rem;padding:14px 11px 10px}.g-over{justify-content:center;padding:10px}.g-a{font-size:.88rem;padding:11px 9px}.tile.game,.tile.w2{grid-column:span 2}}
+.tiers{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 10px}
+.tier{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--muted)}
+.tier b{color:var(--text);font-weight:600}.tier em{font-style:normal;font-size:.72rem;opacity:.8}.tier.tot{border:0;background:none;padding-left:2px}
+.wn.s{background:var(--mut);border-color:var(--mut)}
 </style></head>
 <body><header class="bar"><div class="bar-in" id="bar"></div></header><main class="wrap" id="app"></main><div class="toast" id="toast"></div>
 <script>'use strict';
@@ -345,7 +349,7 @@ function vHome(){
   var all = D.Q, t = tally(all), frac = all.length ? (t.lit*0.5+t.gilt)/all.length : 0, h = '';
   h += '<div class="hero"><div class="hero-t"><div class="k">Psyc 319 · Exam #3</div><h1>THE AZURE CITADEL</h1></div>'+citadel(frac)+'</div>';
   h += '<p class="sub ctr" style="margin:10px 0 0">Play · Schooling · Juveniles &amp; the Law. Every question is a window. Answer it right to <b style="color:var(--blue)">light</b> it, right twice in a row to <b style="color:var(--gold)">gild</b> it.</p>';
-  h += '<div class="stats"><div class="stat"><b>'+t.seen+'</b><span>Seen of '+t.tot+'</span></div><div class="stat"><b>'+t.lit+'</b><span>Lit</span></div><div class="stat g"><b>'+t.gilt+'</b><span>Gilded</span></div><div class="stat g"><b>'+(ST.ex.length?ST.ex[ST.ex.length-1].pct+'%':'·')+'</b><span>Last trial</span></div></div>';
+  h += '<div class="stats"><div class="stat"><b>'+t.seen+'</b><span>Seen of '+t.tot+'</span></div><div class="stat"><b>'+t.lit+'</b><span>Lit · right once</span></div><div class="stat g"><b>'+t.gilt+'</b><span>Gilded · right twice</span></div><div class="stat g"><b>'+(ST.ex.length?ST.ex[ST.ex.length-1].pct+'%':'·')+'</b><span>Last trial</span></div></div>';
   h += '<div class="sec-h"><h2>The Trial</h2><div class="rule"></div></div><div class="tiles">';
   h += '<button class="tile feat" data-go="exset">'+ic('trial')+'<b>EXAM SIMULATION</b><span>25 questions, 50 minutes, just like Monday. About 80% lecture, 20% readings only.</span></button>';
   h += '<button class="tile" data-act="mixed">'+ic('mix')+'<b>MIXED PRACTICE</b><span>15 questions from every tower, with feedback.</span></button>';
@@ -356,11 +360,11 @@ function vHome(){
   D.S.forEach(function(s){
     var qs = secQ(s.id), y = tally(qs);
     h += '<div class="card tower'+(s.id===5?' wide':'')+'"><div><div class="u">'+esc(s.unit)+'</div><h3>'+esc(s.name)+'</h3></div><div class="sub">'+esc(s.blurb)+'</div><div class="wins">'+qs.map(function(q){ var p = P(q.id); return '<i class="wn'+(p.s>=2?' g':p.s===1?' l':'')+'"></i>'; }).join('')+'</div>';
-    h += '<div class="meter"><i class="g" style="width:'+(100*y.gilt/y.tot)+'%"></i><i style="width:'+(100*y.lit/y.tot)+'%"></i></div><div class="row"><span class="sub grow">'+y.gilt+' gilded · '+y.lit+' lit · '+y.tot+' windows</span><button class="btn pri sm" data-sec="'+s.id+'">'+(ST.run['s'+s.id]&&ST.run['s'+s.id].i?'Resume at '+(ST.run['s'+s.id].i+1):'Enter')+'</button></div></div>';
+    h += '<div class="meter"><i class="g" style="width:'+(100*y.gilt/y.tot)+'%"></i><i style="width:'+(100*y.lit/y.tot)+'%"></i></div><div class="row"><span class="sub grow">'+y.seen+' seen · '+y.lit+' lit · '+y.gilt+' gilded · of '+y.tot+'</span><button class="btn pri sm" data-sec="'+s.id+'">'+(ST.run['s'+s.id]&&ST.run['s'+s.id].i?'Resume at '+runPos(ST.run['s'+s.id]):'Enter')+'</button></div></div>';
   });
   h += '</div><div class="sec-h"><h2>The Halls</h2><div class="rule"></div></div><div class="tiles five">';
   [['obj','obj','OBJECTIVES','All 23 learning objectives. Drill them one at a time.'],['codex','codex','THE CODEX','Every key term with a definition, example and hook.'],['flash','cards','FLASHCARDS','Flip through the terms. Fast recall.'],['pillars','pillar','PILLARS','Concepts with several points. Pick every one.'],['arch','arch','THE ARCHIVE','The four readings, broken down.']].forEach(function(m){ h += '<button class="tile" data-go="'+m[0]+'">'+ic(m[1])+'<b>'+m[2]+'</b><span>'+m[3]+'</span></button>'; });
-  h += '</div><p class="sub ctr" style="margin-top:28px">Exam #3 · Monday, November 23 · in class · 50 minutes · closed book · 22–25 multiple choice</p>';
+  h += '</div><p class="sub ctr" style="margin-top:28px">Exam #3 · Monday, November 23 · in class · 50 minutes · closed book · 22–25 multiple choice</p><div class="ctr" style="margin-top:22px"><button class="btn sm" id="resetall">Reset all progress</button><p class="sub" style="font-size:.78rem;margin:6px 0 0">Clears every seen, lit and gilded window, flags, saved places, trial history and game scores on this device.</p></div>';
   app.innerHTML = h;
 }
 /* ---------- quiz runs ---------- */
@@ -373,7 +377,11 @@ function pickStudy(qs, n){
 }
 function startRun(title, ids, again, key){ if(!ids.length){ toast('Nothing here yet'); return; } var i0 = 0, sv = key && ST.run[key];
   if(sv && sv.i>0){ var keep = sv.ids.filter(function(x){ return QI[x]; }); if(keep.length===sv.ids.length && sv.i<keep.length){ ids = keep; i0 = sv.i; } }
-  RUN = {title:title, ids:ids, i:i0, ok:0, n:0, ord:{}, req:{}, again:again, len:ids.length, key:key}; SND.nav(); go('quiz'); if(i0) toast('Resuming at question '+(i0+1)); }
+  var base = uniq(ids), seen = {}; ids.slice(0, i0).forEach(function(x){ seen[x] = 1; });
+  RUN = {title:title, ids:ids, i:i0, ok:0, n:0, ord:{}, req:{}, again:again, len:base.length, base:base, seen:seen, key:key}; SND.nav(); go('quiz'); if(i0) toast('Resuming at question '+Math.min(base.length, Object.keys(seen).length+1)); }
+function uniq(a){ var s = {}, r = []; a.forEach(function(x){ if(!s[x]){ s[x] = 1; r.push(x); } }); return r; }
+function runPos(sv){ return Math.min(uniq(sv.ids).length, uniq(sv.ids.slice(0, sv.i)).length+1); }
+function tiers(ids){ var t = tally(ids.map(function(x){ return QI[x]; })); return '<div class="tiers"><span class="tier"><i class="wn s"></i><b>'+t.seen+'</b> seen</span><span class="tier"><i class="wn l"></i><b>'+t.lit+'</b> lit <em>right once</em></span><span class="tier"><i class="wn g"></i><b>'+t.gilt+'</b> gilded <em>right twice in a row</em></span><span class="tier tot">of '+t.tot+'</span></div>'; }
 function runSave(){ var R = RUN; if(!R || !R.key) return; if(R.i>=R.ids.length) delete ST.run[R.key]; else ST.run[R.key] = {ids:R.ids, i:R.i}; save(); }
 function byObj(qs){ return qs.map(function(q, i){ return [q, i]; }).sort(function(a, b){ return (a[0].o-b[0].o) || (a[1]-b[1]); }).map(function(p){ return p[0].id; }); }
 function sceneHTML(q, rev){
@@ -400,21 +408,22 @@ function fbHTML(q, ord, chosen){
 }
 function vQuiz(){
   var R = RUN, q = QI[R.ids[R.i]]; if(!R.ord[q.id+'_'+R.i]) R.ord[q.id+'_'+R.i] = shuf([0,1,2,3,4]); var ord = R.ord[q.id+'_'+R.i];
+  var again2 = !!R.seen[q.id], pos = Math.min(R.len, Object.keys(R.seen).length+(again2?0:1));
   R.cur = {q:q, ord:ord, done:false};
-  var h = '<div class="qtop"><button class="btn sm" data-go="home">Citadel</button><span class="t">'+esc(R.title)+'</span><div class="prog"><i style="width:'+(100*R.i/R.ids.length)+'%"></i></div><span class="sub">'+(R.i+1)+' / '+R.ids.length+'</span>'+(R.key&&R.i?'<button class="btn sm" id="qrestart">Restart</button>':'')+'</div>';
-  h += '<div class="card qcard"><div class="row" style="align-items:flex-start;flex-wrap:nowrap"><div class="grow">'+chipsFor(q)+'</div><button class="btn sm flagb'+(ST.fl[q.id]?' on':'')+'" id="qflag" title="Flag this question">'+(ST.fl[q.id]?'★ Flagged':'☆ Flag')+'</button></div>'+sceneHTML(q, false)+'<div class="stem" id="stem">'+fStem(q.q)+'</div><div id="optw">'+optsHTML(q, ord, null, false)+'</div><div id="fbw"></div><div class="qnav"><span class="sub grow">Keys: <span class="kbd">1</span>–<span class="kbd">5</span> answer · <span class="kbd">Enter</span> next · <span class="kbd">F</span> flag</span><button class="btn pri" id="next" disabled>Next</button></div></div>';
+  var h = '<div class="qtop"><button class="btn sm" data-go="home">Citadel</button><span class="t">'+esc(R.title)+'</span><div class="prog"><i style="width:'+(100*Object.keys(R.seen).length/R.len)+'%"></i></div><span class="sub">'+pos+' / '+R.len+'</span>'+(R.key&&R.i?'<button class="btn sm" id="qrestart">Restart</button>':'')+'</div><div id="tiers">'+tiers(R.base)+'</div>';
+  h += '<div class="card qcard"><div class="row" style="align-items:flex-start;flex-wrap:nowrap"><div class="grow">'+chipsFor(q).replace(/<\/div>$/, (again2?'<span class="chip g">Back for another try</span>':'')+'</div>')+'</div><button class="btn sm flagb'+(ST.fl[q.id]?' on':'')+'" id="qflag" title="Flag this question">'+(ST.fl[q.id]?'★ Flagged':'☆ Flag')+'</button></div>'+sceneHTML(q, false)+'<div class="stem" id="stem">'+fStem(q.q)+'</div><div id="optw">'+optsHTML(q, ord, null, false)+'</div><div id="fbw"></div><div class="qnav"><span class="sub grow">Keys: <span class="kbd">1</span>–<span class="kbd">5</span> answer · <span class="kbd">Enter</span> next · <span class="kbd">F</span> flag</span><button class="btn pri" id="next" disabled>Next</button></div></div>';
   app.innerHTML = h;
 }
 function answer(k){
   var R = RUN, c = R.cur; if(!c || c.done) return; c.done = true; var q = c.q, ok = k===0, p = ST.p[q.id] || (ST.p[q.id] = {s:0, n:0, w:0}), was = p.s;
-  p.n++; if(ok){ p.s = Math.min(2, p.s+1); R.ok++; } else { p.s = 0; p.w++; } R.n++; save();
+  p.n++; if(ok){ p.s = Math.min(2, p.s+1); R.ok++; } else { p.s = 0; p.w++; } R.n++; R.seen[q.id] = 1; save();
   if(!ok && !R.req[q.id] && R.ids.length < R.len+(R.key?80:8)){ R.req[q.id] = 1; R.ids.splice(Math.min(R.ids.length, R.i+(R.key?7:4)), 0, q.id); }
   $('#optw').innerHTML = optsHTML(q, c.ord, k, true); $('#fbw').innerHTML = fbHTML(q, c.ord, k);
   if(q.b) $('#stem').innerHTML = fStem(q.q, esc(plain(q.a[0][0])));
   var sc = $('#scene'); if(sc) sc.classList.add('rev');
   var nx = $('#next'); nx.disabled = false; nx.textContent = R.i+1 < R.ids.length ? 'Next' : 'Finish';
   if(ok){ if(p.s===2 && was<2){ SND.gild(); toast('Window gilded'); } else SND.ok(); } else SND.no();
-  $('.prog i').style.width = (100*(R.i+1)/R.ids.length)+'%';
+  $('.prog i').style.width = (100*Object.keys(R.seen).length/R.len)+'%'; $('#tiers').innerHTML = tiers(R.base);
 }
 function nextQ(){ var R = RUN; if(!R.cur || !R.cur.done) return; R.i++; runSave(); SND.nav(); if(R.i >= R.ids.length) go('done'); else go('quiz'); }
 function vDone(){
@@ -560,6 +569,7 @@ function init(){
       else if(bid==='submit') trySubmit(); else if(bid==='flag'){ var fid = EX.ids[EX.i]; EX.flag[fid] = !EX.flag[fid]; SND.tap(); vExam(); }
       else if(bid==='exmiss'){ startRun('Trial misses', EX.ids.filter(function(x){ return EX.ans[x]!==0; }), null); }
       else if(bid==='cxdrill'){ var names = {}; cxTerms().forEach(function(t){ names[t.t] = 1; }); startRun('Codex drill', shuf(D.Q.filter(function(q){ return q.s===5 && names[q.term]; })).slice(0, 15).map(function(q){ return q.id; }), null); }
+      else if(bid==='resetall'){ if(sure('reset', 'Tap again to erase all progress')){ ST.p = {}; ST.run = {}; ST.fl = {}; ST.ex = []; ST.pl = {}; ST.fc = {}; ST.g = {}; save(); FC = null; SND.bell(); go('home'); toast('All progress reset'); } }
       else if(bid==='qflag') qFlag(); else if(bid==='qrestart'){ delete ST.run[RUN.key]; save(); RUN.again(); } else if(bid==='gstart') gStart(); else if(bid==='gmenu') vGame();
       else if(bid==='fcno') fcMark(0); else if(bid==='fcyes') fcMark(1); else if(bid==='plchk') plCheck();
       else if(bid==='bthm') setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
