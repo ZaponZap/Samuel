@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PSYC 319 Exam 3 Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Coming+Soon&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1E1B4B; --paper:#FFFDF8; --bg:#E9F1FF;
+  --sun:#FFC93C; --grass:#2FB463; --berry:#FF4F8B; --sky:#3D9BFF; --night:#211A4A;
+  --good:#16A35A; --bad:#E5484D; --muted:#5B5884;
+  --display:"Coming Soon","Comic Sans MS","Chalkboard SE",cursive;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Times New Roman",Times,serif;
+  color-scheme:light;
+  /* layout: one phone-width column, sticky HUD on top, each stage is a short stack of chunky cards */
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:var(--body);color:var(--ink);background:var(--bg);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+body[data-g="r"]{background:linear-gradient(180deg,#8FD3FF 0,#BDE7FF 260px,#D9F5D0 640px,#BFEBB0 100%) fixed}
+body[data-g="s"]{background:radial-gradient(circle at 20% 0,#3B2C8A 0,var(--night) 420px,#140F33 100%) fixed}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+.tnr{font-family:var(--serif);font-style:italic}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px 80px}
+img.spr{image-rendering:pixelated;image-rendering:crisp-edges;display:inline-block;vertical-align:bottom}
+
+/* HUD */
+.hud{position:sticky;top:0;z-index:20;background:rgba(255,253,248,.92);backdrop-filter:blur(6px);border-bottom:3px solid var(--ink)}
+.hud .in{max-width:560px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:8px}
+.hud .t{flex:1;min-width:0;font-family:var(--display);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{border:2px solid var(--ink);background:var(--paper);border-radius:10px;height:36px;min-width:36px;padding:0 8px;font:600 14px var(--body);color:var(--ink);cursor:pointer}
+.coins{display:flex;align-items:center;gap:4px;font-weight:700;font-variant-numeric:tabular-nums;border:2px solid var(--ink);border-radius:10px;padding:4px 8px;background:#FFF3C4}
+.coins.bump{animation:bump .3s}
+@keyframes bump{50%{transform:scale(1.2)}}
+.dots{max-width:560px;margin:0 auto;padding:0 16px 8px;display:flex;gap:5px;flex-wrap:wrap}
+.dots button{flex:1;min-width:14px;height:10px;border-radius:6px;border:2px solid var(--ink);background:#fff;padding:0;cursor:pointer}
+.dots button.done{background:var(--grass)}
+.dots button.now{background:var(--sun)}
+
+/* cards & bits */
+.stage{display:flex;flex-direction:column;gap:14px;padding-top:16px}
+.card{background:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:0 5px 0 var(--ink);padding:16px}
+.card.tight{padding:12px}
+.stage-title{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;color:var(--ink)}
+body[data-g="s"] .stage-title{color:#fff}
+.stage-title h2{font-size:28px}
+.stage-title small{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;opacity:.8}
+.kicker{font:700 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.big{font-size:19px}
+p{margin:0}
+.stack{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{font:700 17px var(--display);color:var(--ink);background:var(--sun);border:3px solid var(--ink);border-radius:14px;box-shadow:0 4px 0 var(--ink);padding:12px 18px;cursor:pointer;transition:transform .05s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.go{align-self:flex-end;background:var(--grass);color:#fff;text-shadow:0 2px 0 var(--ink)}
+.btn.pink{background:var(--berry);color:#fff;text-shadow:0 2px 0 var(--ink)}
+.btn.blue{background:var(--sky);color:#fff;text-shadow:0 2px 0 var(--ink)}
+.btn.ghost{background:var(--paper)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:3px solid var(--berry);outline-offset:2px}
+
+.say{display:flex;gap:10px;align-items:flex-end}
+.say .who{flex:0 0 auto;text-align:center}
+.say .who img{height:76px}
+.bub{position:relative;flex:1;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:10px 12px;font-size:16px}
+.bub:before{content:"";position:absolute;left:-12px;bottom:14px;border:9px solid transparent;border-right-color:var(--ink)}
+.bub b.nm{display:block;font-family:var(--display);font-size:14px;color:var(--berry)}
+
+.hack{background:#FFF07A;border:3px solid var(--ink);border-radius:6px;padding:12px 14px;transform:rotate(-.8deg);box-shadow:4px 5px 0 rgba(30,27,75,.85)}
+.hack:before{content:"EXAM HACK";display:block;font:700 12px var(--body);letter-spacing:.12em;color:var(--berry);margin-bottom:2px}
+.pill{display:inline-block;border:2px solid var(--ink);border-radius:999px;padding:2px 10px;font-weight:600;font-size:14px;background:#fff}
+.stamp{display:inline-block;font:700 13px var(--body);letter-spacing:.08em;text-transform:uppercase;border:3px solid currentColor;border-radius:8px;padding:2px 8px;transform:rotate(-4deg)}
+.stamp.up{color:var(--bad)} .stamp.down{color:var(--good)} .stamp.ns{color:var(--muted)}
+.tiny{font-size:13px;color:var(--muted)}
+
+/* MCQ */
+.q{font-weight:600;font-size:17px;margin-bottom:10px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;font:500 16px var(--body);color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:10px 12px;cursor:pointer}
+.opt:hover:not(:disabled){background:#F3F0FF}
+.opt.right{background:#C9F5DA;border-color:var(--good)}
+.opt.wrong{background:#FFD3D6;border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.why{margin-top:10px;font-size:15px}
+.ok{color:var(--good)} .no{color:var(--bad)}
+
+/* sorter */
+.chip{font:600 17px var(--body);background:#fff;border:3px dashed var(--ink);border-radius:14px;padding:14px;text-align:center;min-height:64px;display:flex;align-items:center;justify-content:center;gap:10px}
+.chip.fly{animation:fly .35s forwards}
+@keyframes fly{to{transform:translateY(30px) scale(.6);opacity:0}}
+.bins{display:grid;grid-template-columns:repeat(var(--n,2),1fr);gap:8px}
+.bins.six{grid-template-columns:repeat(3,1fr)}
+.bin{font:700 15px var(--display);background:var(--sky);color:#fff;text-shadow:0 2px 0 var(--ink);border:3px solid var(--ink);border-radius:12px;box-shadow:0 4px 0 var(--ink);padding:10px 6px;cursor:pointer;min-height:52px}
+.bin:nth-child(2n){background:var(--berry)}
+.bins.six .bin:nth-child(3n+1){background:var(--sky)} .bins.six .bin:nth-child(3n+2){background:var(--berry)} .bins.six .bin:nth-child(3n){background:var(--grass)}
+.bin:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.bin.hint{outline:4px solid var(--sun)}
+.tally{display:grid;grid-template-columns:repeat(var(--n,2),1fr);gap:8px;font-size:13px}
+.tally > div{background:#F4F2FF;border:2px solid var(--ink);border-radius:10px;padding:6px 8px;min-height:40px}
+.tally h4{margin:0 0 4px;font:700 12px var(--body);letter-spacing:.06em;text-transform:uppercase}
+.tally ul{margin:0;padding-left:16px}
+.fb{min-height:22px;font-size:15px}
+
+/* flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.flip{perspective:600px;height:130px;cursor:pointer;border:none;background:none;padding:0;font:inherit;color:inherit}
+.flip .fi{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.flip.on .fi{transform:rotateY(180deg)}
+.flip .fa,.flip .fb2{position:absolute;inset:0;backface-visibility:hidden;border:3px solid var(--ink);border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:600}
+.flip .fa{background:var(--sky);color:#fff;font-family:var(--display);font-size:17px;text-shadow:0 2px 0 var(--ink)}
+.flip .fb2{background:#fff;transform:rotateY(180deg);font-size:14px}
+
+/* Ramsden lab */
+.tabs{display:flex;gap:6px}
+.tab{flex:1;font:700 14px var(--display);border:3px solid var(--ink);border-radius:12px 12px 0 0;background:#fff;padding:8px 4px;cursor:pointer;color:var(--ink)}
+.tab.on{background:var(--sun)}
+.tab.tried:after{content:" ✓";color:var(--good)}
+input[type=range]{width:100%;accent-color:var(--berry);height:28px}
+.dial-lab{font:700 18px var(--display);text-align:center;color:var(--berry)}
+.meter{display:flex;align-items:baseline;gap:8px;justify-content:center}
+.meter b{font:700 44px var(--display);font-variant-numeric:tabular-nums}
+.class{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;background:#FFF1D6;border:3px solid var(--ink);border-radius:14px;padding:8px}
+.kid{position:relative;aspect-ratio:1/1.1;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;background:#fff;border:2px solid transparent;transition:background .2s}
+.kid img{height:88%}
+.kid.ok{background:#C9F5DA;border-color:var(--good)}
+.kid.vul{background:#FFC2C7;border-color:var(--bad);animation:wob .4s}
+.kid.vul:after{content:"!";position:absolute;top:-6px;right:-2px;background:var(--bad);color:#fff;font:700 12px var(--body);width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--ink)}
+@keyframes wob{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+
+.dom-grid{display:grid;grid-template-columns:1fr;gap:6px}
+.dom{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;font:600 15px var(--body);border:2px solid var(--ink);border-radius:12px;padding:10px 12px;background:#fff;cursor:pointer;color:var(--ink)}
+.dom.sel{background:#DCD4FF}
+.dom.hit{background:#C9F5DA;border-color:var(--good)}
+.dom.miss{background:#FFD3D6;border-color:var(--bad)}
+.dom .res{font-variant-numeric:tabular-nums;font-size:14px}
+.letter{display:inline-flex;width:26px;height:26px;border-radius:50%;align-items:center;justify-content:center;background:var(--ink);color:#fff;font:700 13px var(--body);margin-right:8px;flex:0 0 auto}
+
+.daybar{display:flex;height:46px;border:3px solid var(--ink);border-radius:12px;overflow:hidden}
+.daybar div{display:flex;align-items:center;justify-content:center;font:600 12px var(--body);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.5);transition:flex .3s;overflow:hidden;white-space:nowrap}
+
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.tile{border:3px solid var(--ink);border-radius:14px;background:#fff;padding:10px;text-align:center}
+.tile b{display:block;font:700 26px var(--display);font-variant-numeric:tabular-nums;color:var(--berry)}
+.tile span{font-size:13px;color:var(--muted)}
+
+/* Steinberg: tower of london */
+.tol{display:flex;justify-content:space-around;align-items:flex-end;height:170px;background:#F4F2FF;border:3px solid var(--ink);border-radius:14px;padding:10px 6px 0;position:relative}
+.peg{position:relative;width:30%;display:flex;flex-direction:column-reverse;align-items:center;cursor:pointer;background:none;border:none;padding:0;height:100%}
+.peg:before{content:"";position:absolute;bottom:0;width:10px;background:#8A6A3D;border:2px solid var(--ink);border-radius:6px 6px 0 0}
+.peg[data-c="3"]:before{height:140px}.peg[data-c="2"]:before{height:100px}.peg[data-c="1"]:before{height:60px}
+.peg:after{content:"";position:absolute;bottom:-3px;left:5%;right:5%;height:10px;background:#8A6A3D;border:2px solid var(--ink);border-radius:4px}
+.peg.sel{filter:drop-shadow(0 0 6px var(--sun))}
+.ball{position:relative;z-index:1;width:38px;height:38px;border-radius:50%;border:3px solid var(--ink);margin-bottom:2px;box-shadow:inset -5px -5px 0 rgba(0,0,0,.18)}
+.ball.R{background:#FF5A5F}.ball.G{background:#3DD17B}.ball.B{background:#4D8DFF}
+.ball.lift{transform:translateY(-14px)}
+.tol.mini{height:90px;transform-origin:left;pointer-events:none}
+.tol.mini .ball{width:20px;height:20px;border-width:2px}
+.tol.mini .peg[data-c="3"]:before{height:72px}.tol.mini .peg[data-c="2"]:before{height:50px}.tol.mini .peg[data-c="1"]:before{height:28px}
+
+/* stoplight */
+.road{position:relative;height:280px;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:#3B3A4F}
+.lanes{position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 30px,#FFE680 30px 60px) center/8px 100% no-repeat}
+.road.moving .lanes{animation:roll .45s linear infinite}
+@keyframes roll{to{background-position:center 60px}}
+.road .car{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);height:96px;transition:transform .2s}
+.road .car.crash{animation:crash .6s}
+@keyframes crash{20%{transform:translateX(-60%) rotate(-20deg)}50%{transform:translateX(-40%) rotate(18deg)}100%{transform:translateX(-50%)}}
+.road .stopline{position:absolute;top:70px;left:10%;right:10%;height:10px;background:#fff;opacity:.9}
+.light{position:absolute;top:10px;right:12px;background:#111;border:3px solid var(--ink);border-radius:12px;padding:6px;display:flex;flex-direction:column;gap:5px}
+.light i{width:26px;height:26px;border-radius:50%;background:#333;display:block}
+.light.r .r{background:#FF3B3B;box-shadow:0 0 14px #FF3B3B}
+.light.y .y{background:#FFD23B;box-shadow:0 0 14px #FFD23B}
+.light.g .g{background:#3BFF7A;box-shadow:0 0 14px #3BFF7A}
+.peer{position:absolute;left:8px;bottom:8px;display:flex;align-items:flex-end;gap:4px}
+.peer img{height:90px}
+.peer .yell{background:#fff;border:2px solid var(--ink);border-radius:10px;padding:2px 8px;font:700 14px var(--display);margin-bottom:60px;opacity:0;transition:opacity .2s}
+.peer.cheer .yell{opacity:1}
+.peer.cheer img{animation:hop .3s 2}
+@keyframes hop{50%{transform:translateY(-8px)}}
+.boom{position:absolute;left:50%;bottom:60px;transform:translateX(-50%);font:700 34px var(--display);color:#FFD23B;text-shadow:0 3px 0 var(--ink);opacity:0}
+.boom.on{animation:boom .7s}
+@keyframes boom{0%{opacity:1;transform:translateX(-50%) scale(.5)}60%{opacity:1;transform:translateX(-50%) scale(1.3)}100%{opacity:0}}
+.drive{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.drive .btn{font-size:22px;padding:16px}
+.road-hud{display:flex;justify-content:space-between;font:700 15px var(--body);font-variant-numeric:tabular-nums}
+
+/* discounting */
+.money{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.money button{border:3px solid var(--ink);border-radius:16px;box-shadow:0 4px 0 var(--ink);padding:14px 8px;cursor:pointer;font:700 15px var(--body);color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:6px}
+.money button b{font:700 30px var(--display)}
+.money .now{background:#FFE18A}.money .later{background:#BFE3FF}
+.money button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+
+/* go-nogo */
+.gng{height:200px;border:3px solid var(--ink);border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:96px;cursor:pointer;user-select:none;-webkit-user-select:none;transition:background .1s;width:100%;padding:0;color:var(--ink)}
+.gng.hit{background:#C9F5DA}.gng.fa{background:#FFC2C7}
+.gng.hot{background:#FFF0F3;animation:pulse .9s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(255,79,139,.25)}}
+.shape-go{width:110px;height:110px;border-radius:50%;background:var(--grass);border:4px solid var(--ink)}
+.shape-no{width:100px;height:100px;background:#8B5CF6;border:4px solid var(--ink)}
+
+/* brain lab */
+canvas.chart{width:100%;height:auto;display:block;background:#fff;border:3px solid var(--ink);border-radius:14px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:13px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:16px;height:5px;border-radius:3px;display:inline-block}
+.bars2{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;font-size:14px}
+.bar{height:16px;background:#EEE;border:2px solid var(--ink);border-radius:8px;overflow:hidden}
+.bar i{display:block;height:100%;transition:width .4s}
+.toggle{display:flex;border:3px solid var(--ink);border-radius:12px;overflow:hidden}
+.toggle button{flex:1;border:none;padding:10px;font:700 15px var(--display);background:#fff;cursor:pointer;color:var(--ink)}
+.toggle button.on{background:var(--berry);color:#fff}
+.vbars{display:flex;gap:14px;align-items:flex-end;height:150px;padding:8px 8px 0;border-bottom:3px solid var(--ink)}
+.vbars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;font:600 13px var(--body)}
+.vbars i{display:block;width:100%;border:3px solid var(--ink);border-bottom:none;border-radius:8px 8px 0 0;transition:height .45s}
+.vlabels{display:flex;gap:14px;padding:4px 8px 0;font:600 13px var(--body);text-align:center}
+.vlabels span{flex:1}
+
+/* hub */
+.hero{display:flex;flex-direction:column;gap:10px;padding:22px 0 6px}
+.hero h1{font-size:38px}
+.hero .cast{display:flex;gap:14px;align-items:flex-end}
+.cast figure{margin:0;text-align:center;font:600 13px var(--body)}
+.cast img{height:96px}
+.cart{display:flex;gap:14px;align-items:center;text-align:left;width:100%;cursor:pointer;font:inherit;color:inherit;border:3px solid var(--ink);border-radius:20px;box-shadow:0 6px 0 var(--ink);padding:14px;transition:transform .08s}
+.cart:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
+.cart.r{background:linear-gradient(135deg,#C9F5DA,#FFF3B8)}
+.cart.s{background:linear-gradient(135deg,#E2D9FF,#FFD3E2)}
+.cart h2{font-size:24px}
+.cart .art{flex:0 0 auto;display:flex;align-items:flex-end}
+.cart .art img{height:84px}
+.best{font:600 13px var(--body);color:var(--muted)}
+ul.clean{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+
+/* cheat */
+.cheat h3{font-size:20px;margin:10px 0 4px;color:var(--berry)}
+.cheat h3:first-child{margin-top:0}
+.cheat ul{margin:0;padding-left:20px}
+.cheat li{margin:3px 0}
+
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:400px){.stage-title h2{font-size:24px}.hero h1{font-size:32px}.bins.six{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body data-g="hub">
+<canvas id="fx"></canvas>
+<header class="hud" id="hud" hidden>
+  <div class="in">
+    <button class="icon-btn" id="homeBtn" aria-label="Back to arcade">◀ Arcade</button>
+    <div class="t" id="hudTitle"></div>
+    <div class="coins" id="coins"><img class="spr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAcklEQVR4XmNkgIKTk/T/w9ggYJ53kRFEM4EIkKRZXCODpqkuw8ETD8EKYBqYYIzP19fADUBWxAISBekEgRmTtzBk5PrAFV4/fRliBQyAJEGKkAEjzAqYKTCT7C3kwWywS2GKYHbDJEE+AVsB8xJMAlkMANp8MCtTeE1KAAAAAElFTkSuQmCC" alt="" style="height:16px"><span id="coinN">0</span></div>
+    <button class="icon-btn" id="muteBtn" aria-label="Toggle sound">🔊</button>
+  </div>
+  <nav class="dots" id="dots" aria-label="Stages"></nav>
+</header>
+<main class="wrap" id="app"></main>
+
+<script>
+/* ================= core ================= */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const SPR={"defendant": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACnUlEQVR4Xu2WT0gUcRTHnyWGuKeK/pBrVNQSFFSGSoKreSgiiUKCoK4dOxgSLFqHNOhQkUKGgXSxU1SH2PIQ5XrJpa2VZKstU9wNt8hQEdJom/j+3N/MuO3We4MS0X5gmfd785v3/c77zfxmiXLk+N/Jkzagdnux8btrHr2Mi2rmSwxA3Fu6kcrKtlFsdIz6Q1F1eXnpFnKXrKVgcBBDQ2KCbSBdfCwxTtc7bioDF1pOqyOMpWCbWCLpgAbivqZL5hgxck5wZMAuvnSlW+nacxLYS6Cp2LyHLl9sVsOGM+cp+Tlmjk8ePa6fAzbiDrg2eKix8wGFC3aZIoiRwzkpYgOaHTstA/ZYingJpoffkAvtr16vtDBuqPZQcuiZiqWIO/Divn+ehr3t6ec4iAyMfhinvsk49bVfMWuHurpVjBzOYY4EkQFNd2RACaLlnprdKkbOCex9W++EuMMb507Q0Kvv8/Q2bc2nyiNnaf+BCjVnODHJ+i6IOoDCJetWEPnblGBXe4v6IUbuzqFCaw4TkQGIzzwPZi3d1j9L9Ye9oueAbeDrx0/UG3pvib8LZIxv3+2d6xITtgHQ6J5Sx57wNFE0bElEw3M5IiVu+yr+EfFGpIFg68HllqEUEE/9L2Dh2EAg/o0C8S+mSFVxgYohLtkLREtgRwsCe2y+KUxEBvb5fPQk8SNraZyLDLylh/6nTHniG2g9Vk/JNbVmYSyBxh5jIypcvYq1CQFRB0Ye96iLtCDuWHdE5/CqNu2tWvgO1Fy9lRcbjKjCp8qX/fIMIAcgjrlcB6IOcApz5tgRGVgMcgb+3Q5k2wekOOoAvvvpZMpxcGTgr1FU5DKmJmaMzmv31BHjTLlFMwgx74RhGHWvjWajzjSAWOcxR2LgJwJGMRU+5KzBAAAAAElFTkSuQmCC", "poka_ham": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAADEElEQVR4Xu2WTUhUURTHz4i4eTOSjiNDgloMNAxUC7PAQkEowiQhjMBIpA8RF+2SFtEigmDatXChG1PauciQFhPIKEOtDCqwMR1tbIIhPxDUcVNO/I/c55vnm+e7VyGEfvB455378f/fc+e9O0T/OcyE205lce1nDQWyg6Pd17J/4lG+xFjxjDbZ+aQNXHkZYY31xFddS8SizUy2rkk3Zoyl0TQ3TxQK7S67yIk+AgiaDSiZMIr7fOXZ8J1gTrmRy2fCDpeTMkB8Y2PdBYHFxTQ9uFpqOez5mxXy+fw0NfXZJcbsNf+eHczisf5mqqq5RGvpOE2OT/D8NQ315PEHKTkZoQv3RnNMrJ+u5z6u929ZS5RfPBfaOYR4VdVxHoeVG8VXfi7QxebHPHw2Psh3GIv1E5sQ2+H+NEHChECIA0dvgbnsWHkg2E4F/gBPglhUA2CLMMZK0Cju2ICR29cf0uDwHA0NhmkrPctNiJFDmyyOKmBkaGCAXn2Yp8jYlJ5GjBzaZJE2IKgNlVvGskgbeDf6hLamx+l+T5i18BVEjJwKUgbmZ7/TsUA1JccidKuxjQpONFBxUxfHyK2sRbmPDLavYT48tUX09FEH3ayo4C6IkcOrKYtUBbD60opKqm8fplQqTV0dl/lCjBza0EcGqQqI8paUlFJxWw+dLNx+17/89lNJtJNNvH52Vkbf/lMsvoTGj8qPjy+o8UYvi/T29fG9u7OT7zMz8RxxnAvJ5BzhHMnnSmoLgDd4l1Kp7b0+f+4MXwC5TCYjtXpgexiZz3aB11vG4fLyErW0tFIsFtWfrbCrwJ6noRmYggFNc9PCwvYrV1lZDRE2ZCdmhfQWCCAIUAERq6BsQDAyMqyiq7NvA/tF6jsg2NzM/bWbn2VQrkBZ2c5paIxlUTIQqmulIm9Q10KMnApKBg6Sw2lgdfnXriJY5ZygVIEj3p0foMAq5wQlA/+8AmBtdUlfoDGWRakCVoKqJpQMHCRSBnAUezzFFDjqpszSN90HYuTQlu8/RD6kDABN0yiRmOa7wCrnlL9J7lrXOR5etwAAAABJRU5ErkJggg==", "flare": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA5ElEQVR4XmNgIAL8////P0jZCwU7MA0C/2O6wGxGIvRDNFzO+8/QKQNX/vLIFgbxzQaEtcNsAtH/H7wBOQZCQ11ANIBrRjOAiRgTXjy49p+hZh5WpSyEDABrhoHYbpQwIAj+Z2X9f6xm9R9kyN5NK/7DYgFG/++yQhiODmCaQQaAMMgAbDZijcZPl7zAij+GfADr2f3pFUPSiztY1WIEIshmmManJR/wagYBFANAmp/suQCWgBmCy2YYgDtLS0Hl/042MbgEPmcjA7gLFKSkGNJFILFKrGYM4GVl9x/kEoLxO6gAAPdvkenadYBnAAAAAElFTkSuQmCC", "poka_b": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACl0lEQVR42u2WP0gbYRjGf0oIwneRqlWCQox4wyl0KMEOoaQuzdSSRWgpGEHbDI4Ojg5dChmcilPrEJcqQQzoEkH8g1ORggqNEtGECIekUVAvFaTXweZMQUsu5oSKz/S+7/fneXje77vv4B73uEcZCA8o+p0RUVVp4uHPCVN72sySB156afX4OVYTrC0tA+B55sPhVEitxQF0MyJs5ZLn9tM8fzECQDIRAaDV4ydwMb1kEdXl9G1taRlZCVLtlAGQlaDhhlmYFnC2foiaq2EiEuaXmgRgIhJGzdVwtn5oWoDN7AKpvYPe9o6/ar3B4csk8dVaBwBGxycZHZ+8NrfUgfnZ9wz1jxj5yc53hvpflf0dMOXAbnKPNtlNaiEOwLdPX5D+tCO1ECd3vMhucs/6Fji67KQW4jx++9ogd3TZye2nrXWgTXZT3+LCF4ySyaisRiKsRiJkMiq+YJT6Fhdtstu6M1Cwt66unto3wzyyqQBsnDupWwzhC0aZ+fDEWgdaPX4ABkMhNs6dbJw7GQyFAMhmD4zxikMISQ8PKPrWTL/ucrl1r9enCyHpQki61+vTXS633tjYpIcHFF0ISbfsED59NwtAJnNx4AKBHiMG+Dj/07oWFG8uhARALBY14lt5Cwo4PT0xHCjEtyqggFgseqP1pgTk8xqapl07rmka+bxmjYC5Pj/qypQhpJioOFdXppjr81vjQOENAHj4sOnKuHhORQV0j01XpTcTAHR6e7A3KMaYvUGh09sDQHozQffYdJUlDpSysRnyityCm6IsAUc/DkqqWSbgQUNTSbW76wDA8VH2yvhWBFxFWK6I/+sWCCHpDkctcrOElt2+fAOy28jNEg5HLWZ+RspyQAjBzs4WQoh/1krFbxCPCj+UubW3AAAAAElFTkSuQmCC", "kid0": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC1UlEQVR4Xu2YP0xTQRzHvxgiWAu2pfIvjRhd1KCLCdHJRQ0sBiOjk6MTkybMhqGbhLlxUAcTDYMSjWh0UBEJJIBiihgoTUu00krLo9UazPfINa9F2981EmLST9L0vbvjvt/73ru7R4EKFSrsMFWm+j6Xc6PY34QTKaM+q6UGtHCbZy983jq0ep14MrGA4we86nrsY1R3pQxKjYjcUpzCRItTMG5l4HbU5JURlq+msyITu6QJFIrbCceSiMRS6DjSYtKdQjwFGh31g8BNNLafwvq3sKo613XJWJwYJUAovIEqXLzSmxM/29Wjygb8N4xNGCXAqEnCSqvvPQ0+ZULfl4NxAnUtPowHP8PlrM4lwGuWlYNRAiQTXEANgFej48pAMhrGyKMhIPoBu5NZYw9GCXAJvnwzokSD9+8pMSay9OI1libHVJ0p4gQozmegLzCEfgCnz3di+u5Dpec62ojZqSlVx33BBLEB/QBSwG4isRwpW9x4GTIF7nLX2s9gdnheiZOnd8Zx+JdL1bGNCeIECPf86VAM0dgKWrweDFwPbNHSSUkp+RDqc4Ajsx04eDc3/1cNHlD1tdUlT04iToCjJ/FQpujg9MMqpWQCGo6e8XOuw/E4fG53nsbXzLqqYxsTShrgub64smbS5/YcxzRhX+NMoRCmwDZ8F5BSMgGi326KJXHSvV+11W2kb0QiA2Twag+WPs3g2dqf5zhkpTCVXUPw7WPVVop4FZAvM6Pqm2J2GL2GZ4IJYgPd/beqhrD5wvmzuw/J+DImh/1K61DHZezztgLDfrUts63UhHgKiO7Y01Cf1z/F69zNeW2kGBnYDv5PA03NTVvCKJwWKTuegHgV2Jl9P5d3/z0WwaJ0yAWUlQCXIEXtFN5LKcvAv8TIgMPh3OjtPIa2yG1c8EzkfJz48Vx9WMc2JgbFOxZh5wc9tep61UpjZfMfJLCM94RlliX/jeA3ipA+hwxGQ/IAAAAASUVORK5CYII=", "kid8": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACvklEQVR4Xu2WX0iTURjGn0Is1pgiI9bQpTYq1i4WVNQQsZsYXoTVXUQUBN1kN3VTBO2uILrpKroK6kJCIvqHRDfJsIFQQSZrzDYV1pJPm7KtNYTF+84zx5z1ng+HBf1g7Pz7znne5z3nOx/wHxP43faieqyybIYNOg9JFxuJGeJ5G6QCaPGzR72IT6fR0daMXTsc/OjniRSX6Z/6lihKRWyUCKDFe/a2SoYy7Q6b2C2xA4mvCzw5Ra8ipchV9MoR6mvfZkMiVRr/J0QOVKNSQLYr6/cfPo9jvad5qBIrQVvAoT09eB8xMPBijBc8de460tlFXLrcL1lvBVoCTgb68GjSgpsDYSQcAdwZNnBjYJTL1EZ1GqODloBKZpJJXOy284/KiuT0clmC+LzSSbh35QJsDRYM/XTy3Mc7C3gXCiPh7OZ6YFMSkXgMwYePxe8CsQN0rgefvcbCYo4Xtg4/LQdIdfpR38iHcfHihPgYVlt85EwAr+4PlZq7gNTklLb9hDgFimBfV9Hv88DZVkpDpTCKPvgkpDWnOAVEY+Pm4oOPBq69jHDdsd3FP4La7oYTPEay+RRitTSxz3cAU1Nf4HJ1YnZ2ZsU62WwG+fwP5HJZFAp50dxaDtQDUwJqRW8WLQHR6Ce2eDV+17caYgFXe/chNniL81sLyj/1hW7381gpYgHEFmeHdF4xWgKyybh4YilaAhRk91qhJaAeKdC6CybevuHAa+121aZ7HYsFLL3j+TXr8Z9AZn4OkdHnLKh150FYAOSiYe37QCsF6qJpbtkKa1NLeRtYm+zlcl0vo3qg5UA9WHcB4k1YDe0DReV+0GXdHTAtID23/EFCRzIzb+gGz5gWsFb8mwLIfrJdYdb+vyIFoi9XBX0Zu927uZpOf4dhfOMytVGdoDbpFzGhLWBsbLwsyOv1cLm6TUfALy2FJEQc9mrDAAAAAElFTkSuQmCC", "kid15": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACxUlEQVR4Xu2WTWgTURDHpyKEJm2iab5aMLRW1KOkoGADWooXQSxBLHgV8e6pF8GbNz2KSC8FL8FDRSmCoNQUBA8iglrFNKUFKTWJZu1u6aGs/Ce+ZRu2OpMevOQH4U3mvbz/fLy3G6IOHTp02CPxcK+7ly32a35sxOrOr65WYf+cZs990sUQyCaSNHE6xzbG3OEhgq91TlMVUQDYMBaOeLFC+OW7z1S1Nih39BB/bzgOvf2yygFqEAUAYuEwiwAID2dSnmg2c3DHdw3iACCOIJB58eYlFgWwpyZPUXltncZOHNNoM+IDY9pw+ep1WliYDxTK589Qcfo+NRybD6o6mr8xe+2C++P5PXd09KwLBqI97vbiM/7ABpjDGqyViotbAL4vV7x9j6QTgbZ/jQTxc2DiwZOuWSLOLJ8fI0oNevtvpwabPiL6+OYTr5WIA3EAhqe3Jilkhyh0fIBd1mqFXk1P0dbiN9qKbNF8cU6qzahagMwgACHw+u4MfXhUYtuIa7JX3QI/ux0yrXhbLYhEetzb72tkWRY9vnGeN7l4Z46i0SjP2faGuP+qCmDzbHaQhbj3lkXV6jrbiURqh39lZZmkgajOAFha+srj+Pg5ryvGNnMa1LfAZG8yN6Ai7aCqgG1vsAbGQqHAo982cxrEBwZnoK8vQZubzTfibnR3h6lWq4rPgKoFRhwikUiPVxFjY/5fAbaiagFwzH+CPzcAGNvMaRAH8PDKGK2VZnhvk6U/Y+PDGqyVIg4AlEsvvH3RBoPf9q+RIA4Aj1m86UA63U+u63LJ8YENH9C+DcW3wIDbMDQ0TI3GT6rXa+yOx/soFjtAlUpZfPoN4gr4gXgrQT4JbQWAbFsJ8kloK4D/XgHgOLaXoN/W0lYFggTbDUIVAG5AMpmikZGT1Nvb/F8AYMOHOazRVEEVAMhk+smyGjwagnxSfgN0O1xMKscN1AAAAABJRU5ErkJggg==", "kid11": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACwElEQVR4Xu2WX0hTURzHv0WhOJVRc5tikSK0h4Igoogeogel6KHnCKI9VG9B9iRBENGjkPVQkHtLVsiKoKBhEjbMFtVYTS3M5lprzWuNdMMgWPx+dsbuTeJ3VjKCfeBy7zn37Hy/53v+3AFVqlSpMKt09XsObyv86TcXByJafa6RGlDCXu8+OFo7YFvXjoc3+rBr/0F+zn2ZhpGcou7YoNSIyACJlwqT2Ew0yN5/ibIJwusFpl5NshGJidXSBEpRogprWQdRAqWokdtr96Dr2Gl8N5L8eiZ6i6dGF+0ESDgQCMM30FsU7+s9w3U/DLeuvl4CFLW91o3IuMFCNY5WNqHK5aCdQL27BdfvjiK7sFhMgJ6prhy01gCtbhdSWAvg3lCIDSykUwj4/UDmLWoW9S1oJzA6FmTR6TuDrEaJfAyNIfkyzO90ESegVjil8PxRENv3dmIisCTY0GbHuzfjKNgSADxaHsQJ0AIkEx1bPSxEJjbs3mISp3e6W1GcgIIS6H/ajsznFPo3L50B3TejmJ/P4toprcEzWgbUiUfiTlcLDp336ytaEE+BlYnYi78WJ8QGfL5hjv/EpTjmjDTWO8ynXi73jd9Rm5FnKbE5kQH1VZN0rNpIvoSE+M9DXV19YcfOTsTfT2JTm4dTsEILkZjNJJDPL4j6FiWgUKLLiZeL1i5QI6Q7zfm/QJzA7Z4jiEeCHG9Dgx1u90bTZbM1Ip/LIvlkkNtK0Upg7nWY+02n6chdHvomrBgPLpws0GLsvjxSOHouwM90HTh+pVimNjoGxFNAdJ29yivb1WQ3aTQ1t8DhcJjaSNEysBL8nwaanY2/hWGdFikVT0BrGyoiMfM2nP2UQkw6ZAtlJWAYBouWYi1LKctAxaBDJ/s1Uxgeus93dRBRubROx6B2AskPCTidToQejxR1qJzP5011Un4CPxxEuww5tSUAAAAASUVORK5CYII=", "kid14": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC3ElEQVR4Xu2Y32tSYRjHv5aQqZOTW2oWTUSHEFnUTURXY0R/QHQd6yZ2ERER1NXowkVElyFE0YXFLrqIXY2xRvRjBN0MR0PmGk42Z25toscfwerE89o5Hp3p+1pe5QcOPud5n/M+3/M9r74q0KXL/45B1IC+HovS7JrNfEFoTiOPgDl/UJnJ5xAqbKD/oBXHjvbia7YAp2TB+4U1+N0Siz8nv9F0ioiIlgLU5oM9Njw3l2qakwiCmlNMwn7DLaKlgJPxqOGhy6MMpb+wu1cJXb8GyeuD5cgACquLyC4v4croGI+hNezhuYLuXs+T0ds1zVXIiY5ADtDiO+11KquvwspZn4sdcnSaHeo5jVFNq4Wqh8uBG+mEtrLJ9g/xdWTzsjYPxZSjMVG4BDTC56yuB30sSstFWA8tNuJFJMJe6Zziwvxr0d4MYQc+Tk2jGI1pzVTbKTcZDguLEHJgWy5jbPIda3IhGMDcvWeIJlIIetxIS5UxqhFBSIDK49lPLDxzaQgegLmi5kQREnDAakKfzYT4znF4AgOa/Z5AEvG3Zfht86x/rlR9h7RCeA3EU1lYbY5d81KOxkQRcoCeL7mwnctgeBx4ihnWb3g8DTmXqYwJrgHurZM+3dSdcCohscblYhZ2hxdFeYudn/dk2Y64siFzb8vCj2BiodbkkZGrTAgd9WM8cDtgMtsV697v2NnfD5O56oAaq44YSyuQf+xDubjFNbeQA8beEy1viqdGj5CARty8dadhnpe/FvDgfoi3V0O4BUQuD2Jp4i7KcvqPDWmMaqiWF24BROxN5X2vx2y115w3qmkGt4CLj14aErFFNpfD7YJVktgdp5ZnWUw5gmqotmlXHdwCCJ6JeWraFtAJhBzoBF0BbTug7oCEPhalLQGbmdSuPo1yPLQl4F8iJIC2ZMlmwrlTPvyUk5oOiilHY1QjIpD7E4ugyQ8f0n6CY22d/R+A+hzvdwHiFwQMKfEal2VJAAAAAElFTkSuQmCC", "kid3": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACdUlEQVR4Xu2WTWgTQRTHX0OsX0shSVMESyw9BQt6KRb1InjyJEjtofQYoYfSQ0EoKIhQQSyUIhR6KPTmQXvxqCiIoFQRwX6EnGqJFNrmY6EkadwGI/9ZZjMb0u6bFMnB/UHI7OzsvP/838zbJfLx8Wkxbbrx29tPVY96xrLKWnNqDUbwUEfYiV/cL9DZ0wZ1Rroom9sV/eZeXvxzhbAFqMFlYBVVhBTCERHQTQHAquuRDgAIhFNe6QJBXQHfFiYaPtKfmHH6Gwk8DLYDTwevO8GvJp6JnwTtE1RxiYMLHFgOLM+OVz9/XXfmuzOScM1dfy3TZB3YG/IoWAJUpj/k6cmjcRrou0hEo+LWu5fz9GU9SQ8eP6fXDwfp9tSSV1wH1ilYS25U307do7tDt8SDEAHu37CPpLwe7rFthwCkwDqwPE8CSwCYGb5ZvXalj873xFyrS/1IUvwy3CDa2ky7Vo+a4HUU2Ztw4sX7NnUfgFeLb2j1+6+GdnOCA7YDEjiBtuoGVg5xk0ufnHFeK5doCUBhiccvUS63S5FIF5m/z4h5QidLTl8qtcIODtgpQPBo9JwIpBKK1vYE7mEMpwJK2AIkpZK901Uhalve56ItoH71ZibNjdWQYwlAcDUFzXAsAQj+fzvwp7DZjOsu2CnA63h5boyKRfdrNvfzozNhJrNNK4uTYiwXrbchKh4wzeyh88sxXLQqIUCRicV6qVDYo3zeFhIOd5JhdFA6vaFVBQE7Bf8KX4DvQMsd0KoDkmx2x3UoyuV98WuGljugJQBFyDAM6u6+QIFArYahjT7c0/kaAlqVEJMHg7WsVSoVMUl9H/eDFPwFVvf6YQ7dCW8AAAAASUVORK5CYII=", "poka_pull": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACzElEQVR4Xu2VX0hTcRTHv4qEcLfhnzFEZa6auYrQMiN6mCAVEsVe6sVQRsGQHnoUnwp6CXyr90Am9TSioCcD0TDqxcCEmuVyjgWimwnTSRAtzhm/dV1Tf+emROAHLr/zO7977/me772/e4F99tlHyNBNX054ye6zmyLKJPJ2KjzwKCq6H1GhK4CKB66cQ1P7RWQWo5iaeMWXtnf6Ya/zYWFqlKY5qQgtAcXFV74mcOHyHRYwFw3zSMIC+W5EIsp1HVBQ515fH8rrvJyiWLlhBS0HFN/ff0M48gXhSBAjw8OcHgkPAajEjWuDPG87XinSIXLAdvgoHr+Z5wK9wSCPo2Mf+CBBdwe7RMUJkQBFxzFXwQGKlSgriAS8fHEPP2cncHuAbAfWYh85ppxVtAXMz8Vx0OvBwhhvN/R29cBxqR/lLZ0cr2TG+RwpopeQsHccYBEjY09wvaGBcw+eh3hrWkHbAeq+psENf18EyeQiXofD6A9280E5WqNzpGg7oOytrq6Bo2cAJyoWudbMjzpUj4dYxLP7Z6T1ZQ7Q1464FQpxYTooJlKppcK6BNHPwzBsudpaJxob3Ziefsd1WltPIZlMIJ1OYX19TXQ/QvsRUHHVGRUkAoGrmJwcLzRsPsfMdsK0FaubkwOGYUMikd9ybreHCrADTU2HNhWeefoQn1fjaK7y8Og7GyyLvh3mRlSs7UBRRyUdWF7Ov5hm4vE4mts8hYJUmNZJCMWWHCCoY4IcMc9Lsd0j0HaAbrLVM1bs6Uuo2NjIbmqyeC5F+0toxul0Fabm2AoiAWRxNpuF64gf3pPdXI92Q32LH6fP9225DbdDJGAv+D8FrKaX/jCjVE4HSw5U1f5+CRWlcjpYEvDPHSAyq/kvYXEsxZID5uJ/K8KSgN1EJID+BXa7A956G7KpTwUdFFOO1nb6XxQjEkAYhoFYbJZHRamcLr8Ae74dEn5D67EAAAAASUVORK5CYII=", "spinzle": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC/0lEQVR42u2YXUhTYRjHf0eSnGfOwqlbgyFTyHU1s7TSKy3sg7qYeWM3FVFE1JXddBNBd0GkIhIUROSN2k2BFrWgCCkSHVIOyZYsV2he5Gl7RwidLuycnCw7G2dJ4R8OPO9zHs7zf5+v9/DCGtawypDSMZZlq2rELh6PGf7uunScFxXZkWUrNpstpY2iKMTjMQDVKIl16ThPJAR3Tm7ixegcO6rsSTaarrl9lqIiu2ESklECbncZ14/Y8HhdOGubiE+PEXw8nLRWop8Ih6Kc6lGIRKYMpSIn3aJx1jb9dr38nREYJvAzt/QH8niv1DE4UYNv9zY+3AvTH8hj1naa/kCebvt1ZIDvE8/U52daVNMi4PG6ACj3VtI2041142HcjXtpm+mm3FuZZDPU0QnArnNnzemC5dhatzmlrKHp1iDuJyE9cqYS6L3dQysNYAcxOU7rXAO9kz0ZbcQwgURCEA5FOVAVIze2nlxfOQD5FVtoqYCF4DsWrN8YGY2SSAjzi1DLb3AgoDsHGLt6E4BcXznBgYBeA6ZHACAciuJpcDHU0YlvfyMAFYd2IibHCQ4EKGtYtMkKAYslH4/XRTgUpbl3Enqf8urSCQC2X7wBwF1nBR6vC4vlI0IIcw8jWbaqnwLHCT4e5vz9xbk/NzcLgN1eop8PL18OSW53WVLvRyJTkik1UHvsiZ7jxsY9ul6TrxzUyerPSs4zakNnbROKck3f+dKTsLl9MSKh0GspK10Qj8dwVF3g0WWvvv7ToDH9MNK6we/362u/358xESndH5I/DZnPn2elrM0BzbnFko8sW/Vda3I6EzDjFGj9rbXgUtlo72dE4OHRfcw870+KRCIhkuSsF2Ek8CBpMqaSs0agvqtPmn7zFoDSUieqqiKEQAiBqqqUljqzH4H6rj4Jk5HDKiMjAvPzXwzp/t8IFBZuMKT7v1MgRDyl/FcIpHKYKYl/qwhl2aoWF5dQXV1DQcGvO4KCAhvV1TUUF5cYvsTIOAIOhxNFmcfhcK6oM4ofV0JDkqYLu4cAAAAASUVORK5CYII=", "ref": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAADMElEQVR4Xu2YX0hTURzHv4tVts2x/DPXjAqZJkQlBRFhEJrgow8SPUa9mA8RIoI9rR4sTHyMKJIQgx5M1CfJEAkZkT7IUpFpoqJzqdmYd3Pk6sbv2L3czbj3nKlP+YELZ79zd77f8zu/c84U2Gef/x2TaAJyMq2y3ndW16NCY5p5DIwWnpMH1iNoiq7gZK4NZ05k41s4ijyHFUMTiyh0O1h7fP47DSeLmDA0oIiXZdrxxrKRJE4mCBKnNhn7C7cJQwMlU35Tq+uUfD30lc1eoen+PTgKPLAeL0J0IYDwzDTueB/zJDSJAzzfoNlreeVtTBJXoEzsCZQBKr6LBXnyQvdz+YrHxR7J/4E9ymfqo3eMClULVwbqQrNqZVPaw+sS3nd1qONQm2LUl4oc+6S7a7gMpPK5vxuXKqrUMLUptk086JVNlsu625J7z1JaqQh7Wh8mzZSKTztzq8cGhPtgcnu5xhbKQGPlVRySEoj5J9XJKuIUI/F39S3IPf2UuxaFDDR09rOB59eCsJ4tx9hPN3tGn7zGR98gVrpG1HfYiRT0ykY1wJUmgpbAfsSM5uoKVNbUMOH29q1CLEsE8NI3jNVIHCNjPcjNK+c+koUMUA2MhzZRVFKFtpsuFF8rYwYmBwdw44UfheYvWyaG7u5NDSjiUmR52xrb7E5MBcMsrtQALYFRMXBnIMOSJdPMFXESpCwQt9+GWPxobBg/pDgiGwl1CagG9LYilwGteGnODOoWzajctCEeCyPLWYCYtIa+gxJa8xPsRpxbkbhrQGgXEL0TYOIKtbU1zAhd19QnilAG/L42E2XD4SxmOiScYXGomvTZvDEH6ddhxGNrXGNzZyAw2s2WwmiG5uzzRq8kwWWAZqM8qaPXNzwQEkyFy4AeLc1Nuv1G7NiAlrgUwnTvI3Tc2jqgeNixAYstK0mHTkUR0jLgdLtgczjYjIMzPtamGDE7GUD1s06uHUCkZUAPEfE9MSDKrmdAlH0DaWeAbkAFbVuUtAysLge36fwrxkNaBnYTIQPsKrZnoPSCB7+ledUHtSlGfTw3phbuE4ugwfOPqX+CY3GJ/T8AqTHe3wLEH0duZrHQypRcAAAAAElFTkSuQmCC", "kid16": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACXUlEQVR4Xu2Wz0tUURTHj2lQzpsadcoUxgpmU4GLZDYigyAkWLgUxY0LadE/Ie5t1yKiRZvAbWFBtgkZBkHaBM1qkhwV0/HHqO85Ey1efG/d25txcM55vEGC+cDjnnvumXO/79w79z6iBg3OmSbp/FesVves3xzZJ6KcLRIBmDzRG6f1rV2KdUWrtkTkSkRc4ArA5DeuRWqGQ2CtKnlhlwtJxx8lagoA8wsr7KUQLcG33AHtH9rUftU6s5XAXgLAmRzi6oIVstzbsR73YHne7Y5G1QO7so8YxHJFsCvwbCJJH58+UXk383mKNJfMHLDhA4hBLBe2APBjY8PkvX/zX6m9tjeGA/tfAF5Nj7gDD5LU0XPL5N7LfTd92KnFJZp6+Z6dV1QBTWu0m76mU6oLMbDh8wNbqcZbhQ8v3ir38ONRX28PxAL0UsQHBsteOJv6JCq9hi3g0mXLjd/tJ8cuUMiK0Hp2hd7NTKo8D2dfUyyeMGPZTJpKRZuVW3QS6snRgrG5N+ZNKse4iDfh7vaaqkAl8GFMilhA0PgS0NvXH5gO0R4oOodq4i+f06p1HPuUEB3DxVcFgsSXgCCXQCTgZ8kpW4Jq6BgubAHPJ5O0ujBHhb1NlTsUssoegDHEIJaLaBPqCwiHTnvXHXMg4QzQh5OO4cKuAK7YbGZV5Q2HLSo6BdrKZdQDGz6AmLpdx5zEnBgv7ArUi4aA/7cCJ3/vBeC1pfiqQH77z2HkpZqPgy8BQSISoL4LO8M0dK+NOpqPjA7Y8GEMMRKBrA9HDZJfD180/Z3jX8qu9HE/SMFv+LQYcgwBpeUAAAAASUVORK5CYII=", "kid13": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC/0lEQVR4Xu2XTWgTQRTHX4seQmOs2lithdJEDVKkB4sohAbtoVqwJ1vtQVB7KIKKCoJf4EUP4qXoyYNeeimpogSLtqKQoAQltTEapNhsD00jm1TQaKoouPJeMptN3K9ZWjyYHwy8eTsz778vb2YnABUq/O9U6SUgcLFfwufdV2/L43p8G8m3t90DblcjTU8ISXgUmiJ7JDgtj1WbX84yLQE4effBQ/Q4ACChCAzOAjc2uyA5I8Do+GsYGNhPYlAIAEgoQm2+WixNAYyM8IFMteCFgBB8GiIBvo52No2yhLD5WmgK6Bv0g/vJLHzLfgZx9j10tdXLa2DA3t6z4N3TQL7v8ynw+6+XxMD59ffegt1RC4l4WFNAteYTBRj8+OEO8mxr64NwdA5OXzhFgbGhjT78ORAcqxSsh+FPoEY8kS1xs763dY2Z9ynBVAYQLDrGi3gCdp24IffRRp8VTAvAimfk3gXhvNcuFxja6LOCaQGMZ8NDEH8wTl2na5PsZ77ybBnBLeC5EAPxh0jrYlAWmPkQZbaM0CzCXO5rVSIeltwtO2EiH08GRcDwEGzdvoN8mBXyKZgQV8tbENfSEqKbgYIIWujItcmSNY7eegjpuSQ1tJXgWLb/9YIjhtsQF/DYBGkKXHBlJAN2xypICW+gs7Mb1m7IfwvQvjMWgAZXK9ydxDG14LEJENN5c4ahAMbNY8109A6O/SJXNBqBfbEI2dLv4vtf6nHSkXzucnHX6MFdhIijrglEMQUOx0pqZNc1yXF4itCSAGSzZ4sccN36/DfBCqYFKE/CxcS0AJ608mBaAA882VoSATzZMrUNC/e8wi2n+FVEstkvtBMWPi1Qn+6GoamSu6EeupdSNWpqVtDxbF/+U36MIqptTrr5GJ185ZjKgBoYdDHgqgF2zfYdOAMtXSdhRpimhjb6EDbGLFwClP8PtDAzRgmXgKWgIqCSAUsZSKc//lWPaj4zWBLwz8BjeD6TovZ49L6EfWxoMz/2eQRyH8WRVy9V19fyG/EH06tTjn/KGQsAAAAASUVORK5CYII=", "kid7": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACcklEQVR4Xu2Wz0sUYRjHn2LFdqZdY9vdNA8hiYfAROqmhzAIiYi6RscK/5EuHb0o4qFfly4eDKICRQ+eAn/kQSUrQjbd1RadbWZNkZHva8824w96noEOyX5g4JnnfWe+3/eZeZ8ZoipVqhwHrHjCj7qOE9oL/ybmlUuqe8akBlg4m22kM6k0rRfXQpe6rsPnphpSIyIDELftBNl2kloutVNhZcmIsSjyONjY77wvMSEywEDgKAIVUHFSNZuIpj6Mm/JDEKvmSiCOYkJlILf0pSK0+K6/IshxFBMqA0xdDdGVWz1GGCBGLgpqAwtjL+jT9xxtbXlGDyYQIzcz9ETtQW0AOJOvafb9cxOvfvtqYuQQa1Eb2CwuhzQyF5q0miFEBrCfXbdEj+9cDV08+3bMHAzMYA7mSnoAEBkAfMNXfYMVwdbua+ZgeEwqDlR9mxl4cNvvunk9VI3RNyP0aHBYfT9VJwSnrJTfO5ehZ/lV+jjxkqxklppbb9BGMWPGNr2iyoTYAG7ecLGD7GSW6lINB1485Jrb75LrFPzlzxMkNSJ+BxjXKdBGYCd4TsEMIYcxLeIKMOWfPyrx5Y77IXGMxU+fVXlQGwB4DFhtcMXIBc1JUT8CwMIQZNEo5Vf1gSBYLUC5ueSc0yKuQO+9Tpp++pDW8/NHVgBjmIO5UlTvAH9s9j/r4Ln2gyQ2gC43QHs/nLFYLXmlFfKcvFmolTxHVqLexNqOqOpaAA0p3dh2qIG13Iy4ATHid+BfUTXwf1YAO2A/h+UkRK7ATvmPiWCsRWUAW7C2xqfz6fgBHeQwhjkaE6o+wAaYX9t7l0M4mJP+jIBdf6Yw/s1F+qcAAAAASUVORK5CYII=", "poka_r2": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACpklEQVR4Xu2WS2gTURSGT0opwiTF9EWIEFsMGAtdSK2LINGFZqVkU0RcpOIjCxfummUXgghZirhSkLgRKdJCu0mhtIrLIqhoogltQ4ShxFjIowrSkf+UmQ41JfcMARX6wTBnzj25/3/PzNwJ0QEH/I+kboSMv+67XSZc0pW0Ek4+yYrm7JQYgHjsUpiOjkapqmdpZfkV/3z0bIQ8vhCtr2RwaUhMKBvYK175WqQLF6fYQD6b5jOMxXZWpGyiQ9IBE6w8GIpThy/IKcRmN6SIDfx89530yiF6lk7Rtp5nPcTIYUyK2ID72AmauDdPmcWPlhZi5DAmRWzAZGx4oGksRWxgYe4ubeeW6U4yxVq1wieOkXOCyMBqfo2GgoO0vsivG719/NxqO3KV6hLXSBAZMPGMdbHgyZtXOIUYObyaUkQGsPqeIwGKxKepVNLpTTrNB2LkMIYaCcobETDb6/X2UPfVJI106px//8tH3qUEm5i5f1qiL+8AdjtwO5FgYRyIQbm8YY23HU1zG9iOczPXjUBg0AiHIwZyOBAj198/wDXIqRoQPQPgzK05PpdKOw9cLDZuxeDhwg9VbUZkwD65prl5gtnZaSt2gsiAnXq9ZnUA8WrmKemvX4g9ODZggg6Aoeg13hWliAxsbTWo0Wjsq+G/PMk1EpQNzE9ErRZDxC5kv8ZtQK0qygaA+Q0AfX27X0N7bK9RQdnAuUcvXcUPWZ5zODxOXb0hjuv1mqtYXCP/8QidOh+nkckHKroWygYATKjMrloHRAZasflto1XJHzgy0EyoulkWizvuwOHe3QfQjhMTbeuAUxwZAHtX2yh/pqDfTR5PN385VQ05MtCs1ZqmUaGQ47ME0T+i/cBeUCh8keg62wfQWrQYrUbL24H4Fjht9T/Lb/E/GX9mrwZ7AAAAAElFTkSuQmCC", "gavel": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAkCAYAAACJ8xqgAAAA10lEQVR4XmNUUtX6z0BFwAIyKyO7CMXIRQtmMcQlpOG1BpuaGVP7GJhguuxsrPAagA8g6wW7EAQmTZ6MoufC+bMELYCpQVYLdyG1wKiBlAN4LOfl5jLU1FTCTXz18hlB02FqWlra4XrhkYJsGKkAWS8jtbMeIyHXRJlJ/A9z0WG49eAVw4U7rxiWnXqBV89oOqQcjIYh5WA0DCkHIzAM4VUALvDgxh+GD+/eMHz49oXhwZc/BAOZqDC89e0TgxoXH0HDQIAoA0GGgQwlBhBl4KgL8QKqhyEAw1NOxyGK5isAAAAASUVORK5CYII=", "lamp": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAsCAYAAABVLInsAAABLElEQVR4XmNgQAPJKZn/BfnF/2upWfy3swr6LyWh9B8khq6OESYAk+zumYiuBgxKS/LB9Nw50+F6wJreffhFFIZZwAIyhePvLQbB78uw2oQOQGpRAMxf/79dgGOQP2F8EBukBqYJbCMK+P4BPx8KhpBGJpCTkSNYyLadIWXSTTANAiAaxkZWywjShCvScQFQYgCnAlAwS4or4lSIDJ6/vM/w/uNLRnjyQY4jkCEiIlIMb948A+sBKYYBkCYQGx4dMAFkA5ABTB4GwIFDDhjViAcgigECCQEW8VijAxRXsMgGJQAYQNcEAiMhOkZDFQ8YQgmAOvFICqBO4JCdH0EtDFzORZeDBw5IQkXJAK8379y7wPDsxT3UKuD796/wugIXAKnBWuaQAqgTqqQAALz12hFeXUR5AAAAAElFTkSuQmCC", "shoes": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAwUlEQVR4XmNgoBAw4tMvJ6XxHyb/6NkNvGoxAEjzpw8/4BjZMGTARMgHK5btgCvBZgjcWejOBfGvXLuAYb6OlgGmd7A5F1ls1rQNOL2D4gVk5yKDiCgPFD7IZTAXs2BTCHM6yLmK166DlRyIvQmm6zaVohiGYgAIgFwBsxFi0E+wQfIwbdIQBixawYGIK8CQAdbAY2BAuIA39gGKEw993ITidFwAazRiA3hTov2H//AkCwL/fW+g8EEAFJU4nTG0AQB2qX1v01vHtwAAAABJRU5ErkJggg==", "kid9": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACOklEQVR4Xu2XT0hUURTGTzExMA5CBIMMiCauZhFBLVq6kAhx1TaJNrYK1yItWiW5SshlMIS1DBtcDNJCxYWLgrB4VA7qUAyPkYRiHBgdePGd4Tzv6CvOGZIQ3g8u9+8759zv3PsejyjmrDF170bwq/QqQH28jb51P+csD4iDyYcTVNn2KHs511a/ePmWzT3Or6vtJrQBwPndO8MnnLpIYEQUaIM4rw1AWCkunnjEHdv8smUyqZYKiAqZ5CBVGyVWo1k54Dn0AdKg3T1QpwDk0ll2DlCLc+m31ngmBcwpAEvrRS7C8b4FUwBXr19h26PjT2lu40g8tDEGZI0WUwo+vNtgu1kq0pv7w9wuf/7K7YOPRaps7YRrtJgUYOcD/aFtOHdx506N+Qe3g73VPJfD+h6XmZGh4FP+UYA5q2PTNRTgCLmWHYv0Y89em+2ZHkgmU0FfX+sa+v63ts329PS2zkS5RI1GXW1XfQbEeb1e+6PKmEOAWKtNhToAIM5RJxIXQh9ou3MWOgoAzM7ORfr5m0JRqHMFWbu60pRKpUM7cNZsHlJ398W2sf39mvocmBRwmZ5+wsG4qeiEWIGzo8Dz8VtUWpih3V0/TDXOgHsAMYc1WKvF9DXEK9d9H0Qha7SoUyDgOl4bGqMf1SrteEs83J+7SZcyGXq/PK++fkLH1/BfEQcQKxArECtgehUL5c3WD4pQ++lz6YT/ngIT+A74/vdgbW2Za/SjxixGzSkoFAps3/OOfsOjxrT8BgdrOn/PmYLbAAAAAElFTkSuQmCC", "poka_rope": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACx0lEQVR4Xu2V30tTcRTATyKC3U2aGzFKNqs9LCGkzAIri6A9FXsxih4MKvfQwx5HT4I9FOwP2MMokEkhMSLBXhbINLOIpIfCZm45x4KRToT98CVcnDPuNtfd/J4vi172gXHPPd+7ez73fO/3ewGaNGkigfeuvSDxt8bSKIl9XK29CnueRlj3bOUIYHHntQGw9jkgk4rA4uwc/b3v4iDozXZYWwzhaYEjISxQXXzzZwKuXB0lgWgkQEcUcxafSFiihdMBFXxym30YWsw2SmGsdoMLW+DO9QcQCP6AiYAXdlJRqocx5nCMC1tgYnwcnr1fhdDMUqkWxpjDMS5sAZX+noOaMRe2wJvph7CzPAtuj5dqZWPfKMacDCyB1Wgcjti6YW2Glht8fjIJumPHKcbcZiZM13BgCajo+9uo4Ml7N0vFMYdLkwtLAJ++87AFBoeDkEym4F0gQD+MMYdjeA0H4Y0IUdtrMHRCxy0PnGhNUf7LbzMYwi6SePX4jHD9D5+WCsL7duVOePmGj4r4/H463ne56LiyEoF8Pl9T4PVtB3y0OXaNC3dgbDIJAAu01SaTCejqssC5s6fpZr29pyiHxa3WozUFLrjd4H/0XE5A5fzINLS376eCiNM5BPPz4dL4+npxWmoRj8dhYS5EnWdNgaLoCkajCba38ySgKDpIJIpLzmLphlwuC+n0Rt3iOAWXfC93TbvwO1AtgGDByg7geS6XFb4nwlqGWkxNBes+9V6wBLD99d5yGYQFcP5Sb19QDRTBn0r1OQdhAUT9BiAmU/lrWBlzERbAtzfxNUL37xkYgjajvVQLY8zJICyAVC+hRsAS+BdICWylf/3lopUTQUrggLH8Aqpo5USQEvjvHUAyW+V9vzLmItUBrYKyElICjYQlgF9Evb4DbId0kN/4XvLAGHM4htdwBFkCiKIoEIst01FFKyfKH/tBIZnzDO7OAAAAAElFTkSuQmCC", "kid10": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC3ElEQVR4Xu2WX0hTURzHf5UEshmptLKpuIwto3+gDIQlSaKPRQ89RZIRox4kwZdeivUcUfpSDwVGvfhS0Us+hLVGkj1EEqGGOdLraqmE3Q2C8sb3bOfuTmf3d4Yjgn3gcn/7ncP5fX+/c87vjqhIkf+V7tZdxnpo36C6iF3gvuFPSmuWcAXIwMcCe2iHezu56uspPjVFX7SvYgn40raoDFcISy2C5wo8rS2Qx125ShD8Y9PfWCI2citgBZkiYwRHMDAWfiWqIv1clASMjH4QZZe0dIbo7PWH5G27IFxbPR1CnBTFgX0GJAjwbnxOPN42ol/zGvVfOieGWzgRV6BUAdDYfoZ6Bt/S5rJ5cynY8CViUfNccGELwN4CR1WdeDc11ZoxpC3HVGALkNcNfH/+gBrbbwobWcOGD1gPJge2ANDs30uvb/WTs8ZH+syEWRHY8GFs3W8BesABzzYzmfLdm0wREhn8Z2nmXHCxvQXoaN2U6m5AngWgDQ2L98THKDlKMt2wINdQdjz0guNXb5P28hm5O1pTqirC5Dx8lB5dDoptkmeBiAy7lsw+A7LXI/iNQBctl6ayB7Dhw5jsko8j46xWbLsFEtnhDqYdNfuu0Mz7kPgFmygobJXyA7YALIwMnz4ZpIuRuxQKdNGpijK6v/hDBIcPY5iDreDC2gLsI75uVib1hXRwErYV7pcQsASAO6PxrCBeZ6X522rnmvs32AKszH2eXLVmLh+HvATsrPVmlR1bAF8+KAmwZrnWFqhWgi1g6PwJanB5KNjbt2aiGMMczOXCvoZAexMWb2Q58HspK8bJ9LmQcwpCpPe04XA4Db//iOHzHRI2HtjwwcYcleDsLQCBa/ds/0Vz5lhRElAIigKKFVDqA5JYbDbrPCaTunjy4Z9vgVIF0Gg6m6tFotH4Er1YTOW8vzxJda4tRFRNAyOzRiKh2/YLCXsigIAqZ6ZoMX1Z+Ff6VAT8AVtMQkd7Mz+xAAAAAElFTkSuQmCC", "kid1": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC+klEQVR4Xu1Xz2sTQRR+lVyapCS1m2A1lJC00epFqfQQjIgU7EG8evBi1XusSg+il/4DJhcPIlUvgqAQxENR8QeBgjkpKkrzg6aUIuvWpmjbSyHyTTLrso3deWukl36w7Ns3j/m+efPmTUK0gx1sMzr+lT/ZH65b55gp6aw5PRwBdjIgFvZTbG+QUsMJqs7rRNOf6hwRygJAbieb/1YzifOFWWEjhoiURSgLEKttrvRBrkD37t4nTzhKG/qcGBu7dJ5SzZiK/ks5sbuUI4moslgTKwU5IMkB+LAFiOGAJUDiZ2V2Ewd82BIuWFsgcSN7W5jZbEa80+nL4q0FuPTEE4AauDmZIc9gis5eSJtsRuQYPZrK0saXvMhE4ekzmqQZcTydTgQrA9b9PTJ01BRgtfVqVfhHDkeob0/Q8ViyagAZwAqx0msno4II37Dl6uc+fKToREaIVakJloBWFd4VS2za+AP90Q55ZJ2gLAB7ifON/ZWn4N3UQ/HITGBs9E5OtGJ5ZJ3AqgGIGC3laJqoPnzmNB080agDWXiSHEAGRA3QwpYalDMA+Hz+ejJ5vD6eL9H+seui4PDAhg9jiJEZaGsNYOKeHo2Wl39Qd/du0rQwDU3cIjp1UdjwYQwxiEUGXr5faO8x9Pn8ZBi6yMbqaqPfXx2/YtoYg5ilJUO5JbO2QJJuBRmDgnVqQgBLgEQrIXafCrlrAc2CNAVha9zCVQasNWC3uXAtYH19zeSy2lywBIBoba1B3NnpNbmkjTGuGGUBT86N0OLbx4I0EukTj4T1GzGIVQWrFZdfvxDzFotfzfnfvHpOXu+fbMgYVShnAH0eVy3Q27uPvF6fyQEbPgAx1jvBCaw/EQDabDw+QCsrNTKM78KnaSEKBIJULhfRD1hzKmfgf8GVAKzejlY+FbgSgHTb0cqnAlcCtj0DgPXyUbkl/wZXGVC5DVXhSkA7wRKAHhAKhSmRGCS/v8vUARs+jMnfhKpgNQ1MXi5+NueODxwStt3HaUa/AWSWYXww5+brAAAAAElFTkSuQmCC", "kid18": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACxUlEQVR4Xu2WwWsTURDGJ0WkNiHQsK6lhBAWLaIiQYJgDzkVT0U8+Rfk4EnBgwcRTyUHDx5yKhpKT0I9SClFREIPOdRaSmnFQ4wYYrrUmq6bGJJNESUyE3a7iUFnloAH+4PHe2/e5M2X773NBuCII/53fFIDgiMj7T99pm5Zoj3ZyXbhsKqANq6CWW9AKBggLVsfShA5pUCtYYFeMSjGFXKM4wAWdxdGLkYV0M0DEoLYYrTxc1DcraCQNkcES0A/3pYMKH8xYGMhDcGIBhNXpskFKUOSD4RDw47lUSUIhdfLVDyZvAWJ8xoJkiJyAC1/nn5ARZETJyPQ2i9DJpPunHu5CMn7j0QaRAIQsvvyVRoX1l9R3zuXIDoCpLiag9DwEOx8/ebUwTHGcE2KyAG8A9pkAtZyCWh9fOPYjqzlXnZqzz4TaRA5gHdgZe5xVwH7PiC9axxEDiA3nyzBLAA0zO9wVpugWL5YgEDoOK3FzkQ5dR1EDtiP4d2nWSo4Fj9NDccY84LIATwC/LG5d20S4lNTjv04fggAqaVVsQaRA5mZO5BdnIflH3rX2eM9wBiuYY4EtoB60+rad2tz0Zm7xwi+kDjvAYQtANnIZunXblc3IXbpOuy9m6GGY4zhGuUIXsmi1/GFWNz51tWqCaOjIZq7x8j29iY0mw3W3uxL+NM3RIUMowKKomIBam7sNQmiI7AL2r3f3/lDgvSucREJcIPF+wmR4lmAu3jvUUhgC1i4fQPW51NgWRaEwxGn4UW057iGOZjLhX0JEUPXqa8dHJ59L3YOF7YD06k5Xymfp30Dwc7j9+l9jpo7hjmYO3ABCGdjTo4btgNuQsoY9wv+FU8CBoknAaaxNzANngQMEs8CWs2ao8M9luJJwP7n4m91+sU4eBLwz/D7A+1atdJeyb6gHuf9YhKBYgf0nTKoqkq9Tb8Yl18Np0D0MT5RSgAAAABJRU5ErkJggg==", "kai_ex": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAADEElEQVR4Xu1YQUhUURQ91kCjfoffaONkkDJoiJJJ0UYTZApr16Z1hBCU7SSC2kQtDCJcVhC0auGihbkKM4lMkdpIkUiKqKTZaOMwfvUHUy/uizd9v3/svl/SIg8M8959l3vOO+/+94cBtvG/QAw2Ca+97vjXBgS2WkB253WXIAYhXchrHMhTvNkBFyVFhZ5WKiwur3jWJCFOYgWWAyNVdaJ/OY2OlQWU7zFQu78Yn1MrKDUL8Wp0FlVlphy/n/lCdUUuEb56QJHHi0IbyEkEgchpTMJIoJdLzt3nasic6IxWCCp6JFYqzjbXiJP15eJj931hve0TIjkjv2lOccpRAryIKCaWu4SWCHLBKaChMio/ilzNSZwSsBmRk5zVhOSAOv8nnTdgxio93UpNTuB0+3VML1iyGXM1ni8oB6TtQoiaUkOO3XPnEXDg6yKqjRatq+2e64D1GDpBNr9+1p0Nuee60BYw3NuHEzELgZZ6yaX6IdM7gr7JYV1+XhMSqAdC+QHsNoK4eqoJiZEkLg4+l2v3Go8jUh/GracDWLJspNcyOW9EN1hPgVtASSiI8w1HEU0F5dq8aePB0Bsspm1tAVpHQLsn8vHMQVRUH0B1c1wKGHvRj/GXNqpC7+Q8vWaxj0L7KRifS8EIRTYQUIzWdKHlAJ0vubCUTqC1C3iIfsnX2jUPK534uWbZWhq0ekC9CXunTElir6YQjsSwaiXlvKUiJd+I6ibkKNE+gp7R9WXb2i5IIfRxr3HAUkkIFoSFsfMrMvnlCBb8ckCNlSOBtWlY33bBXk2yams5ECg+9NtNcXKc0BLghctXrnnGufhjAXdud3C5PMEW8OhcHBM9N2Fb8zkJaY1yKJcLtgAC3XhuFBjhdSGvnM3AFnDm7uO8qbEPslakLArDNOWO5yaH5JhiBMqh3E1ZHWALIHAKc3J8C9gKaDmwFdgW4NsB9QYkOMe68CVgMTG3gccrxoEvAX8TWgLolWyGgjh2uBLfrZmsDhpTjNYoR0cg+8YiUPF9e4uz9Wc/yf8D4I5xfwsQfgDf7IjirOp5iAAAAABJRU5ErkJggg==", "kid4": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC5UlEQVR4Xu2XXWgTQRDHx49aJBekFQVtEmgN1Ael2KgFlQQJGPxARBsoFFFECYIvik/VRy0Ioi8iVFCEIhQiUgQtFYImWPGhFUpaP7BJtE1r2sRYzaUIPpzMwB5LepfsHhFf8oMju3u7M/+b25nbANSo8Z9ZIes/6HNruOagtxW2tDggkUzDx6kFSM39IFPh6JSUzdXlBAz2nCFnx3ofkFF0zhw7mlsgnUrqyy+c9pMYANCYiNL1RpgKwMX+rpO0ZhBAezQS05+aOWdPz/D5vaypde/1Ar+ePUQpZSOALCQ/L1sUjcQgGLwM+wKb6N5S7huEwzcNn9BoPY/p+7LZFM23PwD5/Hdw1qWheXMDHD7QDu2eLrh05SLZuHX9Nv2yfoNSB1vdG2Eo9gmej2Zge9tOaGxcD9GXw1Asqoa+VopuwlCoE569eEfTJxO/6GLwfdyYMggL6Ot7TBFARiYTsOv8Xd0PtnHMCsIC+Ah8uN8L13z1+vsNrR0DNf7Kin9xASwCkYF+cO7eQ85mJpIw9nSY+jiO71+WilnAwAigCGKgn1LMczRAXXSeXzUv65sQfgX8HniTipNTTDGWZlgNrWAqANMG0wfTaOaPQ98Dsa82mCi44MncGug4e5UubOMYj0gKVowAL6K7Z0jPAiSXy8KhI8fpwjYDqyQKrpT/DKEPB34DivY2KkoIGjeic8dvuBcpCjuvGAGebfZpuHGu1dAxD86xFcZNK18pwpuQrwPVRFgAnwXlwD0gg7AA0QjwZwQRhAWIRkAWYQF45LrzMCJrvyJCpZg/59lsGTonVAshAaJgDXDG5KJkSQArSKXEx0fhrcnJxwwpAU1NLm1xMQ/Z+QyoagFU9SfZVZR1oCh2auOc2dlpoQqLCG9CRMSwyBweKQH/gpqAWgQsRQBTsBSjMREsCTjh2QAdrnrdPrZxzAqWBFQTKQH4h/WUz23qH+/hHBmBUqUYef0+s8z+l+wSXVb4C2qgQDyna6mLAAAAAElFTkSuQmCC", "poka_r1": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACqElEQVR4Xu2WT2gTQRTGn6UUYZNi+o8QIbYYMBZ6kLYegkQPmpOSSxHxkIp/cvDgrTn2IIiQoxRPChIvIkVaaC8plFbxWAQVTTShbYiwlBgLabcK0pXvld2utdF5a0SF/mDZl7eT+b55Mzs7RHvs8T+SvhI2/7rvRpnYJx3Jr4RT93OiPpslBiAePxehQ/0xquk5Wph/yn/vPxklrz9MywtZ/DQlJpQN7BSvfijRmbOjbKCQy/AdxuJbI1I20SSpgAVGHgonqMkf4hRiqxpSxAa+vPxEenU/PcykaVMvsB5i5PBMitiA5/BRGr41TdnZN7YWYuTwTIrYgMVgb9eusRSxgZmpm7SZn6cbqTRrrRXfcoycG0QGFgtL1BPqpuVZft3oxb1HdtmRq9bmuI0EkQEL72ALCx67eoFTiJHDqylFZACjbzsYpGhinMplnZ5nMnwhRg7P0EaC8kYErPL6fG3UejFFfc0651999ZNvLskmJm4fl+jLK4DdDlxPJlkYF2JQqazYzxuOpnlMbMf5ictmMNhtRiJREzlciJHr7OziNsipGhCtAXDi2hTfy+WtBRePD9kxGJv5rKrNiAw4O9c0D3cwOTlux24QGQD6s8e0mH1A6+trdgWs2A1iA9j5emKXbC1U4HcQGdjYMChwfqSunmEY3EaCsoHp4RiXH0DEKeT8jTZoq4qyAWB9A0BHx/bX0Bk726ggMtA3cocGTicocCRKpdISFh8fQFvaw9QbGWK90uscnbr7RPlgqmxAtVPVdhbKBixWP66oVFYZsQFQW638IODWmNjAbuLgQPv2opQgNlCPP14BfOG83lYKBTxkVN5956NeVVQQVUDTNCoW83zfiVsTyicivPPF4nuVQYkQVaAemBJMDaZIchgBDTHws6n55/kGLg0Zf1NwHbAAAAAASUVORK5CYII=", "sweat": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACjElEQVR4Xu2WwWsTQRTGX0pJ68Z02xCDSogRrQiC9FAoHjwpni2IivQvkF7Eo+DRqxf1WIv0EGmxNxHRnKSYg6JCLUSDSbogaLVuIqFKdeR7YTab3c1mVhJy2R8MM/Pmzbw338xsQhQSEuLByas5MVBh7r8XolMSoyOa8Cs9SdwruAx6YnJKnJ4+K9L7MyIxnuQafdjRln4ykW5qDnll/O7e5QjscjIWTU4k6UjmGCX0JH0yim3T0IddjycIftoejedg/tu7l3yT8ExAcm3ePdkZXNLJvrjhtcUWvgncvvPQUsPJRn6BTahl26x/ZxW0Uc0/qg2WuhvyCLA4gowN/+YphadLXM+cm+O6thu1fLa2t2jnVyOCY5BH6sVwt+Be1BqNNrPVj0Zd7n7Bge8RePHywU0qlss0Fm1NRRs2jAUlcAJ6Okt/jNdUyK9wLNMocxs2jAUlcALPl5rnLrEHdY6pEDiB+YW8Faj0ZI0LQHCMBeW/LuGN5Tcc58xc8/bL4PKVNHbaL6kfygpg8c9fDTqYOUy7Q3/p0GSWPhZecEE7po9TbELn4Af2pZWFUFYA79/OyMwVmp29wKbVVVzIR9aw07dnCqgCtVRRPgLnruTuAdpNFZoMRAF7Qn1XoF43XQrbbUEUUL6E2JV8XvG47koCNgl88WOkglIC+FUrVYsCfzQk9oBOStUiz1FJQPkS5q5fpMpajtbXX3VcF2Pwga8qSgpI8NEBXnfA6aOKsgLnby1GKh/KvO7U9CnKHj1OpvmNC9qwAfjAt+cJAJWFVXzsKCvQL8IEQgUGrkCgD5HE2Ky0PYqf9RqXvhOL7RU/tr+I/LPHXKPvZQuSSOAjMDarlEqluG4p4rap8g923TrO4/rlTAAAAABJRU5ErkJggg==", "car": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAkCAYAAACJ8xqgAAABU0lEQVR4XmNgGAWUAkZcBnhw8f2/JMCHVVrvwyeGHd8+YdXLgq4DZND2Z4vAwlcNKrEaqP1sCkj8v6dUHIbBGAaCQc4ahqtHzsIN094kyHDV7z2cD7Lo2KePWC1jIibMkA0jBOAGighJ/Ad7N8gP7rq2V88x9MPErPj4GYI4eMBBBNILU4jXhVVikhgGYhNDBngNxOdCXIB2Lnzz7gXONEkIIOslKpZJAVQ3ECNhgxJ0lZM3UY5q27eVYd2PLyhq4QaC0hNM5si2NUQZyMDBCVYH0gvL23Av48rsxABkvRhetvvxnUFKRIjhw4d3BM0CqTVDU0X1SBmCBh7i4GR49uYdw7c/DAQxSC06oLqXMWJZ28aY4RBSaY0PYCu1UQpYvLrxAKILWHIA1cOQdgZSq4CFl9JCQiJkRwoIvHv3BmwWSrGvpqZBlqG3bt0gu/oYBZgAAH3TgkcoL0xwAAAAAElFTkSuQmCC", "moon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAADP0lEQVR4Xt2YXYvTQBSGZ8UbwSbZpu0K3gsigrCy4v//GYKwoGySNumCgheSibyTnORkMpM5aesivrAE0nw8ec/XzCr1j+vqHL6fj00juf9lcnXyexbfKIXyaSmsGPBcMFtS0GeSEF0aDpI+c9ZB6UPO1ZybXgefCi7kphPwKeEgrbV6LH87O4IoB/+mAKcbrRrt7liTHLy0e9Wx6r9vfb0efSuHI8jNqxcjpuf8DikcXmq/zCVcVxT56Ce6zwUHyPz7j+bm9aqHHAGGxF+IF+92NyJQWz64xoR7HOo+B0PuudwAJA+hRCE4QH67P/aUYgftUJFw3hdu+3wSJ32uUc61x9Y5fiSJAEMuzeVkKOdccIAmmRCHwhsqiNDvkrAODrYt5+uXzIRZ3AdREC75zpNOgeN9UQwIl2yYUBXPwZXHygpv6xzPTUiUgyRA4k/SB0Nw+zxTuq5VHMXewlkUYq4lOVdWB+aMNs4ZONV0baqcOMf74SIHfdOCOwznCCovMvPyLH9Qm/VGoTYTOFbXBi5NUxVHdusZWs7JDtqiHumC0/BKN6rYF8YZpAfCGoKjiSIukjmhWNqwtDDkHME1XRMu9nl/3ZxzgMPHLi4Sl5CPvCB8cMi51slcrVbR7CTB85quWS920J4qHK4viC6s5BzB4aWArEaFMR5zBKe79aEpEuwJQtOEwPhMtmdrEl+bggCEDw5pMITXD/fh9o1Zci1ykOBw5DnHmyuqdQ4uRTU7FgjcOQqvGNBeagEuKx5UVZbTXFJKpSlaSptzFFZASeEovCPAua0fH3PGOaXVNt2pOElGTRjVhz4HB1snh/HVw6FC2dLKdg5wt3dvT1tRbzdb4xzg5tZzNL5QrSgIyrkjpsi+UHVdqwgNu6tWQOFj6Mgl3jRRtSKsLufG67rp4Cc4chBRiaJoAvfx07sR0wQQsiv6nCUTLwgDediL4USN+lJwcBhhbcM7dY4mhy2ng+TiJeFofPFcG3JPq7vP750s3j6Iqh4XAi0mpxscyXW+gsB5HxzkdZDrkP1qfLuvc+DsgnBJNEnw7wjf7steptvX+ZyTwIkd5MKm2jfmJHC8CUskCrFP2BoODoYH/3+pP7BJtup2LN1QAAAAAElFTkSuQmCC", "goat": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAABqElEQVR4XmNkoAPg4xX4z8crALbp0+cPIMwIs5aJ1vZXlhf/f/LoGtyaU0e3MORkJv2ntb1gALLoxqUj/z+9f4aBQQ4DqaFZCIAsaGtrYZCSVYJ7VkvbCsPj8LggBsBcTQyorCjGqwzkGFB6wHAAyJLPn94zTJk+Dy4Hs5iQoaSAZ4/vgexgYEHWBLIIZAlIkoGB4T8vnyBYmpoWw8DCpevBnkRxQHtnL8jXYEeALKeFxTCfw0IYxQEgAHLE50/v/+dkJsFCgmSAnPCQwb6dmxg0tHRQxGiSC6BRCAftHb0MaalpWD2CEQLUBDCHgBI1DDQ0dTCsWLMFnsBp5gD0UIBa+h/ZchDA6gBQAnnz+tX/iBAfqgTIm9evwOagWw4CONMASPGeg6fgiQY98eADMLXE6MEZBaByHJQTbly7AjYIRBMLkPWA9EaEgHViBD/OEMBmOcggWIgQQ4MAzOEQR/iAMEYtSHQiREq9/6GFCEEaFIIkA1gVumHFDHBVCqKxuZwYQIxZGJURcusFBtBbMcQCYszCcAAIgDQiW4LchCIVUNOsUTA8AQAYzhGT1cg1wQAAAABJRU5ErkJggg==", "woofer": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC0klEQVR4Xu2WT0jTYRjHH2Mw22/ptnJuYGMN0QiCHVZIHowuBTEIieqSdenQJTx66hAdgghcUJcg0g6ZBzWkQ4dgBtKgZYQULNwWCo3N3LS2pSAuvq+8P37Ogc87tg6xD7y87/u8z+99vu/z/tmIGjT4X3BYtVI1a2lS/WivQNl8QWlOk4oABPc42+iYt4PS2VVKpDLkczup3WET/ZVfeUxXUhHBFlAeHEEhQAZHbYAtgi1AgpW+HL5N1sOdZHZ6aCOzKIbySwt0efCOSkL5YPUofp+39DM8XjrV5RNlPT4niuxjDD57nRMjrAy0ahqtFQriu6TJS7OxOEVnP9B8apMCvSco9HRse4y/Jp19nG+S6cyuk32t/wwdd5toI/FJtCGkGlgCKuH3HNLNxrYq7Dsrb8GT0XE9BjKAw4dtkdwYuESLmWX2e6CcgZXJRyIwCsBtkH2MqaIkYK1QpKHJGQo/Dok4Cy8mRAGwYQw+KrBuQTn3334kohAFguf14Ns2ddgZwPMqryJAcKQfRQoB8FF5itmHsNniKLkPmKhVs5Clq7/iUovfJsQWpH5v0noxy5qbnQG5ui3XaUrG3tP1iydFbWwfbLHqDxYXlkqADNjbu2m/ZqfccpLsbUdoaHBAjN0bHtVtq99nqLhlrk8GEPxPISeCokbgnp7ADpvN28ddvEBpCxAUIgDqqbGHov1m+rlukwK5KAkoz8CFK7dEnLPBq3pWpEAuSgLKM4B+JBLdkZV/mgGsFufAeC7qloGpm0H6+uou5dIxcQPKgQ1j8IEvF6WnGL98wNVxtOL8PxIR3YcL+wycezDSFJ1+Leb19/WSq7uT5t49EwVt2AB84FtzAYAzMcfHCDsD9aIhoOoMrKSX9F0xtlWpWkCtqErAl8/RXfEr2ThUJaCWKAnAnxJbSzOZs/MUC4/oOtCGDWPwURGoJABomkbxeEzUkko2Ln8B4PpM1JP4AU0AAAAASUVORK5CYII=", "pine": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAA4CAYAAACc//oCAAAEa0lEQVR4Xu1YTUhVQRQe6730ZWnp08yIt8joR1rkpohqVRsxAhEJFxHUpkW5SYKgVRCEbapFEEW7CBdCFEI/u1r0FtEihEINHoL9KOZP+iyFG9/wzu3ccWbuzNV2fXB5w313zjlzzpxvvnuFWAHOnjsfTE79DvC7AjPJsTHXGOBKbkGIVNLJcFzT3ETTg9nCWFkSW2uSTFKcCwSSNBOJAlBRnPopln4tJlmL8E6bunqOycFh4VuKVckAkDQLXhkwrR7OM5s2yEB8s+CcAVvqyTkC8d2QzgHoUJmtkheVgALxgVMAfPV91x5L++8fvQr9YOUfB97K/3gWVoUhiW7z78Yk7eLKtR4N9p5ui1y4X3+oRf7iWRrHBWFlQkzuvXlLrnTnjqz83d91LEw7x+7Wg7IE+J9vyjg4UXHPpe7QzsxIQVRm90XsTgyPiWxTo/iS/yCWFhYlKRXL03Leg/t3rZ0W24bIAhnZvCsXbD0Qdc6BQGY/j4ri1/FYuwTnB12cIwsAMvHjU8HJtlMXxIFKAGC8MD0fN8UvA6bVz03MSEPEBTwQ1yzEbsI45wACwc6nEiCQ0l4J4krhXYI3t/vlxUFERCWgQFxgDQAdMJIfCh0+7L4XcgEH9T+VAM9RFpBBGxkZA+AkRAAZgWh04ORz4kJbmIV0ba0AmZmCiN0Dhy+2h/74WC0BHURqR8SVw9qriLr/9YD0BYZjItSaBWiCVEVatmNF9XrRfqTVyIhOZGHTAgReAoxdGTE2AJtz3v9clPioI+82JJBzgOqsZsFFKVsDMK2eOzeVAFmob9kT+75gDMCl7gTa+aSIfDTisgCw81XnMEwSTLd6KgH6/+mdZ/JZXo7MtgaRaagLcKntE9mERD5DIxMh6XDtZ+IBlYKREWhEUkcYA1BNandoS0DyiwBDPs6REZ1zBNLV1hFJQoQJS8onTBMIBbJKJ8MAOo75KUhjzAERkZzDynUSLZYHbEqI6wEdBbtoAmsbujjX1Z+ygINIt/E4jBlwda4eSrpy2DKhzUBS56YTEeoINnUnmBcVU81V8J73PY6XBaBbvU6GcagHEZ5HICAl2iOmLIR7oKPzTFBdlZHqBQAZAfyVzAb1IOLkQ4GAKdGOAL28yADgvOfy9YhDDpMMI6jOeUZ4IBiD0PgblCQirJxWqjKeqe62EsgVlr6akEN0B40RSImU/paARKOPBFNbUCdKSB1BmgFgR9AxvW8aecDnOLaVAEHZvhtp29DHOWBaOd2n41i3iZdlwNe5y0a0acRIBpI4V8WHrRy6L2hhBlycwxn4ofPqqWXZJOFC/IGet21K4oEUdv/0TFE8z7+QRiG/qCVJGZFRTkwEOOY8QXOp/wkkUEBKvTeuoPWl3zJ81SJHAB7kMowbMMGUdm6HPmLxRcKvDEA1HMd8voHwANXFleneWvtePjE6AWrm50Tz9i2RZwZHv4nva9eJVHla3sdLiW7cefxkZF6sJNMhV1cd6AIojE972/PSA/8C/wP4A+H5NqpZnx0JAAAAAElFTkSuQmCC", "kid17": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACk0lEQVR4Xu2WTWgTQRTHX6wHY1SqpNKmKrEFQdSTB8HWkydBUDwJUQ8RtOJVhVx6qF48eIofpWDR4qWX3KyoVUFq0UOl0OTSQylts5UkxqJN0h5k5T914uza3Xmz1IOQHyw7++bNe/99Ox9L1IDBwK3jNsPNwdyHPtaYECfwpZNxR7ChN7PrjuP6qWzWCUDQO31J2rX3EJXnc7QwM40htlsE18/NJj8BsoxIKpNnp2Y8h3D92BXY19UbwpvJpH7JAddPhT0Huo/GxLixCcuvaKT6ec0VYwEAlUDww0c6aE/HAWHrf5AR957r58QdnwBVgEhOcqCdhCoyuZyQzc1b6t2wSXRVYs8BHYmzCeHyk77pXD3xXQVeJM+n6MbNZ6J7R0ubaMMWBKNPAJoqOyk79+eNvxcX68/oMyVQBXLzBdquSEcbNqBbqm4CCbBe36fMQK+IVbQs0YYNbVOMBbzMjDhytMTW9gck//xx0jQ/X4Bc18n+FyGIQMLpd1M08vR5PTn6oIC7BxijHsuDPafs/Ku0PfkkZaNtHOw3rK1YJRLZZnd2HqTV1RV6dPmY6Lr2+BOVy0WqVpepUlk2imnkLJMvLX2lcDjiEFarVahWqxqLYO8DanKAhG7C4a3SZHMrYbwK8JZeoE8RwcJYwEbTEPB/VQBrX4d7eepgVyB98QQNp06Lde4F+t6mrwhfLux9QMXvLX/sP0NEzgPLD7YAHDSDRGLP70rcpi+WRaXFWRE72han1liMhu9eoPF7V+uHEgf2JwDytJPkRh+KS8Xto8NIwL+gIaBRgUAVyE6M/zUf17NxCCRgIzH+JWtvj1M0uptKpQLl82sbkdvG/RsyBr9lpcKCuMbej9p4xoW2tOPZJPAvvsVFmhOEAH0AAAAASUVORK5CYII=", "kid5": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACSklEQVR4Xu2WMUgbYRTHX4ogyZkiBWO0UsSl0EEwm0VwEwcHaQUdMhTH4iLSxa7FQTcpHUuE4CAqEkTERVuCipQIGQIWBBGpMbElVJOQLFf+X/qul3I277MEB+8Hx+V737vv/d/73ncXIhcXl/uOR7cAXq9h/uuZYjGvtaaWM4IHAm3U3PyIcrkfjjoymXMtEQ+kFZAEB4bhr1klO2IBDDJ3uhbediu7YTRJc5IzPRIy9+fDJqogueCLZyQRGiROTHRylAbDr2g9+kGZhsKv1d0+3oxGiKgsXlZLALOw8eW3gIrl77EO4h44Oc1Y6y5tx6nzebs1xm/YGLtvLcQCOp8E1FqZ4yPynH+luYl3anyWTKjfsGEOsK8EsQBk9ThYpsTenrXuYXSNsslTa4w5+OhUQNwDnBUCoNFCvb3UEx62qsLBuQLJk0tJAeQCkBWLeDnz0bMyTSbZqgEbjh+i1q0C/W9WqaUlSB0dXSaOI3g6ULnDNjK7S9lsmj7NvRBXQNwDduLvn6nAHBzAdhtEAmaWE1ofLSB9RiQAxD6nrARD4wdVGSN72Bi7by3EmTU2+kzsf6FwTT5f5YPDZe+bqIjjOfRBqVQQrS0+hk5w4P9BvAX1QixgcWqMjrYilM9f36gFc/CBrxStLeB3Pfb6JthHiqhR7KAZW1vblYirq59qyu9/qBrz4uKbuPkY8RbUC1eAW4E7r4DWe4DJ5b5XHYpyuaSu23DnFdACL6F0+syMx3fUHWMnm86i2lsQi8XU+qnUn/8HTjYpvwDs6BeKXaSmlgAAAABJRU5ErkJggg==", "woofer_b": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC0UlEQVR42u2WT0iTYRzHP4uB296l22JugsocQyMQPKwQPRh0SJBBRFAdjA5dvIRHTx3CgxDCFugpwulBk3CKSHQophc9rEVIwmK6aJBs6but9k4F8e0gvswmtY29Hszf6Xl/z5/v5/k+v+d9XziP8zgrYTEKcjnzNJUWErNSSWtqSxVvrLVyxVFPQkyzsZnEWVeLzWIiIabZ/pkFkEuB0JYrbrOY2NhMKuI2iyl/eNEQ2lKPICGmeeV9grHBRVVtI3vJbwBk41Hu9j9Vr8AsRkFuczrkreC03NHslDuanfLueljeXQ8rz1vBabnN6ZBLKciiHKgRBDKSBEBM6+D9m9cArG7u4+68iu/l1GFfGZsrCiCWSGryd+V9MQFA/6Ne9jY+0lqnVYBUAfhXHAHd6Ll/OgD5Qtl4tCzho7hQ6oTtwAitdVrFdmODS3neDoyoC5CRcgwEFgmO+gCITs4QnZwBIDjqYyCwSEbKqX8Ez959AHy4PT2K+GFOxSMQs5Lm6CoCuD09GBtcGBtcCsihS1JJ34OiB+oMFrnuopYawYCh+faJY3JfZshIOTZ/7bObEzUq1IDEgf06scgyD+9cIxZZPta+VG0k36WKO2C2taAXzKR+xDBbmxjofwDAkHdcyaW/LpI7qFLHAb1gZkdKAbAjpRjyjtPe7j6WMzm61LuGO1IKvWBWYGanngPwdn6iAFAVgD8duHXvMQA3Pb0FgKfiwI6UYmUlVJA7NQf0gpkh73hBThWA2T4Pa3ODpBIRzNamgn6ztYlUIsLa3CCzfR51XsXZeBQAe/3lE/u/b6woYyruQPewXxOaXwCgrasTe4uL8NIY4aUx7C0u2ro6AQjNL9A97NeoUgPFLFyKeFn/A5WOc4CyAbYT8RPb/4cDnz+FisqdPQd0BotsqtZRJa4SCfqVfCTop0pcxVStQ2ewyKo6IAgC6+sRBEH4a67Y+A2C40bsNtUClwAAAABJRU5ErkJggg==", "m_b": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC8klEQVR4Xu2WTU8TURSGD4TYL8sIFbCtibQVENHQmGgMhkTYEuNC41ZjWBnjH3Dlwj9gYty4aFy60BCDCxewIARjjAulwQ8EIRZTgbQw/bAVrXkvucMwIJx7rXHjk0x6embmvO89c+feIfrPP6ZGVd/jclV2uqdYKinVrFUxAHG/10Mnj7RSKLCPtot3M+iEbQCFIeoktZilcNN6HjFMqZioU+mAWSyR3+MSt1zra6P9DQYtZVasEjCgCrsDdk6H3Ft0tstxUOoAuNB9gO6PfRDxzfMnxO/toVfid7C3jRLP5zi6FmwDV3ui5HPvoZZGP51pb9kkIv/j3PW+dkpnTLo7OsUywjbw6esqtTbXi6IXe45az35mYZnOdobFfJhbWBTiuJYLew4MJ1M1sjAmHgQhjpx9MuI/rq26AUnK/CnCoadJioYC1B+PiDhfLFN2jd1QC7ZTyUBXuNIRO0Rhfy2NT3wW6Xi8WYi/+zinNHqgbABIE3Z0xAF7Dni9eyuxWEclGDxYSTwbpZKZobrveXEgRg7ncODaqs4BFDSMzcvwo7cm5b+VxYHYjsfjFfdwTKjPGhtOYeD1+qhcLnO0BdoGXr8c2SRirm7sCSoozAGfSl02rA70RQzqjzeJd/3eRH7H4pe7DcoV3ZScX6LhZG5XI+wOSGTr52enrRxif71B4yOPdxV0omwAzFy5QWu37li1ECOnA+sR/A5dUTtaHYgmNkYPksvZLTkuSgaw1cpnDxMQxnHuyQOhl1le345VYD8CbL1OpDCwrwNYHbmwDGB/HyBiLa3ym4H7TcAyAFBQru/2V9DJ6OwKFQo59i7LvlACE5HOXvL5gzT54qFIHzt1ifLmF5qdGlMSB0qT8G+gZQCjx4gliJHTQcuAU9BpSAUtA8DZAV20Ddhbrtv+P5qE6dSkNWh7rIpWB3KrW1fF7XIctAxUEyUDWIQaGwLU1RaiH4W05QMxcjjH/RqWKK2EKD79/o118+H24yJ25lSW4l923jcbNW02RwAAAABJRU5ErkJggg==", "cash": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAJCAYAAAA7KqwyAAAAiElEQVR4XmOMWpH1n4ECwALSe+HQBYaAuAAMYzYs2sAwr6mPYdOdQ1itePDgAQMjyAUKCgpgDjLIc4kDc5PqisCGTNqzCEUepocJm9HomkGGwMTQAVYDkAHMBbgAXgNATicEsBoA8y+y7ehhAAPgWAABUKAgA+SQB7HR5UExZGBnAIkFQs7EBwADdzlVp4f8XAAAAABJRU5ErkJggg==", "sun": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABD0lEQVR4Xu2XMQ6CQBBFWWNr4hE8iIexsrAyFhYcgMLC0sLKo1h4CisqaxM7mzEs2U2EAQcH3I/hlSQsj/9nNxBF4BiNHz0uJLnfTOZfP6fxjVKpKprKigW1YkWkoiNJRW3LZUjXrE1QuoiWujQrE/yV3Kc02QQp3Yl2Z9uY2bbkI5rBkJQEQ6Vnq2aaexMMKecoOvSnYoT0uBThExx77fQWcrNWYhOk8zrIuVeHc4KveBDUAp9gvouvT+2LdgZ8gvDY7y86ruDOwQyzPBj4iq1gZorWNaITi0+O4hhqDk2SWDc/g+4CAkgu/Yf/Lw40j1y18OfggBZ2BovcF/tOzsjpaSN6/oAGVcTS6v+6yhentFmJeJxAswAAAABJRU5ErkJggg==", "house": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAyCAYAAAAA9rgCAAAHAUlEQVR4Xu1aa2wUVRj9ilCE8ihaUkSeEhK1Vmqj/ClpStRiGgVJChojaAUUQSIhIIk1WgkxEogBEVQKYrAShTUQRNESQ13bGirUUqkxaQCLLXTDQh8UahdkzbnTb7hzZ2ZndliWajjJ5M7cua9zv/Pd1wzRTdzE/woJPZ3NnLkvh+3auGXzhz2+/QI5D+eH82c+b0uEAbLnWkO2V6TOsEPveFsYZJ+ZtZQmpI9C1WHfjk9treT/aju9Urnftom/nD4TdfPjSpjJ5j+ZKRqamzefgmc7wmU/+OImzbgRVskCGvGlwtJWpOtb2hL6JVA4Z3iqyZJlpwLifbQmvu6EQRSNgozZskDdnj70UtEDVF5dpZNOuX0AqRJPSkykEYMGiDwHLvSnyUkXxX1SsCVargLXlbDsrwUz8mjtCqK6RSupKjuTEtNIkJ2UOVEnbeXXF0IhamzvEI0dTx3U2K41HPFecN0IqxLWLElUdSxI6xbNFfevrt8s4q90XKK1K+aLe9WvZQvL8GrhXl56yQkyWViwffEHIkt9N9mWC5qZQBxxvQb00a0N2UP+7ApNl3oLKcPKfOEZ8V4QtdNHguqvV+V6lawVYOnx41IMr3y7q2n7Z2uoq+5Hmn7XSFO2Xcf/op+bz0Td/qgz2EH1V5YwLMjWjASQBlLXf0F5/m3ifvGbHwm//vy5HFNWjNK156IfpWNCWJUw++WxQJvurwCkPCRpkN54q+eiT3ZYWrt10wLDKH1DLIzlYfBsh2nKkf3VC1jiQ7aWUtr6N0QHQuJH18zWi4u7hUF22fJ36MhvJ8VAA3/9uOhXSpt6SR+crgWyX/NYANIArB1XC6tTDjeI/bXohZmO0nWSNt6zX/OAJtezetXrpkWKG0Ttw6q/YiHRUpAbE6vaAcRDdXcI9cjWxige7TrcNWHVX91OObFCpKkLcEvcFWHVXxnqlONmFHYjZYZaHkt8XOpgys7O0gczwK21HQmrEga+zZ5NgUVPG6aceIKtrarMjV9HJGy1pbvWKSdWYNJYtmKhwlOXk6UtCVv5q99fIda8kHGsRmE76bp1DbupC6Tt/NpE2Gp+Re+5XSLGG+rUBfB8bWVtA2GrJWJPkbATQHyiv1qszAA2kurX+vbQiixOJXhLB/C2TpaijBv5HltNHCyAKG9csGDB/pp3cYC+qRw3dqh+BMMZEtNOU+nqfLpHHDAyWpXO7jnPaCst8wmiMBYWKlj2HiwfSmXdrTbtorFgR08BC2Zk0JSMMU5q6lGAhLHGxxESkXGPbQAfeh88fCo8q2Bh+ERzWA9ffCRdPP9XQm4/uOAgXz6w1324rb1T+Ct6KBC8SAdrAno4MmWgeHYTAkjnNnRbrpouUvkMcAEncGPoku4+HpW/BITP1n1DtZvqRNraTVNF+P6SbBHuswnH1wRoX21QhJ2hy6KhHPpL60W8HPpL00V5CB/KGRuTethg7Z0JplE64krr3hG3hSfdfadB+kdPdVFF1Q6iplI9Pmv6ZqrYpZ1EAni+b3hfQ74T1c00Y5ixLBk7m5tobOYwPcprPeV/NNHvjecScp8oCJd+vdXEL+LR38BbE3V5MtAQOr7H0FiBrr8NcSxrxglqFrcNndpBuozR/fqLRzmP13rQZsCKLBCR8OUrV4QcTQgZyQkocZb5iGhvXgq1NmpT2Z8Dc2jM+TIqrNeKMOXxUA/aHAkRCaMBQcnhGVmzfaYy1TirfEBNWwYV11eK+2KqpOTJyUT1mtXVPF7qsetohidJV2x41EA4a+F+Qxye7SSdMbiGHjfIWpMzoEraSz0saTvEXdJAyf29KXlEsrB2SSPWQJrf9VhJU6jL3IFKnJ2kFx64SBP73kJ08jwdoZ+osEsjayVpL/XEXNLv+g6T+qFybyUZ4vC8Yb7xa4E8SjdcXQcIWI3SXuuJuaR5r+kEu55mcox5X2ZT8VN+k6S91hPzUTpYMs+Ja1RgsqqkvdYTc0l7RbQLD6+IuaSvFaqkZThZxw1iLmk3ePDZYjrkQfp2I3skqHU5dZrtPIxjkc6Gcn0xkLtMW13h41nguyWmNqQ+9p6I53SB7i0iQ0j6Ne177578HBr91jZqeFv7Gmg1SqMcp7oAlCfX5SRpy18e+HyL19Igg2MTXKgAjUFPyhfHczp+h7zc60iD91N9ZeIeoSxxpEN6lM91qeXgmevidHJ7PEkavw+h0I07a2jL8ik0TftrToC/5E0r3C0sAOnOWfW96SM23nPeCem7Kdg+RU8j/96wZfg/QpYrLepAOpTDOFSiTeDq7xF4hjugnI2Fo7AHtv3Dz3I/jCOR1WvWicJxYqBWwOCz6kjv+Z1dOU5lyIiUVn7HJzdWvzU6/gpjR8aqp1XIee3KsYu3gtu2IN3gQf0sy/gXPkTIUJyIyrAAAAAASUVORK5CYII=", "coin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAcklEQVR4XmNkgIKTk/T/w9ggYJ53kRFEM4EIkKRZXCODpqkuw8ETD8EKYBqYYIzP19fADUBWxAISBekEgRmTtzBk5PrAFV4/fRliBQyAJEGKkAEjzAqYKTCT7C3kwWywS2GKYHbDJEE+AVsB8xJMAlkMANp8MCtTeE1KAAAAAElFTkSuQmCC", "kid2": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAADAUlEQVR4Xu2X3U4TURDHB9SGbYFCW1tEJSJYjCaS1iiSmJh4beKtiQ/gE/gaxlsfxAtvTEiMCfKRoPEGq8WC0ja2UKC7BEPW/M8yy2nZbs85MeGGX9J0dnbPzH/mfHRLdMYZZ5wyPSb5+/v63KBxe/v72vG0BnDiy8kEJQejNJocpC/FMu3YDg1GLfpVqwtdOkLOh3Xg0WRGVDpXqPQg+YBliURIXtuxqViuievxkaQQAyCGiFyIkMd3ytNRAAY/nb0txi1tNFxUjeBcOQTIcCcgBsIggsfDRhFBIkI7AJYLG35lCM6Vw5YqFsIgsF0Yj9fuwOJmk6qLVWo2D/yxCI4kLOTF45stcd+89+5jWnYdh17P/aBYrJ9Km019Ae3w3CNBqVJpuf3q7YK4fvYgSx+LjRNdCKM39K4EWoy5ffkkR+u1HYrQoX8XNnyjybhIjmdV6boGAFY/r3hmIj0UaB/tAjFGhY7bIxbrd8fGrlGzuUfW4YHfgeez10WlzO9aw7+GjSlgsc65iLcGSmuIE5hLaQp4dfPKl5HFAEwBnuNOdENJAAdE8IVVb1uCtZ+2+DC4FyY2iNCjWJ6Gv7sN/5DJJiN0L3ulJR6Sr9YO/GcuDMS7th+ECgA4gq+OT4q1UK+W6U7+vvBvbdXp7pB3RixtR2h4OCHsz8ufKJEeUUoOuu4CnOnrxYIQQemRlqrfFbbFdSqV9v06yZU6wGA62J6ezlMikaL5+Q/CNTPzkOr1P7Sysuw/32nVt9O1AwwHhBC0HwLkyuEDqokZZQEyWA9HyWSBJ6pTQWkbBpHL5X23bOvSdRe0gymIRoPPetu2tafAqAOW5QnAt2ybYLQGHMc7/fi73dbBqANcPcNdMMFIQCZziVzXFXOOD2z4TDAS8D8xEtBoeEewTJBPBSMB8fjx2xAT5FPBSMCpdwDY9vGrtmzrYtSBoISmIowEgGg05hcr27poCcDvQCp1kaamblFv7/FQ2PDhnvzeoILWjxGCf//21Y87ccP789ru03kn+AeslX2lCsiw+wAAAABJRU5ErkJggg==", "poka": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACg0lEQVR4Xu2WP2gTcRTHX0spwiXF9B9BIVbMEAsOUuoQJLrYScnSQRxa8E8GB8eMHQQRMksnXeIiUqSFdmmhtIpjEVQ0kQRtiXCUGAtprwrSk+8rv18PPfH3fo245APHvbzfy+997nF3CVGbNm0sKNxI+RZfay2tkuiQav2tcf5RSbRnl0QAzbNX0nRiZIyabonWVp/z10cuZCgaT9H62iI++hIJY4Ffmzc+b9Cly1MsUCkV+Qyx7P4VGUt0SiagwJUnUxPUGU9yCrGahhSxwPfXX8ltHKHHxQLtuRXuhxg5rEkRC0ROnabJewu0uPxO90KMHNakiAUUo8ODobEUscDS/F3aK6/SnXyBe21X33OMnA0igY+VT3QyOUTry/y40auHT/TYkWs0V7hGgkhAER3t5oZnb17lFGLk8GhKEQng6nuPJygzMUO1mksvi0U+ECOHNdRIMH4RATXeWKyXeq7l6UyXy/k3P+IUW8mxxOz9c5L+8gngbQdu53LcGAdiUK9v6vWW4zgRH6/j8ux1P5EY8tPpjI8cDsTIDQwMcg1ypgKiewCcvzXP51pt/4bLZsd1DB4sfTPtzYgEgps7ToQ3mJub0bENIoEgOzvbegIqtsFaQIEJHAaRwO6uR57n/bEf1lAjwVhgYXKM3BdPeW80CTYKfkYNak0xFgDqNwD09x/8GgbjYI0JxgIXp591bLwt8Z7D6XHq7kvp/REjB1CDWpPmwFgAmGxsUhNEJPAvsBLY+rL5m0tYzgQrgaN9BzegIixngpXAf58AaG7V9QUGYylWEwhraCthJdBKRAL4oxGN9lDyWIS8+gftgRg5rEn+jIhfRMBxHKpWy3xWhOVM+QlkCQ4J6zY+6wAAAABJRU5ErkJggg==", "kid12": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAChklEQVR4Xu2WTUtUYRTHjxER6GiKVguLdJyRIEQXAyE0s3DlIoooWpbWKvsAbaI2fgJDFxUkCCGFy2YhQjNBLxQFUdS8ORuxNHEYJkFadON/5NzuHe+9nnsnCHF+MMzzds75P+e5z7mXqM5ep8ErAbM3LhiYvzw5x+suJXq4PxzvpXB3J3V2ddOtO/fNfmFxiZLpDLt8kso3VNs7sd9NAIyHr13n6Vki4+nnj7bAqYU0z928OsRCloqLZv/eo4Vt9rKJavbt9Ah8z+XIGlxABrBjgOAQIWMQBRsAey9cMzA6PU+xzCat/Vihk61/XUhQkBiKc3AZgwgg/cGR29TecYTevn7hqmHHDAhf86vs2LpzOQZB+lirRS0AXDw/Zv7PzL1hMQN95/gffcxbM6TBlwCAgAd6B2n+y29ugyvjr2ji8XObSC2+BQhnx+46tv0SSMCvzEsajx80n3C0MRYElYBn71aouFyi5MMHthjL+W/0PrlVDwSswVrYaPCshI2NISN2+gxfxWIhSxsbFa5uA/EEHY1EbP5x3z+kU1w1YdcVjppXEHZuYjwzAEPcYdxlOITjqcwmB7IWGAmOOT/BgWcGBGsmIAZks3lqCrVw+2elTNFoD7eRLSk+XjsXVAIARIgRsrFeqtgEtLWG+JgETXDgWoqrEYciRHbvtk6L6hZ4gfS7idFQswAEh4ig1CygVmoWsDePYGR061PNitOYhv9+BOpCJKAOtLUfdtzc+tqqugAJgTLQ0nyIyDA4IH5o81gAAgn4l9QF1DNQz8DuzEC5XNpWCpzGNOyuDOA90N8fo+PHTlCoqdncINoYw5z141WDr5cRnBdyn0y/4cgpblePab+IwR8jWjDzcVev2gAAAABJRU5ErkJggg==", "kid6": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAADDklEQVR4Xu2Xy08TURTGT8FHoUMpUkh9QFCEBDBEEzc+FrpR48KdG6OyM8aY8Ae4cGPcuDXxsdO41YUhLkzcQWJCxEcAE7UittDa0pZppw8Sdcx3670MBXPPFNRNf0nTO3fOnO+7557OTYlq1PjPeKrRb/JutfFcrrTkkWN57Tafqwcg5m9soO7tQUplLaHV6jcoHFuggM8rxq/DEWGMa6SOG1gpvpgvqUchLq8721pUhTiwnEIcibHC94ll4bXoa/eKimQLRVYl2BUYbt5L5z0hoZl4cZHGr/mVvvMaMdd37OMsXqCtAFZ/oLuDAp56ejX/TZT73pWTlDaXKL6QUUKLVpEejH0QWyF75Gsyo60CqwKy4QDE/8TQkV5xC/HYLg4sA6LTTZPuXDolcp679Ziu3h+hULBFXN94Mka3n0+I8dDhnhUNqkNrAD87lF+C0s+mcmTUk9oCjDEnGT4xSIZdImydDq0BdPOi/WPVqrqavSq3cwzQD3IrdGibEAx0hGw0F7agkCxSY1uDmEcTfomnqSu0TQlD/M3nGM3mvm9cE6Kbwd2noyvEAcSjn0wh7BTnNuEmXYkAXkKowLPpqIdo1L585mh5xdEl8W2EtihxxDjPCl1+bQCQb8KpSFzEn+7fZR8b3EMBo0EIh+MZiiQyvw2W47nnAcuANPGzfjPt3tlBLX4/9RsFajXKjZiySjRtNVImm6WZuQjl8xY7r/ZXIJHiEgiiAgBjCQz6fIY4rjmwDQCsPJ5M0Oz8nLh+OJGkRxMxMcYc7rnFlQEnEBzsH1Di1eLKAPbYybvpqWp1Fa4MVCIrsB7WZeCfVwBN6GStClTG6GBXYPh4H13YH6BQWzsViuXDxlkBzOEeYhDLhW0A4PyfmYuq3Flr+QgGzntc2AZujox7Xk6GRd7eQ2epqfMgpUxTfDDGHMDpiNgNNwA4iTkxTtgV+FvUDNQqUFUFzHR8VU+uNcehKgMbiSsDPl+THQwGyYq9pea6tPKBMeZwDzFuDLLfWADJwx8nVf7unvK/4Mq5fD7HzvsLb+hh/vyTKP0AAAAASUVORK5CYII=", "m": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAC70lEQVR4Xu2WTU8TURSGjw0JtFhGQFBaE2hrQYOGxkRDTFiULTEuTNxKjCtj/AOuWPgH3LhxQVy60BCDCxewIARjjAul8QspJRaD0LR0+mErWvPe5g7TKdBzrxI3PslkTs7MnPe95965M0T/+cccUtV3NzdX9numWCop1XSpGIC41+Om86f6yNd5hHaLGxl0wjaAwhB1ktzIkL+rmkcMUyommlQ6YBZL5HU3i0duRsN0tN2gzfSWVQIGVGF3wM6wr6VOZ7ccB6UOgCtDx+nB3CcR37l8TpzvTr0W5xsjYZp8keDoWrA7cP1ikMaHe+lYh5dWEkvU4vplFUGMHK7divaLe7mwX5mxQX+lr7uNgr7OmrlfXktZucTaBq2nTVr5lqXpWJJVm90BFERhgIWHBQhx5OyLUUUcsA1Ikma19VPPYmLko5GAiPPFMmW2lZcUfwokmIqBUC/5vS6aX/gi0pFItxD/8DnBbr2ENU9OpAk7OuJKU+DxHK6EQgOVnp4Tlcnns1Qy09T0Iy8OxMjhGg7cW+d6D1hrAAUNo3YbfvzepPz3sjgQ23G7PeIZjgn1VWPDKQw8nlYql8scbYG2gTevZmpEzOzON0EF1hTIkR0ErA5EAwaNRrrEu35/Ib+vj2tDBuWKLRRb3aTpWK6hZ3YHJLL1q/ElK4fY22bQ/MyThoJOlA2A5fHbtD1xz6qFGDkdWFOwF7qidrQ6EJzcGT2IpTJ1OS5KBvCplXMPExDGcenpQ6GXTlU/xyqwpwCfXidSGNj3AeyOXFgG8C8wRsTaWuU/A/eHhGUAoKDc3+2voJPZ+BYVCjn2V5Z9owQmAqdHqNXbQ4svH4n0mQtXKW9+pfi7OSVxoLQIDwItAxg9RixBjJwOWgacgk5DKmgZAM4O6KJtwN5y3fb/0SJcTy5ag7bHqmh1IJet3xV3y3HQMvA3UTKATaijvZMGwz76WVi3fCBGDte4f8MSpZ0QxZc+vrUePtl/VsTOnMpW/BsuRTqw0XA09AAAAABJRU5ErkJggg==", "kid19": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAACdUlEQVR4Xu2WP2hTURTGT8ShTUKQUp8SJUjADhEhQxUU7VScirO4msFJpGAHcRCRgiJVOmrIWFDEIYNICRk6FJUOpS0Sag01/2jTamuoKQgS+U65r0mapOc8GkTMDx7vvnPPvee7372894g6dPjfcWkN8LndlVZjSuWyak5xsil80uqloN+i76Ut6vF5afbzMgWO9XI7XShSrrjO+qRCDkkcQHEUHgiH6IjXzUMyq+sUfThcMxx9yEHufk4ZDksE1INVz7wcJ18gSNmlOdpey1DfhSF2QovIgWqw8oEzQRp+8IzDKB6J3OIY+rSoHTArB91HAywgGh3f2fdMmiL3xlQa1AJge9/5K1xk8eMk3+ufNai3AGS//aCert2haCPmBEcCtr98oPdT72zb0UbMCWoBydjzmjrYEkN9nwS1gJsv4nahxTeTfAEUR58W9SEEIxMJekxE/YODdnHEnKAWgJfN3asXubixH20IGo1PqzWotwAvm8sjj2jjeIi+/uriC23E2v4iwgcIFAp58vtP1KwWMWBypIgdKP0s0+ZWmcKnTzWd++mdnTOhQSzA53Hbn+FmnA2H+LOsQSwADuB7vx9t2wLjQKuDNj/7iWJj11msFJED+LvBnw4caDX5jftxFgGxUkQCDDOJV/Tb1XwI+iACYg/0lwxM3L4mWtTKXFKcC1RvwvT0FA/K53N7xJiYyZEi3oKh0ZhrOZXieZNL3fTkdYr6z13iC23EAHKQe+ACgGRiSU41YgfaRUfAv+vA2uqKfSyq21ocObCwML+nTqOYBEcC/hoej7eyuVGsJBNv+Y7nRjGNQLUDuWyGLMviu6FRTMofz70ZBwEJpmcAAAAASUVORK5CYII=", "m_cheer": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAADEklEQVR4Xu2Wz08TQRTHHw0RWlgL1F9tTZAioEFjY9QQEw548GKIBxPOxOjFGC8ePRgP/gOcPRCPHjTE6IGDHIjRGONBaURFfsVKqhJKl7ZW0TXfaWeZbmfb2QFDTPwkk319M/ved96+nS7Rf7aZOq/5/Q0NVrV78oWCp5g+t2DneqMWhjiP5EbATycPHaBIqIVktlOgLI5IvUwAbjoT7+BT1qNEsg6BkdTMF8puSX5NU3R3C00vppgNUURkoRKyOM58UgGcbP5H2XokN/wNzHdloIt2tQbp28qqvQYCZDjjiEgfwcTcRlDR5vRFGivyyHy4F8mb/DukcUDVCsi4cGwf3Zn8wKZunD/OrrfHXrHrpf4uGn2+IL3PDdcmdHLxdIyG+9ppb5tB8wsz1Oj7bS+BDR/mrg50s7WqKAuY/5Kh7PdiTzy4eZmuD55g9uznZWbDh3KnVky2VhVlAXgTeGA0HhoQyeETmxG/sXbLBXCSZrH0Y48TFIuECK8rbOw+ve65peQnYSDQbIXDUcrlsrS6mqZcbs3eEd7tns52iho+evrsExMTj+9hyd99XCjbPeIEgy0UCDTR0lKyLA7HtVQqIkR0kgPXHsCuoRrqi7totjo7e6xweL81Oj5BBXOF6n9m2YANH+YwVHbOqdqEThEQhEcC7k+b7K3AgA0wh1Gr7CI1u6Ykgv0pwcbueACeWKTUL5azd9yoKYAndgZ4/fJJmcvMbBzfYtPWQvkc+Fv8uwIW52bsosA2dga1iqTUA05mh68VXaMj7LJ+a4RmtdJr/B2L2EI2gVYPxEo75ySW0xU+VbQEAIhAYozBh3dV81Wg1QMcMbF4DnhBuwJbhfKHA8AxPDl+r2ru/rNDnk5CTwK4iI7D/dRkhGnqRVHMkVNDlDWXaO7tpKfkYNsfgZYA7B475sCGTwctAc6ETkFe0BIAnBXQRVuAWHLd8m+qCVPJKXvTou0VrQqsZZYr8sh8KmgJ2Eo8CcBJ2NYaot6uCP3KpWwdsOHDnPjRqoKnkxDBZ96/seMe7D7KbKfPy0fpH4L7kPTTf8DwAAAAAElFTkSuQmCC"};
+const BLINK={poka:'poka_b',woofer:'woofer_b',m:'m_b'};
+const S=(n,h=80,cls='')=>`<img class="spr ${cls}" src="${SPR[n]}" alt="" style="height:${h}px"${BLINK[n]?` data-blink="${n}"`:''}>`;
+const NAMES={poka:'Poka',woofer:'Woofer',m:'M',spinzle:'Spinzle',ref:'Judge Kaimachi',defendant:'Defendant'};
+const say=(who,html,spr)=>`<div class="say"><div class="who">${S(spr||who,76)}</div><div class="bub"><b class="nm">${NAMES[who]}</b>${html}</div></div>`;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let RUN=0; // stage run token, kills old loops
+const store={get(k,d){try{const v=localStorage.getItem('p319_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('p319_'+k,JSON.stringify(v))}catch(e){}}};
+
+/* ================= sound ================= */
+let AC=null, MUTED=store.get('muted',false);
+function ac(){try{if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){}return AC}
+function tone(f,d=.12,type='square',v=.07,f2=null,delay=0){const a=ac();if(!a||MUTED)return;const t=a.currentTime+delay;const o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(a.destination);o.start(t);o.stop(t+d+.02)}
+function noise(d=.3,v=.15,freq=1000,ft='lowpass',delay=0,f2=null){const a=ac();if(!a||MUTED)return;const t=a.currentTime+delay;const len=Math.max(1,Math.floor(a.sampleRate*d));const b=a.createBuffer(1,len,a.sampleRate);const ch=b.getChannelData(0);for(let i=0;i<len;i++)ch[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;const fl=a.createBiquadFilter();fl.type=ft;fl.frequency.setValueAtTime(freq,t);if(f2)fl.frequency.exponentialRampToValueAtTime(f2,t+d);const g=a.createGain();g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(fl).connect(g).connect(a.destination);s.start(t);s.stop(t+d)}
+const SFX={
+ click(){tone(700,.04,'square',.04)},
+ pop(){tone(380,.09,'sine',.14,950)},
+ good(){[523,659,784,1047].forEach((f,i)=>tone(f,.13,'square',.055,null,i*.07))},
+ bad(){tone(240,.28,'sawtooth',.07,110);tone(180,.28,'square',.04,90,.05)},
+ coin(){tone(988,.07,'square',.05);tone(1319,.25,'square',.05,null,.07)},
+ whoosh(){noise(.35,.12,600,'bandpass',0,3000)},
+ flip(){noise(.12,.12,2500,'highpass');tone(520,.06,'triangle',.06,780)},
+ tick(){tone(1400,.025,'square',.025)},
+ blip(){tone(300,.08,'triangle',.08,200)},
+ crash(){noise(.7,.4,1400,'lowpass',0,200);tone(110,.45,'sawtooth',.12,40);noise(.25,.25,4000,'highpass',.05)},
+ screech(){tone(1800,.35,'sawtooth',.025,1200);noise(.35,.08,3500,'bandpass')},
+ vroom(){tone(70,.6,'sawtooth',.07,170);tone(72,.6,'square',.03,180)},
+ beep(){tone(880,.12,'square',.07);tone(880,.12,'square',.07,null,.16)},
+ cheer(){noise(1.1,.1,1800,'bandpass',0,2600);[784,988,1175].forEach((f,i)=>tone(f,.1,'square',.035,null,.05+i*.06))},
+ boo(){tone(180,.4,'sawtooth',.05,120);tone(150,.4,'triangle',.06,100,.05)},
+ gavel(){[0,.18].forEach(d=>{tone(160,.08,'square',.16,70,d);noise(.1,.35,1800,'lowpass',d)})},
+ levelup(){[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,.16,'square',.05,null,i*.08));noise(.5,.05,5000,'highpass',.4)},
+ drum(){for(let i=0;i<14;i++)noise(.05,.18,900,'lowpass',i*.06)},
+ heart(){tone(62,.13,'sine',.35,40);tone(56,.13,'sine',.28,38,.17)},
+ alarm(){for(let i=0;i<4;i++)tone(i%2?660:990,.16,'square',.05,null,i*.16)},
+ cash(){tone(1568,.05,'square',.05);tone(2093,.05,'square',.05,null,.05);noise(.2,.08,6000,'highpass',.08)},
+ giggle(){[900,1200,950,1300,1000].forEach((f,i)=>tone(f,.07,'sine',.07,f*1.2,i*.07))},
+ swoosh(){noise(.25,.1,800,'bandpass',0,4000)}
+};
+
+/* ================= fx ================= */
+const fx=$('#fx'),fxc=fx.getContext('2d');let parts=[];
+function sizeFx(){fx.width=innerWidth*devicePixelRatio;fx.height=innerHeight*devicePixelRatio;fxc.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+addEventListener('resize',sizeFx);sizeFx();
+const COLS=['#FFC93C','#FF4F8B','#3D9BFF','#2FB463','#8B5CF6','#fff'];
+function burst(el,n=18){const r=el?el.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/3,width:0,height:0};for(let i=0;i<n;i++)parts.push({x:r.left+r.width/2,y:r.top+r.height/2,vx:(Math.random()-.5)*8,vy:-Math.random()*7-2,c:COLS[i%COLS.length],l:60,s:4+Math.random()*4});if(parts.length===n)loop()}
+function rain(){for(let i=0;i<120;i++)parts.push({x:Math.random()*innerWidth,y:-Math.random()*200,vx:(Math.random()-.5)*2,vy:Math.random()*3+2,c:COLS[i%COLS.length],l:160,s:5+Math.random()*5});loop()}
+let looping=false;function loop(){if(looping)return;looping=true;(function f(){fxc.clearRect(0,0,innerWidth,innerHeight);parts=parts.filter(p=>p.l-->0);parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.25;fxc.fillStyle=p.c;fxc.fillRect(p.x,p.y,p.s,p.s)});if(parts.length)requestAnimationFrame(f);else{looping=false;fxc.clearRect(0,0,innerWidth,innerHeight)}})()}
+
+/* blink */
+setInterval(()=>{$$('img[data-blink]').forEach(im=>{if(Math.random()<.5){const n=im.dataset.blink;im.src=SPR[BLINK[n]];setTimeout(()=>im.src=SPR[n],140)}})},2600);
+
+/* ================= coins ================= */
+let COINS={r:store.get('coins_r',0),s:store.get('coins_s',0)};
+function addCoins(n){if(!cur.g)return;COINS[cur.g]+=n;store.set('coins_'+cur.g,COINS[cur.g]);$('#coinN').textContent=COINS[cur.g];const c=$('#coins');c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump');SFX.coin()}
+
+/* ================= components ================= */
+function el(html){const d=document.createElement('div');d.innerHTML=html.trim();return d.firstElementChild}
+function add(parent,html){const e=el(html);parent.appendChild(e);return e}
+function nextBtn(parent,label='Next ▶'){const b=add(parent,`<button class="btn go">${label}</button>`);b.onclick=()=>{SFX.whoosh();next()};return b}
+function reveal(e){setTimeout(()=>e.scrollIntoView({behavior:'smooth',block:'center'}),60)}
+
+function mcq(parent,{q,opts,a,why,pts=10,onDone}){
+  const w=add(parent,`<div class="card mcq"><p class="q">${q}</p><div class="opts">${opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}</div><div class="why" hidden></div></div>`);
+  let done=false;
+  $$('.opt',w).forEach(b=>b.onclick=()=>{if(done)return;done=true;const i=+b.dataset.i,ok=i===a;const all=$$('.opt',w);b.classList.add(ok?'right':'wrong');all[a].classList.add('right');all.forEach(x=>x.disabled=true);
+    if(ok){SFX.good();addCoins(pts);burst(b)}else SFX.bad();
+    const y=$('.why',w);y.hidden=false;y.innerHTML=(ok?'<b class="ok">Yes!</b> ':'<b class="no">Not quite.</b> ')+why;onDone&&onDone(ok)});
+  return w;
+}
+function quizSeq(parent,qs,done){let i=0,score=0;const box=add(parent,'<div class="stack"></div>');
+  const nx=()=>{if(i>=qs.length){done&&done(score);return}const k=i;const head=add(box,`<p class="kicker">Question ${k+1} of ${qs.length}</p>`);
+    const w=mcq(box,{...qs[k],onDone:ok=>{if(ok)score++;i++;if(i<qs.length){const b=add(w,'<button class="btn ghost" style="margin-top:10px">Next question ▶</button>');b.onclick=()=>{SFX.click();b.remove();nx()};}else nx()}});reveal(head)};
+  nx()}
+
+function sorter(parent,{bins,items,six,pts=5,onDone}){
+  const n=bins.length;
+  const w=add(parent,`<div class="card stack"><div class="kicker">Sort it · <span class="cnt">1</span>/${items.length}</div><div class="chip"></div><div class="bins ${six?'six':''}" style="--n:${n}">${bins.map((b,i)=>`<button class="bin" data-i="${i}">${b}</button>`).join('')}</div><div class="fb"></div><div class="tally" style="--n:${six?1:n}"></div></div>`);
+  const tally=$('.tally',w);
+  if(!six) tally.innerHTML=bins.map(b=>`<div><h4>${b}</h4><ul></ul></div>`).join('');
+  else tally.innerHTML='<div><h4>Sorted</h4><ul></ul></div>';
+  let i=0,score=0,lock=false;
+  const chip=$('.chip',w),fb=$('.fb',w);
+  const show=()=>{const it=items[i];chip.classList.remove('fly');chip.innerHTML=(it.img||'')+`<span>${it.t}</span>`;$('.cnt',w).textContent=i+1;fb.innerHTML='';$$('.bin',w).forEach(b=>b.classList.remove('hint'));lock=false};
+  const log=(it)=>{const ul=six?$('ul',tally):$$('ul',tally)[it.bin];add(ul,`<li>${six?`<b>${bins[it.bin]}:</b> `:''}${it.short||it.t}</li>`)};
+  $$('.bin',w).forEach(b=>b.onclick=()=>{if(lock)return;lock=true;const it=items[i],pick=+b.dataset.i,ok=pick===it.bin;
+    if(ok){score++;SFX.pop();addCoins(pts);burst(b,10);fb.innerHTML=`<b class="ok">✓</b> ${it.why||''}`;}
+    else{SFX.bad();$$('.bin',w)[it.bin].classList.add('hint');fb.innerHTML=`<b class="no">✗ It's “${bins[it.bin]}.”</b> ${it.why||''}`;}
+    log(it);chip.classList.add('fly');
+    const go=()=>{i++;if(i<items.length)show();else{chip.innerHTML=`<span>All sorted! ${score}/${items.length} first try.</span>`;chip.classList.remove('fly');$('.bins',w).remove();SFX.levelup();onDone&&onDone(score)}};
+    if(ok)setTimeout(go,it.why?1500:700);else{const c=add(fb,'<div style="margin-top:8px"><button class="btn ghost">Got it ▶</button></div>');$('button',c).onclick=()=>{SFX.click();go()}}});
+  show();return w;
+}
+function flips(parent,cards){const w=add(parent,`<div class="flips">${cards.map(c=>`<button class="flip" aria-label="Flip card"><div class="fi"><div class="fa">${c[0]}</div><div class="fb2">${c[1]}</div></div></button>`).join('')}</div>`);
+  $$('.flip',w).forEach(f=>f.onclick=()=>{f.classList.toggle('on');SFX.flip()});return w}
+
+/* ================= router ================= */
+let cur={g:null,i:0};
+function home(){RUN++;cur={g:null,i:0};document.body.dataset.g='hub';$('#hud').hidden=true;renderHub();scrollTo(0,0)}
+function openGame(g,i=0){cur={g,i};document.body.dataset.g=g;$('#hud').hidden=false;$('#coinN').textContent=COINS[g];renderStage()}
+function next(){const G=GAMES[cur.g];const d=store.get('done_'+cur.g,[]);if(!d.includes(cur.i)){d.push(cur.i);store.set('done_'+cur.g,d)}if(cur.i<G.stages.length-1){cur.i++;renderStage()}}
+function renderStage(){RUN++;const G=GAMES[cur.g];$('#hudTitle').textContent=G.title;
+  const done=store.get('done_'+cur.g,[]);
+  $('#dots').innerHTML=G.stages.map((s,i)=>`<button class="${i===cur.i?'now':done.includes(i)?'done':''}" title="${s.name}" aria-label="Stage ${i+1}: ${s.name}"></button>`).join('');
+  $$('#dots button').forEach((b,i)=>b.onclick=()=>{SFX.click();cur.i=i;renderStage()});
+  const app=$('#app');app.innerHTML='';const st=add(app,'<section class="stage"></section>');
+  const s=G.stages[cur.i];add(st,`<div class="stage-title"><h2>${s.name}</h2><small>${cur.i+1} / ${G.stages.length}</small></div>`);
+  s.run(st,RUN);scrollTo(0,0)}
+$('#homeBtn').onclick=()=>{SFX.click();home()};
+$('#muteBtn').onclick=()=>{MUTED=!MUTED;store.set('muted',MUTED);$('#muteBtn').textContent=MUTED?'🔇':'🔊';if(!MUTED)SFX.click()};
+$('#muteBtn').textContent=MUTED?'🔇':'🔊';
+document.addEventListener('pointerdown',()=>ac(),{once:true});
+
+/* ======================================================
+   GAME 1 · RAMSDEN, GILL & BRUSSONI (2026)
+   ====================================================== */
+const DOMAINS=[['P','Physical health & well-being'],['S','Social competence'],['E','Emotional maturity'],['L','Language & cognitive development'],['C','Communication skills & general knowledge']];
+const EXPO={
+  screen:{name:'Screen time',q:'Average screen time per day',labels:['None','Under 15 min','15 min – 1 h','1 – 2 h','More than 2 h'],mean:3.60,or:1.38,ci:'1.26–1.50',sig:true,start:4,
+          dom:[1.53,1.30,1.30,1.34,1.34],domci:['1.35–1.74','1.17–1.45','1.17–1.44','1.15–1.55','1.20–1.51']},
+  risky:{name:'Risky play',q:'Chance to take risks when playing outside',labels:['Not yet','Less than once a month','A few times a month','About once a week','A few times a week','Most days or every day'],mean:4.74,or:0.92,ci:'0.87–0.98',sig:true,start:5,
+          dom:[0.92,0.91,null,0.89,0.81],domci:['0.85–0.99','0.85–0.98','n.s.','0.81–0.98','0.75–0.87']},
+  outdoor:{name:'Outdoor play',q:'How often the child played outdoors',labels:['Never','Once a week or less','2 – 3 days a week','4 – 5 days a week','6 – 7 days a week'],mean:4.35,or:0.93,ci:'0.84–1.03',sig:false,start:3,
+          dom:[0.83,null,null,null,0.77],domci:['0.72–0.95','n.s.','n.s.','n.s.','0.68–0.87']}
+};
+const BASE_ODDS=0.329/0.671;
+const pVul=(k,x)=>{const e=EXPO[k];const o=BASE_ODDS*Math.pow(e.or,x-e.mean);return o/(1+o)};
+const KIDS=[...Array(20)].map((_,i)=>'kid'+i).concat(['poka','woofer']);
+
+const R_STAGES=[
+{name:'The Mission',run(st){
+  add(st,`<div class="card stack">${say('m','Hi! I’m M, and I run this study. British Columbia wants to know which early experiences predict kids who <b>struggle</b> when they start kindergarten.')}
+   <div class="card tight" style="background:#FFF3C4"><p class="kicker">Research question</p><p class="big tnr">Are screen time, outdoor play, and risky play in the 6 months before kindergarten linked to developmental vulnerability in kindergarten?</p></div>
+   <div class="row"><span class="pill">📱 Screen time</span><span class="pill">🌳 Outdoor play</span><span class="pill">🧗 Risky play</span><span class="pill">→ vulnerable in K?</span></div></div>`);
+  mcq(st,{q:'First call, research assistant: what design does M use?',opts:['Experiment: randomly assign kids to lots or little screen time','Longitudinal correlational: link parent surveys about pre-K life to teacher ratings during K','Cross-sectional: one survey at one moment','Case study of one classroom'],a:1,
+    why:'Two surveys at two time points, linked child by child. Nobody was randomly assigned, so it shows <b>association, not cause</b>.',onDone(){
+      add(st,`<div class="hack">Any answer saying screen time <b>causes</b> vulnerability is a trap. Ramsden is correlational: say <span class="tnr">“associated with”</span> or <span class="tnr">“predicts.”</span></div>`);nextBtn(st,'Collect the data ▶')}});
+}},
+{name:'Collect the Data',run(st){
+  add(st,`<div class="card stack">${say('m','Two surveys, two reporters. Sort each fact into the right one.')}
+   <div class="tiles"><div class="tile"><b>CHEQ</b><span>Childhood Experiences Questionnaire</span></div><div class="tile"><b>EDI</b><span>Early Development Instrument</span></div></div></div>`);
+  sorter(st,{bins:['CHEQ','EDI'],items:[
+    {t:'Filled out by parents or caregivers',bin:0,short:'Parents report',why:'Mostly moms (75%) and dads (16%).'},
+    {t:'Filled out by kindergarten teachers',bin:1,short:'Teachers report',why:'Based on 6 months of watching each child in class.'},
+    {t:'Asks about the 6 months BEFORE kindergarten',bin:0,short:'Pre-K exposures (looking back)',why:'Answered in the first months of K, so parents are remembering.'},
+    {t:'Done in February of the kindergarten year',bin:1,short:'February of K',why:'That’s the later time point, which makes it longitudinal.'},
+    {t:'Measures screen time, outdoor play, risky play',bin:0,short:'The 3 exposures (predictors)',why:'These are the predictors.'},
+    {t:'103 items across 5 developmental domains',bin:1,short:'5 domains (the outcome)',why:'This is the outcome.'}
+  ],onDone(){
+    const c=add(st,`<div class="card stack"><p class="kicker">Linked by each child’s Personal Education Number</p>
+      <div class="tiles"><div class="tile"><b>4,968</b><span>kids (51% boys)</span></div><div class="tile"><b>343</b><span>schools · 23 districts</span></div><div class="tile"><b>2023+24</b><span>two cohorts</span></div><div class="tile"><b>32.9%</b><span>vulnerable on 1+ domain</span></div></div>
+      <p><b>Vulnerable</b> = scoring low on <b>at least one</b> of the 5 EDI domains:</p>
+      <div class="stack">${DOMAINS.map(d=>`<div class="row"><span class="letter">${d[0]}</span>${d[1]}</div>`).join('')}</div>
+      <div class="hack">Remember the 5 domains as <b>P-S-E-L-C</b>: <span class="tnr">“Play Seriously, Every Little Child.”</span></div></div>`);
+    SFX.levelup();reveal(c);nextBtn(st,'Learn risky play ▶')}});
+}},
+{name:'Risky Play Spotter',run(st){
+  add(st,`<div class="card stack">${say('poka','<b>Risky play</b> = thrilling, exciting physical play with uncertainty and a real chance of getting hurt. Name my move!','poka_rope')}
+    <p class="tiny">Researchers see it as training for resilience and judging risk. It’s a risk kids can see and manage, not a hidden hazard.</p></div>`);
+  const T=['Heights','Speed','Tools','Elements','Getting lost','Rough & tumble'];
+  sorter(st,{bins:T,six:true,pts:5,items:[
+    {t:'Poka climbs the pine as high as she likes.',bin:0,img:S('poka_rope',56)+S('pine',56),short:'climbing high'},
+    {t:'Poka bikes down the big hill really fast.',bin:1,img:S('poka_r1',56)+S('shoes',30),short:'biking fast'},
+    {t:'Poka hammers boards into a fort.',bin:2,img:S('poka_ham',56),short:'hammering a fort'},
+    {t:'Poka helps feed the campfire.',bin:3,img:S('poka',56)+S('flare',34),short:'campfire (fire, water, cliffs)'},
+    {t:'Poka explores the forest trail out of sight of adults.',bin:4,img:S('poka_r2',56)+S('pine',56),short:'exploring out of sight'},
+    {t:'Poka play-wrestles with Woofer.',bin:5,img:S('poka_pull',56)+S('woofer',56),short:'play wrestling'}
+  ],onDone(){
+    add(st,`<div class="hack">The CHEQ’s risky-play question gave parents these exact examples: <b>climb up as high as they like, play wrestle, ride a bike really fast</b>. Exam scenarios will look like these.</div>`);SFX.giggle();nextBtn(st,'Enter the lab ▶')}});
+}},
+{name:'The Lab',run(st,tok){
+  add(st,`<div class="card stack">${say('m','They ran <b>3 separate models</b>, one per exposure. The three overlap but each captures something different. Pick a dial, set it, then run kindergarten!')}</div>`);
+  const tried=new Set();let k='screen';
+  const lab=add(st,`<div><div class="tabs">${Object.keys(EXPO).map(x=>`<button class="tab" data-k="${x}">${EXPO[x].name}</button>`).join('')}</div>
+    <div class="card stack" style="border-top-left-radius:0;border-top-right-radius:0">
+      <p class="kicker" id="dq"></p><div class="dial-lab" id="dl"></div><input type="range" id="dial" min="1" step="1" aria-label="Exposure level">
+      <div class="meter"><b id="pct">0%</b><span>predicted vulnerable</span></div>
+      <p class="tiny" style="text-align:center">Sample average: 32.9%</p>
+      <div class="class" id="cls"></div>
+      <button class="btn pink" id="runK">Run kindergarten ▶</button>
+      <div class="card tight" id="orCard"></div>
+    </div></div>`);
+  const cls=$('#cls',lab);
+  const drawKids=()=>{cls.innerHTML=Array.from({length:30},(_,i)=>`<div class="kid">${S(KIDS[(i*7)%KIDS.length],40)}</div>`).join('')};
+  const setTab=x=>{k=x;$$('.tab',lab).forEach(t=>t.classList.toggle('on',t.dataset.k===x));const e=EXPO[x];const d=$('#dial',lab);d.max=e.labels.length;d.value=e.start;$('#dq',lab).textContent=e.q;upd();drawKids();
+    $('#orCard',lab).innerHTML=`<div class="row" style="justify-content:space-between"><span><b>aOR ${e.or.toFixed(2)}</b> <span class="tiny">95% CI ${e.ci}</span></span><span class="stamp ${!e.sig?'ns':e.or>1?'up':'down'}">${!e.sig?'Not significant':e.or>1?'Risk ↑':'Protective ↓'}</span></div>
+      <p class="tiny" style="margin-top:6px">${!e.sig?'The CI includes 1.0, so outdoor play was <b>not</b> linked to overall vulnerability. Watch the domain round next!':e.or>1?'Each step up the scale → about 38% higher odds of vulnerability. Linked to <b>all 5</b> domains.':'Each step up the scale → about 8% lower odds of vulnerability.'}</p>`};
+  const upd=()=>{const e=EXPO[k],x=+$('#dial',lab).value;$('#dl',lab).textContent=e.labels[x-1];$('#pct',lab).textContent=Math.round(pVul(k,x)*100)+'%'};
+  $('#dial',lab).oninput=()=>{SFX.tick();upd()};
+  $$('.tab',lab).forEach(t=>t.onclick=()=>{SFX.click();setTab(t.dataset.k)});
+  setTab('screen');
+  let shown=false;
+  $('#runK',lab).onclick=async()=>{const b=$('#runK',lab);b.disabled=true;SFX.drum();drawKids();await sleep(900);if(tok!==RUN)return;
+    const p=pVul(k,+$('#dial',lab).value);let v=0;const kids=$$('.kid',cls);
+    for(const kd of kids){if(tok!==RUN)return;const bad=Math.random()<p;kd.classList.add(bad?'vul':'ok');if(bad){v++;SFX.blip()}else SFX.tick();await sleep(45)}
+    const msg=el(`<p class="big" style="text-align:center"><b>${v}/30</b> kids vulnerable this run</p>`);cls.insertAdjacentElement('afterend',msg);setTimeout(()=>msg.remove(),2600);
+    (v/30<.329?SFX.good:SFX.bad)();b.disabled=false;tried.add(k);$$('.tab',lab).forEach(t=>t.classList.toggle('tried',tried.has(t.dataset.k)));
+    if(tried.size===3&&!shown){shown=true;afterLab()}};
+  function afterLab(){
+    const d=add(st,`<div class="card stack"><p class="kicker">Odds-ratio decoder</p>
+      <p><b>aOR</b> = <span class="tnr">adjusted</span> odds ratio. Adjusted for sex, household income, parents’ marital status, number of siblings, birthplace, and urban vs. rural.</p>
+      <div class="stack"><div class="row"><span class="stamp up">&gt; 1</span> higher odds of vulnerability</div><div class="row"><span class="stamp down">&lt; 1</span> lower odds (protective)</div><div class="row"><span class="stamp ns">CI has 1</span> not significant</div></div>
+      <p class="tiny">This sim plugs the paper’s aORs into the 32.9% average. Their real models were multilevel logistic regressions with kids nested in schools.</p></div>`);
+    SFX.levelup();reveal(d);
+    quizSeq(st,[
+      {q:'Screen time: aOR = 1.38. Translate!',opts:['38% of kids with screens were vulnerable','Each step up in screen time → about 38% higher odds of vulnerability','Screens cause a 1.38-point drop in EDI scores','Screens explain 38% of vulnerability'],a:1,why:'An odds ratio compares <b>odds</b> per one-step increase in the exposure. It isn’t a percent of kids and doesn’t prove cause.'},
+      {q:'Outdoor play: aOR 0.93, 95% CI 0.84–1.03. Conclusion?',opts:['Outdoor play strongly protects overall','Outdoor play increases vulnerability','Not significantly linked to <i>overall</i> vulnerability: the CI crosses 1','The sample was too small to test it'],a:2,why:'A CI that includes 1.0 means there’s no reliable overall link. Outdoor play still mattered for 2 specific domains.'}
+    ],()=>nextBtn(st,'Domain Detective ▶'));
+  }
+}},
+{name:'Domain Detective',run(st){
+  add(st,`<div class="card stack">${say('woofer','Overall results are one thing. Which of the <b>5 domains</b> did each exposure predict? Tap every domain you think lit up.')}</div>`);
+  const order=['screen','risky','outdoor'];let r=0;
+  const round=()=>{const k=order[r],e=EXPO[k];
+    const c=add(st,`<div class="card stack"><p class="kicker">Round ${r+1}/3 · ${e.name}</p><div class="dom-grid">${DOMAINS.map((d,i)=>`<button class="dom" data-i="${i}"><span class="row" style="flex-wrap:nowrap"><span class="letter">${d[0]}</span>${d[1]}</span><span class="res"></span></button>`).join('')}</div><button class="btn blue">Check ▶</button></div>`);
+    reveal(c);const sel=new Set();
+    $$('.dom',c).forEach(b=>b.onclick=()=>{if(c.dataset.done)return;const i=+b.dataset.i;sel.has(i)?sel.delete(i):sel.add(i);b.classList.toggle('sel');SFX.pop()});
+    $('.btn',c).onclick=()=>{if(c.dataset.done)return;c.dataset.done=1;let right=0;
+      $$('.dom',c).forEach((b,i)=>{const sig=e.dom[i]!=null,picked=sel.has(i);b.classList.remove('sel');b.classList.add(sig===picked?'hit':'miss');if(sig===picked)right++;
+        $('.res',b).innerHTML=sig?`<b>${e.dom[i].toFixed(2)}</b> ${e.dom[i]>1?'↑':'↓'}`:'n.s.'});
+      right===5?(SFX.good(),burst($('.btn',c),24)):SFX.bad();addCoins(right*2);$('.btn',c).remove();
+      const lines={screen:'Screens hit <b>all 5</b>. Biggest: physical health (1.53).',risky:'Risky play helped <b>4 of 5</b>: every domain <b>except emotional maturity</b>. Strongest: communication (0.81).',outdoor:'Outdoor play helped just <b>2</b>: <b>physical</b> (0.83) and <b>communication</b> (0.77).'};
+      add(c,`<p><b>${right}/5 right.</b> ${lines[k]}</p>`);
+      r++;if(r<3){const b=add(c,'<button class="btn ghost">Next exposure ▶</button>');b.onclick=()=>{SFX.click();b.remove();round()}}
+      else{const h=add(st,`<div class="hack"><b>Screens</b> → all 5 ↑ · <b>Risky play</b> → 4 ↓ (skips Emotional) · <b>Outdoor</b> → only Physical + Communication ↓.<br>Why so domain-specific for outdoor play? The authors think the <b>quality</b> (challenge, autonomy, social context) matters more than minutes.</div>`);SFX.levelup();reveal(h);nextBtn(st,'Why does this happen? ▶')}};
+  };round();
+}},
+{name:'The Displacement Effect',run(st){
+  add(st,`<div class="card stack">${say('woofer','Every hour on a screen is an hour <b>not</b> spent climbing, chatting, or sleeping. That’s the <b>displacement</b> idea.')}
+    <p class="kicker">Drag the screen time</p><input type="range" id="hrs" min="0" max="4" step="0.5" value="0.5" aria-label="Screen hours per day"><p class="dial-lab" id="hrsL"></p>
+    <div class="daybar" id="day"><div style="background:var(--grass)">Outdoor + risky play</div><div style="background:var(--sky)">Talk & play with people</div><div style="background:#8B5CF6">Sleep</div><div style="background:var(--berry)">Screens</div></div>
+    <p class="tiny" id="guide"></p></div>`);
+  const upd=()=>{const h=+$('#hrs').value;$('#hrsL').textContent=h+' h of screens / day';const d=$$('#day div');d[0].style.flex=4-h*.55;d[1].style.flex=3-h*.3;d[2].style.flex=5-h*.15;d[3].style.flex=Math.max(h,.001);d[3].textContent=h?'Screens':'';
+    $('#guide').innerHTML=h<1?'✅ Meets the Canadian guideline for under-5s: <b>under 1 h a day</b>.':'⚠️ Over the Canadian guideline (under 1 h a day). Over 75% of young kids exceed it.'};
+  $('#hrs').oninput=()=>{SFX.pop();upd()};upd();
+  add(st,`<p class="kicker" style="color:var(--ink)">Side findings · tap to flip</p>`);
+  flips(st,[['Boys or girls?','Boys had about <b>2.8×</b> the odds of being vulnerable.'],['Family income?','<b>Lower income</b> (under about $150k) → higher vulnerability.'],['Family setup?','Single, separated, widowed, or divorced parents → higher. <b>One sibling</b> (vs. none) → lower.']]);
+  add(st,`<div class="hack">Chances for good play and for limiting screens are <b>socially structured</b> (money, time, green space, stress). So the fix should be <span class="tnr">universal but proportionate to need</span>.</div>`);
+  nextBtn(st,'Be Reviewer #2 ▶');
+}},
+{name:'Reviewer #2',run(st){
+  add(st,`<div class="card stack">${say('m','Peer review time. You’re the tough reviewer. Is each critique <b>fair</b>?')}</div>`);
+  sorter(st,{bins:['Fair critique','Not fair'],items:[
+    {t:'Only 36–44% of families filled out the CHEQ.',bin:0,short:'Low CHEQ participation → self-selection',why:'Self-selection limits how far results generalize to all of BC.'},
+    {t:'The sample is too small to trust.',bin:1,short:'“Too small” (n = 4,968!)',why:'Nearly 5,000 kids is a big sample.'},
+    {t:'Parents may misremember or under-report screen time.',bin:0,short:'Recall & social-desirability bias',why:'Exposures were parent-reported, looking back.'},
+    {t:'We don’t know WHAT was on the screens, or who watched with the child.',bin:0,short:'No screen content or co-viewing',why:'Content and context weren’t measured.'},
+    {t:'There’s no time gap between exposure and outcome.',bin:1,short:'“No time gap” (there is one)',why:'Pre-K exposures were linked to February-of-K outcomes.'},
+    {t:'It can’t prove screens CAUSE vulnerability.',bin:0,short:'Correlational, residual confounding',why:'Parenting style, temperament, child care, and neighbourhood weren’t measured.'},
+    {t:'They forgot to control for family income.',bin:1,short:'“Ignored income” (they adjusted)',why:'Income was one of the adjusted confounders.'},
+    {t:'Outdoor play was measured only by how often, not its quality.',bin:0,short:'Outdoor play quality not measured',why:'They name this one themselves.'}
+  ],onDone(){add(st,`<div class="hack">Their strength: a <b>longitudinal link</b> between parent reports and teacher ratings at <b>population scale</b>. Their limits: <b>self-selection</b>, <b>parent-report bias</b>, <b>missing content/quality</b>, and <b>residual confounding</b>.</div>`);nextBtn(st,'Write the policy ▶')}});
+}},
+{name:'Policy Time',run(st){
+  add(st,`<div class="card stack">${say('m','Pick the <b>3</b> recommendations the authors actually make.')}</div>`);
+  const O=[['Limit early screen time, to protect what screens displace',1],['Give kids real challenge and risk in play, plus autonomy',1],['Judge outdoor play by quality (risk, challenge, nature-rich spaces), not just minutes',1],['Remove risk from playgrounds to prevent injuries',0],['Simply add more outdoor minutes per day',0],['Swap outdoor time for educational apps',0]];
+  const c=add(st,`<div class="card stack"><div class="opts">${O.map((o,i)=>`<button class="opt" data-i="${i}">${o[0]}</button>`).join('')}</div><button class="btn blue">Submit ▶</button><div class="why" hidden></div></div>`);
+  const sel=new Set();$$('.opt',c).forEach(b=>b.onclick=()=>{if(c.dataset.done)return;const i=+b.dataset.i;if(sel.has(i)){sel.delete(i);b.style.background=''}else if(sel.size<3){sel.add(i);b.style.background='#DCD4FF'}SFX.pop()});
+  $('.btn',c).onclick=()=>{if(c.dataset.done)return;c.dataset.done=1;let r=0;$$('.opt',c).forEach((b,i)=>{b.style.background='';b.disabled=true;if(O[i][1]){b.classList.add('right');if(sel.has(i))r++}else if(sel.has(i))b.classList.add('wrong')});
+    r===3?(SFX.good(),burst($('.btn',c),24)):SFX.bad();addCoins(r*4);$('.btn',c).remove();const y=$('.why',c);y.hidden=false;
+    y.innerHTML=`<b>${r}/3.</b> The authors say policy should move past “more outdoor minutes” messaging toward <b>risky-play-friendly spaces and practices</b>, and frame screen limits around protecting the activities screens push out.`;
+    nextBtn(st,'Boss round ▶')};
+}},
+{name:'Boss Round',run(st){
+  add(st,`<div class="card stack">${say('m','Exam-style application questions. Read the scenario, find the concept.','m_cheer')}</div>`);
+  quizSeq(st,[
+    {q:'A daycare raises outdoor time from 2 days to 6 days a week but changes nothing else. Based on Ramsden et al., the best prediction?',opts:['Big drop in overall vulnerability','Lower vulnerability in physical health and communication, but maybe not overall','Lower vulnerability in all 5 domains','No change in any domain'],a:1,why:'Outdoor play frequency: overall n.s., but significant for <b>physical</b> and <b>communication</b>.'},
+    {q:'A parent says: “So the tablet caused my son’s delay?” The most accurate reply:',opts:['Yes, the study proves screens cause delays','No, screen time was unrelated','The study found an association; it can’t rule out other causes like parenting style or temperament','Only if he used it over 2 hours a day'],a:2,why:'Correlational, with possible <b>residual confounding</b>.'},
+    {q:'Which child has the LOWEST predicted odds of vulnerability?',opts:['Over 2 h of screens, risky play most days','Under 15 min of screens, risky play most days','Over 2 h of screens, risky play not yet','1–2 h of screens, outdoor play 6–7 days but never risky'],a:1,why:'Low screen time (aOR 1.38 per step) plus lots of risky play (0.92 per step).'},
+    {q:'Risky play was NOT significantly linked to which domain?',opts:['Physical health & well-being','Social competence','Emotional maturity','Communication skills & general knowledge'],a:2,why:'Risky play helped 4 domains, all except <b>emotional maturity</b>.'},
+    {q:'Who rated children’s development, and when?',opts:['Parents, before kindergarten','Teachers, in February of kindergarten','Researchers, in a lab visit','Pediatricians, at age 5 checkups'],a:1,why:'Teachers filled out the <b>EDI</b> in February.'},
+    {q:'Lena (4) loves sneaking down the forest trail where adults can’t see her. Which risky play type?',opts:['Heights','Speed','Getting lost','Rough & tumble'],a:2,why:'Out of sight of adults = play with a chance of <b>getting lost</b>.'}
+  ],s=>finish(st,'r',s,6));
+}}
+];
+
+/* ======================================================
+   GAME 2 · STEINBERG & ICENOGLE (2019)
+   ====================================================== */
+const S_STAGES=[
+{name:'The Big Question',run(st){
+  add(st,`<div class="card stack">${say('ref','Order! Should teens accused of crimes be <b>blamed and punished like adults</b>?')}
+    <div class="card tight" style="background:#FFE3EE"><p class="kicker">Penal proportionality</p><p class="big">Punishment should match the <b>harm caused</b> + the person’s <b>culpability</b> (how blameworthy they are).</p></div>
+    <div class="tiles"><div class="tile"><b style="color:var(--sky)">Excuse</b><span>removes criminal responsibility</span></div><div class="tile"><b>Mitigation</b><span>lessens responsibility & punishment</span></div></div></div>`);
+  SFX.gavel();
+  add(st,`<p class="kicker" style="color:#fff">3 mitigating factors · tap to flip</p>`);
+  flips(st,[['Factor 1','<b>Impaired decision-making</b><br>(teens: weaker self-control, future thinking)'],['Factor 2','<b>Compelling external circumstances</b><br>(teens: peer pressure, can’t leave bad settings)'],['Factor 3','<b>Act is out of character</b><br>(teens: identity still forming; most grow out of it)']]);
+  add(st,`<div class="card stack">${say('m','Teens might tick all three. Let’s test it. Poka, you’re my participant!')}${say('poka','Let’s go! What do I do?')}</div>`);
+  add(st,`<div class="hack">Steinberg & Icenogle is a <b>review</b>. Learn the big ideas (cold vs. hot, the maturity gap, dual systems, two age lines), not every study.</div>`);
+  nextBtn(st,'Cold Lab ▶');
+}},
+{name:'Cold Lab',run(st){
+  add(st,`<div class="card stack">${say('m','<b>Cold</b> context: no rush, no friends, no emotions. This is the <span class="tnr">Tower of London</span>. Rebuild the target. Tap a peg to lift its top ball, tap another to drop it. Plan ahead!')}</div>`);
+  const P=[{start:[['R','G'],['B'],[]],goal:[['G'],['B','R'],[]],min:3},{start:[['R','G'],['B'],[]],goal:[['B','R'],['G'],[]],min:5}];
+  let pi=0;
+  const play=()=>{const pz=P[pi];let s=pz.start.map(p=>[...p]),held=null,moves=0;const cap=[3,2,1];
+    const c=add(st,`<div class="card stack"><div class="row" style="justify-content:space-between"><span class="kicker">Puzzle ${pi+1}/2 · best possible: ${pz.min} moves</span><span class="pill">Moves: <b class="mv">0</b></span></div>
+      <p class="tiny">Target</p><div class="tol mini goal"></div><div class="tol live"></div></div>`);
+    reveal(c);
+    const draw=(box,state,interactive)=>{box.innerHTML=state.map((p,i)=>`<button class="peg ${held&&held.from===i&&interactive?'sel':''}" data-c="${cap[i]}" data-i="${i}" ${interactive?'':'tabindex="-1"'} aria-label="Peg ${i+1}">${p.map((b,j)=>`<span class="ball ${b} ${interactive&&held&&held.from===i&&j===p.length-1?'lift':''}"></span>`).join('')}</button>`).join('');
+      if(interactive)$$('.peg',box).forEach(pg=>pg.onclick=()=>tap(+pg.dataset.i))};
+    const goal=$('.goal',c),live=$('.live',c);draw(goal,pz.goal,false);
+    const same=()=>s.every((p,i)=>p.join()===pz.goal[i].join());
+    const tap=i=>{if(c.dataset.done)return;if(!held){if(!s[i].length){SFX.blip();return}held={from:i};SFX.pop()}
+      else{if(i===held.from){held=null;SFX.click()}else if(s[i].length>=cap[i]){SFX.bad()}else{s[i].push(s[held.from].pop());held=null;moves++;$('.mv',c).textContent=moves;SFX.tick();tone(500+moves*60,.08,'triangle',.08)}}
+      draw(live,s,true);
+      if(same()){c.dataset.done=1;SFX.levelup();burst(live,30);addCoins(moves===pz.min?15:8);
+        add(c,`<p class="big"><b>${moves===pz.min?'Perfect planning!':'Solved!'}</b> ${moves} moves (best: ${pz.min}).</p>`);
+        pi++;if(pi<P.length){const b=add(c,'<button class="btn ghost">Harder puzzle ▶</button>');b.onclick=()=>{SFX.click();b.remove();play()}}else after()}};
+    draw(live,s,true)};
+  const after=()=>{const c=add(st,`<div class="card stack"><p class="kicker">What the research says</p>
+      <p class="big">By <b>15–17</b>, teens solve the Tower of London as well as adults.</p>
+      <ul class="clean"><li><b>Working memory</b>, <b>response inhibition</b>, and <b>cognitive flexibility</b> level off by early to mid-adolescence.</li><li>Teens and adults list a similar number and quality of <b>pros and cons</b> for risky acts like riding with a drunk driver.</li><li>16–17-year-olds understand legal proceedings and can make informed medical or research decisions like adults.</li></ul>
+      <p class="tiny">Icenogle et al. (2019) ran three stats approaches on cognitive capacity: ANOVA said adult-like by 14–15, piecewise regression said 15, and polynomial regression (IROC) said 19. Two of three point to about <b>15</b>.</p></div>`);
+    reveal(c);add(st,`<div class="hack">“Cold cognition” (logic, reasoning, planning with time to think) is <b>adult-level by about 16</b>.</div>`);nextBtn(st,'Hot Lab ▶')};
+  play();
+}},
+{name:'Hot Lab: Stoplight',run(st,tok){
+  add(st,`<div class="card stack">${say('m','Now it gets <b>hot</b>. Drive through 6 lights. When one turns <b style="color:#B88600">YELLOW</b>: brake (safe, 0 pts) or GO (+3 pts, but a 30% crash for −5). Round 1: alone.')}</div>`);
+  const g=add(st,`<div class="card stack"><div class="road-hud"><span id="rnd">Round 1 · Alone</span><span>Light <b id="ln">0</b>/6 · Pts <b id="pts">0</b></span></div>
+    <div class="road" id="road"><div class="lanes"></div><div class="stopline"></div><div class="light" id="lt"><i class="r"></i><i class="y"></i><i class="g"></i></div>${S('car',96,'car')}<div class="boom" id="boom">CRASH!</div>
+    <div class="peer" id="peer" hidden>${S('woofer',90)}<span class="yell">GO GO GO!</span></div></div>
+    <div class="drive"><button class="btn" id="brake" disabled style="background:#FF6B6B;color:#fff;text-shadow:0 2px 0 var(--ink)">BRAKE</button><button class="btn" id="gogo" disabled style="background:var(--grass);color:#fff;text-shadow:0 2px 0 var(--ink)">GO!</button></div>
+    <button class="btn blue" id="startDrive">Start round 1 ▶</button></div>`);
+  const road=$('#road'),lt=$('#lt'),car=$('.car',road),peer=$('#peer');
+  const res={alone:0,peer:0};let decide=null;
+  $('#brake').onclick=()=>decide&&decide('brake');$('#gogo').onclick=()=>decide&&decide('go');
+  async function round(withPeer){let pts=0;$('#pts').textContent=0;peer.hidden=!withPeer;$('#rnd').textContent=withPeer?'Round 2 · Woofer is watching':'Round 1 · Alone';
+    for(let n=1;n<=6;n++){if(tok!==RUN)return;$('#ln').textContent=n;lt.className='light g';road.classList.add('moving');SFX.vroom();
+      await sleep(1100+Math.random()*1100);if(tok!==RUN)return;
+      lt.className='light y';SFX.beep();if(withPeer){peer.classList.add('cheer');SFX.cheer()}
+      $('#brake').disabled=$('#gogo').disabled=false;
+      const ch=await new Promise(r=>{decide=r;setTimeout(()=>r('brake'),1700)});decide=null;
+      $('#brake').disabled=$('#gogo').disabled=true;peer.classList.remove('cheer');if(tok!==RUN)return;
+      if(ch==='go'){res[withPeer?'peer':'alone']++;
+        if(Math.random()<.3){pts-=5;SFX.crash();car.classList.add('crash');$('#boom').classList.add('on');road.classList.remove('moving');await sleep(800);car.classList.remove('crash');$('#boom').classList.remove('on')}
+        else{pts+=3;SFX.whoosh();if(withPeer)SFX.cheer();await sleep(500)}}
+      else{lt.className='light r';road.classList.remove('moving');SFX.screech();if(withPeer)SFX.boo();await sleep(700)}
+      $('#pts').textContent=pts}
+    road.classList.remove('moving');lt.className='light r'}
+  $('#startDrive').onclick=async()=>{const b=$('#startDrive');b.remove();await round(false);if(tok!==RUN)return;
+    const mid=add(g,`<div class="stack">${say('woofer','Hiii! I’ll just… watch. Same rules, same points. I’m not even playing.')}<button class="btn pink">Start round 2 ▶</button></div>`);reveal(mid);
+    $('.btn',mid).onclick=async()=>{mid.remove();await round(true);if(tok!==RUN)return;show()}};
+  function show(){const c=add(st,`<div class="card stack"><p class="kicker">Your yellow lights run</p>
+     <div class="bars2"><span>Alone</span><div class="bar"><i style="width:${res.alone/6*100}%;background:var(--sky)"></i></div><span>With Woofer</span><div class="bar"><i style="width:${res.peer/6*100}%;background:var(--berry)"></i></div></div>
+     <p class="big">${res.peer>res.alone?'You ran <b>more</b> yellows with a friend watching. Classic teen brain!':res.peer===res.alone?'Same both rounds. Very adult of you!':'You got <b>more careful</b> with Woofer watching. Interesting!'}</p>
+     <p><b>The research:</b> adolescents take <b>more risks when a peer watches</b>, even from another room without speaking. <b>Adults don’t change.</b> Peers boost activity in the brain’s <b>reward circuitry</b> (Chein et al., 2011).</p>
+     <p>Teens also run more yellow lights on this simulated-driving task in general (higher <b>sensation seeking</b>), and on the <span class="tnr">Iowa Gambling Task</span> they’re more drawn to rewards.</p></div>`);
+    SFX.levelup();reveal(c);addCoins(10);
+    add(st,`<div class="hack">Peers don’t make teens <b>dumber</b>. Cold reasoning is intact. Peers make rewards feel <b>bigger</b>. That’s a psychosocial (hot) effect.</div>`);nextBtn(st,'Now or later? ▶')}
+}},
+{name:'Now or Later?',run(st){
+  add(st,`<div class="card stack">${say('m','Future orientation test. Take the cash tomorrow, or wait for more?')}</div>`);
+  const D=['1 week','1 month','6 months','1 year','5 years'];const picks=[];let i=0;
+  const c=add(st,`<div class="card stack"><p class="kicker">Choice <span id="dn">1</span>/5</p><div class="money"><button class="now">${S('coin',28)}<b>$400</b>tomorrow</button><button class="later">${S('cash',28)}<b>$1000</b><span>in <span id="dl">${D[0]}</span></span></button></div><div class="tally" style="--n:1"><div><h4>Your picks</h4><ul id="pk"></ul></div></div></div>`);
+  const pick=v=>{if(i>=D.length)return;picks.push(v);v==='now'?SFX.cash():SFX.coin();add($('#pk'),`<li>${D[i]}: <b>${v==='now'?'$400 tomorrow':'$1000 later'}</b></li>`);i++;
+    if(i<D.length){$('#dn').textContent=i+1;$('#dl').textContent=D[i]}else done()};
+  $('.now',c).onclick=()=>pick('now');$('.later',c).onclick=()=>pick('later');
+  function done(){$('.money',c).remove();const nows=picks.filter(p=>p==='now').length;
+    const r=add(st,`<div class="card stack"><p class="big">You grabbed the quick $400 <b>${nows}</b> time${nows===1?'':'s'}.</p>
+      <p>Teens are more likely than adults to prefer <b>small-now over big-later</b> rewards. That’s <b>temporal discounting</b>. Planning and <b>future orientation</b> keep improving through late adolescence.</p>
+      <p><b>Legal link:</b> teens taking plea deals often cite short-term reasons, like wanting the process over faster (Daftary-Kapur & Zottoli, 2014).</p></div>`);
+    SFX.levelup();addCoins(8);reveal(r);nextBtn(st,'Hot vs. cold reflexes ▶')}
+}},
+{name:'Hot vs. Cold Reflexes',run(st,tok){
+  add(st,`<div class="card stack">${say('m','Go/no-go! TAP for the <b>go</b> signal, hold back on the <b>no-go</b> one. Round 1 is cold. Round 2 is hot: emotional faces, a pounding heart, and alarms.')}</div>`);
+  const c=add(st,`<div class="card stack"><p class="kicker" id="gk">Round 1 · Cold: tap the <span style="color:var(--grass)">green circle</span>, NOT the purple square</p><button class="gng" id="gng" aria-label="Tap area"></button><div class="row" style="justify-content:space-between"><span class="pill">Hits <b id="gh">0</b></span><span class="pill">Oops taps <b id="gf">0</b></span></div><button class="btn blue" id="gst">Start round 1 ▶</button></div>`);
+  const box=$('#gng');let cur_=null,tapped=false;const R={cold:{fa:0,no:0},hot:{fa:0,no:0}};
+  box.onclick=()=>{if(!cur_||tapped)return;tapped=true;if(cur_.go){box.className='gng hit';SFX.tick();$('#gh').textContent=+$('#gh').textContent+1}else{box.className='gng fa';SFX.bad();$('#gf').textContent=+$('#gf').textContent+1}};
+  async function run(hot){const r=R[hot?'hot':'cold'];$('#gh').textContent=0;$('#gf').textContent=0;
+    for(let t=0;t<16;t++){if(tok!==RUN)return;const go=Math.random()<.68;if(!go)r.no++;
+      box.className='gng'+(hot?' hot':'');if(hot){SFX.heart();if(t===4||t===11)SFX.alarm()}
+      box.innerHTML=hot?(go?'😐':(Math.random()<.5?'😄':'😨')):(go?'<span class="shape-go"></span>':'<span class="shape-no"></span>');
+      cur_={go};tapped=false;await sleep(hot?620:900);
+      if(!go&&tapped)r.fa++;if(go&&!tapped){SFX.blip()}
+      cur_=null;box.innerHTML='';box.className='gng'+(hot?' hot':'');await sleep(hot?330:450)}
+    box.className='gng'}
+  $('#gst').onclick=async()=>{$('#gst').remove();await run(false);if(tok!==RUN)return;
+    $('#gk').innerHTML='Round 2 · HOT: tap the <b>calm</b> face 😐, NOT happy 😄 or fearful 😨';
+    const b=add(c,'<button class="btn pink">Start round 2 ▶</button>');reveal(b);
+    b.onclick=async()=>{b.remove();await run(true);if(tok!==RUN)return;show()}};
+  function show(){const pc=x=>x.no?Math.round(x.fa/x.no*100):0;
+    const r=add(st,`<div class="card stack"><p class="kicker">Your oops-taps on no-go trials</p>
+      <div class="bars2"><span>Cold</span><div class="bar"><i style="width:${pc(R.cold)}%;background:var(--sky)"></i></div><span>Hot</span><div class="bar"><i style="width:${pc(R.hot)}%;background:var(--berry)"></i></div></div>
+      <p class="tiny">Cold ${pc(R.cold)}% · Hot ${pc(R.hot)}%. Emotional go/no-go tasks show teens doing worse than adults.</p>
+      <p class="kicker">Cohen et al. (2016): impulse control by age group</p>
+      <div class="toggle"><button class="on" data-m="calm">Calm</button><button data-m="hot">Emotionally aroused</button></div>
+      <div class="vbars"><div><i style="background:var(--sun)"></i></div><div><i style="background:var(--berry)"></i></div><div><i style="background:var(--sky)"></i></div></div>
+      <div class="vlabels"><span>13–17</span><span>18–21</span><span>Mid-20s</span></div>
+      <p id="cmsg"></p><p class="tiny">Bar heights show the pattern, not exact scores.</p></div>`);
+    const H={calm:[45,88,90],hot:[42,46,86]};
+    const set=m=>{$$('.toggle button',r).forEach(b=>b.classList.toggle('on',b.dataset.m===m));$$('.vbars i',r).forEach((b,i)=>b.style.height=H[m][i]+'%');
+      $('#cmsg').innerHTML=m==='calm'?'<b>Calm:</b> 18–21-year-olds look like people in their <b>mid-20s</b>.':'<b>Aroused:</b> 18–21-year-olds drop to the level of <b>mid-teens</b>, in behaviour <i>and</i> brain activity.';SFX.flip()};
+    $$('.toggle button',r).forEach(b=>b.onclick=()=>set(b.dataset.m));setTimeout(()=>set('calm'),50);
+    SFX.levelup();addCoins(8);reveal(r);
+    add(st,`<div class="hack">18–21 is a <b>split</b> age: adult when calm, teen-like when emotional. That’s the science behind “maybe 21” for hot decisions.</div>`);nextBtn(st,'Brain Lab ▶')}
+}},
+{name:'Brain Lab',run(st){
+  add(st,`<div class="card stack">${say('m','Why does all this happen? The <b>dual systems</b> model: a <b>gas pedal</b> that revs early and <b>brakes</b> that finish late. Slide Poka’s age.')}</div>`);
+  const c=add(st,`<div class="card stack"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div class="dial-lab" id="age">Age 15</div>${S('poka',64)}</div><input type="range" id="ag" min="10" max="25" step="1" value="15" aria-label="Age">
+    <canvas class="chart" id="cv" width="640" height="340"></canvas>
+    <div class="legend"><span><i style="background:var(--berry)"></i>Gas: socioemotional system</span><span><i style="background:var(--sky)"></i>Brakes: cognitive control</span><span><i style="background:var(--grass)"></i>Cold reasoning</span></div>
+    <div class="bars2"><span>Gas</span><div class="bar"><i id="bg" style="background:var(--berry)"></i></div><span>Brakes</span><div class="bar"><i id="bb" style="background:var(--sky)"></i></div><span>Grey matter</span><div class="bar"><i id="gm" style="background:#9C8BC9"></i></div><span>White matter</span><div class="bar"><i id="wm" style="background:#C9C3E6"></i></div></div>
+    <div class="card tight" id="amsg" style="background:#F4F2FF"></div></div>`);
+  const gas=a=>.34+.6*Math.exp(-Math.pow(a-15.5,2)/(2*3.2*3.2)), brk=a=>.14+.8/(1+Math.exp(-(a-17.5)/2.3)), cold=a=>.2+.72/(1+Math.exp(-(a-12.5)/1.3));
+  const grey=a=>.55+.4*Math.exp(-Math.pow(a-12,2)/(2*4*4)), white=a=>.25+.7*(a-10)/15;
+  const cv=$('#cv'),x=cv.getContext('2d'),W=640,H=340,L=46,R=14,T=14,B=40;
+  const X=a=>L+(a-10)/15*(W-L-R),Y=v=>T+(1-v)*(H-T-B);
+  function draw(age){x.clearRect(0,0,W,H);x.font='600 18px "Instrument Sans",sans-serif';x.fillStyle='#5B5884';x.strokeStyle='#E4E1F5';x.lineWidth=1;
+    for(let a=10;a<=25;a+=5){x.beginPath();x.moveTo(X(a),T);x.lineTo(X(a),H-B);x.stroke();x.fillText(a,X(a)-10,H-12)}
+    x.save();x.translate(16,H/2+40);x.rotate(-Math.PI/2);x.fillText('strength',0,0);x.restore();
+    x.fillStyle='rgba(255,79,139,.16)';x.beginPath();let first=true;for(let a=10;a<=25;a+=.1){if(gas(a)>brk(a)){const px=X(a);first?(x.moveTo(px,Y(gas(a))),first=false):x.lineTo(px,Y(gas(a)))}}
+    for(let a=25;a>=10;a-=.1){if(gas(a)>brk(a))x.lineTo(X(a),Y(brk(a)))}x.closePath();x.fill();
+    x.fillStyle='#C2185B';x.fillText('imbalance',X(14.6),Y(.6));
+    const line=(f,col,dash)=>{x.strokeStyle=col;x.lineWidth=5;x.setLineDash(dash||[]);x.beginPath();for(let a=10;a<=25;a+=.1)a===10?x.moveTo(X(a),Y(f(a))):x.lineTo(X(a),Y(f(a)));x.stroke();x.setLineDash([])};
+    line(cold,'#2FB463',[10,8]);line(brk,'#3D9BFF');line(gas,'#FF4F8B');
+    x.strokeStyle='#1E1B4B';x.lineWidth=3;x.beginPath();x.moveTo(X(age),T);x.lineTo(X(age),H-B);x.stroke();
+    [[gas,'#FF4F8B'],[brk,'#3D9BFF']].forEach(([f,c])=>{x.fillStyle=c;x.strokeStyle='#1E1B4B';x.lineWidth=3;x.beginPath();x.arc(X(age),Y(f(age)),9,0,7);x.fill();x.stroke()});
+    $('#bg').style.width=gas(age)*100+'%';$('#bb').style.width=brk(age)*100+'%';$('#gm').style.width=grey(age)*100+'%';$('#wm').style.width=white(age)*100+'%';
+    const m=age<=12?'<b>Before puberty.</b> Gas and brakes are both fairly low. Grey matter is near its peak.'
+      :age<=17?'<b>Peak imbalance!</b> Puberty revs the <b>limbic system</b> (striatum, dopamine): reward and sensation seeking surge. The <b>prefrontal cortex</b> brakes are still building. Cold reasoning is nearly adult.'
+      :age<=21?'<b>Split zone.</b> Cold reasoning is adult. Sensation seeking is falling. But the <b>connections</b> between the prefrontal cortex and emotional centres are still being <b>myelinated</b>, so self-control slips when emotions run hot.'
+      :'<b>Balanced.</b> Brakes caught up. Myelinated connections let control and emotion work together.';
+    $('#amsg').innerHTML=m+'<br><span class="tiny">Grey matter peaks in early adolescence, then gets pruned. White matter (myelin) rises steadily. The brain becomes more <b>efficient</b>.</span>'}
+  let last=15;$('#ag').oninput=e=>{const a=+e.target.value;$('#age').textContent='Age '+a;draw(a);if(a!==last){tone(300+gas(a)*500,.06,'square',.04);last=a}};
+  draw(15);
+  add(st,`<div class="hack"><b>Gas early</b> (puberty, limbic system) + <b>brakes late</b> (prefrontal connections, mid-20s) = <b>maturational imbalance</b>. Critics say it’s too simple; the field now focuses on <b>connectivity</b> between regions.</div>`);
+  mcq(st,{q:'Which matures LATER?',opts:['Working memory','Logical reasoning on the Tower of London','Self-control when emotionally aroused','Listing pros and cons of a risky act'],a:2,why:'Cognitive capacity plateaus around <b>16</b>. Psychosocial maturity (self-regulation in hot contexts) isn’t done until <b>18–21+</b>, a gap of up to <b>5 years</b>.',onDone(){nextBtn(st,'Make the law ▶')}});
+}},
+{name:'Make the Law',run(st){
+  add(st,`<div class="card stack">${say('ref','The authors propose <b>two</b> age lines. Sort each decision. Is there time to think calmly (<b>cold → 16</b>)? Or is it rushed, emotional, and peer-filled (<b>hot → 18, maybe 21</b>)?')}</div>`);
+  sorter(st,{bins:['16 · Cold','18–21 · Hot'],items:[
+    {t:'Voting in an election',bin:0,short:'Voting'},
+    {t:'Driving a car',bin:1,short:'Driving'},
+    {t:'Consenting to join an ethics-approved research study',bin:0,short:'Research consent'},
+    {t:'Buying alcohol',bin:1,short:'Buying alcohol'},
+    {t:'Choosing medical care after talking with a doctor',bin:0,short:'Medical decisions'},
+    {t:'Gambling in a casino',bin:1,short:'Casino gambling'},
+    {t:'Being competent to stand trial as a defendant',bin:0,short:'Competence to stand trial'},
+    {t:'Being held to ADULT standards of criminal blame',bin:1,short:'Adult criminal responsibility',why:'Most teen crime is impulsive and peer-driven: a hot context.'}
+  ],onDone(){SFX.gavel();
+    add(st,`<div class="hack">Exam scenario trick: ask <b>“Is there time to deliberate, alone and calm?”</b> If yes → teens ≈ adults (16). If it’s rushed, emotional, or with peers → treat as immature (18–21).</div>`);
+    quizSeq(st,[
+      {q:'Where did 21 as the old age of majority come from?',opts:['The age the brain stops growing','The age young men could wear a full suit of armour (medieval Europe)','The US drinking age','The Vietnam War draft'],a:1,why:'Folk history, not science! Many countries lowered it to 18 around 1970.'},
+      {q:'About what share of the world’s nations set 18 as the age of majority?',opts:['About 25%','About 50%','About 90%','100%'],a:2,why:'About 90%, which is mostly consistent with the science. The reasonable range is 16–21.'}
+    ],()=>nextBtn(st,'Courtroom ▶'))}});
+}},
+{name:'Courtroom',run(st){
+  add(st,`<div class="card stack">${say('ref','Three teen defendants, same crime. Which mitigating factor fits each case?')}<div class="row" style="justify-content:center">${S('defendant',80)}${S('gavel',70)}</div></div>`);
+  const F=['Impaired decision-making','Compelling external circumstances','Act is out of character'];
+  quizSeq(st,[
+    {q:'Case 1: Jay (15) took the car because four friends in the back seat were yelling “GO!”',opts:F,a:1,why:'Peer pressure acts like duress, and teens can’t easily walk away from their social setting.',pts:8},
+    {q:'Case 2: Sam (16) says, “I didn’t think about what would happen next. It just seemed fun in the moment.”',opts:F,a:0,why:'Weak impulse control and future orientation = impaired decision-making.',pts:8},
+    {q:'Case 3: Ari (16) is a straight-A student with no record who has never done anything like this.',opts:F,a:2,why:'Teen identity is still forming. Most teens grow out of risky behaviour.',pts:8}
+  ],()=>{SFX.gavel();
+    add(st,`<p class="kicker" style="color:#fff">US Supreme Court cases · match the ruling</p>`);
+    const RU=['No death penalty under 18','No life-without-parole under 18 for non-homicide crimes','No MANDATORY life-without-parole under 18, even for homicide','Earlier juvenile life sentences get resentencing or a parole hearing'];
+    quizSeq(st,[
+      {q:'<span class="tnr">Roper v. Simmons</span> (2005)',opts:RU,a:0,why:'Roper cited science and also said it’s what “any parent knows.”',pts:6},
+      {q:'<span class="tnr">Graham v. Florida</span> (2010)',opts:RU,a:1,why:'It cited brain areas for behaviour control still maturing.',pts:6},
+      {q:'<span class="tnr">Miller v. Alabama</span> (2012)',opts:RU,a:2,why:'It said teen brains aren’t mature in impulse control, planning ahead, and risk avoidance.',pts:6},
+      {q:'<span class="tnr">Montgomery v. Louisiana</span> (2016)',opts:RU,a:3,why:'It made Miller retroactive.',pts:6}
+    ],()=>{
+      add(st,`<div class="card stack">${say('m','Last debate: should we use one <b>age line</b>, or <b>test each person’s maturity</b>? Sort the problems.')}</div>`);
+      sorter(st,{bins:['Problem with an age line','Problem with testing each person'],items:[
+        {t:'It takes a huge amount of time to evaluate everyone',bin:1,short:'Very time-consuming'},
+        {t:'Which age do you even pick?',bin:0,short:'Which age?'},
+        {t:'Tests can be biased by race or language',bin:1,short:'Measurement bias'},
+        {t:'Some mature 16-year-olds get treated as kids, and some immature 19-year-olds as adults',bin:0,short:'Misclassifies individuals'},
+        {t:'It could infantilize people with intellectual disabilities',bin:1,short:'Infantilizing'},
+        {t:'Hot and cold situations may need different ages',bin:0,short:'One age doesn’t fit every context'}
+      ],onDone(){add(st,`<div class="hack">The authors back <b>age lines informed by science</b>: imperfect, but better than intuition. A fixed line also <b>protects against biased judgments</b>, such as race shaping whether a teen “seems” adult-like.</div>`);nextBtn(st,'Boss round ▶')}});
+    })});
+}},
+{name:'Boss Round',run(st){
+  add(st,`<div class="card stack">${say('poka','Final boss! Apply it. Is the scene <b>hot or cold</b>?','poka_pull')}</div>`);
+  quizSeq(st,[
+    {q:'Maya (16) has two weeks, an info sheet, and a meeting with a researcher before deciding to join a study. Steinberg & Icenogle would say:',opts:['She’s too young: wait until 18','She can decide like an adult: it’s a cold, deliberate decision','Only her parents can decide','It depends on her peer group'],a:1,why:'Unhurried, calm decision = cold cognition, which is mature by about 16.'},
+    {q:'Dev (19) drives drunk after a party with friends cheering him on. Best explanation?',opts:['He lacks logical reasoning','Under emotional and social arousal, 18–21-year-olds act more like mid-teens','His cognitive capacity is still developing','Sensation seeking peaks at 25'],a:1,why:'Cold reasoning is adult by 19, but hot self-regulation is still maturing.'},
+    {q:'A teen gambles more only when told a friend is watching from another room. Which system explains it?',opts:['Weaker working memory','Peers increasing reward sensitivity (socioemotional system)','Poor understanding of the odds','Too much myelination'],a:1,why:'Peer presence boosts reward-circuit activity. Teens take more risks even when they know the odds (Smith et al., 2014).'},
+    {q:'In mid-adolescence, the dual systems model predicts:',opts:['Weak reward drive + strong control','Strong reward drive + still-developing control','Both systems fully mature','Control matures before reward'],a:1,why:'Gas early, brakes late = maturational imbalance.'},
+    {q:'Penal proportionality says punishment should depend on:',opts:['Age only','Harm caused + culpability','The victim’s wishes','Whether the crime was planned'],a:1,why:'Severity tracks <b>harm</b> and <b>blameworthiness</b>. Mitigating factors reduce culpability.'},
+    {q:'Which finding supports treating 16-year-olds like adults for some decisions?',opts:['They run more yellow lights','They list pros and cons of risky acts as well as adults','Their sensation seeking is high','They discount the future'],a:1,why:'Cold reasoning is adult-like. The others are hot or psychosocial immaturities.'}
+  ],s=>finish(st,'s',s,6));
+}}
+];
+
+/* ================= finish + cheat ================= */
+const CHEAT={
+r:`<h3>Ramsden, Gill & Brussoni (2026)</h3><ul><li><b>RQ:</b> Are pre-K screen time, outdoor play & risky play linked to developmental vulnerability in kindergarten?</li></ul>
+<h3>Methods</h3><ul><li><b>Longitudinal, correlational.</b> n = 4,968 BC kids, 2023 & 2024 cohorts, 343 schools.</li><li><b>CHEQ</b>: parents report the 6 months before K (screen time, outdoor play, risky play).</li><li><b>EDI</b>: teachers rate in February of K, 103 items, 5 domains (P-S-E-L-C). Vulnerable = low on 1+ domain (32.9%).</li><li>Multilevel logistic regression (kids in schools), 3 separate models, adjusted for sex, income, marital status, siblings, birthplace, urban/rural.</li></ul>
+<h3>Findings</h3><ul><li><b>Screens ↑</b> overall aOR 1.38 [1.26–1.50], <b>all 5 domains</b>.</li><li><b>Risky play ↓</b> overall aOR 0.92 [0.87–0.98], 4 domains (not emotional maturity).</li><li><b>Outdoor play</b>: overall n.s. (0.93 [0.84–1.03]), but ↓ physical (0.83) & communication (0.77).</li><li>Also: boys ~2.8× odds; lower income ↑; single/separated/widowed/divorced ↑; 1 sibling ↓.</li></ul>
+<h3>Implications</h3><ul><li>Limit screens (guideline: under 1 h/day for under-5s; over 75% exceed it). <b>Displacement</b>: screens push out active, outdoor, risky play, people time, and sleep.</li><li>Provide risky play with challenge and autonomy. Focus on <b>quality over minutes</b>. Support should be universal but proportionate to need.</li></ul>
+<h3>Limitations</h3><ul><li>Low CHEQ participation (44% / 36%) → self-selection, limited generalizability.</li><li>Parent report → recall & social-desirability bias.</li><li>No screen content/co-use; no outdoor-play quality.</li><li>Residual confounding (parenting, temperament, child care, neighbourhood). Can’t claim cause.</li></ul>
+<h3>Risky play types</h3><ul><li>Heights · Speed · Tools · Elements · Getting lost · Rough & tumble</li></ul>`,
+s:`<h3>Steinberg & Icenogle (2019): review</h3><ul><li>Legal age lines should match the skills a decision actually needs.</li></ul>
+<h3>Penal proportionality</h3><ul><li>Punishment = harm + culpability. Excuse removes responsibility; mitigation lessens it.</li><li>3 mitigators: impaired decision-making · compelling external circumstances · act out of character.</li></ul>
+<h3>Cognitive (cold)</h3><ul><li>Working memory, inhibition, flexibility, logical reasoning plateau in mid-adolescence. Tower of London adult-level by 15–17. Adult-like by <b>~16</b>.</li></ul>
+<h3>Psychosocial (hot)</h3><ul><li>Self-regulation not adult until <b>18+</b>; impulse control develops into the early-to-mid 20s.</li><li>Sensation seeking & reward sensitivity peak in adolescence (~14–19), then decline.</li><li>Temporal discounting: prefer small-now. Future orientation improves through late adolescence.</li><li>Peers ↑ teen risk (even unseen); adults unaffected.</li><li>18–21: adult when calm, like mid-teens when aroused (Cohen 2016).</li></ul>
+<h3>Brain</h3><ul><li>Dual systems / maturational imbalance: limbic/striatal reward system surges at puberty; prefrontal control matures into mid-20s.</li><li>PFC largely mature by 16, but its <b>connections</b> (myelination) mature into the early-to-mid 20s. Grey matter peaks then prunes; white matter rises.</li></ul>
+<h3>Proposal</h3><ul><li><b>Cold → 16</b>: voting, research consent, medical decisions, competence to stand trial.</li><li><b>Hot → 18 (maybe 21)</b>: driving, alcohol, casinos, adult criminal responsibility.</li><li>Cognitive maturity precedes psychosocial maturity by up to <b>5 years</b>.</li></ul>
+<h3>Debate</h3><ul><li>Individual testing: time-consuming, infantilizing, measurement bias.</li><li>Age line: which age? different contexts? misclassifies some people, but guards against biased judgments.</li><li>Roper 2005 · Graham 2010 · Miller 2012 · Montgomery 2016.</li></ul>`
+};
+function finish(st,g,score,total){rain();SFX.levelup();store.set('best_'+g,Math.max(store.get('best_'+g,0),score));
+  const d=store.get('done_'+g,[]);if(!d.includes(cur.i)){d.push(cur.i);store.set('done_'+g,d)}
+  const c=add(st,`<div class="card stack" style="text-align:center"><div class="row" style="justify-content:center">${S('poka',90)}${S('woofer',90)}${S('m_cheer',90)}</div><h2>${score}/${total} on the boss!</h2><p>${score===total?'Flawless. You’re exam-ready.':'Tap any progress dot up top to replay a stage.'}</p></div>`);
+  const ch=add(st,`<div class="card cheat"><p class="kicker">Cheat card · review before the exam</p>${CHEAT[g]}<div class="row" style="margin-top:12px"><button class="btn ghost" id="cp">Copy cheat card</button><button class="btn pink" id="oth">Play the other game ▶</button></div></div>`);
+  $('#cp').onclick=async()=>{try{await navigator.clipboard.writeText(ch.innerText.replace(/Copy cheat card[\s\S]*$/,'').trim());$('#cp').textContent='Copied ✓';SFX.coin()}catch(e){$('#cp').textContent='Copy blocked: select the text instead'}};
+  $('#oth').onclick=()=>{SFX.whoosh();openGame(g==='r'?'s':'r')};reveal(c)}
+
+const GAMES={r:{title:'The Sandbox Study · Ramsden 2026',stages:R_STAGES},s:{title:'Gas Pedal Court · Steinberg 2019',stages:S_STAGES}};
+
+/* ================= hub ================= */
+function renderHub(){const app=$('#app');
+  app.innerHTML=`<section class="stage">
+  <div class="hero"><p class="kicker">PSYC 319 · Exam 3</p><h1>The Reading Arcade</h1>
+    <p>Two readings, two playable studies. Be the participant, be the researcher, and earn a cheat card at the end.</p>
+    <div class="cast"><figure>${S('poka',96)}<figcaption>Poka</figcaption></figure><figure>${S('woofer',96)}<figcaption>Woofer</figcaption></figure><figure>${S('m',96)}<figcaption>M</figcaption></figure></div></div>
+  <button class="cart r" id="gr"><div class="art">${S('poka_rope',84)}${S('pine',84)}</div><div><p class="kicker">Ramsden, Gill & Brussoni (2026)</p><h2>The Sandbox Study</h2><p>Screens vs. risky play vs. outdoor play: who struggles in kindergarten?</p><p class="best">9 stages · 🪙 ${COINS.r} · best boss ${store.get('best_r',0)}/6</p></div></button>
+  <button class="cart s" id="gs"><div class="art">${S('car',72)}${S('woofer',84)}</div><div><p class="kicker">Steinberg & Icenogle (2019)</p><h2>Gas Pedal Court</h2><p>Cold vs. hot brains. Should a 16-year-old be judged like an adult?</p><p class="best">9 stages · 🪙 ${COINS.s} · best boss ${store.get('best_s',0)}/6</p></div></button>
+  <div class="card stack"><p class="kicker">Exam-day game plan</p>
+    <ul class="clean">
+      <li><b>Most questions are application.</b> Name the concept in the scenario before you read the options.</li>
+      <li><b>Research article (Ramsden):</b> know the RQ, design, who reported what, findings, implications, limitations. The discussion matters most.</li>
+      <li><b>Review (Steinberg):</b> know the themes (cold vs. hot, the maturity gap, dual systems, two age lines), not every example.</li>
+      <li><b>Correlational study?</b> Cross out any option that says “causes.”</li>
+      <li><b>Odds ratios:</b> over 1 = more risk · under 1 = protective · CI includes 1 = not significant.</li>
+      <li><b>Teen scenario?</b> Calm with time to think → adult-like. Peers, rush, or emotion → immature.</li>
+      <li>About 20% of questions come only from readings. The <b>Exam Hack</b> notes in each game flag those details.</li>
+    </ul></div>
+  <p class="tiny" style="text-align:center">Sound on for full effect · progress saves on this device</p>
+  </section>`;
+  $('#gr').onclick=()=>{SFX.levelup();openGame('r',0)};$('#gs').onclick=()=>{SFX.levelup();openGame('s',0)};
+}
+home();
+</script>
+</body>
+</html>
