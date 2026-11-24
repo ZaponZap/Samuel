@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lesion Lab</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACRklEQVR4Xr2XMUgDMRSGU6kIIoKTiCJFJ3USlS6dBDfRzc3JQUGHjl3EwcGOHSrYoZOb0KHipriXKk4OUoQiijgJ4iIKyov3ru9eXnJ3tfWDwjXJ5f/zkrzkEsrC4PjSt62uHd4ezhPSe0Zhp4U53EgPbdBtcYBr+BGIKr7+8e6cgeO+AWc9gpHQBsLEqWixUrYL1BtqJ5/368PMgImkyy4KO0UZxVyuVeKZcRlJ2EYP4nGENfWGOB6Iis1EYBEiccVreyVXIHVUbGsnEAEuDB2nlxd157Wzy8AzgHUUaEfr6HsAj4ZvwCbOO2wHlwltwDXyboGRENeAFNpuYRqwrGRpnjk4XXEIGggTz64o+KUvCqKGLvfaIGGmWomIibsW39jQvKrMZaxThfW4G1x9GZlQauyXZVd05y6wnq4jaSsjhgG+APkWeny9+n23cGrUAbSeIy1u51lAEwqKUqDDwByTZBWVQCLaXV0z3mveN1V6ZFS99Peq4akJXQ97OHDoeBjl13eq9vxkjJxmQyMVUxMgnppM6e61ES8towmOZAqg02hNxQhkRSkSaGI6s2AIJz6/QiN+W7tRM+lZ3S5XLvmno5GI4Njcr56IHf4lQ6I4R1yE+uyWTFSVOtjajjRaAEVh9PQ/xboLpAuE7UznRBFGQrdhFGBOkfzGpv9Mw45t9MDIxbUjBgA/YsQMxXYlS8LNNOxWHAebkETorZijOz86lMvbJPaHSafADxM/D9g+HrsB1Qokov8wwTXET2agkwsTsA3uB1ipG+gjaKYZAAAAAElFTkSuQmCC">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Coming+Soon&display=swap" rel="stylesheet">
@@ -24,8 +25,9 @@ body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.5 'Instrument Sans',
 .brand img{width:40px;height:33px}
 .sp{flex:1}
 .chipbtn{white-space:nowrap;min-height:40px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:var(--glass);color:var(--ink);font:500 14px 'Instrument Sans',sans-serif;cursor:pointer}
-.grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:16px;align-items:start}
-@media(max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
+.stagetop{width:min(100%,calc(58vh * 256 / 120),1100px);margin:0 auto}
+@media(max-width:860px){.stagetop{width:100%}}
 .glass{background:var(--glass);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .px{image-rendering:pixelated;image-rendering:crisp-edges}
 .room{position:relative;aspect-ratio:256/120;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
@@ -117,7 +119,7 @@ input[type=range]:focus-visible{outline:2px solid var(--butter);outline-offset:2
 .st b{display:block;font-size:15px}.st span{font-size:13px;color:var(--mut)}
 .st.done::after{content:"✓";position:absolute;right:10px;top:8px;color:var(--mint);font-weight:700}
 .prog{height:6px;border-radius:99px;background:rgba(255,255,255,.08);margin:-4px 0 14px;overflow:hidden}.prog b{display:block;height:100%;background:var(--teal);border-radius:99px}
-.wave{display:block;width:100%;height:auto}
+.wave{display:block;width:100%;height:auto;max-height:190px}
 .hb{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr) auto;gap:8px;align-items:center;font-size:14px;margin:3px 0}
 .hb .tr{position:relative;height:14px;border-radius:7px;background:rgba(255,255,255,.06)}
 .hb .tr i{position:absolute;top:0;bottom:0;border-radius:7px}
@@ -138,6 +140,32 @@ input[type=range]:focus-visible{outline:2px solid var(--butter);outline-offset:2
 .donut ul{list-style:none;margin:0;padding:0;font-size:14px}
 .donut li{display:flex;gap:6px;align-items:center}.donut i{width:10px;height:10px;border-radius:3px;display:inline-block}
 @media(max-width:560px){.lk{font-size:18px}.lk small{font-size:11.5px}.paper .q{font-size:20px}.talk p{font-size:17px}.hb{grid-template-columns:minmax(0,7.5em) minmax(0,1fr) 3.4em}}
+
+.panel{max-width:1100px;width:100%;margin:0 auto}
+.duo2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+@media(max-width:620px){.duo2{grid-template-columns:minmax(0,1fr)}}
+.fx{position:absolute;inset:0;pointer-events:none}
+.fx i{position:absolute;display:block}
+.star{width:.5%;aspect-ratio:1;background:#E9EEFF;border-radius:50%;animation:tw 2.2s ease-in-out infinite}
+@keyframes tw{50%{opacity:.15}}
+.bub{width:.7%;aspect-ratio:1;border-radius:50%;background:#CFE0FF;opacity:0;animation:bubble 2.6s ease-in infinite}
+@keyframes bubble{0%{transform:translateY(0);opacity:0}20%{opacity:.8}100%{transform:translateY(-380%);opacity:0}}
+.scr{width:8.6%;height:10.8%;overflow:hidden;border-radius:2px}
+.scr::after{content:"";position:absolute;left:0;right:0;height:12%;background:rgba(134,216,203,.45);animation:scr 1.8s linear infinite}
+@keyframes scr{from{top:0}to{top:100%}}
+.bore{left:77.7%;top:45.8%;width:11.7%;height:25%;border-radius:50%;box-shadow:0 0 18px 4px rgba(134,216,203,.55) inset;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.lamp{top:5%;width:12%;height:26%;background:radial-gradient(closest-side,rgba(235,211,142,.18),transparent);animation:pulse 4s ease-in-out infinite}
+.idle{animation:idle 1.4s steps(2) infinite}
+@keyframes idle{50%{transform:translateY(-2.5%)}}
+.room .guest.lie{animation:lie 1.4s ease both}
+.warp{transform:translate(10px,-8px) rotate(6deg) scale(1.14,.88);transform-box:view-box;transform-origin:200px 235px;transition:transform 1.3s cubic-bezier(.5,.1,.2,1)}
+.warp.on{transform:none}
+.zap{stroke-dasharray:700;stroke-dashoffset:700;animation:draw .55s ease forwards,flick .25s steps(2) .55s 4}
+@keyframes flick{50%{opacity:.4}}
+.blink{animation:blink 2.8s ease-in-out infinite}
+@keyframes blink{50%{fill:#F4B69A;opacity:1}}
+canvas.viz{image-rendering:pixelated}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.viz .link{stroke-dashoffset:0}}
 </style>
 </head>
@@ -270,24 +298,27 @@ function slice(o={}){
 
 /* ---------- layout ---------- */
 function room(o={}){
+  let stars='';for(let i=0;i<9;i++){const x=96+((i*37)%62),y=15+((i*53)%20);stars+=`<i class="star" style="left:${x/2.56}%;top:${y/1.2}%;animation-delay:${(i*.37)%2}s"></i>`}
+  let bub='';[[14.5,22],[19.5,22],[24.6,42],[34.6,22],[9.4,42]].forEach(([x,y],i)=>bub+=`<i class="bub" style="left:${x}%;top:${y}%;animation-delay:${i*.6}s"></i>`);
   return `<div class="room">${img('lab_bg','bgimg','Pixel art night lab: brain jars, monitors, window and an MRI scanner')}
+   <div class="fx">${stars}${bub}<i class="scr" style="left:8.6%;top:48.3%"></i><i class="scr" style="left:20.3%;top:48.3%;animation-delay:.7s"></i><i class="bore"></i><i class="lamp" style="left:9%"></i><i class="lamp" style="left:45%"></i><i class="lamp" style="left:81%"></i></div>
    ${o.ct?img('ct_scanner','ct','CT scanner'):''}
    ${o.mascot?img('brain','mascot bob','Brain mascot'):''}
-   ${o.noLead?'':img('spinzle_x','actor lead','Spinzle, the lab lead')}
-   ${o.who?img(o.who,'actor guest '+(o.cls||''),'Person'):''}
+   ${o.noLead?'':img('spinzle_x','actor lead idle','Spinzle, the lab lead')}
+   ${o.who?img(o.who,'actor guest idle '+(o.cls||''),'Person'):''}
    ${o.bub?`<div class="bubble">${o.bub}</div>`:''}</div>`;
 }
 const talk=html=>`<div class="glass talk">${img('spinzle_x','','')}<p>${html}</p></div>`;
 const prog=()=>st.route&&st.route.length>1?`<div class="prog"><b style="width:${Math.round((st.ri+1)/st.route.length*100)}%"></b></div>`:'';
-function show(left,right){stage.innerHTML=`<div class="grid"><div>${left}</div><div class="glass panel">${prog()}${right}</div></div>`;
-  if(window.innerWidth<860&&st.v!=='hub'){const p=stage.querySelector('.panel');setTimeout(()=>p&&p.scrollIntoView({behavior:'smooth',block:'start'}),60)}else window.scrollTo({top:0,behavior:'smooth'})}
+function show(left,right){stage.innerHTML=`<div class="grid"><div class="stagetop">${left}</div><div class="glass panel">${prog()}${right}</div></div>`;
+  if(window.innerWidth<860&&st.v!=='hub'&&st.v!=='p3'){const p=stage.querySelector('.panel');setTimeout(()=>p&&p.scrollIntoView({behavior:'smooth',block:'start'}),60)}else window.scrollTo({top:0,behavior:'smooth'})}
 const on=(sel,fn)=>stage.querySelectorAll(sel).forEach(e=>e.addEventListener('click',ev=>{ac();fn(ev,e)}));
 const onIn=(sel,fn)=>stage.querySelectorAll(sel).forEach(e=>e.addEventListener('input',ev=>fn(ev,e)));
 const nav=(next='Next',back=true,cls='peach')=>`<div class="nav">${back?'<button class="btn ghost" id="bk">Back</button>':''}<button class="btn ${cls}" id="nx">${next}</button></div>`;
-function view(v,sub=0){st.v=v;st.sub=sub;V[v]()}
+function view(v,sub=0){if(st.timer){clearInterval(st.timer);st.timer=null;st.playing=false}if(!['scan','ask'].includes(v)||(v==='scan'&&sub===0))music(false);st.v=v;st.sub=sub;V[v]()}
 function next(){if(st.route&&st.ri<st.route.length-1){st.ri++;const [v,a]=st.route[st.ri];Object.assign(st,a||{});view(v)}else{if(st.route&&st.route.length>1)st.done.all=true;toHub()}}
 function back(){if(st.sub>0){view(st.v,st.sub-1)}else if(st.route&&st.ri>0){st.ri--;const [v,a]=st.route[st.ri];Object.assign(st,a||{});view(v,(STEPS[v]||1)-1)}else toHub()}
-const STEPS={basics:4,people:2,scan:2,ask:1,wire:2,rroom:2,atlas:3,concl:1};
+const STEPS={basics:4,people:2,scan:2,ask:1,wire:6,rroom:2,atlas:3,concl:1};
 const wireNav=(go=next)=>{on('#nx',()=>{sfx.tap();go()});on('#bk',()=>{sfx.tap();back()})};
 const subNext=()=>{if(st.sub<STEPS[st.v]-1)view(st.v,st.sub+1);else{st.done[st.v]=true;next()}};
 
@@ -305,7 +336,7 @@ const score=a=>a.reduce((t,v,i)=>t+(ITEMS[i].p?v:6-v),0)/a.length;
 /* ---------- views ---------- */
 const V={};
 V.hub=()=>{
-  const S=[['basics','brain','The basics','Lesions, fundamentalism, causes'],['people','house','The patients','Who got tested'],['scan','ct_scanner','Scanner room','CT vs MRI, slices'],['ask','clipboard','The score','The questionnaire (DV)'],['wire','monitor','Wiring room','The 1,000-brain map'],['rroom','dna','What’s r?','Correlation, with a slider'],['atlas','brain_jar','Brain atlas','Every spot, every view'],['concl','lesion','So what?','IV, DV, results, quiz']];
+  const S=[['basics','brain','The basics','Lesions, fundamentalism, causes'],['people','house','The patients','Who got tested'],['scan','ct_scanner','Scanner room','CT vs MRI, slices'],['ask','clipboard','The score','The questionnaire (DV)'],['wire','monitor','How they did it','6 steps + 190-patient sim'],['rroom','dna','What’s r?','Correlation, with a slider'],['atlas','brain_jar','Brain atlas','Every spot, every view'],['concl','lesion','So what?','IV, DV, results, quiz']];
   show(room({who:st.me,mascot:true,bub:'Okay. Show me the brain stuff.'})+talk('Welcome to the lab. <b>Can brain damage make religious beliefs more rigid?</b> Let’s figure out how they tested it.'),
   `<p class="kicker">Ferguson et al. (2024)</p><h1>Lesion Lab</h1>
    <p class="mut">Pick your sprite, then run the study or get studied.</p>
@@ -314,7 +345,7 @@ V.hub=()=>{
    <p class="mut" style="margin:16px 0 0;font-size:14px">Or jump into any room:</p>
    <div class="stations">${S.map(([v,ic,t,d])=>`<button class="st ${st.done[v]?'done':''}" data-v="${v}">${img(ic,'','')}<b>${t}</b><span>${d}</span></button>`).join('')}</div>`);
   on('.seg-pick',(e,b)=>{st.me=b.dataset.n;sfx.tap();view('hub')});
-  on('#res',()=>{sfx.ok();st.route=[['basics'],['people'],...[0,1,2].flatMap(i=>[['scan',{pi:i}],['ask',{pi:i}],['wire',{pi:i}]]),['rroom'],['atlas'],['concl']];st.ri=0;st.pi=0;PTS.forEach(p=>{p.rec=[];p.traced=false;p.mapped=false});view('basics')});
+  on('#res',()=>{sfx.ok();st.route=[['basics'],['people'],...[0,1,2].flatMap(i=>[['scan',{pi:i}],['ask',{pi:i}]]),['wire',{wp:0,zapped:false,N:1,warped:false,tested:false}],['rroom'],['atlas'],['concl']];st.ri=0;st.pi=0;PTS.forEach(p=>{p.rec=[];p.traced=false;p.mapped=false});view('basics')});
   on('#par',()=>{sfx.ok();st.route=null;st.mine={};view('p1')});
   on('.st',(e,b)=>{sfx.tap();st.route=[[b.dataset.v]];st.ri=0;st.pi=st.pi||0;view(b.dataset.v)});
 };
@@ -400,36 +431,160 @@ V.ask=()=>{const p=PTS[st.pi||0];p.rec=p.rec||[];const qi=p.rec.length,doneQ=qi>
     show(room({who:p.who,bub:sc>3.5?'Damn right I believe it.':sc<2.5?'Not really my thing.':'Kinda?'})+talk(`Score: <b>${sc.toFixed(2)} / 5</b>. That’s our <b>DV</b>. Higher = more fundamentalist.`),
      `<p class="kicker">The score · Patient ${p.id}</p><h2>Their score</h2><div class="row" style="align-items:baseline"><span class="big" style="color:var(--butter)">${sc.toFixed(2)}</span><span class="mut">/ 5</span></div>
       <div class="meter" style="margin:12px 0"><b style="width:${sc/5*100}%;background:var(--butter)"></b></div>
-      <div class="info"><p>Their answers: ${p.rec.map((v,i)=>ITEMS[i].p?`<b>${v}</b>`:`<b>${v}</b>→${6-v}`).join(' · ')}</p><p class="mut">Flipped items: agreeing means LESS fundamentalist, so we use 6 − answer.</p></div>${nav('Next: the wiring')}`);
+      <div class="info"><p>Their answers: ${p.rec.map((v,i)=>ITEMS[i].p?`<b>${v}</b>`:`<b>${v}</b>→${6-v}`).join(' · ')}</p><p class="mut">Items 2 and 4 are <b style="color:var(--ink)">flipped</b>: a fundamentalist would DISAGREE with them. So their number gets turned around before averaging: 1→5, 2→4, 3→3, 4→2, 5→1.</p></div>${nav('Next: the wiring')}`);
     wireNav(()=>{st.done.ask=true;next()});return;}
   const it=ITEMS[qi],a=p.ans[qi];
-  show(room({who:p.who,bub:SAY[a-1]})+talk(qi===0?`This is the <b>DV</b>: the Religious Fundamentalism Scale. The real one had 10–12 items. We’ll do 4. <b>Record exactly what they say.</b>`:it.p?'Next one. Same deal.':'Heads up: this one’s <b>flipped</b>. Agreeing = LESS fundamentalist.'),
+  show(room({who:p.who,bub:SAY[a-1]})+talk(qi===0?`This is the <b>DV</b>: the Religious Fundamentalism Scale. The real one had 10–12 items. We’ll do 4. <b>Record exactly what they say.</b>`:it.p?'Next one. Same deal.':'Heads up: this one’s <b>flipped</b>. A fundamentalist would DISAGREE with it. So when we score it, we turn the number around: <b>1 counts as 5</b>, 2 as 4, 3 stays 3.'),
    `<p class="kicker">The score · Patient ${p.id} · item ${qi+1} of 4</p><h2>Ask &amp; record</h2>
-    <div class="paper"><small>Religious Fundamentalism Scale ${it.p?'':'· flipped item'}</small><p class="q">“${it.t}”</p>${likert(0)}</div>
+    <div class="paper"><small>Religious Fundamentalism Scale ${it.p?'':'· flipped item (scored backwards)'}</small><p class="q">“${it.t}”</p>${likert(0)}</div>
     <p class="mut" id="msg" style="text-align:center;margin-top:10px">${NAME(p.who)} says: <b style="color:var(--ink)">${SAY[a-1]}</b></p>`);
   on('[data-v]',(e,b)=>{const v=+b.dataset.v;if(v!==a){sfx.no();$('#msg').innerHTML='Whoa. That’s not what they said. <b style="color:var(--rose)">No guessing, that’s bias.</b>';return}sfx.ok();p.rec.push(v);view('ask')});
 };
 
-V.wire=()=>{const p=PTS[st.pi||0],s=st.sub;
-  if(s===0){const sy=st.sync??.9;
+/* ---------- inner core (coronal slice) ---------- */
+const CORE=[
+ {id:'rcing',k:'hi',n:'Right middle cingulate cortex',s:'R cingulate',x:230,y:88,rx:24,ry:9,mm:490,t:4.5,w:'Deep inside, on the inner wall of the right half, right above the corpus callosum.',d:'Notices conflict and mistakes, and links feelings to actions.'},
+ {id:'rcaud',k:'hi',n:'Right caudate',s:'R caudate',x:236,y:150,rx:13,ry:18,mm:265,t:4.5,w:'Deep inside, hugging the right ventricle.',d:'Part of the basal ganglia: habits, learning from rewards, switching strategies.',c:'Aging lecture: basal ganglia (Parkinson’s).'},
+ {id:'rforn',k:'hi',n:'Right fornix',s:'R fornix',x:212,y:138,rx:8,ry:8,mm:95,t:4.4,w:'Dead centre, a thin arch under the corpus callosum.',d:'A cable carrying memory signals out of the hippocampus.',c:'Memory lecture: the hippocampus’s wiring.'},
+ {id:'rins',k:'hi',n:'Right insula',s:'R insula',x:300,y:168,rx:10,ry:24,mm:135,t:4.4,w:'Hidden deep in the fold on the right side.',d:'Gut feelings and body awareness (heartbeat, disgust).'},
+ {id:'lthal',k:'lo',n:'Left thalamus',s:'L thalamus',x:178,y:184,rx:20,ry:16,mm:154,t:-4.5,w:'Deep centre, left side.',d:'The relay station: passes signals between the body and the cortex.',c:'Consciousness lecture: thalamus and arousal.'}];
+CORE.forEach(c=>RG[c.id]=c);
+const CORONAL='M200,30 C120,20 30,60 25,150 C22,220 60,250 95,255 C110,300 150,310 170,280 L200,262 L230,280 C250,310 290,300 305,255 C340,250 378,220 375,150 C370,60 280,20 200,30 Z';
+function coreBrain(o={}){
+  const id='u'+(++UID);let glow='',top='';
+  for(const r of CORE){if(o.net&&(o.net==='both'||o.net===r.k))glow+=`<ellipse class="fade" cx="${r.x}" cy="${r.y}" rx="${r.rx*2+12}" ry="${r.ry*2+12}" fill="url(#${id}${r.k})"/>`;
+    if(o.regs)top+=`<ellipse class="reg ${o.sel===r.id?'on':''}" data-reg="${r.id}" cx="${r.x}" cy="${r.y}" rx="${r.rx+7}" ry="${r.ry+7}"><title>${r.n}</title></ellipse>`;
+    if(o.labels)top+=`<text class="lbl" x="${r.x+(r.x>200?r.rx+8:-r.rx-8)}" y="${r.y+5}" text-anchor="${r.x>200?'start':'end'}" style="font-size:13px">${r.s}</text>`}
+  if(o.les){const L=o.les;for(const i of (o.links||[])){const r=RG[i];top+=zap(L.x,L.y,r.x,r.y,COL[r.k],o.anim)}top+=`<circle class="ring" cx="${L.x}" cy="${L.y}" r="12"/><circle cx="${L.x}" cy="${L.y}" r="9" fill="#EE9AAE"/>`}
+  return `<svg class="viz" viewBox="0 0 400 320" role="img" aria-label="Brain cut front-to-back, showing deep structures">${DEFS(id)}<clipPath id="${id}cc"><path d="${CORONAL}"/></clipPath>
+   <path class="tis" d="${CORONAL}"/><g clip-path="url(#${id}cc)"><g class="gy">${GY}</g>
+   <path d="M200,30 L200,96" stroke="#0B1530" stroke-width="5"/>
+   <path d="M138,112 Q200,86 262,112" fill="none" stroke="#C9D8F5" stroke-width="9" opacity=".55"/>
+   <ellipse cx="172" cy="88" rx="24" ry="9" fill="rgba(183,170,244,.18)"/><ellipse cx="228" cy="88" rx="24" ry="9" fill="rgba(183,170,244,.18)"/>
+   <path d="M186,118 q-16,22 -2,46 l8,0 l0,-46z" fill="#0B1530" opacity=".7"/><path d="M214,118 q16,22 2,46 l-8,0 l0,-46z" fill="#0B1530" opacity=".7"/>
+   <ellipse cx="164" cy="150" rx="13" ry="18" fill="rgba(134,216,203,.18)"/><ellipse cx="236" cy="150" rx="13" ry="18" fill="rgba(134,216,203,.18)"/>
+   <ellipse cx="178" cy="184" rx="20" ry="16" fill="rgba(235,211,142,.16)"/><ellipse cx="222" cy="184" rx="20" ry="16" fill="rgba(235,211,142,.16)"/>
+   <path d="M188,138 Q200,128 212,138" fill="none" stroke="#C9D8F5" stroke-width="4" opacity=".5"/>
+   <ellipse cx="100" cy="168" rx="9" ry="24" fill="rgba(244,182,154,.14)"/><ellipse cx="300" cy="168" rx="9" ry="24" fill="rgba(244,182,154,.14)"/>
+   <ellipse cx="150" cy="238" rx="14" ry="9" fill="rgba(148,198,240,.2)"/><ellipse cx="250" cy="238" rx="14" ry="9" fill="rgba(148,198,240,.2)"/>${glow}</g>
+   ${top}<text class="lbl" x="16" y="26">L</text><text class="lbl" x="372" y="26">R</text>
+   ${o.labels?'':'<text class="sm" x="200" y="312" text-anchor="middle">cut front-to-back through the middle (coronal slice)</text>'}</svg>`;
+}
+function zap(x1,y1,x2,y2,c,anim=true){let d=`M${x1},${y1}`;const n=7;for(let i=1;i<n;i++){const t=i/n,x=x1+(x2-x1)*t,y=y1+(y2-y1)*t,nx=-(y2-y1),ny=x2-x1,l=Math.hypot(nx,ny)||1,o=(i%2?1:-1)*(5+Math.random()*6);d+=` L${(x+nx/l*o).toFixed(1)},${(y+ny/l*o).toFixed(1)}`}d+=` L${x2},${y2}`;
+  return `<path class="${anim?'zap':''}" d="${d}" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>${anim?`<circle r="5" fill="#FFF4D6"><animateMotion dur="0.9s" repeatCount="indefinite" path="${d}"/></circle>`:''}<circle class="fade" cx="${x2}" cy="${y2}" r="7" fill="${c}"/>`}
+function topZap(o){const id='u'+(++UID);let s='';for(const L of o.les)for(const i of L.links){const r=RG[i];s+=zap(L.x,L.y,r.top[0],r.top[1],COL[r.k],o.anim!==false)}for(const L of o.les)s+=`<circle class="ring" cx="${L.x}" cy="${L.y}" r="14"/><circle cx="${L.x}" cy="${L.y}" r="10" fill="#EE9AAE"/>`;return s}
+
+/* ---------- 190-patient simulation ---------- */
+let SIM=null;
+function simInit(){if(SIM)return SIM;let s=20240827;const R=()=>{s=(s*16807)%2147483647;return s/2147483647};const G=()=>{let u=R()||1e-9,v=R();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+  const cells=[];for(let j=0;j<47;j++)for(let i=0;i<40;i++){const x=5+i*10,y=5+j*10;if(inBrain(x,y))cells.push([x,y])}
+  const g=(x,y,cx,cy,sg)=>Math.exp(-((x-cx)**2+(y-cy)**2)/(2*sg*sg));
+  const NETS=[REG.filter(r=>r.k==='hi').map(r=>[r.top[0],r.top[1],Math.abs(r.t)/5]),REG.filter(r=>r.k==='lo').map(r=>[r.top[0],r.top[1],Math.abs(r.t)/5]),[[140,380,1],[260,380,1]],[[150,205,1],[250,205,1]],[[70,150,1],[110,300,.8]],[[200,110,1],[200,340,1]]];
+  const memC=(x,y)=>NETS.map(n=>n.reduce((t,[cx,cy,w])=>t+w*g(x,y,cx,cy,24),0));const memL=(x,y)=>NETS.map(n=>Math.min(1,n.reduce((t,[cx,cy,w])=>t+w*g(x,y,cx,cy,50),0)));
+  const M=cells.map(([x,y])=>memC(x,y)),T=M.map(m=>m[0]-m[1]);
+  const near=(x,y)=>{let b=0,bd=1e9;cells.forEach((c,i)=>{const d=(c[0]-x)**2+(c[1]-y)**2;if(d<bd){bd=d;b=i}});return b};
+  const regCell=Object.fromEntries(REG.map(r=>[r.id,near(r.top[0],r.top[1])]));
+  const P=[];for(let i=0;i<190;i++){let x,y;do{x=24+R()*352;y=40+R()*420}while(!inBrain(x,y));const pr=memL(x,y);const m=pr.map(v=>.25*v+.75*R());const sc=clamp(3+2*(m[0]-m[1])+G()*1.4,1,5);
+    const C=new Float32Array(cells.length),Lp=new Uint8Array(cells.length);
+    for(let c=0;c<cells.length;c++){const mc=M[c];let v=0;for(let k=0;k<NETS.length;k++)v+=m[k]*mc[k];v-=.7*(m[0]*mc[1]+m[1]*mc[0]);v+=.6*g(cells[c][0],cells[c][1],x,y,28)+G()*.4;C[c]=v;Lp[c]=Math.hypot(cells[c][0]-x,cells[c][1]-y)<26?1:0}
+    const links=REG.filter(r=>r.k!=='no').map(r=>({id:r.id,v:C[regCell[r.id]]*(r.k==='lo'?.9:1)})).filter(o=>Math.hypot(RG[o.id].top[0]-x,RG[o.id].top[1]-y)>30).sort((a,b)=>b.v-a.v).slice(0,3).map(o=>o.id);
+    P.push({x,y,s:sc,ds:i<106?1:2,C,Lp,links,cause:i<106?'war head wound':(['stroke','stroke','stroke','stroke','stroke','surgery','surgery','surgery','head injury','infection'][Math.floor(R()*10)])})}
+  const corr=(N,loc)=>{const out=new Float32Array(cells.length);let my=0;for(let i=0;i<N;i++)my+=P[i].s;my/=N;let syy=0;for(let i=0;i<N;i++)syy+=(P[i].s-my)**2;
+    for(let c=0;c<cells.length;c++){let mx=0;for(let i=0;i<N;i++)mx+=loc?P[i].Lp[c]:P[i].C[c];mx/=N;let sxy=0,sxx=0;for(let i=0;i<N;i++){const xv=(loc?P[i].Lp[c]:P[i].C[c])-mx;sxy+=xv*(P[i].s-my);sxx+=xv*xv}out[c]=sxx>1e-9&&syy>1e-9?sxy/Math.sqrt(sxx*syy):0}return out};
+  const sim=(a,b)=>{const n=a.length;let ma=0,mb=0;for(let i=0;i<n;i++){ma+=a[i];mb+=b[i]}ma/=n;mb/=n;let ab=0,aa=0,bb=0;for(let i=0;i<n;i++){ab+=(a[i]-ma)*(b[i]-mb);aa+=(a[i]-ma)**2;bb+=(b[i]-mb)**2}return aa>0&&bb>0?ab/Math.sqrt(aa*bb):0};
+  SIM={cells,P,T,corr,sim,regCell,curve:null};return SIM}
+function simCurve(){const S=simInit();if(S.curve)return S.curve;const c=[];for(let N=2;N<=190;N+=(N<20?2:6)){c.push([N,S.sim(S.corr(N,false),S.T),S.sim(S.corr(N,true),S.T)])}if(c[c.length-1][0]!==190)c.push([190,S.sim(S.corr(190,false),S.T),S.sim(S.corr(190,true),S.T)]);S.curve=c;return c}
+const BRAINPATH=(()=>{let p=null;return()=>{if(p)return p;p=new Path2D(RH+' '+LH);const e=new Path2D();e.ellipse(158,436,50,26,0,0,Math.PI*2);e.ellipse(242,436,50,26,0,0,Math.PI*2);p.addPath(e);return p}})();
+function drawMap(cv,vals,o={}){const ctx=cv.getContext('2d'),W=cv.width,H=cv.height,S=simInit();ctx.clearRect(0,0,W,H);ctx.save();ctx.scale(W/400,H/470);const clip=BRAINPATH();
+  ctx.fillStyle='rgba(169,200,255,.10)';ctx.fill(clip);ctx.save();ctx.clip(clip);
+  if(vals){const sc=o.scale||.4;for(let c=0;c<S.cells.length;c++){const v=vals[c]/sc;if(Math.abs(v)<(o.thr||.3))continue;ctx.fillStyle=v>0?`rgba(244,182,154,${Math.min(.95,Math.abs(v))})`:`rgba(183,170,244,${Math.min(.95,Math.abs(v))})`;ctx.fillRect(S.cells[c][0]-5,S.cells[c][1]-5,10,10)}}
+  if(o.sweep!=null){ctx.fillStyle='rgba(134,216,203,.35)';ctx.fillRect(0,o.sweep-5,400,10)}
+  ctx.restore();ctx.strokeStyle='#9CC6F2';ctx.lineWidth=2;ctx.stroke(clip);ctx.beginPath();ctx.moveTo(200,34);ctx.lineTo(200,418);ctx.strokeStyle='rgba(11,21,48,.9)';ctx.lineWidth=6;ctx.stroke();
+  if(o.dots)for(const d of o.dots){ctx.beginPath();ctx.arc(d.x,d.y,d.big?8:5,0,Math.PI*2);ctx.fillStyle=d.c;ctx.globalAlpha=d.big?1:.8;ctx.fill();ctx.globalAlpha=1}
+  ctx.fillStyle='#E9EEFF';ctx.font='700 18px Instrument Sans, sans-serif';ctx.fillText('L',12,26);ctx.fillText('R',374,26);ctx.restore()}
+function curveSVG(N){const c=simCurve(),W=400,H=150,m=30;const X=n=>m+(n-1)/189*(W-m-10),Y=v=>H-24-clamp(v,0,1)*(H-40);
+  const line=(k,col)=>`<polyline fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round" points="${c.map(p=>X(p[0])+','+Y(p[k])).join(' ')}"/>`;
+  return `<svg class="viz" style="max-height:210px" viewBox="0 0 ${W} ${H}" role="img" aria-label="How well each map matches the real network as patients are added"><rect x="${m}" y="14" width="${W-m-10}" height="${H-38}" rx="8" fill="rgba(255,255,255,.04)"/>${[0,.5,1].map(v=>`<text x="${m-6}" y="${Y(v)+4}" font-size="12" fill="#A9B7DA" text-anchor="end">${v}</text>`).join('')}
+   ${line(1,'#F4B69A')}${line(2,'#B7AAF4')}<line x1="${X(N)}" x2="${X(N)}" y1="14" y2="${H-24}" stroke="#EBD38E" stroke-width="2" stroke-dasharray="4 3"/>
+   <text x="${(W+m)/2}" y="${H-6}" font-size="12" fill="#A9B7DA" text-anchor="middle">patients added (1 → 190)</text></svg>`}
+
+V.wire=()=>{const s=st.sub;st.timer&&clearInterval(st.timer);st.timer=null;
+  const head=(n,t)=>`<p class="kicker">How they studied the brains · step ${n} of 6</p><h2>${t}</h2>`;
+  if(s===0){const w=st.warped;const P=PTS[0];
+    show(room({who:P.who,bub:'My brain’s a weird shape?'})+talk('Step 1. Everyone’s brain is a different size and shape. So they <b>trace each lesion</b>, then <b>stretch every brain onto ONE standard brain</b> (called MNI space). Now a spot means the same place for everybody.'),
+     `${head(1,'Trace it &amp; line it up')}
+      <svg class="viz" viewBox="0 0 400 470" role="img" aria-label="A patient's brain being warped onto the standard brain">${DEFS('wp')}<path d="${RH}" fill="none" stroke="#EBD38E" stroke-width="2" stroke-dasharray="6 5"/><path d="${LH}" fill="none" stroke="#EBD38E" stroke-width="2" stroke-dasharray="6 5"/>
+       <g class="warp ${w?'on':''}"><path class="tis" d="${RH}"/><path class="tis" d="${LH}"/><circle cx="${P.les.x}" cy="${P.les.y}" r="12" fill="#EE9AAE"/><circle class="trace" cx="${P.les.x}" cy="${P.les.y}" r="22"/></g>
+       <text x="200" y="462" text-anchor="middle" font-size="13" fill="#EBD38E">dashed = the standard brain (MNI)</text></svg>
+      <div class="info"><p>${w?'<b>Lined up.</b> Patient V-112’s lesion now sits at standard coordinates, same as all 189 others.':'This is Patient V-112’s brain: a bit wide and tilted. Hit the button.'}</p><span class="tag t-butter">Psyc 301: neuroanatomy (planes and coordinates)</span></div>
+      <div class="row" style="margin-top:12px"><button class="btn butter" id="wp" style="flex:1">${w?'Un-warp':'Warp onto the standard brain'}</button></div>${nav('Next',st.route&&st.ri>0)}`);
+    on('#wp',()=>{st.warped=!st.warped;sfx.swoosh();const g=stage.querySelector('.warp');g.classList.toggle('on',st.warped);stage.querySelector('.info p').innerHTML=st.warped?'<b>Lined up.</b> Patient V-112’s lesion now sits at standard coordinates, same as all 189 others.':'This is Patient V-112’s brain: a bit wide and tilted. Hit the button.';$('#wp').textContent=st.warped?'Un-warp':'Warp onto the standard brain'});
+  } else if(s===1){const sy=st.sync??.9;
+    let dots='';for(let i=0;i<1000;i++){const x=8+(i%40)*9.7,y=10+Math.floor(i/40)*9;dots+=`<circle cx="${x}" cy="${y}" r="3" fill="#9CC6F2" opacity=".35"${i%7===0?` class="blink" style="animation-delay:${(i*37%300)/100}s"`:''}/>`}
     const W=(ph,amp,c,y)=>{let d='';for(let x=0;x<=400;x+=4){d+=(x?'L':'M')+x+','+(y+Math.sin(x/22+ph)*amp+Math.sin(x/9+ph*1.7)*amp*.3).toFixed(1)}return `<path d="${d}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`};
-    const wave=sy=>`<svg class="wave" viewBox="0 0 400 170" role="img" aria-label="Two brain activity waves">${W(0,22,'#F4B69A',50)}${W((1-sy)*3.2,22,'#86D8CB',120)}<text x="4" y="18" font-size="13" fill="#F4B69A">Spot A activity</text><text x="4" y="164" font-size="13" fill="#86D8CB">Spot B activity</text></svg>`;
-    const msg=sy=>sy>.75?'<b style="color:var(--teal)">Moving together → connected.</b> Same team.':sy>.4?'Kinda together → weakly connected.':'<b style="color:var(--lav)">Out of sync → not connected.</b>';
-    show(room({who:p.who,bub:'1,000 brains?? Damn.'})+talk(`Step 2. <b>1,000 healthy people</b> lay in an <b>fMRI</b> scanner doing nothing (“resting state”). Brain spots whose activity rises and falls <b>at the same time</b> = wired together.`),
-     `<p class="kicker">Wiring room</p><h2>How do we know what’s wired together?</h2><div id="wv">${wave(sy)}</div>
-      <div class="slider"><label for="sy">Out of sync</label><input type="range" id="sy" min="0" max="1" step="0.05" value="${sy}"><label>In sync</label></div>
-      <div class="info"><p id="wm">${msg(sy)}</p><span class="tag t-butter">Psyc 301: fMRI (neuroimaging lecture)</span></div>${nav()}`);
+    const wave=sy=>`<svg class="wave" viewBox="0 0 400 150" role="img" aria-label="Two activity waves">${W(0,20,'#EE9AAE',40)}${W((1-sy)*3.2,20,'#86D8CB',108)}<text x="4" y="14" font-size="13" fill="#EE9AAE">activity in the lesion spot (the “seed”)</text><text x="4" y="146" font-size="13" fill="#86D8CB">activity in some other spot</text></svg>`;
+    const msg=sy=>sy>.75?'<b style="color:var(--peach)">Rise and fall together → connected (+).</b>':sy>.35?'Sort of together → weakly connected.':'<b style="color:var(--lav)">Opposite or random → not connected (or connected negatively).</b>';
+    show(room({who:st.me,bub:'Wait, the PATIENTS don’t get fMRI?'})+talk('Step 2. Nope! They <b>borrow</b> fMRI scans from <b>1,000 healthy people</b> (ages 18–35) lying still. For each person: watch the <b>lesion spot</b> and every other spot. Spots that rise and fall <b>together</b> = wired together.'),
+     `${head(2,'Ask 1,000 healthy brains')}
+      <svg class="viz" viewBox="0 0 400 230" style="max-height:240px" role="img" aria-label="1,000 dots, one per healthy person">${dots}</svg><p class="mut" style="text-align:center;font-size:14px;margin:-2px 0 8px">1 dot = 1 healthy person’s resting-state fMRI scan</p>
+      <div id="wv">${wave(sy)}</div><div class="slider"><label for="sy">Out of sync</label><input type="range" id="sy" min="0" max="1" step="0.05" value="${sy}"><label>In sync</label></div>
+      <div class="info"><p id="wm">${msg(sy)}</p><p class="mut">fMRI tracks blood oxygen (the BOLD signal) as a stand-in for activity. Average the 1,000 people → one wiring map for that lesion.</p><span class="tag t-butter">Psyc 301: fMRI and BOLD (neuroimaging lecture)</span></div>${nav()}`);
     onIn('#sy',(e,el)=>{st.sync=+el.value;$('#wv').innerHTML=wave(st.sync);$('#wm').innerHTML=msg(st.sync)});
-  } else {const ov=st.ov;
-    show(room({who:p.who,bub:p.mapped?(side(p.links)==='hi'?'So I’m wired into it.':'Huh. Different wiring.'):'Where does my spot connect?'})+talk(ov?'All 3 patients. Different lesion spots... <b>but 2 of them light up the SAME right-side regions.</b> That’s the whole idea.':p.mapped?`Patient ${p.id}’s lesion is wired to these spots. In the real study: done for all <b>190</b> people.`:'Drop the lesion onto the healthy wiring map. See what it’s connected to.'),
-     `<p class="kicker">Wiring room · Patient ${p.id}</p><h2>${ov?'All 3 networks at once':'This lesion’s network'}</h2>
-      ${ov?topBrain({multi:PTS.map((q,i)=>({x:q.les.x,y:q.les.y,lab:String(i+1),links:q.links}))}):topBrain({les:p.les,traced:true,links:p.mapped?p.links:null})}
-      <div class="info">${p.mapped||ov?(ov?'<p>Patients 1 and 2 (high scores) → peach, right-side spots. Patient 3 (low score) → lavender spots.</p>':`<p>Wired to: ${p.links.map(i=>`<span class="tag ${RG[i].k==='hi'?'t-peach':'t-lav'}">${RG[i].s}</span>`).join(' ')}</p>`):'<p class="mut">Press the button.</p>'}</div>
-      <div class="row" style="margin-top:12px">${p.mapped?'':'<button class="btn" id="mp" style="flex:1">Light up the network</button>'}${PTS.every(q=>q.mapped)?`<button class="btn ghost" id="ov">${ov?'Just this patient':'Overlay all 3'}</button>`:''}</div>${p.mapped?nav(st.pi<2&&st.route&&st.route.length>1?'Next patient':'Next'):''}`);
-    on('#mp',()=>{p.mapped=true;sfx.swoosh();view('wire',1)});
-    on('#ov',()=>{st.ov=!st.ov;sfx.swoosh();view('wire',1)});
+  } else if(s===2){const k=st.wp??0,p=PTS[k],prev=k>0?PTS[k-1]:null,shared=prev?p.links.filter(i=>prev.links.includes(i)):[];
+    const coreL=side(p.links)==='hi'?['rcing','rcaud','rins']:['lthal'];
+    const proj={x:200+(p.les.x-200)*.9,y:40+p.les.z[0]*22};
+    show(room({who:p.who,bub:st.zapped?(side(p.links)==='hi'?'Bzzt! Lit up the right side.':'Different wires for me.'):'Do it. Zap me.'})+talk('Step 3. Send the signal out from the lesion. Everything that lights up = this lesion’s <b>network</b>. <b>Peach</b> spots go with higher scores, <b>lavender</b> with lower. This is a lot like <b>diaschisis</b>: damage here changes function in faraway connected spots.'),
+     `${head(3,'Light up this lesion’s network')}
+      <div class="seg">${PTS.map((q,i)=>`<button class="${i===k?'on':''}" data-wp="${i}">Patient ${i+1} · ${q.id}</button>`).join('')}</div>
+      <div class="duo2"><div><p class="mut" style="font-size:13px;margin:0">From above (surface)</p>${topBrain({les:null,net:st.zapped?(side(p.links)==='hi'?'hi':'lo'):null}).replace('</svg>',(st.zapped?topZap({les:[{x:p.les.x,y:p.les.y,links:p.links}]}):`<circle class="ring" cx="${p.les.x}" cy="${p.les.y}" r="14"/><circle cx="${p.les.x}" cy="${p.les.y}" r="10" fill="#EE9AAE"/>`)+'</svg>')}</div>
+      <div><p class="mut" style="font-size:13px;margin:0">Inside (deep core)</p>${coreBrain({les:proj,links:st.zapped?coreL:[],net:st.zapped?(side(p.links)==='hi'?'hi':'lo'):null,labels:true})}</div></div>
+      <div class="info">${st.zapped?`<p>Wired to: ${p.links.concat(coreL).map(i=>`<span class="tag ${RG[i].k==='hi'?'t-peach':'t-lav'}">${RG[i].s}</span>`).join(' ')}</p><p>${prev?(shared.length?`<b style="color:var(--mint)">✓ ${shared.length} of 3 surface spots match Patient ${k}.</b> Different lesion, same wires.`:`<b style="color:var(--rose)">✗ 0 of 3 match Patient ${k}.</b> Different network. (And a much lower score.)`):'First patient. Zap Patient 2 next and compare.'}</p>`:'<p class="mut">Press zap.</p>'}<span class="tag t-butter">Psyc 301: diaschisis (recovery lecture)</span></div>
+      <div class="row" style="margin-top:12px"><button class="btn rose" id="zp" style="flex:1">${st.zapped?'Zap again':'⚡ Zap'}</button></div>${nav()}`);
+    on('[data-wp]',(e,b)=>{st.wp=+b.dataset.wp;st.zapped=false;sfx.tap();view('wire',2)});
+    on('#zp',()=>{st.zapped=true;sfx.swoosh();setTimeout(()=>sfx.note(7),300);view('wire',2)});
+  } else if(s===3){const S=simInit(),N=st.N||1,p=S.P[N-1];
+    const net=S.corr(N,false),loc=S.corr(N,true),simN=S.sim(net,S.T),simL=S.sim(loc,S.T);
+        show(room({who:st.me,bub:N<15?'It’s just noise...':N<60?'Wait... something’s showing up.':'Holy shit, it lined up.'})+talk(`Step 4. Now do steps 1–3 for <b>all 190 patients</b>, one by one. Left: <b>where</b> the lesions are. Right: what they’re <b>wired to</b>, linked to their scores. Drag the slider or hit Play. Watch the right side come together.`),
+     `${head(4,'All 190 patients, one at a time')}
+      <div class="slider"><label for="nn">1</label><input type="range" id="nn" min="1" max="190" step="1" value="${N}" aria-label="Number of patients"><label>190</label></div>
+      <div class="row" style="margin-bottom:10px"><button class="btn rose" id="pl" style="flex:1">${st.playing?'Pause':'▶ Play 1 → 190'}</button><span class="tag t-ghost" id="nl" style="font-size:16px">${N} patient${N>1?'s':''}</span></div>
+      <div class="duo2"><div><p class="mut" style="font-size:13px;margin:0 0 4px">Where the lesions ARE <span style="color:var(--peach)">●</span> high score <span style="color:var(--lav)">●</span> low</p><canvas id="cl" width="400" height="470" class="viz"></canvas></div>
+       <div style="position:relative"><p class="mut" style="font-size:13px;margin:0 0 4px">What they’re WIRED to (vs. score)</p><canvas id="cn" width="400" height="470" class="viz"></canvas><svg id="zo" class="viz" viewBox="0 0 400 470" style="position:absolute;left:0;top:22px;pointer-events:none" aria-hidden="true"></svg></div></div>
+      <div class="info" id="pi"></div>
+      <p style="margin:12px 0 4px;font-weight:600">How well each map matches the real network</p><div id="cv"></div>
+      <div class="legend" style="display:flex;gap:14px;font-size:14px;color:var(--mut)"><span><b style="color:var(--peach)">—</b> wiring map: <b id="sn" style="color:var(--ink)"></b></span><span><b style="color:var(--lav)">—</b> lesion spots only: <b id="sl2" style="color:var(--ink)"></b></span></div>
+      <p class="mut" style="font-size:13px">Simulated patients built to behave like the paper’s. In the real study: the location-only maps from the two groups matched at r = .07, the wiring maps at r = .82. Same story: location alone stays weak, wiring gets strong.</p>${nav()}`);
+    const upd=(N,anim)=>{const S=simInit(),p=S.P[N-1],net=S.corr(N,false),loc=S.corr(N,true);
+      drawMap($('#cl'),null,{dots:S.P.slice(0,N).map((q,i)=>({x:q.x,y:q.y,c:q.s>3?'#F4B69A':'#B7AAF4',big:i===N-1}))});drawMap($('#cn'),net);
+      const hiTop=REG.filter(r=>r.k==='hi').sort((a,b)=>net[S.regCell[b.id]]-net[S.regCell[a.id]]).slice(0,4).map(r=>r.id),shared=p.links.filter(i=>hiTop.includes(i)).length;
+      $('#zo').innerHTML=topZap({les:[{x:p.x,y:p.y,links:p.links}],anim});
+      $('#pi').innerHTML=`<p><b>Patient ${N}</b> · ${p.ds===1?'war veteran':'Iowa'} · ${p.cause} · score <b>${p.s.toFixed(1)}</b></p><p>Wired to: ${p.links.map(i=>`<span class="tag ${RG[i].k==='hi'?'t-peach':'t-lav'}">${RG[i].s}</span>`).join(' ')} ${N>5?(shared>=2?`<b style="color:var(--mint)">✓ near the map so far</b>`:`<b style="color:var(--mut)">✗ not on the main map</b>`):''}</p>`;
+      $('#nl').textContent=N+' patient'+(N>1?'s':'');$('#cv').innerHTML=curveSVG(N);$('#sn').textContent=S.sim(net,S.T).toFixed(2);$('#sl2').textContent=S.sim(loc,S.T).toFixed(2)};
+    upd(N,true);
+    onIn('#nn',(e,el)=>{st.N=+el.value;sfx.tick();upd(st.N,false)});
+    on('#pl',()=>{if(st.playing){st.playing=false;clearInterval(st.timer);st.timer=null;music(false);$('#pl').textContent='▶ Play 1 → 190';return}
+      st.playing=true;$('#pl').textContent='Pause';music(true);if((st.N||1)>=190)st.N=1;
+      st.timer=setInterval(()=>{if(st.v!=='wire'||st.sub!==3){clearInterval(st.timer);st.playing=false;return}st.N=Math.min(190,(st.N||1)+1);const el=$('#nn');if(el)el.value=st.N;upd(st.N,true);st.N%10===0?sfx.note(st.N/10):sfx.tick();if(st.N>=190){clearInterval(st.timer);st.timer=null;st.playing=false;music(false);sfx.win();const b=$('#pl');if(b)b.textContent='▶ Play again'}},140)});
+  } else if(s===4){const S=simInit(),fin=S.corr(190,false);
+    let bars='';const sh=[];let q=7;for(let i=0;i<400;i++){q=(q*16807)%2147483647;const u=q/2147483647;q=(q*16807)%2147483647;const v=q/2147483647;sh.push(Math.sqrt(-2*Math.log(u||1e-9))*Math.cos(2*Math.PI*v)*.07)}
+    const bins=new Array(24).fill(0);sh.forEach(v=>{const b=Math.floor((v+.3)/.6*24);if(b>=0&&b<24)bins[b]++});const mx=Math.max(...bins);
+    bins.forEach((c,i)=>bars+=`<rect x="${20+i*12}" y="${110-c/mx*90}" width="10" height="${c/mx*90}" rx="2" fill="#94C6F0" opacity=".7"/>`);
+    show(room({who:st.me,bub:'So is it real or a fluke?'})+talk('Step 5. The brain gets chopped into thousands of tiny cubes (<b>voxels</b>). For EACH cube: “do patients whose lesion is wired here score higher?” Then a strict test throws out anything that could be a fluke.'),
+     `${head(5,'Test every tiny cube')}
+      <div class="duo2"><div><canvas id="vt" width="400" height="470" class="viz"></canvas><p class="mut" style="text-align:center;font-size:13px">${st.tested?'Only cubes that passed the test':'Each square = one voxel'}</p></div>
+      <div><p style="margin:0 0 4px;font-weight:600">The shuffle test</p><svg class="viz" viewBox="0 0 320 140" role="img" aria-label="Histogram of shuffled results, with the real result far to the right">${bars}<line x1="20" y1="111" x2="310" y2="111" stroke="#A9B7DA"/><line x1="${20+(.25+.3)/.6*288}" y1="20" x2="${20+(.25+.3)/.6*288}" y2="111" stroke="#F4B69A" stroke-width="3"/><text x="${20+(.25+.3)/.6*288}" y="14" font-size="12" fill="#F4B69A" text-anchor="middle">real</text><text x="140" y="130" font-size="12" fill="#A9B7DA" text-anchor="middle">shuffled (pure luck)</text></svg>
+       <p class="mut" style="font-size:14px">Shuffle everyone’s scores randomly, thousands of times. That shows what “pure luck” looks like. A cube only counts if its real link beats almost every shuffle (FWE p &lt; .05, the strict version).</p></div></div>
+      <div class="row" style="margin-top:10px"><button class="btn rose" id="rt" style="flex:1">${st.tested?'Run it again':'Run the test'}</button></div>${nav()}`);
+    const cv=$('#vt');drawMap(cv,st.tested?fin:null,{thr:.5});
+    on('#rt',()=>{let y=0;sfx.swoosh();const step=()=>{if(!cv.isConnected)return;y+=12;drawMap(cv,fin.map((v,i)=>S.cells[i][1]<y?v:0),{thr:y<470?.3:.5,sweep:y<470?y:null});if(y<480)requestAnimationFrame(step);else{st.tested=true;sfx.win()}};step()});
+  } else {
+    const C=[['Split test','Built the map separately in the vets and the Iowa patients. The two maps matched: <b>r = .82</b>.','t-peach'],['Predict the other group','Used one group’s map to predict each patient’s score in the OTHER group: <b>r = .28 and .27</b> (weak, but real).','t-sky'],['Beat the old way','Lesion LOCATION alone (the old method, VLSM) found nothing. Maps matched at <b>r = .07</b>.','t-lav'],['Ruled out boring stuff','Same result after controlling for lesion size, age, time since injury and sex. No difference between religions.','t-mint'],['Compared to 21 other problems','Checked 899 lesions from 21 conditions. Confabulation matched best; post-stroke pain was the opposite.','t-butter']];
+    show(room({who:st.me,mascot:true,bub:'Okay, that’s actually solid.'})+talk('Step 6. How they made sure it wasn’t bullshit, and what makes this method different from a normal brain-scan study.'),
+     `${head(6,'Making sure it’s real')}
+      <div style="display:grid;gap:10px">${C.map(([t,d,c],i)=>`<div class="card" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;animation:fade .5s ${i*.12}s both"><span class="tag ${c}">${i+1}</span><div><h3>${t}</h3><p style="color:var(--ink)">${d}</p></div></div>`).join('')}</div>
+      <div class="info" style="margin-top:12px"><p><b>Why lesions beat normal fMRI:</b> a normal fMRI study only shows brain activity that happens alongside belief (correlation). A lesion is real damage, so it gets closer to showing what the brain <i>needs</i>. That’s the classic <b>lesion method</b>.</p><span class="tag t-butter">Psyc 301: lesion method + localization vs. networks</span></div>${nav()}`);
   }
-  wireNav(()=>{st.ov=false;subNext()});
+  wireNav(()=>{st.zapped=false;subNext()});
 };
 
 function corrData(r,n=70){let s=11;const R=()=>{s=(s*16807)%2147483647;return s/2147483647};const g=()=>{let u=R()||1e-9,v=R();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};const out=[];for(let i=0;i<n;i++){const x=g(),e=g();out.push([x,r*x+Math.sqrt(Math.max(0,1-r*r))*e])}return out}
@@ -464,10 +619,10 @@ V.rroom=()=>{const s=st.sub;
 const FIG5=[['Confabulation',1.75,'Memory: Korsakoff'],['Criminal behaviour',1.6],['Akinetic mutism',.95],['Amnesia',.6,'Memory lecture'],['Dystonia',.5],['Parkinsonism',.35,'Aging lecture'],['Mania',.1],['Loss of consciousness',.1,'Consciousness lecture'],['Aphasia',-.2,'Broca/Wernicke'],['Holmes tremor',-.25],['Depression',-.35,'Psychiatric lecture'],['Freezing of gait',-.4],['Delusion',-.68,'Schizophrenia lecture'],['Hallucination',-.68],['Alien limb',-.72,'Split brain!'],['Hemichorea',-.75],['Addiction cessation',-.78],['Asterixis',-.78],['Epilepsy',-.85,'Seizure lecture'],['Visual symptoms',-1.9],['Pain',-2.25]];
 V.atlas=()=>{const s=st.sub,r=st.sel?RG[st.sel]:null;
   if(s===0){const vw=st.vw||'top',thr=st.thr??4.3,z=st.az??3;
-    const mk=()=>{const thr=st.thr??4.3,z=st.az??3;return vw==='top'?topBrain({net:'both',regs:true,nums:true,sel:st.sel,thr,extra:true}):vw==='slice'?slice({z,mode:'atlas',net:'both',regs:true,sel:st.sel,thr}):sideBrain({hem:vw==='R'?'R':'L',net:'both',regs:true,nums:true,sel:st.sel,thr,lobes:st.lobes,extra:true})};
+    const mk=()=>{const thr=st.thr??4.3,z=st.az??3;return vw==='top'?topBrain({net:'both',regs:true,nums:true,sel:st.sel,thr,extra:true}):vw==='core'?coreBrain({net:'both',regs:true,sel:st.sel,labels:true}):vw==='slice'?slice({z,mode:'atlas',net:'both',regs:true,sel:st.sel,thr}):sideBrain({hem:vw==='R'?'R':'L',net:'both',regs:true,nums:true,sel:st.sel,thr,lobes:st.lobes,extra:true})};
     show(room({who:st.me,bub:r?(r.k==='hi'?'This one’s in the network!':r.k==='lo'?'Lower-score spot.':'Not in the network.'):'It’s mostly the RIGHT side!'})+talk(r?`<b>${r.s}.</b> ${r.w}`:'This is the final map from all 190 people. <b>Peach</b> = wired here → higher scores. <b>Lavender</b> = lower scores. Tap anything.'),
      `<p class="kicker">Brain atlas · 1 of 3</p><h2>Where in the brain?</h2>
-      <div class="seg">${[['top','From above'],['R','Right side'],['L','Left side'],['slice','Slices']].map(([k,t])=>`<button class="${vw===k?'on':''}" data-vw="${k}">${t}</button>`).join('')}${vw==='R'||vw==='L'?`<button class="${st.lobes?'on':''}" id="lb">Lobes</button>`:''}</div>
+      <div class="seg">${[['top','From above'],['R','Right side'],['L','Left side'],['core','Inside (core)'],['slice','Slices']].map(([k,t])=>`<button class="${vw===k?'on':''}" data-vw="${k}">${t}</button>`).join('')}${vw==='R'||vw==='L'?`<button class="${st.lobes?'on':''}" id="lb">Lobes</button>`:''}</div>
       <div id="dr">${mk()}</div>
       ${vw==='slice'?`<div class="slider"><label for="az">Top</label><input type="range" id="az" min="0" max="11" step="1" value="${z}" aria-label="Slice"><label>Bottom</label></div>`:''}
       <div class="slider"><label for="th">Show all</label><input type="range" id="th" min="4.3" max="5.2" step="0.1" value="${thr}" aria-label="Strength filter"><label>Strongest only</label></div>
@@ -533,7 +688,7 @@ V.p4=()=>{const m=st.mine,qi=m.ans.length;st.v='p4';
   if(qi>=4){music(false);m.score=score(m.ans);m.links=wires(m.les.x,m.les.y);m.nds=1/(1+Math.exp(-3*(field(m.les.x,m.les.y)-.1)));sfx.swoosh();return V.p5()}
   const it=ITEMS[qi];
   show(room({who:st.me,bub:['Hmm.','Okay...','Easy.','Last one!'][qi]})+talk('Answer how <b>you</b> really feel. Or play a character. Nobody sees this.'),
-   `<p class="kicker">Get studied · 4 of 6 · statement ${qi+1} of 4</p><h2>Rate this</h2><div class="paper"><small>Religious Fundamentalism Scale ${it.p?'':'· flipped item'}</small><p class="q">“${it.t}”</p>${likert(0)}</div>`);
+   `<p class="kicker">Get studied · 4 of 6 · statement ${qi+1} of 4</p><h2>Rate this</h2><div class="paper"><small>Religious Fundamentalism Scale ${it.p?'':'· flipped item (scored backwards)'}</small><p class="q">“${it.t}”</p>${likert(0)}</div>`);
   on('[data-v]',(e,b)=>{m.ans.push(+b.dataset.v);sfx.note(qi*2+ +b.dataset.v);V.p4()});
 };
 V.p5=()=>{const m=st.mine,s=side(m.links);st.v='p5';
